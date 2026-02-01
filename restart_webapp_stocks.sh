@@ -13,6 +13,25 @@ echo ""
 gentle_stop() {
     echo "🛑 Stopping existing webapp processes..."
     
+    # Stop Node server
+    if [ -f "logs/node-server.pid" ]; then
+        local node_pid=$(cat logs/node-server.pid 2>/dev/null || true)
+        if [ ! -z "$node_pid" ] && kill -0 "$node_pid" 2>/dev/null; then
+            echo "   🟢 Stopping Node.js backend server (PID: $node_pid)"
+            kill -TERM "$node_pid" 2>/dev/null || true
+            sleep 2
+        fi
+        rm -f logs/node-server.pid
+    fi
+    
+    # Fallback: Stop any Node servers on port 3001
+    local node_pids=$(lsof -ti :3001 2>/dev/null || true)
+    if [ ! -z "$node_pids" ]; then
+        echo "   🟢 Stopping processes on port 3001: $node_pids"
+        echo "$node_pids" | xargs kill -TERM 2>/dev/null || true
+        sleep 2
+    fi
+    
     # Stop using PID file first
     if [ -f "logs/vite.pid" ]; then
         local vite_pid=$(cat logs/vite.pid 2>/dev/null || true)
@@ -49,8 +68,28 @@ start_services() {
     mkdir -p logs
     
     echo ""
-    echo "⚛️  Starting Vite Dev Server..."
+    echo "🟢 Starting Node.js Backend Server..."
     cd webapp-stocks
+    
+    # Start Node.js server in background
+    nohup node server.js > ../logs/node-server.log 2>&1 &
+    NODE_PID=$!
+    echo $NODE_PID > ../logs/node-server.pid
+    
+    # Wait a moment and check if Node started
+    sleep 3
+    if kill -0 $NODE_PID 2>/dev/null; then
+        echo "   ✅ Node.js backend started successfully (PID: $NODE_PID)"
+        echo "   📝 Node PID saved to logs/node-server.pid"
+    else
+        echo "   ❌ Node.js backend failed to start - check logs/node-server.log"
+        tail -10 ../logs/node-server.log
+        cd ..
+        exit 1
+    fi
+    
+    echo ""
+    echo "⚛️  Starting Vite Dev Server..."
     
     # Start Vite in background with nohup to detach from terminal
     nohup npm run dev > ../logs/vite.log 2>&1 & 
@@ -73,17 +112,20 @@ start_services() {
     echo ""
     echo "🎉 Webapp is running in background!"
     echo "===================================="
+    echo "🟢 Backend:  http://localhost:3001"
     echo "📱 Frontend: http://localhost:5173"
     echo ""
     echo "📝 Logs:"
+    echo "   Node:  logs/node-server.log  (tail -f logs/node-server.log)"
     echo "   Vite:  logs/vite.log  (tail -f logs/vite.log)"
     echo ""
-    echo "📋 Process ID:"
+    echo "📋 Process IDs:"
+    echo "   Node PID:  $(cat logs/node-server.pid 2>/dev/null || echo 'N/A')"
     echo "   Vite PID:  $(cat logs/vite.pid 2>/dev/null || echo 'N/A')"
     echo ""
-    echo "🛑 To stop: kill \$(cat logs/vite.pid)"
-    echo "🔄 To restart: ./restart_webapp.sh"
-    echo "👁️  Check status: ps aux | grep 'vite.*stocks/webapp-stocks' | grep -v grep"
+    echo "🛑 To stop: kill \$(cat logs/node-server.pid) && kill \$(cat logs/vite.pid)"
+    echo "🔄 To restart: ./restart_webapp_stocks.sh"
+    echo "👁️  Check status: ps aux | grep 'vite.*stocks/webapp-stocks\\|node.*server.js' | grep -v grep"
     echo ""
     echo "💡 Your terminal is now free for other tasks!"
 }
