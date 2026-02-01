@@ -11,12 +11,16 @@ from datetime import datetime
 import time
 import yfinance as yf
 import argparse
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from threading import Lock
 
 # FMP API Configuration (DISABLED - too limited in free tier)
 # API_KEY = "EypEpLbJcxfRpdMBFcJppxD2YIEnGD0T"
 # FMP_BASE_URL = "https://financialmodelingprep.com/stable"
 
-API_CALL_DELAY = 1.0  # Delay between yfinance calls (be respectful)
+API_CALL_DELAY = 0.5  # Delay between yfinance calls (reduced for parallel processing)
+MAX_WORKERS = 8  # Number of parallel threads for API calls
+progress_lock = Lock()  # Thread-safe progress printing
 
 
 def scrape_openinsider(page=1, min_price=5, filing_days=30, min_insiders=3, min_value=150,
@@ -309,172 +313,196 @@ def parse_delta_own(delta_own_str):
         return 0.0
 
 
+def enrich_single_record(record, idx, total):
+    """
+    Enrich a single record with financial data (for parallel processing)
+    """
+    ticker = record.get('Ticker', '').strip()
+    
+    if not ticker:
+        return record
+    
+    with progress_lock:
+        print(f"\n[{idx}/{total}] Analyzing {ticker}...")
+    
+    # Fetch comprehensive data from yfinance
+    yf_data = get_yfinance_data(ticker)
+    
+    # Merge all data
+    enriched_record = record.copy()
+    
+    if yf_data:
+        enriched_record.update({
+            # Financial Ratios
+            'Debt_to_Equity': yf_data['debt_to_equity'],
+            'Current_Ratio': yf_data['current_ratio'],
+            'Quick_Ratio': yf_data['quick_ratio'],
+            'ROE': yf_data['roe'],
+            
+            # Profitability
+            'Profit_Margins': yf_data['profit_margins'],
+            'Operating_Margins': yf_data['operating_margins'],
+            
+            # Valuation
+            'PE_Ratio': yf_data['pe_ratio'],
+            'Forward_PE': yf_data['forward_pe'],
+            'PEG_Ratio': yf_data['peg_ratio'],
+            'Price_to_Book': yf_data['price_to_book'],
+            
+            # Company Info
+            'Market_Cap': yf_data['market_cap'],
+            'Beta': yf_data['beta'],
+            'Sector': yf_data['sector'],
+            'Industry': yf_data['industry'],
+            
+            # Analyst Targets
+            'Target_Mean_Price': yf_data['target_mean_price'],
+            'Target_High_Price': yf_data['target_high_price'],
+            'Target_Low_Price': yf_data['target_low_price'],
+            'Recommendation': yf_data['recommendation'],
+            
+            # NEW: Institutional Data
+            'Institutional_Ownership_Pct': yf_data['institutional_ownership_pct'],
+            'Current_Price': yf_data['current_price'],
+        })
+        
+        # NEW: Skin in the Game Filter - Check Delta_Own
+        delta_own = parse_delta_own(record.get('Delta_Own', '0'))
+        skin_in_game = "YES" if delta_own >= 5 else "NO"
+        enriched_record['Skin_in_Game'] = skin_in_game
+        
+        # NEW: Beta Classification (Macro Hedge)
+        beta = yf_data['beta']
+        if beta != 'N/A':
+            if beta < 1.0:
+                beta_class = "Safe (Low Volatility)"
+            elif beta > 1.5:
+                beta_class = "Risky (High Volatility)"
+            else:
+                beta_class = "Market Aligned"
+        else:
+            beta_class = "N/A"
+        enriched_record['Beta_Classification'] = beta_class
+        
+        # NEW: Whale Check (Institutional Stability)
+        inst_own = yf_data['institutional_ownership_pct']
+        if inst_own != 'N/A':
+            if inst_own > 0.5:  # > 50%
+                whale_status = "Stabilized (Institutions > 50%)"
+            elif inst_own > 0.3:
+                whale_status = "Moderate Institutional Support"
+            else:
+                whale_status = "Low Institutional Interest"
+        else:
+            whale_status = "N/A"
+        enriched_record['Whale_Status'] = whale_status
+        
+        # NEW: Sector Classification (Defensive vs Aggressive)
+        sector = yf_data['sector']
+        defensive_sectors = ['Financial Services', 'Healthcare', 'Consumer Defensive', 
+                           'Utilities', 'Consumer Staples']
+        aggressive_sectors = ['Technology', 'Communication Services']
+        
+        if sector in defensive_sectors:
+            sector_type = "DEFENSIVE (Safe Haven)"
+        elif sector in aggressive_sectors:
+            sector_type = "AGGRESSIVE (AI Bubble Risk)"
+        else:
+            sector_type = "NEUTRAL"
+        enriched_record['Sector_Type'] = sector_type
+        
+        # NEW: Calculate Rainy Day Score
+        rainy_day_score, score_reasons = calculate_rainy_day_score(record, yf_data)
+        enriched_record['Rainy_Day_Score'] = rainy_day_score
+        enriched_record['Score_Reasons'] = ' | '.join(score_reasons) if score_reasons else 'N/A'
+        
+        # Health assessment using the "2026 Strategy"
+        health_flags = []
+        
+        # Debt Check
+        debt_eq = yf_data['debt_to_equity']
+        if debt_eq != 'N/A' and debt_eq < 150:
+            health_flags.append('✓ Low Debt')
+        elif debt_eq != 'N/A' and debt_eq > 300:
+            health_flags.append('⚠ High Debt')
+        
+        # Liquidity Check
+        curr_ratio = yf_data['current_ratio']
+        if curr_ratio != 'N/A' and curr_ratio > 1.0:
+            health_flags.append('✓ Good Liquidity')
+        elif curr_ratio != 'N/A' and curr_ratio < 1.0:
+            health_flags.append('⚠ Low Liquidity')
+        
+        # Profitability Check
+        profit_margin = yf_data['profit_margins']
+        if profit_margin != 'N/A' and profit_margin > 0:
+            health_flags.append('✓ Profitable')
+        elif profit_margin != 'N/A' and profit_margin < 0:
+            health_flags.append('⚠ Unprofitable')
+        
+        # Overall Quality Score
+        if debt_eq != 'N/A' and curr_ratio != 'N/A' and profit_margin != 'N/A':
+            if debt_eq < 150 and curr_ratio > 1.0 and profit_margin > 0:
+                health_flags.append('🔥 HIGH QUALITY')
+        
+        # Add Skin in the Game badge
+        if skin_in_game == "YES":
+            health_flags.append('💎 HIGH CONVICTION (Skin in Game)')
+        
+        enriched_record['Health_Flags'] = ' | '.join(health_flags) if health_flags else 'N/A'
+    else:
+        # Failed to fetch data
+        enriched_record.update({
+            'Health_Flags': 'N/A',
+            'Skin_in_Game': 'N/A',
+            'Beta_Classification': 'N/A',
+            'Whale_Status': 'N/A',
+            'Sector_Type': 'N/A',
+            'Rainy_Day_Score': 0,
+            'Score_Reasons': 'N/A'
+        })
+    
+    return enriched_record
+
+
 def enrich_with_financial_data(insider_data):
     """
     Enrich insider trading data with financial health metrics using yfinance
+    Uses parallel processing for speed
     """
     print("\n" + "=" * 50)
-    print("Fetching Financial Data (yfinance - FREE)...")
+    print(f"Fetching Financial Data (yfinance - FREE)")
+    print(f"Using {MAX_WORKERS} parallel threads for speed...")
     print("=" * 50)
     
     enriched_data = []
+    total = len(insider_data)
     
-    for idx, record in enumerate(insider_data, 1):
-        ticker = record.get('Ticker', '').strip()
+    # Use ThreadPoolExecutor for parallel API calls
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        # Submit all tasks
+        future_to_record = {
+            executor.submit(enrich_single_record, record, idx, total): record
+            for idx, record in enumerate(insider_data, 1)
+        }
         
-        if not ticker:
-            enriched_data.append(record)
-            continue
-        
-        print(f"\n[{idx}/{len(insider_data)}] Analyzing {ticker}...")
-        
-        # Fetch comprehensive data from yfinance
-        yf_data = get_yfinance_data(ticker)
-        
-        # Merge all data
-        enriched_record = record.copy()
-        
-        if yf_data:
-            enriched_record.update({
-                # Financial Ratios
-                'Debt_to_Equity': yf_data['debt_to_equity'],
-                'Current_Ratio': yf_data['current_ratio'],
-                'Quick_Ratio': yf_data['quick_ratio'],
-                'ROE': yf_data['roe'],
-                
-                # Profitability
-                'Profit_Margins': yf_data['profit_margins'],
-                'Operating_Margins': yf_data['operating_margins'],
-                
-                # Valuation
-                'PE_Ratio': yf_data['pe_ratio'],
-                'Forward_PE': yf_data['forward_pe'],
-                'PEG_Ratio': yf_data['peg_ratio'],
-                'Price_to_Book': yf_data['price_to_book'],
-                
-                # Company Info
-                'Market_Cap': yf_data['market_cap'],
-                'Beta': yf_data['beta'],
-                'Sector': yf_data['sector'],
-                'Industry': yf_data['industry'],
-                
-                # Analyst Targets
-                'Target_Mean_Price': yf_data['target_mean_price'],
-                'Target_High_Price': yf_data['target_high_price'],
-                'Target_Low_Price': yf_data['target_low_price'],
-                'Recommendation': yf_data['recommendation'],
-                
-                # NEW: Institutional Data
-                'Institutional_Ownership_Pct': yf_data['institutional_ownership_pct'],
-                'Current_Price': yf_data['current_price'],
-            })
-            
-            # NEW: Skin in the Game Filter - Check Delta_Own
-            delta_own = parse_delta_own(record.get('Delta_Own', '0'))
-            skin_in_game = "YES" if delta_own >= 5 else "NO"
-            enriched_record['Skin_in_Game'] = skin_in_game
-            
-            # NEW: Beta Classification (Macro Hedge)
-            beta = yf_data['beta']
-            if beta != 'N/A':
-                if beta < 1.0:
-                    beta_class = "Safe (Low Volatility)"
-                elif beta > 1.5:
-                    beta_class = "Risky (High Volatility)"
-                else:
-                    beta_class = "Market Aligned"
-            else:
-                beta_class = "N/A"
-            enriched_record['Beta_Classification'] = beta_class
-            
-            # NEW: Whale Check (Institutional Stability)
-            inst_own = yf_data['institutional_ownership_pct']
-            if inst_own != 'N/A':
-                if inst_own > 0.5:  # > 50%
-                    whale_status = "Stabilized (Institutions > 50%)"
-                elif inst_own > 0.3:
-                    whale_status = "Moderate Institutional Support"
-                else:
-                    whale_status = "Low Institutional Interest"
-            else:
-                whale_status = "N/A"
-            enriched_record['Whale_Status'] = whale_status
-            
-            # NEW: Sector Classification (Defensive vs Aggressive)
-            sector = yf_data['sector']
-            defensive_sectors = ['Financial Services', 'Healthcare', 'Consumer Defensive', 
-                               'Utilities', 'Consumer Staples']
-            aggressive_sectors = ['Technology', 'Communication Services']
-            
-            if sector in defensive_sectors:
-                sector_type = "DEFENSIVE (Safe Haven)"
-            elif sector in aggressive_sectors:
-                sector_type = "AGGRESSIVE (AI Bubble Risk)"
-            else:
-                sector_type = "NEUTRAL"
-            enriched_record['Sector_Type'] = sector_type
-            
-            # NEW: Calculate Rainy Day Score
-            rainy_day_score, score_reasons = calculate_rainy_day_score(record, yf_data)
-            enriched_record['Rainy_Day_Score'] = rainy_day_score
-            enriched_record['Score_Reasons'] = ' | '.join(score_reasons) if score_reasons else 'N/A'
-            
-            # Health assessment using the "2026 Strategy"
-            health_flags = []
-            
-            # Debt Check
-            debt_eq = yf_data['debt_to_equity']
-            if debt_eq != 'N/A' and debt_eq < 150:
-                health_flags.append('✓ Low Debt')
-            elif debt_eq != 'N/A' and debt_eq > 300:
-                health_flags.append('⚠ High Debt')
-            
-            # Liquidity Check
-            curr_ratio = yf_data['current_ratio']
-            if curr_ratio != 'N/A' and curr_ratio > 1.0:
-                health_flags.append('✓ Good Liquidity')
-            elif curr_ratio != 'N/A' and curr_ratio < 1.0:
-                health_flags.append('⚠ Low Liquidity')
-            
-            # Profitability Check
-            profit_margin = yf_data['profit_margins']
-            if profit_margin != 'N/A' and profit_margin > 0:
-                health_flags.append('✓ Profitable')
-            elif profit_margin != 'N/A' and profit_margin < 0:
-                health_flags.append('⚠ Unprofitable')
-            
-            # Overall Quality Score
-            if debt_eq != 'N/A' and curr_ratio != 'N/A' and profit_margin != 'N/A':
-                if debt_eq < 150 and curr_ratio > 1.0 and profit_margin > 0:
-                    health_flags.append('🔥 HIGH QUALITY')
-            
-            # High Conviction Flag (NEW)
-            if skin_in_game == "YES":
-                health_flags.append('💎 HIGH CONVICTION (Skin in Game)')
-            
-            enriched_record['Health_Flags'] = ' | '.join(health_flags) if health_flags else 'N/A'
-            
-            # Print summary
-            print(f"  Rainy Day Score: {rainy_day_score}/10 - {', '.join(score_reasons) if score_reasons else 'No bonus points'}")
-            print(f"  Sector: {sector_type}")
-            print(f"  Skin in Game: {skin_in_game} (Δ Own: {delta_own}%)")
-            print(f"  Beta: {beta_class}")
-            print(f"  Institutions: {whale_status}")
-            if health_flags:
-                print(f"  Health: {' | '.join(health_flags)}")
-        else:
-            enriched_record['Health_Flags'] = 'N/A'
-            enriched_record['Rainy_Day_Score'] = 0
-            enriched_record['Skin_in_Game'] = 'N/A'
-            enriched_record['Beta_Classification'] = 'N/A'
-            enriched_record['Whale_Status'] = 'N/A'
-            enriched_record['Sector_Type'] = 'N/A'
-            enriched_record['Score_Reasons'] = 'N/A'
-        
-        enriched_data.append(enriched_record)
+        # Collect results as they complete
+        for future in as_completed(future_to_record):
+            try:
+                enriched_record = future.result()
+                enriched_data.append(enriched_record)
+            except Exception as e:
+                record = future_to_record[future]
+                ticker = record.get('Ticker', 'Unknown')
+                print(f"\n❌ Error processing {ticker}: {str(e)}")
+                enriched_data.append(record)
     
     # Sort by Rainy Day Score (highest first)
     enriched_data.sort(key=lambda x: x.get('Rainy_Day_Score', 0), reverse=True)
+    
+    print("\n" + "=" * 50)
+    print("✅ All stocks analyzed!")
+    print("=" * 50)
     
     return enriched_data
 
