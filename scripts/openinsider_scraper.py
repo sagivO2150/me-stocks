@@ -66,18 +66,18 @@ def scrape_openinsider(page=1, min_price=5, filing_days=30, min_insiders=3, min_
         'ocl': '',
         'och': '',
         'sic1': '-1',
-        'sicl': '100',      # SIC code lower
-        'sich': '9999',     # SIC code higher
+        'sicl': '',         # SIC code lower (empty = all sectors)
+        'sich': '',         # SIC code higher (empty = all sectors)
         'isceo': '1' if include_ceo else '',       # Include CEO
         'iscoo': '1' if include_coo else '',       # Include COO
         'iscfo': '1' if include_cfo else '',       # Include CFO
         'isdirector': '1' if include_director else '',  # Include Director
-        'grp': '2',
+        'grp': '2',        # Group by: 0=None, 1=Insider, 2=Company
         'nfl': '',
         'nfh': '',
         'nil': str(min_insiders),         # Number of insiders
         'nih': '',
-        'nol': '1',
+        'nol': '',         # Number of insiders lower bound (empty)
         'noh': '',
         'v2l': str(min_value),       # Volume filter
         'v2h': '',
