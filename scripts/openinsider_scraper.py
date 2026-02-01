@@ -174,12 +174,27 @@ def save_to_csv(data, filename=None):
 def get_yfinance_data(ticker):
     """
     Fetch comprehensive financial data using yfinance (FREE)
-    Returns: Ratios, Metrics, Profile data
+    Returns: Ratios, Metrics, Profile data, Institutional Holdings
     """
     try:
         time.sleep(API_CALL_DELAY)  # Be respectful to Yahoo
         stock = yf.Ticker(ticker)
         info = stock.info
+        
+        # Get institutional holders
+        institutional_holders = None
+        institutional_ownership_pct = 'N/A'
+        try:
+            inst_holders = stock.institutional_holders
+            if inst_holders is not None and not inst_holders.empty:
+                institutional_holders = inst_holders
+                # Calculate total institutional ownership
+                institutional_ownership_pct = info.get('heldPercentInstitutions', 'N/A')
+        except:
+            pass
+        
+        # Get current price
+        current_price = info.get('currentPrice', info.get('regularMarketPrice', 'N/A'))
         
         # Extract all the metrics that FMP wanted money for
         return {
@@ -212,11 +227,77 @@ def get_yfinance_data(ticker):
             'target_high_price': info.get('targetHighPrice', 'N/A'),
             'target_low_price': info.get('targetLowPrice', 'N/A'),
             'recommendation': info.get('recommendationKey', 'N/A'),
+            
+            # Institutional Data (NEW)
+            'institutional_ownership_pct': institutional_ownership_pct,
+            'institutional_holders': institutional_holders,
+            
+            # Price Data (NEW)
+            'current_price': current_price,
         }
         
     except Exception as e:
         print(f"  Error fetching yfinance data for {ticker}: {str(e)[:80]}")
         return None
+
+
+def calculate_rainy_day_score(record, yf_data):
+    """
+    Calculate the Rainy Day Score (1-10) for bubble burst strategy
+    
+    Scoring:
+    +3 points for 3+ Insiders
+    +3 points if Debt/Equity < 100
+    +2 points if Sector is "Defensive" (Financials, Healthcare, Consumer Staples, Utilities)
+    +2 points if Price is > 20% below Analyst Targets
+    """
+    score = 0
+    reasons = []
+    
+    # +3 for 3+ insiders
+    try:
+        insiders_count = int(record.get('Insiders', 0))
+        if insiders_count >= 3:
+            score += 3
+            reasons.append(f"{insiders_count} Insiders")
+    except:
+        pass
+    
+    # +3 for low debt (< 100)
+    if yf_data:
+        debt_eq = yf_data['debt_to_equity']
+        if debt_eq != 'N/A' and debt_eq < 100:
+            score += 3
+            reasons.append("Low Debt")
+        
+        # +2 for defensive sector
+        sector = yf_data['sector']
+        defensive_sectors = ['Financial Services', 'Healthcare', 'Consumer Defensive', 
+                           'Utilities', 'Consumer Staples']
+        if sector in defensive_sectors:
+            score += 2
+            reasons.append("Defensive Sector")
+        
+        # +2 if price is > 20% below analyst target
+        current_price = yf_data['current_price']
+        target_mean = yf_data['target_mean_price']
+        if current_price != 'N/A' and target_mean != 'N/A' and target_mean > 0:
+            discount = ((target_mean - current_price) / target_mean) * 100
+            if discount >= 20:
+                score += 2
+                reasons.append(f"{discount:.1f}% Below Target")
+    
+    return score, reasons
+
+
+def parse_delta_own(delta_own_str):
+    """Parse Delta_Own percentage string to float"""
+    try:
+        # Remove '+' and '%' characters
+        clean_str = delta_own_str.replace('+', '').replace('%', '').strip()
+        return float(clean_str)
+    except:
+        return 0.0
 
 
 def enrich_with_financial_data(insider_data):
@@ -273,7 +354,61 @@ def enrich_with_financial_data(insider_data):
                 'Target_High_Price': yf_data['target_high_price'],
                 'Target_Low_Price': yf_data['target_low_price'],
                 'Recommendation': yf_data['recommendation'],
+                
+                # NEW: Institutional Data
+                'Institutional_Ownership_Pct': yf_data['institutional_ownership_pct'],
+                'Current_Price': yf_data['current_price'],
             })
+            
+            # NEW: Skin in the Game Filter - Check Delta_Own
+            delta_own = parse_delta_own(record.get('Delta_Own', '0'))
+            skin_in_game = "YES" if delta_own >= 5 else "NO"
+            enriched_record['Skin_in_Game'] = skin_in_game
+            
+            # NEW: Beta Classification (Macro Hedge)
+            beta = yf_data['beta']
+            if beta != 'N/A':
+                if beta < 1.0:
+                    beta_class = "Safe (Low Volatility)"
+                elif beta > 1.5:
+                    beta_class = "Risky (High Volatility)"
+                else:
+                    beta_class = "Market Aligned"
+            else:
+                beta_class = "N/A"
+            enriched_record['Beta_Classification'] = beta_class
+            
+            # NEW: Whale Check (Institutional Stability)
+            inst_own = yf_data['institutional_ownership_pct']
+            if inst_own != 'N/A':
+                if inst_own > 0.5:  # > 50%
+                    whale_status = "Stabilized (Institutions > 50%)"
+                elif inst_own > 0.3:
+                    whale_status = "Moderate Institutional Support"
+                else:
+                    whale_status = "Low Institutional Interest"
+            else:
+                whale_status = "N/A"
+            enriched_record['Whale_Status'] = whale_status
+            
+            # NEW: Sector Classification (Defensive vs Aggressive)
+            sector = yf_data['sector']
+            defensive_sectors = ['Financial Services', 'Healthcare', 'Consumer Defensive', 
+                               'Utilities', 'Consumer Staples']
+            aggressive_sectors = ['Technology', 'Communication Services']
+            
+            if sector in defensive_sectors:
+                sector_type = "DEFENSIVE (Safe Haven)"
+            elif sector in aggressive_sectors:
+                sector_type = "AGGRESSIVE (AI Bubble Risk)"
+            else:
+                sector_type = "NEUTRAL"
+            enriched_record['Sector_Type'] = sector_type
+            
+            # NEW: Calculate Rainy Day Score
+            rainy_day_score, score_reasons = calculate_rainy_day_score(record, yf_data)
+            enriched_record['Rainy_Day_Score'] = rainy_day_score
+            enriched_record['Score_Reasons'] = ' | '.join(score_reasons) if score_reasons else 'N/A'
             
             # Health assessment using the "2026 Strategy"
             health_flags = []
@@ -304,14 +439,33 @@ def enrich_with_financial_data(insider_data):
                 if debt_eq < 150 and curr_ratio > 1.0 and profit_margin > 0:
                     health_flags.append('🔥 HIGH QUALITY')
             
+            # High Conviction Flag (NEW)
+            if skin_in_game == "YES":
+                health_flags.append('💎 HIGH CONVICTION (Skin in Game)')
+            
             enriched_record['Health_Flags'] = ' | '.join(health_flags) if health_flags else 'N/A'
             
+            # Print summary
+            print(f"  Rainy Day Score: {rainy_day_score}/10 - {', '.join(score_reasons) if score_reasons else 'No bonus points'}")
+            print(f"  Sector: {sector_type}")
+            print(f"  Skin in Game: {skin_in_game} (Δ Own: {delta_own}%)")
+            print(f"  Beta: {beta_class}")
+            print(f"  Institutions: {whale_status}")
             if health_flags:
                 print(f"  Health: {' | '.join(health_flags)}")
         else:
             enriched_record['Health_Flags'] = 'N/A'
+            enriched_record['Rainy_Day_Score'] = 0
+            enriched_record['Skin_in_Game'] = 'N/A'
+            enriched_record['Beta_Classification'] = 'N/A'
+            enriched_record['Whale_Status'] = 'N/A'
+            enriched_record['Sector_Type'] = 'N/A'
+            enriched_record['Score_Reasons'] = 'N/A'
         
         enriched_data.append(enriched_record)
+    
+    # Sort by Rainy Day Score (highest first)
+    enriched_data.sort(key=lambda x: x.get('Rainy_Day_Score', 0), reverse=True)
     
     return enriched_data
 
