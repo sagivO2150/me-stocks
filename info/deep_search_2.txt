@@ -1,0 +1,38 @@
+Using insider trading data is a high-conviction "jumping off point," but experienced traders rarely use it in isolation. It serves as a lead generator that must then be validated through fundamental and macro analysis.
+
+### Information to Contrast with Insider Data
+
+Once your script flags a cluster of insider buying, most professional-grade research workflows cross-reference that signal with the following data points to determine if it is a genuine opportunity or a "value trap":
+
+* **Intrinsic Value and DCF Modeling:** Insider buying only tells you that the executive believes the stock is undervalued; it doesn't tell you the stock is actually "cheap." You should leverage a **Discounted Cash Flow (DCF)** model to calculate the fair value. For example, if you see an insider buy at , but your DCF model suggests an intrinsic value of , the insider might be overly optimistic or biased.
+* **Institutional "Smart Money" Flow:** Check if major hedge funds (13F filings) or "Superinvestors" are moving in the same direction. If insiders are buying but institutions like Berkshire Hathaway or Scion Asset Management (Michael Burry) are selling, you may be missing a macro risk. Tools like **WhaleWisdom** or **Dataroma** can confirm if your target stock is also being accumulated by professional managers.
+
+
+* **Political and Legislative Signals:** For sectors like AI or energy, contrast your data with congressional trades. Platforms like **Quiver Quantitative** or **Unusual Whales** track whether politicians (like Nancy Pelosi) are buying or selling the same tickers, which can hint at upcoming regulatory tailwinds or headwinds.
+
+
+* **Fundamentals Context:** Cross-check the trade against the company's financial health. Look for **rising free cash flow**, **expanding gross margins**, or **decreasing debt**. An insider buy is far more meaningful if the company’s underlying fundamentals are improving simultaneously.
+* **Technical Confirmation:** Use technical analysis to time your entry. Even if insiders are buying, the stock could still be in a downward trend. Use indicators like the **Relative Strength Index (RSI)** to see if the stock is oversold, and look for "breakout patterns" or "volume surges" on a platform like **TradingView** or **TrendSpider** to ensure the market is starting to agree with the insider.
+
+### Filter Evaluation: Strengths and Suggestions
+
+Your current filters (Price , Value , key roles like CEO/CFO, and a cluster of  insiders) are a very strong starting point. In fact, "clustering" (multiple insiders buying together) is statistically one of the most reliable predictors of future price appreciation.
+
+However, you can make your data even more "laser focused" by refining your request parameters:
+
+| Filter Type | Current Setting | Recommended Change / Reason |
+| --- | --- | --- |
+| **Transaction Code** | Captures all | **Filter for "P" (Open Market Purchase) only.** Avoid "A" (Awards/Grants) or "M" (Option Exercises). Only "P" represents a voluntary out-of-pocket investment, which is the truest signal of confidence. |
+| **Magnitude (Delta Own)** | Not filtered | **Prioritize trades where ownership increases by .** A massive dollar value is good, but a "double-digit percentage" change in an insider's total stake is a much stronger indicator of conviction. |
+| **Insider Track Record** | Not filtered | **Cross-reference with historical performance.** Some platforms, like **InsiderScreener**, rank "top insiders" based on their past win rates. Buying because a historically "lucky" or accurate CEO did is a higher-probability play than following a first-time buyer. |
+| **Industry/Sectors** | All (SIC 100-9999) | **Narrow focus to Defensive vs. AI enablers.** If you are preparing for an AI bubble burst, create two separate filter requests: one for "Safe Havens" (Consumer Staples, Utilities, Healthcare) and one for "AI Infrastructure" (Semiconductors, Energy, Cooling) to see where the shift is occurring.
+
+ |
+
+### Summary Checklist for Your Workflow
+
+1. **Signal:** Run your script to find clusters of "Open Market Purchases" (Code P) by CEOs or CFOs.
+2. **Verification:** Use **SEC EDGAR** to read the original **Form 4** filing. Confirm the "Delta Own" (percentage change) and ensure it wasn't a pre-planned trade (10b5-1 plan).
+3. **Fundamental Deep-Dive:** Check the **Price-to-Earnings (P/E)** ratio and **DCF valuation** on a tool like **TIKR** or **Simply Wall St** to ensure there is a **Margin of Safety** (buying at a 20-30% discount to fair value).
+4. **Macro/Sentiment Check:** Look for "Whale" activity and congressional trades to see if you are aligned with broader institutional sentiment.
+5. **Technical Entry:** Wait for technical indicators (like a break of a resistance level or an RSI reversal) to confirm the bottom has been reached.

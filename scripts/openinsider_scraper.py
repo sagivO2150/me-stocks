@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 OpenInsider Screener Data Scraper with Financial Health Check
-Fetches insider trading data and validates company financial health using FMP API
+Fetches insider trading data and validates company financial health using yfinance (FREE)
 """
 
 import requests
@@ -9,13 +9,13 @@ from bs4 import BeautifulSoup
 import csv
 from datetime import datetime
 import time
-import os
+import yfinance as yf
 
-# API Configuration
-API_KEY = "EypEpLbJcxfRpdMBFcJppxD2YIEnGD0T"
-FMP_BASE_URL = "https://financialmodelingprep.com/stable"
-API_CALL_DELAY = 2.5  # Delay between API calls (seconds) to stay under 250/day limit
-MAX_API_CALLS = 240  # Safety buffer under 250/day limit
+# FMP API Configuration (DISABLED - too limited in free tier)
+# API_KEY = "EypEpLbJcxfRpdMBFcJppxD2YIEnGD0T"
+# FMP_BASE_URL = "https://financialmodelingprep.com/stable"
+
+API_CALL_DELAY = 1.0  # Delay between yfinance calls (be respectful)
 
 
 def scrape_openinsider(page=1):
@@ -149,130 +149,84 @@ def save_to_csv(data, filename=None):
         print("No data to save")
         return
     
+    # Output directory
+    output_dir = "/Users/sagiv.oron/Documents/scripts_playground/stocks/output CSVs"
+    
     if filename is None:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = f"openinsider_data_{timestamp}.csv"
     
+    # Full path to output file
+    filepath = f"{output_dir}/{filename}"
+    
     # Get all possible field names
     fieldnames = list(data[0].keys())
     
-    with open(filename, 'w', newline='', encoding='utf-8') as csvfile:
+    with open(filepath, 'w', newline='', encoding='utf-8') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(data)
     
-    print(f"\nData saved to: {filename}")
+    print(f"\nData saved to: {filepath}")
     print(f"Total records: {len(data)}")
 
 
-def get_financial_ratios(ticker, api_calls_made):
+def get_yfinance_data(ticker):
     """
-    Fetch key financial ratios from FMP API
-    Focus on: Debt-to-Equity, Current Ratio
+    Fetch comprehensive financial data using yfinance (FREE)
+    Returns: Ratios, Metrics, Profile data
     """
-    if api_calls_made >= MAX_API_CALLS:
-        print(f"  ⚠️  API call limit reached, skipping {ticker}")
-        return None, api_calls_made
-    
-    url = f"{FMP_BASE_URL}/ratios"
-    params = {'symbol': ticker, 'apikey': API_KEY, 'limit': 1}
-    
     try:
-        time.sleep(API_CALL_DELAY)  # Rate limiting
-        response = requests.get(url, params=params, timeout=10)
-        response.raise_for_status()
-        data = response.json()
-        api_calls_made += 1
+        time.sleep(API_CALL_DELAY)  # Be respectful to Yahoo
+        stock = yf.Ticker(ticker)
+        info = stock.info
         
-        if data and len(data) > 0:
-            ratios = data[0]
-            return {
-                'debt_to_equity': ratios.get('debtEquityRatio', 'N/A'),
-                'current_ratio': ratios.get('currentRatio', 'N/A'),
-                'quick_ratio': ratios.get('quickRatio', 'N/A'),
-                'roe': ratios.get('returnOnEquity', 'N/A'),
-            }, api_calls_made
-        return None, api_calls_made
+        # Extract all the metrics that FMP wanted money for
+        return {
+            # Financial Ratios
+            'debt_to_equity': info.get('debtToEquity', 'N/A'),
+            'current_ratio': info.get('currentRatio', 'N/A'),
+            'quick_ratio': info.get('quickRatio', 'N/A'),
+            'roe': info.get('returnOnEquity', 'N/A'),
+            
+            # Key Metrics
+            'profit_margins': info.get('profitMargins', 'N/A'),
+            'operating_margins': info.get('operatingMargins', 'N/A'),
+            'revenue_per_share': info.get('revenuePerShare', 'N/A'),
+            'free_cash_flow': info.get('freeCashflow', 'N/A'),
+            
+            # Valuation Metrics
+            'pe_ratio': info.get('trailingPE', 'N/A'),
+            'forward_pe': info.get('forwardPE', 'N/A'),
+            'peg_ratio': info.get('pegRatio', 'N/A'),
+            'price_to_book': info.get('priceToBook', 'N/A'),
+            
+            # Profile
+            'market_cap': info.get('marketCap', 'N/A'),
+            'beta': info.get('beta', 'N/A'),
+            'sector': info.get('sector', 'N/A'),
+            'industry': info.get('industry', 'N/A'),
+            
+            # Analyst Data
+            'target_mean_price': info.get('targetMeanPrice', 'N/A'),
+            'target_high_price': info.get('targetHighPrice', 'N/A'),
+            'target_low_price': info.get('targetLowPrice', 'N/A'),
+            'recommendation': info.get('recommendationKey', 'N/A'),
+        }
         
     except Exception as e:
-        print(f"  Error fetching ratios for {ticker}: {str(e)[:80]}")
-        return None, api_calls_made
-
-
-def get_key_metrics(ticker, api_calls_made):
-    """
-    Fetch key metrics from FMP API
-    Focus on: ROIC, Free Cash Flow Yield
-    """
-    if api_calls_made >= MAX_API_CALLS:
-        return None, api_calls_made
-    
-    url = f"{FMP_BASE_URL}/key-metrics"
-    params = {'symbol': ticker, 'apikey': API_KEY, 'limit': 1}
-    
-    try:
-        time.sleep(API_CALL_DELAY)  # Rate limiting
-        response = requests.get(url, params=params, timeout=10)
-        response.raise_for_status()
-        data = response.json()
-        api_calls_made += 1
-        
-        if data and len(data) > 0:
-            metrics = data[0]
-            return {
-                'roic': metrics.get('roic', 'N/A'),
-                'fcf_yield': metrics.get('freeCashFlowYield', 'N/A'),
-                'pe_ratio': metrics.get('peRatio', 'N/A'),
-                'ev_to_ebitda': metrics.get('enterpriseValueOverEBITDA', 'N/A'),
-            }, api_calls_made
-        return None, api_calls_made
-        
-    except Exception as e:
-        print(f"  Error fetching metrics for {ticker}: {str(e)[:80]}")
-        return None, api_calls_made
-
-
-def get_financial_scores(ticker, api_calls_made):
-    """
-    Fetch company profile from FMP API (free tier)
-    Get: Market Cap, Beta, Sector
-    """
-    if api_calls_made >= MAX_API_CALLS:
-        return None, api_calls_made
-    
-    url = f"{FMP_BASE_URL}/profile"
-    params = {'symbol': ticker, 'apikey': API_KEY}
-    
-    try:
-        time.sleep(API_CALL_DELAY)  # Rate limiting
-        response = requests.get(url, params=params, timeout=10)
-        response.raise_for_status()
-        data = response.json()
-        api_calls_made += 1
-        
-        if data and len(data) > 0:
-            profile = data[0]
-            return {
-                'market_cap': profile.get('mktCap', 'N/A'),
-                'beta': profile.get('beta', 'N/A'),
-                'sector': profile.get('sector', 'N/A'),
-            }, api_calls_made
-        return None, api_calls_made
-        
-    except Exception as e:
-        print(f"  Error fetching profile for {ticker}: {str(e)[:80]}")
-        return None, api_calls_made
+        print(f"  Error fetching yfinance data for {ticker}: {str(e)[:80]}")
+        return None
 
 
 def enrich_with_financial_data(insider_data):
     """
-    Enrich insider trading data with financial health metrics
+    Enrich insider trading data with financial health metrics using yfinance
     """
     print("\n" + "=" * 50)
-    print("Fetching Company Profile Data (Free Tier)...")
+    print("Fetching Financial Data (yfinance - FREE)...")
     print("=" * 50)
     
-    api_calls_made = 0
     enriched_data = []
     
     for idx, record in enumerate(insider_data, 1):
@@ -284,45 +238,81 @@ def enrich_with_financial_data(insider_data):
         
         print(f"\n[{idx}/{len(insider_data)}] Analyzing {ticker}...")
         
-        # Only use profile endpoint (free tier - 1 API call per ticker)
-        profile, api_calls_made = get_financial_scores(ticker, api_calls_made)
+        # Fetch comprehensive data from yfinance
+        yf_data = get_yfinance_data(ticker)
         
         # Merge all data
         enriched_record = record.copy()
         
-        if profile:
+        if yf_data:
             enriched_record.update({
-                'Market_Cap': profile['market_cap'],
-                'Beta': profile['beta'],
-                'Sector': profile['sector'],
+                # Financial Ratios
+                'Debt_to_Equity': yf_data['debt_to_equity'],
+                'Current_Ratio': yf_data['current_ratio'],
+                'Quick_Ratio': yf_data['quick_ratio'],
+                'ROE': yf_data['roe'],
+                
+                # Profitability
+                'Profit_Margins': yf_data['profit_margins'],
+                'Operating_Margins': yf_data['operating_margins'],
+                
+                # Valuation
+                'PE_Ratio': yf_data['pe_ratio'],
+                'Forward_PE': yf_data['forward_pe'],
+                'PEG_Ratio': yf_data['peg_ratio'],
+                'Price_to_Book': yf_data['price_to_book'],
+                
+                # Company Info
+                'Market_Cap': yf_data['market_cap'],
+                'Beta': yf_data['beta'],
+                'Sector': yf_data['sector'],
+                'Industry': yf_data['industry'],
+                
+                # Analyst Targets
+                'Target_Mean_Price': yf_data['target_mean_price'],
+                'Target_High_Price': yf_data['target_high_price'],
+                'Target_Low_Price': yf_data['target_low_price'],
+                'Recommendation': yf_data['recommendation'],
             })
-        
-        # Health assessment
-        health_flags = []
-        if profile:
-            beta = profile['beta']
-            if beta != 'N/A':
-                if beta < 1.0:
-                    health_flags.append('✓ Lower Volatility')
-                elif beta > 1.5:
-                    health_flags.append('⚠ High Volatility')
-        
-        enriched_record['Health_Flags'] = ' | '.join(health_flags) if health_flags else 'N/A'
-        
-        print(f"  API Calls Used: {api_calls_made}/{MAX_API_CALLS}")
-        if health_flags:
-            print(f"  Health: {' | '.join(health_flags)}")
+            
+            # Health assessment using the "2026 Strategy"
+            health_flags = []
+            
+            # Debt Check
+            debt_eq = yf_data['debt_to_equity']
+            if debt_eq != 'N/A' and debt_eq < 150:
+                health_flags.append('✓ Low Debt')
+            elif debt_eq != 'N/A' and debt_eq > 300:
+                health_flags.append('⚠ High Debt')
+            
+            # Liquidity Check
+            curr_ratio = yf_data['current_ratio']
+            if curr_ratio != 'N/A' and curr_ratio > 1.0:
+                health_flags.append('✓ Good Liquidity')
+            elif curr_ratio != 'N/A' and curr_ratio < 1.0:
+                health_flags.append('⚠ Low Liquidity')
+            
+            # Profitability Check
+            profit_margin = yf_data['profit_margins']
+            if profit_margin != 'N/A' and profit_margin > 0:
+                health_flags.append('✓ Profitable')
+            elif profit_margin != 'N/A' and profit_margin < 0:
+                health_flags.append('⚠ Unprofitable')
+            
+            # Overall Quality Score
+            if debt_eq != 'N/A' and curr_ratio != 'N/A' and profit_margin != 'N/A':
+                if debt_eq < 150 and curr_ratio > 1.0 and profit_margin > 0:
+                    health_flags.append('🔥 HIGH QUALITY')
+            
+            enriched_record['Health_Flags'] = ' | '.join(health_flags) if health_flags else 'N/A'
+            
+            if health_flags:
+                print(f"  Health: {' | '.join(health_flags)}")
+        else:
+            enriched_record['Health_Flags'] = 'N/A'
         
         enriched_data.append(enriched_record)
-        
-        # Safety check
-        if api_calls_made >= MAX_API_CALLS:
-            print(f"\n⚠️  Reached API call limit ({MAX_API_CALLS}). Stopping enrichment.")
-            # Add remaining records without enrichment
-            enriched_data.extend(insider_data[idx:])
-            break
     
-    print(f"\n✓ Total API calls made: {api_calls_made}/{MAX_API_CALLS}")
     return enriched_data
 
 
@@ -337,9 +327,12 @@ def main():
     print("- Insiders: CEO, COO, CFO, Director")
     print("- Minimum insiders: 3")
     print("- Minimum value: $150k+")
-    print("\nFinancial Metrics (Free Tier):") 
-    print("- Market Cap, Beta, Sector")
-    print("- Volatility Assessment")
+    print("\nFinancial Metrics (yfinance - FREE):") 
+    print("- Debt-to-Equity, Current Ratio, Quick Ratio, ROE")
+    print("- Profit & Operating Margins")
+    print("- PE, PEG, Price-to-Book Ratios")
+    print("- Analyst Price Targets & Recommendations")
+    print("- Market Cap, Beta, Sector, Industry")
     print("=" * 50)
     print()
     

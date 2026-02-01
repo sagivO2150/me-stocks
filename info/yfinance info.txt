@@ -1,0 +1,69 @@
+yfinance documentation
+Download Market Data from Yahoo! Finance’s API
+IMPORTANT LEGAL DISCLAIMER
+
+Yahoo!, Y!Finance, and Yahoo! finance are registered trademarks of Yahoo, Inc.
+
+yfinance is not affiliated, endorsed, or vetted by Yahoo, Inc. It’s an open-source tool that uses Yahoo’s publicly available APIs, and is intended for research and educational purposes.
+
+You should refer to Yahoo!’s terms of use (here), (here), and (here) for details on your rights to use the actual data downloaded. Remember - the Yahoo! finance API is intended for personal use only.
+
+Install
+$ pip install yfinance
+Quick start
+Showing a small sample of yfinance API, the full API is much bigger and covered in API Reference.
+
+import yfinance as yf
+dat = yf.Ticker("MSFT")
+One ticker symbol
+
+dat = yf.Ticker("MSFT")
+dat.info
+dat.calendar
+dat.analyst_price_targets
+dat.quarterly_income_stmt
+dat.history(period='1mo')
+dat.option_chain(dat.options[0]).calls
+Multiple ticker symbols
+
+tickers = yf.Tickers('MSFT AAPL GOOG')
+tickers.tickers['MSFT'].info
+yf.download(['MSFT', 'AAPL', 'GOOG'], period='1mo')
+Funds
+
+spy = yf.Ticker('SPY').funds_data
+spy.description
+spy.top_holdings
+
+
+yfinance.Ticker.info
+property Ticker.info: dict
+
+yfinance.Ticker.cashflow
+property Ticker.cashflow: DataFrame
+
+yfinance.Ticker.major_holders
+property Ticker.major_holders: DataFrame
+
+yfinance.Ticker.institutional_holders
+property Ticker.institutional_holders: DataFrame
+
+yfinance.Ticker.analyst_price_targets
+property Ticker.analyst_price_targets: dict
+
+The "Essential Four" for your Health Check1. yfinance.Ticker.info (The Gold Mine)This replaces almost everything FMP blocked you on. It returns a massive Python dictionary containing pre-calculated ratios.What to look for inside: debtToEquity, currentRatio, quickRatio, returnOnEquity, profitMargins, and dividendYield.Why: You don't have to do any math. Yahoo has already done it for you.2. yfinance.Ticker.cashflow (The Truth Teller)According to your 2026 AI Valuation Reckoning research, "Cash is King".What to look for: Free Cash Flow.Why: If insiders are buying but the company is losing cash every year, the buy might just be a "support" purchase to keep the stock from crashing, rather than a sign of growth.3. yfinance.Ticker.major_holders & institutional_holdersThis is your "Smart Money" layer.What to look for: The percentage of the company owned by institutions.Why: If insiders are buying AND big institutions (like Vanguard or BlackRock) are also increasing their stakes, you have a high-probability "Conviction Buy."4. yfinance.Ticker.analyst_price_targetsWhat to look for: mean and median price targets.Why: This helps you see if the current price is significantly below what Wall Street analysts think it's worth. If a CEO buys at $20 and the analyst target is $40, you’ve found a massive gap.How to use them in your script (Comparison)Here is how you would translate that long sidebar list into the actual code for your "Validation Layer":Metric You WantThe yfinance CommandValue ExampleDebt Levelticker.info['debtToEquity']50.5 (Lower is better)Liquidityticker.info['currentRatio']1.5 (> 1.0 is safe)Profitabilityticker.info['profitMargins']0.15 (15% margins)Intrinsic Valueticker.info['targetMeanPrice']$55.00The "Pivoted" Health Check FunctionSince you are updating your openinsider_scraper.py, here is exactly what the code for your new "Validation Layer" should look like using these methods:Pythonimport yfinance as yf
+
+def validate_insider_buy(ticker_symbol):
+    stock = yf.Ticker(ticker_symbol)
+    info = stock.info
+    
+    # Extract the 'Paid' metrics for free
+    debt = info.get('debtToEquity', 999) # 999 as fallback
+    current_ratio = info.get('currentRatio', 0)
+    margin = info.get('profitMargins', 0)
+    
+    # 2026 Strategy: Flag as 'Safe' only if debt is low and margins exist
+    if debt < 150 and current_ratio > 1.0 and margin > 0:
+        return "PASS (High Quality)"
+    else:
+        return "FAIL (Check Debt/Margins)"
