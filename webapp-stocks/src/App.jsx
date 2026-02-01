@@ -1,40 +1,78 @@
 import { useState, useEffect } from 'react';
 import Papa from 'papaparse';
 import TradeCard from './components/TradeCard';
+import FilterPanel from './components/FilterPanel';
 
 function App() {
   const [trades, setTrades] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [scraperLoading, setScraperLoading] = useState(false);
+  const [scraperMessage, setScraperMessage] = useState('');
+
+  const loadCSV = async () => {
+    try {
+      const response = await fetch('/openinsider_data_latest.csv?t=' + new Date().getTime());
+      if (!response.ok) {
+        throw new Error('Failed to load CSV file');
+      }
+      
+      const csvText = await response.text();
+      
+      Papa.parse(csvText, {
+        header: true,
+        complete: (results) => {
+          setTrades(results.data.filter(row => row.Ticker)); // Filter out empty rows
+          setLoading(false);
+        },
+        error: (error) => {
+          setError(error.message);
+          setLoading(false);
+        }
+      });
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+    }
+  };
+
+  const handleRunScraper = async (filters) => {
+    setScraperLoading(true);
+    setScraperMessage('');
+    setError(null);
+
+    try {
+      const response = await fetch('http://localhost:3001/api/scrape', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(filters)
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setScraperMessage('✅ ' + data.message);
+        // Reload CSV after successful scrape
+        setTimeout(() => {
+          loadCSV();
+        }, 1000);
+      } else {
+        setScraperMessage('❌ ' + data.message);
+        setError(data.error);
+      }
+    } catch (err) {
+      setScraperMessage('❌ Failed to connect to backend server');
+      setError(err.message);
+    } finally {
+      setScraperLoading(false);
+      // Clear message after 5 seconds
+      setTimeout(() => setScraperMessage(''), 5000);
+    }
+  };
 
   useEffect(() => {
-    // Load the latest CSV file
-    const loadCSV = async () => {
-      try {
-        const response = await fetch('/openinsider_data_latest.csv');
-        if (!response.ok) {
-          throw new Error('Failed to load CSV file');
-        }
-        
-        const csvText = await response.text();
-        
-        Papa.parse(csvText, {
-          header: true,
-          complete: (results) => {
-            setTrades(results.data.filter(row => row.Ticker)); // Filter out empty rows
-            setLoading(false);
-          },
-          error: (error) => {
-            setError(error.message);
-            setLoading(false);
-          }
-        });
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
-
     loadCSV();
   }, []);
 
@@ -71,6 +109,20 @@ function App() {
             <span className="text-slate-400"> high-conviction insider trades</span>
           </div>
         </div>
+
+        {/* Filter Panel */}
+        <FilterPanel onRunScraper={handleRunScraper} isLoading={scraperLoading} />
+
+        {/* Scraper Message */}
+        {scraperMessage && (
+          <div className={`mb-6 p-4 rounded-lg ${
+            scraperMessage.startsWith('✅') 
+              ? 'bg-emerald-900/50 border border-emerald-700 text-emerald-300' 
+              : 'bg-red-900/50 border border-red-700 text-red-300'
+          }`}>
+            {scraperMessage}
+          </div>
+        )}
 
         {/* Trade Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -10,6 +10,7 @@ import csv
 from datetime import datetime
 import time
 import yfinance as yf
+import argparse
 
 # FMP API Configuration (DISABLED - too limited in free tier)
 # API_KEY = "EypEpLbJcxfRpdMBFcJppxD2YIEnGD0T"
@@ -18,12 +19,21 @@ import yfinance as yf
 API_CALL_DELAY = 1.0  # Delay between yfinance calls (be respectful)
 
 
-def scrape_openinsider(page=1):
+def scrape_openinsider(page=1, min_price=5, filing_days=30, min_insiders=3, min_value=150,
+                       include_ceo=True, include_coo=True, include_cfo=True, include_director=True):
     """
     Scrape OpenInsider with the specified filters
     
     Parameters:
     - page: Page number to fetch (default: 1)
+    - min_price: Minimum stock price (default: 5)
+    - filing_days: Filing date within X days (default: 30)
+    - min_insiders: Minimum number of insiders (default: 3)
+    - min_value: Minimum transaction value in thousands (default: 150)
+    - include_ceo: Include CEO trades (default: True)
+    - include_coo: Include COO trades (default: True)
+    - include_cfo: Include CFO trades (default: True)
+    - include_director: Include Director trades (default: True)
     
     Returns:
     - List of dictionaries containing insider trading data
@@ -35,11 +45,11 @@ def scrape_openinsider(page=1):
     params = {
         's': '',
         'o': '',
-        'pl': '5',          # Minimum price
+        'pl': str(min_price),          # Minimum price
         'ph': '',
         'll': '',
         'lh': '',
-        'fd': '30',         # Filing date within 30 days
+        'fd': str(filing_days),         # Filing date within X days
         'fdr': '',
         'td': '0',          # Trade date
         'tdr': '',
@@ -54,18 +64,18 @@ def scrape_openinsider(page=1):
         'sic1': '-1',
         'sicl': '100',      # SIC code lower
         'sich': '9999',     # SIC code higher
-        'isceo': '1',       # Include CEO
-        'iscoo': '1',       # Include COO
-        'iscfo': '1',       # Include CFO
-        'isdirector': '1',  # Include Director
+        'isceo': '1' if include_ceo else '',       # Include CEO
+        'iscoo': '1' if include_coo else '',       # Include COO
+        'iscfo': '1' if include_cfo else '',       # Include CFO
+        'isdirector': '1' if include_director else '',  # Include Director
         'grp': '2',
         'nfl': '',
         'nfh': '',
-        'nil': '3',         # Number of insiders
+        'nil': str(min_insiders),         # Number of insiders
         'nih': '',
         'nol': '1',
         'noh': '',
-        'v2l': '150',       # Volume filter
+        'v2l': str(min_value),       # Volume filter
         'v2h': '',
         'oc2l': '',
         'oc2h': '',
@@ -153,8 +163,7 @@ def save_to_csv(data, filename=None):
     output_dir = "/Users/sagiv.oron/Documents/scripts_playground/stocks/output CSVs"
     
     if filename is None:
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"openinsider_data_{timestamp}.csv"
+        filename = "openinsider_data_latest.csv"
     
     # Full path to output file
     filepath = f"{output_dir}/{filename}"
@@ -473,14 +482,28 @@ def enrich_with_financial_data(insider_data):
 def main():
     """Main function to scrape and save OpenInsider data"""
     
+    # Parse command-line arguments
+    parser = argparse.ArgumentParser(description='Scrape OpenInsider with custom filters')
+    parser.add_argument('--min-price', type=float, default=5, help='Minimum stock price (default: 5)')
+    parser.add_argument('--filing-days', type=int, default=30, help='Filing date within X days (default: 30)')
+    parser.add_argument('--min-insiders', type=int, default=3, help='Minimum number of insiders (default: 3)')
+    parser.add_argument('--min-value', type=int, default=150, help='Minimum transaction value in thousands (default: 150)')
+    parser.add_argument('--include-ceo', type=int, default=1, help='Include CEO trades (1=yes, 0=no, default: 1)')
+    parser.add_argument('--include-coo', type=int, default=1, help='Include COO trades (1=yes, 0=no, default: 1)')
+    parser.add_argument('--include-cfo', type=int, default=1, help='Include CFO trades (1=yes, 0=no, default: 1)')
+    parser.add_argument('--include-director', type=int, default=1, help='Include Director trades (1=yes, 0=no, default: 1)')
+    parser.add_argument('--num-pages', type=int, default=1, help='Number of pages to scrape (default: 1)')
+    
+    args = parser.parse_args()
+    
     print("OpenInsider Screener + Financial Health Analyzer")
     print("=" * 50)
     print("\nFilters applied:")
-    print("- Minimum price: $5")
-    print("- Filing date: Last 30 days")
-    print("- Insiders: CEO, COO, CFO, Director")
-    print("- Minimum insiders: 3")
-    print("- Minimum value: $150k+")
+    print(f"- Minimum price: ${args.min_price}")
+    print(f"- Filing date: Last {args.filing_days} days")
+    print(f"- Insiders: {', '.join([r for r, inc in [('CEO', args.include_ceo), ('COO', args.include_coo), ('CFO', args.include_cfo), ('Director', args.include_director)] if inc])}")
+    print(f"- Minimum insiders: {args.min_insiders}")
+    print(f"- Minimum value: ${args.min_value}k+")
     print("\nFinancial Metrics (yfinance - FREE):") 
     print("- Debt-to-Equity, Current Ratio, Quick Ratio, ROE")
     print("- Profit & Operating Margins")
@@ -490,18 +513,25 @@ def main():
     print("=" * 50)
     print()
     
-    # Scrape page 1 (you can modify to scrape multiple pages)
+    # Scrape pages
     all_data = []
     
-    # To scrape multiple pages, modify this:
-    num_pages = 1  # Change this to scrape more pages
-    
-    for page in range(1, num_pages + 1):
-        data = scrape_openinsider(page=page)
+    for page in range(1, args.num_pages + 1):
+        data = scrape_openinsider(
+            page=page,
+            min_price=args.min_price,
+            filing_days=args.filing_days,
+            min_insiders=args.min_insiders,
+            min_value=args.min_value,
+            include_ceo=bool(args.include_ceo),
+            include_coo=bool(args.include_coo),
+            include_cfo=bool(args.include_cfo),
+            include_director=bool(args.include_director)
+        )
         all_data.extend(data)
         
         # Be respectful to the server
-        if page < num_pages:
+        if page < args.num_pages:
             time.sleep(2)
     
     # Enrich with financial data
