@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-OpenInsider Screener Data Scraper
-Fetches insider trading data based on specified filters and saves to CSV
+OpenInsider Screener Data Scraper with Financial Health Check
+Fetches insider trading data and validates company financial health using FMP API
 """
 
 import requests
@@ -9,6 +9,13 @@ from bs4 import BeautifulSoup
 import csv
 from datetime import datetime
 import time
+import os
+
+# API Configuration
+API_KEY = "EypEpLbJcxfRpdMBFcJppxD2YIEnGD0T"
+FMP_BASE_URL = "https://financialmodelingprep.com/stable"
+API_CALL_DELAY = 2.5  # Delay between API calls (seconds) to stay under 250/day limit
+MAX_API_CALLS = 240  # Safety buffer under 250/day limit
 
 
 def scrape_openinsider(page=1):
@@ -158,10 +165,171 @@ def save_to_csv(data, filename=None):
     print(f"Total records: {len(data)}")
 
 
+def get_financial_ratios(ticker, api_calls_made):
+    """
+    Fetch key financial ratios from FMP API
+    Focus on: Debt-to-Equity, Current Ratio
+    """
+    if api_calls_made >= MAX_API_CALLS:
+        print(f"  ⚠️  API call limit reached, skipping {ticker}")
+        return None, api_calls_made
+    
+    url = f"{FMP_BASE_URL}/ratios"
+    params = {'symbol': ticker, 'apikey': API_KEY, 'limit': 1}
+    
+    try:
+        time.sleep(API_CALL_DELAY)  # Rate limiting
+        response = requests.get(url, params=params, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        api_calls_made += 1
+        
+        if data and len(data) > 0:
+            ratios = data[0]
+            return {
+                'debt_to_equity': ratios.get('debtEquityRatio', 'N/A'),
+                'current_ratio': ratios.get('currentRatio', 'N/A'),
+                'quick_ratio': ratios.get('quickRatio', 'N/A'),
+                'roe': ratios.get('returnOnEquity', 'N/A'),
+            }, api_calls_made
+        return None, api_calls_made
+        
+    except Exception as e:
+        print(f"  Error fetching ratios for {ticker}: {str(e)[:80]}")
+        return None, api_calls_made
+
+
+def get_key_metrics(ticker, api_calls_made):
+    """
+    Fetch key metrics from FMP API
+    Focus on: ROIC, Free Cash Flow Yield
+    """
+    if api_calls_made >= MAX_API_CALLS:
+        return None, api_calls_made
+    
+    url = f"{FMP_BASE_URL}/key-metrics"
+    params = {'symbol': ticker, 'apikey': API_KEY, 'limit': 1}
+    
+    try:
+        time.sleep(API_CALL_DELAY)  # Rate limiting
+        response = requests.get(url, params=params, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        api_calls_made += 1
+        
+        if data and len(data) > 0:
+            metrics = data[0]
+            return {
+                'roic': metrics.get('roic', 'N/A'),
+                'fcf_yield': metrics.get('freeCashFlowYield', 'N/A'),
+                'pe_ratio': metrics.get('peRatio', 'N/A'),
+                'ev_to_ebitda': metrics.get('enterpriseValueOverEBITDA', 'N/A'),
+            }, api_calls_made
+        return None, api_calls_made
+        
+    except Exception as e:
+        print(f"  Error fetching metrics for {ticker}: {str(e)[:80]}")
+        return None, api_calls_made
+
+
+def get_financial_scores(ticker, api_calls_made):
+    """
+    Fetch company profile from FMP API (free tier)
+    Get: Market Cap, Beta, Sector
+    """
+    if api_calls_made >= MAX_API_CALLS:
+        return None, api_calls_made
+    
+    url = f"{FMP_BASE_URL}/profile"
+    params = {'symbol': ticker, 'apikey': API_KEY}
+    
+    try:
+        time.sleep(API_CALL_DELAY)  # Rate limiting
+        response = requests.get(url, params=params, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        api_calls_made += 1
+        
+        if data and len(data) > 0:
+            profile = data[0]
+            return {
+                'market_cap': profile.get('mktCap', 'N/A'),
+                'beta': profile.get('beta', 'N/A'),
+                'sector': profile.get('sector', 'N/A'),
+            }, api_calls_made
+        return None, api_calls_made
+        
+    except Exception as e:
+        print(f"  Error fetching profile for {ticker}: {str(e)[:80]}")
+        return None, api_calls_made
+
+
+def enrich_with_financial_data(insider_data):
+    """
+    Enrich insider trading data with financial health metrics
+    """
+    print("\n" + "=" * 50)
+    print("Fetching Company Profile Data (Free Tier)...")
+    print("=" * 50)
+    
+    api_calls_made = 0
+    enriched_data = []
+    
+    for idx, record in enumerate(insider_data, 1):
+        ticker = record.get('Ticker', '').strip()
+        
+        if not ticker:
+            enriched_data.append(record)
+            continue
+        
+        print(f"\n[{idx}/{len(insider_data)}] Analyzing {ticker}...")
+        
+        # Only use profile endpoint (free tier - 1 API call per ticker)
+        profile, api_calls_made = get_financial_scores(ticker, api_calls_made)
+        
+        # Merge all data
+        enriched_record = record.copy()
+        
+        if profile:
+            enriched_record.update({
+                'Market_Cap': profile['market_cap'],
+                'Beta': profile['beta'],
+                'Sector': profile['sector'],
+            })
+        
+        # Health assessment
+        health_flags = []
+        if profile:
+            beta = profile['beta']
+            if beta != 'N/A':
+                if beta < 1.0:
+                    health_flags.append('✓ Lower Volatility')
+                elif beta > 1.5:
+                    health_flags.append('⚠ High Volatility')
+        
+        enriched_record['Health_Flags'] = ' | '.join(health_flags) if health_flags else 'N/A'
+        
+        print(f"  API Calls Used: {api_calls_made}/{MAX_API_CALLS}")
+        if health_flags:
+            print(f"  Health: {' | '.join(health_flags)}")
+        
+        enriched_data.append(enriched_record)
+        
+        # Safety check
+        if api_calls_made >= MAX_API_CALLS:
+            print(f"\n⚠️  Reached API call limit ({MAX_API_CALLS}). Stopping enrichment.")
+            # Add remaining records without enrichment
+            enriched_data.extend(insider_data[idx:])
+            break
+    
+    print(f"\n✓ Total API calls made: {api_calls_made}/{MAX_API_CALLS}")
+    return enriched_data
+
+
 def main():
     """Main function to scrape and save OpenInsider data"""
     
-    print("OpenInsider Screener Data Scraper")
+    print("OpenInsider Screener + Financial Health Analyzer")
     print("=" * 50)
     print("\nFilters applied:")
     print("- Minimum price: $5")
@@ -169,6 +337,9 @@ def main():
     print("- Insiders: CEO, COO, CFO, Director")
     print("- Minimum insiders: 3")
     print("- Minimum value: $150k+")
+    print("\nFinancial Metrics (Free Tier):") 
+    print("- Market Cap, Beta, Sector")
+    print("- Volatility Assessment")
     print("=" * 50)
     print()
     
@@ -186,9 +357,10 @@ def main():
         if page < num_pages:
             time.sleep(2)
     
-    # Save to CSV
+    # Enrich with financial data
     if all_data:
-        save_to_csv(all_data)
+        enriched_data = enrich_with_financial_data(all_data)
+        save_to_csv(enriched_data)
     else:
         print("No data was scraped. Please check the filters or website availability.")
 
