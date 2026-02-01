@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Tooltip from './Tooltip';
 
 function FilterPanel({ onRunScraper, isLoading }) {
   const [showFilters, setShowFilters] = useState(false);
@@ -37,7 +38,9 @@ function FilterPanel({ onRunScraper, isLoading }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-slate-300 mb-2">
-                Minimum Stock Price ($)
+                <Tooltip text="Filters out penny stocks. Higher = fewer results but more established companies. Lower = more opportunities but riskier. Sweet spot: $5-$20 for quality small/mid caps.">
+                  <span className="border-b border-dotted border-slate-500">Minimum Stock Price ($)</span>
+                </Tooltip>
               </label>
               <input
                 type="number"
@@ -50,7 +53,9 @@ function FilterPanel({ onRunScraper, isLoading }) {
 
             <div>
               <label className="block text-slate-300 mb-2">
-                Minimum Transaction Value ($k)
+                <Tooltip text="Total dollar value of insider purchases. Higher = insiders putting more 'skin in the game' = stronger conviction signal. $50k = casual buy, $150k+ = serious confidence, $500k+ = very bullish.">
+                  <span className="border-b border-dotted border-slate-500">Minimum Transaction Value ($k)</span>
+                </Tooltip>
               </label>
               <input
                 type="number"
@@ -65,7 +70,9 @@ function FilterPanel({ onRunScraper, isLoading }) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
               <label className="block text-slate-300 mb-2">
-                Filing Within (days)
+                <Tooltip text="How recent the insider trades are. Lower = more current data but fewer results. 30 days = catch fresh momentum, 60-90 days = broader view. Insiders must file within 2 business days of trading.">
+                  <span className="border-b border-dotted border-slate-500">Filing Within (days)</span>
+                </Tooltip>
               </label>
               <input
                 type="number"
@@ -77,7 +84,9 @@ function FilterPanel({ onRunScraper, isLoading }) {
 
             <div>
               <label className="block text-slate-300 mb-2">
-                Minimum Insiders
+                <Tooltip text="Cluster buying = powerful signal. 1 insider = maybe personal reasons. 3+ insiders buying together = they know something. 5+ = extremely bullish consensus. This is one of the strongest predictors.">
+                  <span className="border-b border-dotted border-slate-500">Minimum Insiders</span>
+                </Tooltip>
               </label>
               <input
                 type="number"
@@ -89,7 +98,9 @@ function FilterPanel({ onRunScraper, isLoading }) {
 
             <div>
               <label className="block text-slate-300 mb-2">
-                Pages to Scrape
+                <Tooltip text="How many pages of insider trades to scan from OpenInsider. Each page = ~20 trades. 1 page = quick scan (top opportunities), 3-5 pages = deep dive (more comprehensive). More pages = slower scraping but more thorough.">
+                  <span className="border-b border-dotted border-slate-500">Pages to Scrape</span>
+                </Tooltip>
               </label>
               <input
                 type="number"
@@ -105,7 +116,9 @@ function FilterPanel({ onRunScraper, isLoading }) {
           {/* Insider Roles Section */}
           <div>
             <label className="block text-slate-300 mb-3">
-              Include Insider Roles
+              <Tooltip text="Which executives to track. CEO = strategic vision, CFO = financial confidence, COO = operational insight, Director = board-level conviction. Top picks: CEO + CFO (most informed) or all 4 (broadest signal).">
+                <span className="border-b border-dotted border-slate-500">Include Insider Roles</span>
+              </Tooltip>
             </label>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <label className="flex items-center space-x-2 text-slate-300 cursor-pointer">

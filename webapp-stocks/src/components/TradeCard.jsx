@@ -1,4 +1,5 @@
 import React from 'react';
+import Tooltip from './Tooltip';
 
 const TradeCard = ({ trade }) => {
   // Parse values
@@ -50,42 +51,54 @@ const TradeCard = ({ trade }) => {
         </div>
         
         {/* Rainy Day Score Circle */}
-        <div className={`flex flex-col items-center justify-center w-20 h-20 rounded-full border-4 ${getScoreColor(rainyDayScore)} ${getScoreBg(rainyDayScore)}`}>
-          <div className={`text-2xl font-bold ${getScoreColor(rainyDayScore)}`}>
-            {rainyDayScore}
+        <Tooltip text="Overall conviction score (0-10). Based on: insider clustering (3+ = good), high transaction value, ownership increase %, financial health, and sector defensive strength. 8+ = strong buy signal, 6-7 = solid, 4-5 = cautious, <4 = speculative.">
+          <div className={`flex flex-col items-center justify-center w-20 h-20 rounded-full border-4 ${getScoreColor(rainyDayScore)} ${getScoreBg(rainyDayScore)}`}>
+            <div className={`text-2xl font-bold ${getScoreColor(rainyDayScore)}`}>
+              {rainyDayScore}
+            </div>
+            <div className="text-xs text-slate-400">/ 10</div>
           </div>
-          <div className="text-xs text-slate-400">/ 10</div>
-        </div>
+        </Tooltip>
       </div>
 
       {/* Badges Row */}
       <div className="flex flex-wrap gap-2 mb-4">
         {/* Insiders Count */}
-        <span className="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-sm font-medium border border-blue-500/30">
-          👥 {insidersCount} Insiders
-        </span>
+        <Tooltip text="Number of insiders buying this stock. Cluster buying (3+) is statistically one of the most reliable predictors of future price appreciation. Multiple executives buying = they see something the market doesn't.">
+          <span className="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-sm font-medium border border-blue-500/30">
+            👥 {insidersCount} Insiders
+          </span>
+        </Tooltip>
 
         {/* Conviction Badge */}
         {skinInGame === 'YES' ? (
-          <span className="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-sm font-medium border border-emerald-500/30">
-            💎 HIGH CONVICTION
-          </span>
+          <Tooltip text="HIGH CONVICTION = Insiders increased their ownership by 10%+ (major stake increase) OR bought $500k+. This means they're betting their own money heavily = strongest possible buy signal. They have insider information we don't.">
+            <span className="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-sm font-medium border border-emerald-500/30">
+              💎 HIGH CONVICTION
+            </span>
+          </Tooltip>
         ) : (
-          <span className="px-3 py-1 bg-slate-700/50 text-slate-400 rounded-full text-sm font-medium border border-slate-600">
-            Low Conviction
-          </span>
+          <Tooltip text="Low conviction = small ownership increase or modest dollar amount. Could be routine buying or portfolio rebalancing rather than strong belief in upside.">
+            <span className="px-3 py-1 bg-slate-700/50 text-slate-400 rounded-full text-sm font-medium border border-slate-600">
+              Low Conviction
+            </span>
+          </Tooltip>
         )}
       </div>
 
       {/* Trade Info */}
       <div className="space-y-3 mb-4">
         <div className="flex justify-between items-center">
-          <span className="text-slate-400 text-sm">Trade Value</span>
+          <Tooltip text="Total dollar amount insiders spent buying shares. Higher = more serious. $50k = casual, $150k+ = confident, $500k+ = very bullish, $1M+ = exceptional conviction.">
+            <span className="text-slate-400 text-sm border-b border-dotted border-slate-600 cursor-help">Trade Value</span>
+          </Tooltip>
           <span className="text-white font-semibold">{value}</span>
         </div>
         
         <div className="flex justify-between items-center">
-          <span className="text-slate-400 text-sm">Ownership Change</span>
+          <Tooltip text="How much their personal stake increased. +5% = meaningful, +10% = significant, +20%+ = major commitment. This shows conviction better than dollar amount - a CEO doubling their holdings is huge regardless of price.">
+            <span className="text-slate-400 text-sm border-b border-dotted border-slate-600 cursor-help">Ownership Change</span>
+          </Tooltip>
           <span className="text-emerald-400 font-semibold">{deltaOwn}</span>
         </div>
 
@@ -97,7 +110,9 @@ const TradeCard = ({ trade }) => {
         {/* Upside */}
         {upside !== 'N/A' && (
           <div className="flex justify-between items-center pt-2 border-t border-slate-700">
-            <span className="text-slate-400 text-sm">Upside to Target</span>
+            <Tooltip text="Gap between current price and Wall Street analyst average target. Positive = analysts think it's undervalued. +20%+ = significant upside potential. Combined with insider buying = high probability setup.">
+              <span className="text-slate-400 text-sm border-b border-dotted border-slate-600 cursor-help">Upside to Target</span>
+            </Tooltip>
             <span className={`font-bold text-lg ${upside.startsWith('+') ? 'text-emerald-400' : 'text-red-400'}`}>
               {upside}
             </span>
@@ -108,7 +123,9 @@ const TradeCard = ({ trade }) => {
       {/* Health Flags */}
       {healthFlags && healthFlags !== 'N/A' && (
         <div className="bg-slate-900/50 rounded-lg p-3 mb-3">
-          <div className="text-xs text-slate-400 mb-1">Financial Health</div>
+          <Tooltip text="Financial health indicators from company fundamentals. Low Debt = safe balance sheet, Good Liquidity = can pay bills, Profitable = making money. High Conviction (Skin in Game) = exceptional setup. Avoid high debt + unprofitable unless you're very risk-tolerant.">
+            <div className="text-xs text-slate-400 mb-1 border-b border-dotted border-slate-600 inline-block cursor-help">Financial Health</div>
+          </Tooltip>
           <div className="text-sm text-slate-200">{healthFlags}</div>
         </div>
       )}
@@ -117,19 +134,25 @@ const TradeCard = ({ trade }) => {
       {sectorType && (
         <div className="mt-3">
           {sectorType.includes('DEFENSIVE') && (
-            <div className="bg-green-500/10 border border-green-500/30 rounded-lg px-3 py-2">
-              <div className="text-green-400 text-xs font-semibold">🛡️ {sectorType}</div>
-            </div>
+            <Tooltip text="DEFENSIVE sectors (Healthcare, Consumer Staples, Utilities) = Safe havens during market downturns. These provide stability when AI bubble corrects. People always need medicine, food, electricity regardless of economy.">
+              <div className="bg-green-500/10 border border-green-500/30 rounded-lg px-3 py-2">
+                <div className="text-green-400 text-xs font-semibold">🛡️ {sectorType}</div>
+              </div>
+            </Tooltip>
           )}
           {sectorType.includes('AGGRESSIVE') && (
-            <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2">
-              <div className="text-red-400 text-xs font-semibold">⚠️ {sectorType}</div>
-            </div>
+            <Tooltip text="AGGRESSIVE sectors = High risk/high reward. Sensitive to economic cycles, AI bubble risks, or market volatility. Can deliver huge gains but vulnerable in downturns. Only for risk-tolerant portfolios.">
+              <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2">
+                <div className="text-red-400 text-xs font-semibold">⚠️ {sectorType}</div>
+              </div>
+            </Tooltip>
           )}
           {sectorType.includes('NEUTRAL') && (
-            <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg px-3 py-2">
-              <div className="text-blue-400 text-xs font-semibold">⚖️ {sectorType}</div>
-            </div>
+            <Tooltip text="NEUTRAL sectors = Balanced risk/reward. Not extremely defensive or aggressive. Moderate volatility and steady growth potential. Good for diversified portfolios.">
+              <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg px-3 py-2">
+                <div className="text-blue-400 text-xs font-semibold">⚖️ {sectorType}</div>
+              </div>
+            </Tooltip>
           )}
         </div>
       )}
@@ -137,7 +160,10 @@ const TradeCard = ({ trade }) => {
       {/* Score Reasons */}
       {scoreReasons && scoreReasons !== 'N/A' && (
         <div className="mt-3 text-xs text-slate-400">
-          <span className="font-semibold">Score Factors:</span> {scoreReasons}
+          <Tooltip text="Breakdown of why this stock got its Rainy Day Score. Shows which factors contributed: insider count, ownership change %, financial health, sector type. Helps you understand the conviction level.">
+            <span className="font-semibold border-b border-dotted border-slate-600 cursor-help">Score Factors:</span>
+          </Tooltip>
+          {' '}{scoreReasons}
         </div>
       )}
     </div>
