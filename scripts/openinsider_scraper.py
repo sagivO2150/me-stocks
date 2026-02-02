@@ -23,13 +23,14 @@ MAX_WORKERS = 8  # Number of parallel threads for API calls
 progress_lock = Lock()  # Thread-safe progress printing
 
 
-def scrape_ticker_details(ticker, filing_days=30):
+def scrape_ticker_details(ticker, filing_days=30, trade_type='purchase'):
     """
     Fetch individual trades for a specific ticker to get role breakdown
     
     Parameters:
     - ticker: Stock ticker symbol
     - filing_days: Only count trades within this many days
+    - trade_type: 'purchase' or 'sale'
     
     Returns:
     - Dictionary with role counts and trade details
@@ -73,11 +74,15 @@ def scrape_ticker_details(ticker, filing_days=30):
             trade_date_str = cols[2].text.strip()
             insider_name = cols[4].text.strip()
             title = cols[5].text.strip()
-            trade_type = cols[6].text.strip()
+            trade_type_col = cols[6].text.strip()
             
-            # Only process purchases within date range
-            if 'P - Purchase' not in trade_type:
-                continue
+            # Filter by trade type
+            if trade_type == 'purchase':
+                if 'P - Purchase' not in trade_type_col:
+                    continue
+            else:  # sale
+                if 'S - Sale' not in trade_type_col:
+                    continue
             
             try:
                 trade_date = datetime.strptime(trade_date_str, '%Y-%m-%d')
@@ -152,28 +157,37 @@ def scrape_ticker_details(ticker, filing_days=30):
 
 
 def scrape_openinsider_simple(page=1, min_price=5, filing_days=30, min_insiders=3, 
-                               min_value=150, min_own_change=0):
+                               min_value=150, min_own_change=0, trade_type='purchase'):
     """
-    Simplified scraper: Get companies with cluster buying using grouped view
+    Simplified scraper: Get companies with cluster buying/selling using grouped view
     
     Returns companies that meet the basic criteria. Role breakdown will be
     fetched separately per ticker.
     """
     base_url = "http://openinsider.com/screener"
     
+    # Trade type: For sales, use td=0 with xs=1 (xs=1 overrides td)
+    # For purchases, use td=0 with no xs parameter
+    td_value = '0'  # Always 0
+    xs_value = '1' if trade_type == 'sale' else ''
+    
+    # For sales, ownership change should be positive in API (OpenInsider stores absolute values)
+    # But we'll display them as negative in the UI
+    own_change_param = str(min_own_change) if min_own_change > 0 else ''
+    
     params = {
         's': '', 'o': '', 'pl': str(min_price), 'ph': '',
         'll': '', 'lh': '', 'fd': str(filing_days), 'fdr': '',
-        'td': '0', 'tdr': '', 'fdlyl': '', 'fdlyh': '',
-        'daysago': '', 'xp': '1', 'vl': '', 'vh': '',
+        'td': td_value, 'tdr': '', 'fdlyl': '', 'fdlyh': '',
+        'daysago': '', 'xp': '1', 'xs': xs_value, 'vl': '', 'vh': '',
         'ocl': '', 'och': '', 'sic1': '-1', 'sicl': '100', 'sich': '9999',  # Exclude funds (SIC < 100)
         'isofficer': '1', 'iscob': '1', 'isceo': '1', 'ispres': '1', 'iscoo': '1', 'iscfo': '1',
         'isgc': '1', 'isvp': '1', 'isdirector': '1', 'istenpercent': '1', 'isother': '1',
-        'grp': '2',  # Group by company
+        'grp': '2',  # Group by company (works for both purchases and sales)
         'nfl': '', 'nfh': '', 'nil': str(min_insiders), 'nih': '',
         'nol': '', 'noh': '',
         'v2l': str(min_value), 'v2h': '',
-        'oc2l': str(min_own_change) if min_own_change > 0 else '', 'oc2h': '',
+        'oc2l': own_change_param, 'oc2h': '',
         'sortcol': '0', 'cnt': '100', 'page': str(page)
     }
     
@@ -989,6 +1003,7 @@ def main():
     parser.add_argument('--min-insiders', type=int, default=3, help='Minimum number of insiders (default: 3)')
     parser.add_argument('--min-value', type=int, default=150, help='Minimum transaction value in thousands (default: 150)')
     parser.add_argument('--min-own-change', type=int, default=0, help='Minimum ownership change percentage (default: 0)')
+    parser.add_argument('--trade-type', type=str, default='purchase', choices=['purchase', 'sale'], help='Trade type to search for (default: purchase)')
     parser.add_argument('--include-cob', type=int, default=1, help='Include COB trades (1=yes, 0=no, default: 1)')
     parser.add_argument('--include-ceo', type=int, default=1, help='Include CEO trades (1=yes, 0=no, default: 1)')
     parser.add_argument('--include-pres', type=int, default=1, help='Include President trades (1=yes, 0=no, default: 1)')
@@ -1017,13 +1032,17 @@ def main():
     print("OpenInsider Screener + Financial Health Analyzer")
     print("=" * 50)
     print("\nFilters applied:")
+    print(f"- Trade Type: {args.trade_type.capitalize()}")
     print(f"- Minimum price: ${args.min_price}")
     print(f"- Filing date: Last {args.filing_days} days")
     print(f"- Insiders: {', '.join(enabled_roles)}")
     print(f"- Minimum insiders: {args.min_insiders}")
     print(f"- Minimum value: ${args.min_value}k+")
     if args.min_own_change > 0:
-        print(f"- Minimum ownership change: {args.min_own_change}%+")
+        if args.trade_type == 'purchase':
+            print(f"- Minimum ownership change: +{args.min_own_change}%+")
+        else:
+            print(f"- Minimum ownership change: -{args.min_own_change}% or more (sold at least {args.min_own_change}%)")
     print("\nFinancial Metrics (yfinance - FREE):") 
     print("- Debt-to-Equity, Current Ratio, Quick Ratio, ROE")
     print("- Profit & Operating Margins")
@@ -1046,7 +1065,8 @@ def main():
             filing_days=args.filing_days,
             min_insiders=args.min_insiders,
             min_value=args.min_value,
-            min_own_change=args.min_own_change
+            min_own_change=args.min_own_change,
+            trade_type=args.trade_type
         )
         
         if not companies:
@@ -1074,7 +1094,8 @@ def main():
                 unique_companies[ticker] = company
     
     all_companies = list(unique_companies.values())
-    print(f"\n✅ Found {len(all_companies)} unique companies with cluster buying")
+    trade_action = "buying" if args.trade_type == 'purchase' else "selling"
+    print(f"\n✅ Found {len(all_companies)} unique companies with cluster {trade_action}")
     
     # Step 2: For each company, fetch individual trades to get role breakdown
     print(f"\n🔍 Fetching role breakdown for each company...")
@@ -1085,7 +1106,7 @@ def main():
         print(f"\n  [{idx}/{len(all_companies)}] {ticker}: {company['Company_Name']}")
         
         # Get individual trades and role breakdown
-        details = scrape_ticker_details(ticker, filing_days=args.filing_days)
+        details = scrape_ticker_details(ticker, filing_days=args.filing_days, trade_type=args.trade_type)
         
         if details:
             # Filter by enabled roles

@@ -17,7 +17,15 @@ const TradeCard = ({ trade }) => {
   const otherCount = parseInt(trade.Other_Count) || 0;
   const value = trade.Value;
   const tradeDate = trade.Trade_Date;
-  const deltaOwn = trade.Delta_Own;
+  const tradeType = trade.Trade_Type || '';
+  const isSale = tradeType.includes('Sale') || tradeType.includes('S -');
+  
+  // For sales, Delta_Own should be displayed as negative
+  let deltaOwn = trade.Delta_Own;
+  if (isSale && deltaOwn && !deltaOwn.startsWith('-')) {
+    deltaOwn = '-' + deltaOwn.replace('+', '');
+  }
+  
   const skinInGame = trade.Skin_in_Game;
   const rainyDayScore = parseInt(trade.Rainy_Day_Score) || 0;
   const healthFlags = trade.Health_Flags;
@@ -88,7 +96,9 @@ const TradeCard = ({ trade }) => {
       {/* Badges Row */}
       <div className="flex flex-wrap gap-2 mb-4">
         {/* Insiders Count with Role Breakdown */}
-        <Tooltip text={`Number of insiders buying this stock. Breakdown: ${roleBreakdownText}. CEO/CFO/COO buys = C-suite conviction (strongest signal). Directors = board approval (less valuable if alone). Cluster buying (3+) is statistically one of the most reliable predictors of future price appreciation.`}>
+        <Tooltip text={isSale
+          ? `Number of insiders selling this stock. Breakdown: ${roleBreakdownText}. Cluster selling (3+) can signal concerns about company outlook, though sales often happen for benign reasons (diversification, liquidity needs).`
+          : `Number of insiders buying this stock. Breakdown: ${roleBreakdownText}. CEO/CFO/COO buys = C-suite conviction (strongest signal). Directors = board approval (less valuable if alone). Cluster buying (3+) is statistically one of the most reliable predictors of future price appreciation.`}>
           <span className="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-sm font-medium border border-blue-500/30">
             👥 {insidersCount} Insiders ({roleBreakdownText})
           </span>
@@ -113,17 +123,21 @@ const TradeCard = ({ trade }) => {
       {/* Trade Info */}
       <div className="space-y-3 mb-4">
         <div className="flex justify-between items-center">
-          <Tooltip text="Total dollar amount insiders spent buying shares. Higher = more serious. $50k = casual, $150k+ = confident, $500k+ = very bullish, $1M+ = exceptional conviction.">
+          <Tooltip text={isSale
+            ? "Total dollar amount insiders received from selling shares. Higher = bigger selloff. -$50k = casual, -$150k+ = noteworthy, -$500k+ = significant, -$1M+ = major liquidation."
+            : "Total dollar amount insiders spent buying shares. Higher = more serious. $50k = casual, $150k+ = confident, $500k+ = very bullish, $1M+ = exceptional conviction."}>
             <span className="text-slate-400 text-sm border-b border-dotted border-slate-600 cursor-help">Trade Value</span>
           </Tooltip>
-          <span className="text-white font-semibold">{value}</span>
+          <span className={`font-semibold ${isSale ? 'text-red-400' : 'text-white'}`}>{value}</span>
         </div>
         
         <div className="flex justify-between items-center">
-          <Tooltip text="How much their personal stake increased. +5% = meaningful, +10% = significant, +20%+ = major commitment. This shows conviction better than dollar amount - a CEO doubling their holdings is huge regardless of price.">
+          <Tooltip text={isSale 
+            ? "How much their personal stake decreased. -5% = meaningful, -10% = significant, -20%+ = major selloff. For sales, this shows how much of their holdings they're dumping."
+            : "How much their personal stake increased. +5% = meaningful, +10% = significant, +20%+ = major commitment. This shows conviction better than dollar amount - a CEO doubling their holdings is huge regardless of price."}>
             <span className="text-slate-400 text-sm border-b border-dotted border-slate-600 cursor-help">Ownership Change</span>
           </Tooltip>
-          <span className="text-emerald-400 font-semibold">{deltaOwn}</span>
+          <span className={`font-semibold ${isSale ? 'text-red-400' : 'text-emerald-400'}`}>{deltaOwn}</span>
         </div>
 
         <div className="flex justify-between items-center">

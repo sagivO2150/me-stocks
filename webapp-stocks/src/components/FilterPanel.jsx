@@ -9,6 +9,7 @@ function FilterPanel({ onRunScraper, isLoading }) {
     minInsiders: 3,
     minValue: 150,
     minOwnChange: 0,
+    tradeType: 'purchase',
     includeCOB: true,
     includeCEO: true,
     includePres: true,
@@ -55,6 +56,39 @@ function FilterPanel({ onRunScraper, isLoading }) {
 
       {showFilters && (
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Trade Type Toggle */}
+          <div className="bg-slate-700/30 rounded-lg p-4 border border-slate-600">
+            <label className="block text-slate-300 mb-3">
+              <Tooltip text="Choose whether to search for insider purchases (bullish signal - insiders buying stock) or sales (could indicate various reasons - profit taking, portfolio rebalancing, or concern about company).">
+                <span className="border-b border-dotted border-slate-500">Trade Type</span>
+              </Tooltip>
+            </label>
+            <div className="flex items-center space-x-4">
+              <label className="flex items-center space-x-3 cursor-pointer">
+                <input
+                  type="radio"
+                  name="tradeType"
+                  value="purchase"
+                  checked={filters.tradeType === 'purchase'}
+                  onChange={(e) => setFilters({...filters, tradeType: e.target.value})}
+                  className="w-5 h-5 text-emerald-500 bg-slate-700 border-slate-600 focus:ring-emerald-500"
+                />
+                <span className="text-slate-200 font-medium">📈 Purchases (Bullish)</span>
+              </label>
+              <label className="flex items-center space-x-3 cursor-pointer">
+                <input
+                  type="radio"
+                  name="tradeType"
+                  value="sale"
+                  checked={filters.tradeType === 'sale'}
+                  onChange={(e) => setFilters({...filters, tradeType: e.target.value})}
+                  className="w-5 h-5 text-red-500 bg-slate-700 border-slate-600 focus:ring-red-500"
+                />
+                <span className="text-slate-200 font-medium">📉 Sales (Bearish)</span>
+              </label>
+            </div>
+          </div>
+
           {/* Price & Value Section */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
@@ -74,7 +108,9 @@ function FilterPanel({ onRunScraper, isLoading }) {
 
             <div>
               <label className="block text-slate-300 mb-2">
-                <Tooltip text="Total dollar value of insider purchases. Higher = insiders putting more 'skin in the game' = stronger conviction signal. $50k = casual buy, $150k+ = serious confidence, $500k+ = very bullish.">
+                <Tooltip text={filters.tradeType === 'purchase' 
+                  ? "Total dollar value of insider purchases. Higher = insiders putting more 'skin in the game' = stronger conviction signal. $50k = casual buy, $150k+ = serious confidence, $500k+ = very bullish."
+                  : "Total dollar value of insider sales. Higher = more significant sale. Note: Sales can happen for many reasons (diversification, liquidity needs, not always bearish)."}>
                   <span className="border-b border-dotted border-slate-500">Minimum Transaction Value ($k)</span>
                 </Tooltip>
               </label>
@@ -119,8 +155,13 @@ function FilterPanel({ onRunScraper, isLoading }) {
 
             <div>
               <label className="block text-slate-300 mb-2">
-                <Tooltip text="Minimum ownership increase percentage. 0% = any increase, 10%+ = meaningful commitment, 50%+ = major stake increase, 100%+ = doubling or more. Higher values = stronger conviction but fewer results. Filters for 'skin in the game'.">
-                  <span className="border-b border-dotted border-slate-500">Min Ownership Chg (%)</span>
+                <Tooltip text={filters.tradeType === 'purchase' 
+                  ? "Minimum ownership increase percentage. 0% = any increase, 10%+ = meaningful commitment, 50%+ = major stake increase, 100%+ = doubling or more. Higher values = stronger conviction but fewer results. Filters for 'skin in the game'."
+                  : "Minimum ownership decrease percentage (how much they sold). 0% = any sale, 10%+ = meaningful reduction, 50%+ = major stake decrease. For sales, this represents the % of holdings they sold off."}>
+                  <span className="border-b border-dotted border-slate-500">
+                    Min Ownership Chg (%)
+                    {filters.tradeType === 'sale' && ' - Decrease'}
+                  </span>
                 </Tooltip>
               </label>
               <input
