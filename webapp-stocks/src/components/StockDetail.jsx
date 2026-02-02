@@ -164,20 +164,20 @@ const StockDetail = ({ trade, onClose }) => {
     });
   };
 
-  // Custom tooltip for chart - only show when hovering over insider trades
+  // Custom tooltip for chart - show on hover with insider activity highlighted
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       
-      // Only show tooltip if there's insider activity on this date
-      if (data.purchaseCount === 0 && data.saleCount === 0) {
-        return null;
-      }
+      // Show tooltip, but only highlight insider activity if present
+      const hasInsiderActivity = data.purchaseCount > 0 || data.saleCount > 0;
       
       return (
         <div className="bg-slate-800 border border-slate-600 rounded-lg p-3 shadow-xl">
           <p className="text-slate-300 text-sm font-semibold mb-2">{data.date}</p>
-          <p className="text-slate-400 text-xs mb-2">Stock Price: ${data.close?.toFixed(2) || payload[0].value.toFixed(2)}</p>
+          {!hasInsiderActivity && (
+            <p className="text-slate-500 text-xs italic">No insider activity</p>
+          )}
           {data.purchaseCount > 0 && (
             <div className="mt-2 pt-2 border-t border-slate-700">
               <p className="text-emerald-400 text-sm font-semibold">
@@ -342,8 +342,8 @@ const StockDetail = ({ trade, onClose }) => {
                         const displayHours = hours % 12 || 12;
                         return `${displayHours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
                       }
-                      // For daily data, show month/day
-                      return `${date.getMonth() + 1}/${date.getDate()}`;
+                      // For daily data, show day/month (Israeli/European format)
+                      return `${date.getDate()}/${date.getMonth() + 1}`;
                     }}
                   />
                   <YAxis 
@@ -364,7 +364,7 @@ const StockDetail = ({ trade, onClose }) => {
                       return `$${value}`;
                     }}
                   />
-                  <ChartTooltip content={<CustomTooltip />} />
+                  <ChartTooltip content={<CustomTooltip />} trigger="axis" cursor={{ stroke: '#475569', strokeWidth: 1, strokeDasharray: '3 3' }} />
                   <Area 
                     yAxisId="price"
                     type="monotone" 
@@ -386,7 +386,7 @@ const StockDetail = ({ trade, onClose }) => {
                       dot={(dotProps) => {
                         const { cx, cy, payload } = dotProps;
                         if (payload && payload.purchases > 0) {
-                          return <circle key={`purchase-${cx}-${cy}`} cx={cx} cy={cy} r={5} fill="#10b981" stroke="#fff" strokeWidth={2} />;
+                          return <circle key={`purchase-${cx}-${cy}`} cx={cx} cy={cy} r={8} fill="#10b981" stroke="#fff" strokeWidth={2} />;
                         }
                         // Return invisible dot to maintain line continuity
                         return <circle key={`purchase-empty-${cx}-${cy}`} cx={cx} cy={cy} r={0} fill="none" />;
@@ -394,7 +394,7 @@ const StockDetail = ({ trade, onClose }) => {
                       activeDot={(dotProps) => {
                         const { cx, cy, payload } = dotProps;
                         if (payload && payload.purchases > 0) {
-                          return <circle key={`purchase-active-${cx}-${cy}`} cx={cx} cy={cy} r={8} fill="#10b981" stroke="#fff" strokeWidth={3} />;
+                          return <circle key={`purchase-active-${cx}-${cy}`} cx={cx} cy={cy} r={12} fill="#10b981" stroke="#fff" strokeWidth={3} />;
                         }
                         return false;
                       }}
@@ -411,7 +411,7 @@ const StockDetail = ({ trade, onClose }) => {
                       dot={(dotProps) => {
                         const { cx, cy, payload } = dotProps;
                         if (payload && payload.sales > 0) {
-                          return <circle key={`sale-${cx}-${cy}`} cx={cx} cy={cy} r={5} fill="#ef4444" stroke="#fff" strokeWidth={2} />;
+                          return <circle key={`sale-${cx}-${cy}`} cx={cx} cy={cy} r={8} fill="#ef4444" stroke="#fff" strokeWidth={2} />;
                         }
                         // Return invisible dot to maintain line continuity
                         return <circle key={`sale-empty-${cx}-${cy}`} cx={cx} cy={cy} r={0} fill="none" />;
@@ -419,7 +419,7 @@ const StockDetail = ({ trade, onClose }) => {
                       activeDot={(dotProps) => {
                         const { cx, cy, payload } = dotProps;
                         if (payload && payload.sales > 0) {
-                          return <circle key={`sale-active-${cx}-${cy}`} cx={cx} cy={cy} r={8} fill="#ef4444" stroke="#fff" strokeWidth={3} />;
+                          return <circle key={`sale-active-${cx}-${cy}`} cx={cx} cy={cy} r={12} fill="#ef4444" stroke="#fff" strokeWidth={3} />;
                         }
                         return false;
                       }}
