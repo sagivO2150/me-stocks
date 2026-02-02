@@ -155,6 +155,52 @@ app.get('/api/stock-history/:ticker', (req, res) => {
   });
 });
 
+// Insider trades endpoint
+app.get('/api/insider-trades/:ticker', (req, res) => {
+  const ticker = req.params.ticker.toUpperCase();
+  const daysBack = req.query.days || 1461; // Default to ~4 years
+  
+  console.log(`Fetching insider trades for ${ticker}, days back: ${daysBack}`);
+  
+  const pythonScript = path.join(__dirname, '../scripts/fetch_insider_trades.py');
+  const pythonProcess = spawn('/opt/homebrew/bin/python3', [pythonScript, ticker, daysBack]);
+  
+  let output = '';
+  let errorOutput = '';
+  
+  pythonProcess.stdout.on('data', (data) => {
+    output += data.toString();
+  });
+  
+  pythonProcess.stderr.on('data', (data) => {
+    errorOutput += data.toString();
+    console.error(data.toString());
+  });
+  
+  pythonProcess.on('close', (code) => {
+    if (code === 0) {
+      try {
+        const result = JSON.parse(output);
+        res.json(result);
+      } catch (e) {
+        console.error('Failed to parse Python output:', e);
+        res.status(500).json({
+          success: false,
+          error: 'Failed to parse insider trades data',
+          details: e.message
+        });
+      }
+    } else {
+      console.error(`Python script exited with code ${code}`);
+      res.status(500).json({
+        success: false,
+        error: `Failed to fetch insider trades (exit code ${code})`,
+        details: errorOutput
+      });
+    }
+  });
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Server is running' });

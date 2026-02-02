@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as ChartTooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as ChartTooltip, ResponsiveContainer, Area, AreaChart, ComposedChart } from 'recharts';
 import Tooltip from './Tooltip';
 
 const StockDetail = ({ trade, onClose }) => {
   const [stockHistory, setStockHistory] = useState(null);
+  const [insiderTrades, setInsiderTrades] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [insiderLoading, setInsiderLoading] = useState(true);
   const [error, setError] = useState(null);
   const [period, setPeriod] = useState('1y');
 
@@ -13,6 +15,10 @@ const StockDetail = ({ trade, onClose }) => {
   useEffect(() => {
     fetchStockHistory(period);
   }, [period, ticker]);
+
+  useEffect(() => {
+    fetchInsiderTrades();
+  }, [ticker]);
 
   const fetchStockHistory = async (selectedPeriod) => {
     setLoading(true);
@@ -31,6 +37,23 @@ const StockDetail = ({ trade, onClose }) => {
       setError('Failed to connect to server: ' + err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchInsiderTrades = async () => {
+    setInsiderLoading(true);
+    
+    try {
+      const response = await fetch(`http://localhost:3001/api/insider-trades/${ticker}`);
+      const data = await response.json();
+      
+      if (data.success) {
+        setInsiderTrades(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch insider trades:', err);
+    } finally {
+      setInsiderLoading(false);
     }
   };
 
@@ -93,15 +116,99 @@ const StockDetail = ({ trade, onClose }) => {
     return 'bg-orange-500/20';
   };
 
-  // Custom tooltip for chart
+  // Merge insider trades with stock history for chart display
+  const mergedChartData = () => {
+    if (!stockHistory || !stockHistory.history) return [];
+    
+    const data = [...stockHistory.history];
+    
+    if (!insiderTrades) return data;
+    
+    // Create maps for purchases and sales by date (just date, not time)
+    const purchasesByDate = {};
+    const salesByDate = {};
+    
+    insiderTrades.purchases?.forEach(trade => {
+      const dateKey = trade.date; // Already in YYYY-MM-DD format
+      if (!purchasesByDate[dateKey]) {
+        purchasesByDate[dateKey] = { shares: 0, value: 0, count: 0 };
+      }
+      purchasesByDate[dateKey].shares += trade.shares;
+      purchasesByDate[dateKey].value += trade.value;
+      purchasesByDate[dateKey].count += 1;
+    });
+    
+    insiderTrades.sales?.forEach(trade => {
+      const dateKey = trade.date;
+      if (!salesByDate[dateKey]) {
+        salesByDate[dateKey] = { shares: 0, value: 0, count: 0 };
+      }
+      salesByDate[dateKey].shares += trade.shares;
+      salesByDate[dateKey].value += trade.value;
+      salesByDate[dateKey].count += 1;
+    });
+    
+    // Merge with stock data
+    return data.map(point => {
+      const dateKey = point.date.split(' ')[0]; // Extract date part (YYYY-MM-DD)
+      
+      return {
+        ...point,
+        purchases: purchasesByDate[dateKey]?.value || 0,
+        sales: salesByDate[dateKey]?.value || 0,
+        purchaseShares: purchasesByDate[dateKey]?.shares || 0,
+        saleShares: salesByDate[dateKey]?.shares || 0,
+        purchaseCount: purchasesByDate[dateKey]?.count || 0,
+        saleCount: salesByDate[dateKey]?.count || 0
+      };
+    });
+  };
+
+  // Custom tooltip for chart - only show when hovering over insider trades
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
+      const data = payload[0].payload;
+      
+      // Only show tooltip if there's insider activity on this date
+      if (data.purchaseCount === 0 && data.saleCount === 0) {
+        return null;
+      }
+      
       return (
         <div className="bg-slate-800 border border-slate-600 rounded-lg p-3 shadow-xl">
-          <p className="text-slate-300 text-sm">{payload[0].payload.date}</p>
-          <p className="text-white font-bold text-lg">${payload[0].value.toFixed(2)}</p>
-          {payload[0].payload.volume && (
-            <p className="text-slate-400 text-xs">Vol: {(payload[0].payload.volume / 1000000).toFixed(2)}M</p>
+          <p className="text-slate-300 text-sm font-semibold mb-2">{data.date}</p>
+          <p className="text-slate-400 text-xs mb-2">Stock Price: ${data.close?.toFixed(2) || payload[0].value.toFixed(2)}</p>
+          {data.purchaseCount > 0 && (
+            <div className="mt-2 pt-2 border-t border-slate-700">
+              <p className="text-emerald-400 text-sm font-semibold">
+                🟢 {data.purchaseCount} Insider Purchase{data.purchaseCount > 1 ? 's' : ''}
+              </p>
+              <p className="text-emerald-400 text-xs">
+                {data.purchaseShares.toLocaleString()} shares • ${
+                  data.purchases >= 1000000 
+                    ? (data.purchases / 1000000).toFixed(2) + 'M'
+                    : data.purchases >= 1000
+                    ? (data.purchases / 1000).toFixed(1) + 'K'
+                    : data.purchases.toFixed(0)
+                }
+              </p>
+            </div>
+          )}
+          {data.saleCount > 0 && (
+            <div className="mt-2 pt-2 border-t border-slate-700">
+              <p className="text-red-400 text-sm font-semibold">
+                🔴 {data.saleCount} Insider Sale{data.saleCount > 1 ? 's' : ''}
+              </p>
+              <p className="text-red-400 text-xs">
+                {data.saleShares.toLocaleString()} shares • ${
+                  data.sales >= 1000000 
+                    ? (data.sales / 1000000).toFixed(2) + 'M'
+                    : data.sales >= 1000
+                    ? (data.sales / 1000).toFixed(1) + 'K'
+                    : data.sales.toFixed(0)
+                }
+              </p>
+            </div>
           )}
         </div>
       );
@@ -115,7 +222,7 @@ const StockDetail = ({ trade, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+      <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto shadow-2xl focus:outline-none focus:border-slate-700 active:outline-none active:border-slate-700" style={{outline: 'none'}}>
         {/* Header */}
         <div className="sticky top-0 bg-slate-900 border-b border-slate-700 p-6 flex justify-between items-start z-10">
           <div className="flex-1">
@@ -176,7 +283,29 @@ const StockDetail = ({ trade, onClose }) => {
           </div>
 
           {/* Chart */}
-          <div className="bg-slate-800/50 rounded-xl p-6 mb-6">
+          <div className="bg-slate-800/50 rounded-xl p-6 mb-6" style={{outline: 'none'}} tabIndex={-1}>
+            {/* Insider Activity Legend */}
+            {insiderTrades && (insiderTrades.total_purchases > 0 || insiderTrades.total_sales > 0) && (
+              <div className="flex justify-center gap-6 mb-4 text-sm">
+                {insiderTrades.total_purchases > 0 && (
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-0.5 bg-emerald-400"></div>
+                    <span className="text-slate-300">
+                      Insider Purchases ({insiderTrades.total_purchases})
+                    </span>
+                  </div>
+                )}
+                {insiderTrades.total_sales > 0 && (
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-0.5 bg-red-500" style={{backgroundImage: 'repeating-linear-gradient(90deg, #ef4444 0, #ef4444 3px, transparent 3px, transparent 6px)'}}></div>
+                    <span className="text-slate-300">
+                      Insider Sales ({insiderTrades.total_sales})
+                    </span>
+                  </div>
+                )}
+              </div>
+            )}
+
             {loading && (
               <div className="h-96 flex items-center justify-center">
                 <div className="text-slate-400 text-xl">Loading chart...</div>
@@ -191,7 +320,7 @@ const StockDetail = ({ trade, onClose }) => {
             
             {!loading && !error && stockHistory && stockHistory.history && (
               <ResponsiveContainer width="100%" height={400}>
-                <AreaChart data={stockHistory.history} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                <ComposedChart data={mergedChartData()} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                   <defs>
                     <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor={chartColor} stopOpacity={0.3}/>
@@ -218,21 +347,85 @@ const StockDetail = ({ trade, onClose }) => {
                     }}
                   />
                   <YAxis 
+                    yAxisId="price"
                     stroke="#94a3b8"
                     tick={{ fill: '#94a3b8' }}
                     domain={['auto', 'auto']}
                     tickFormatter={(value) => `$${value.toFixed(2)}`}
                   />
+                  <YAxis 
+                    yAxisId="insider"
+                    orientation="right"
+                    stroke="#94a3b8"
+                    tick={{ fill: '#94a3b8' }}
+                    tickFormatter={(value) => {
+                      if (value >= 1000000) return `$${(value / 1000000).toFixed(1)}M`;
+                      if (value >= 1000) return `$${(value / 1000).toFixed(0)}K`;
+                      return `$${value}`;
+                    }}
+                  />
                   <ChartTooltip content={<CustomTooltip />} />
                   <Area 
+                    yAxisId="price"
                     type="monotone" 
                     dataKey="close" 
                     stroke={chartColor} 
                     strokeWidth={2}
                     fillOpacity={1} 
-                    fill="url(#colorPrice)" 
+                    fill="url(#colorPrice)"
+                    activeDot={false}
+                    isAnimationActive={false}
                   />
-                </AreaChart>
+                  {insiderTrades && insiderTrades.total_purchases > 0 && (
+                    <Line 
+                      yAxisId="insider"
+                      type="monotone"
+                      dataKey="purchases"
+                      stroke="#10b981"
+                      strokeWidth={3}
+                      dot={(dotProps) => {
+                        const { cx, cy, payload } = dotProps;
+                        if (payload && payload.purchases > 0) {
+                          return <circle key={`purchase-${cx}-${cy}`} cx={cx} cy={cy} r={5} fill="#10b981" stroke="#fff" strokeWidth={2} />;
+                        }
+                        // Return invisible dot to maintain line continuity
+                        return <circle key={`purchase-empty-${cx}-${cy}`} cx={cx} cy={cy} r={0} fill="none" />;
+                      }}
+                      activeDot={(dotProps) => {
+                        const { cx, cy, payload } = dotProps;
+                        if (payload && payload.purchases > 0) {
+                          return <circle key={`purchase-active-${cx}-${cy}`} cx={cx} cy={cy} r={8} fill="#10b981" stroke="#fff" strokeWidth={3} />;
+                        }
+                        return false;
+                      }}
+                    />
+                  )}
+                  {insiderTrades && insiderTrades.total_sales > 0 && (
+                    <Line 
+                      yAxisId="insider"
+                      type="monotone"
+                      dataKey="sales"
+                      stroke="#ef4444"
+                      strokeWidth={3}
+                      strokeDasharray="5 5"
+                      dot={(dotProps) => {
+                        const { cx, cy, payload } = dotProps;
+                        if (payload && payload.sales > 0) {
+                          return <circle key={`sale-${cx}-${cy}`} cx={cx} cy={cy} r={5} fill="#ef4444" stroke="#fff" strokeWidth={2} />;
+                        }
+                        // Return invisible dot to maintain line continuity
+                        return <circle key={`sale-empty-${cx}-${cy}`} cx={cx} cy={cy} r={0} fill="none" />;
+                      }}
+                      activeDot={(dotProps) => {
+                        const { cx, cy, payload } = dotProps;
+                        if (payload && payload.sales > 0) {
+                          return <circle key={`sale-active-${cx}-${cy}`} cx={cx} cy={cy} r={8} fill="#ef4444" stroke="#fff" strokeWidth={3} />;
+                        }
+                        return false;
+                      }}
+                    />
+                  )}
+                </ComposedChart>
               </ResponsiveContainer>
             )}
           </div>
