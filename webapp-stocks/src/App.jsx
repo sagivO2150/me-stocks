@@ -8,6 +8,7 @@ import StockDetail from './components/StockDetail';
 function App() {
   const [trades, setTrades] = useState([]);
   const [politicalTrades, setPoliticalTrades] = useState([]);
+  const [allPoliticalTrades, setAllPoliticalTrades] = useState([]); // Store original unfiltered
   const [viewMode, setViewMode] = useState('insider'); // 'insider', 'political', or 'both'
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -49,17 +50,12 @@ function App() {
         return;
       }
       
-      const csvText = await response.text();
-      
-      Papa.parse(csvText, {
-        header: true,
-        complete: (results) => {
-          setPoliticalTrades(results.data.filter(row => row.ticker)); // Filter out empty rows
-        },
-        error: (error) => {
-          console.error('Error parsing political trades:', error.message);
-        }
-      });
+      const data = await response.json();
+      if (data.success && data.trades) {
+        const allTrades = data.trades;
+        setAllPoliticalTrades(allTrades); // Store original
+        setPoliticalTrades(allTrades); // Display all initially
+      }
     } catch (err) {
       console.error('Error loading political trades:', err.message);
     }
@@ -195,7 +191,54 @@ function App() {
         </div>
 
         {/* Filter Panel */}
-        <FilterPanel onRunScraper={handleRunScraper} isLoading={scraperLoading} />
+        <FilterPanel 
+          onRunScraper={handleRunScraper} 
+          isLoading={scraperLoading} 
+          viewMode={viewMode}
+          onPoliticalFilterChange={(filters) => {
+            console.log('Applying political filters:', filters);
+            
+            // Apply political filters to original data
+            const filtered = allPoliticalTrades.filter(trade => {
+              // Amount filter
+              const tradeAmount = parseFloat(trade.amount_value);
+              if (isNaN(tradeAmount) || tradeAmount < filters.minAmount) {
+                return false;
+              }
+              
+              // Trade type filter
+              if (filters.tradeType !== 'all' && trade.trade_type !== filters.tradeType) {
+                return false;
+              }
+              
+              // Party filter
+              if (filters.party !== 'all' && trade.party !== filters.party) {
+                return false;
+              }
+              
+              // Chamber filter - case insensitive comparison
+              if (filters.chamber !== 'all') {
+                const tradeChamber = (trade.source || '').toLowerCase();
+                if (tradeChamber !== filters.chamber.toLowerCase()) {
+                  return false;
+                }
+              }
+              
+              // Date filter
+              const tradeDate = new Date(trade.trade_date);
+              const cutoffDate = new Date();
+              cutoffDate.setDate(cutoffDate.getDate() - filters.days);
+              if (tradeDate < cutoffDate) {
+                return false;
+              }
+              
+              return true;
+            });
+            
+            console.log(`Filtered: ${filtered.length} / ${allPoliticalTrades.length} trades`);
+            setPoliticalTrades(filtered);
+          }}
+        />
 
         {/* Scraper Message */}
         {scraperMessage && (

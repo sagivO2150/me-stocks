@@ -13,6 +13,10 @@ const StockDetail = ({ trade, onClose }) => {
   const [period, setPeriod] = useState('1y');
 
   const ticker = trade.Ticker || trade.ticker;
+  const isPoliticalTrade = trade.source === 'senate' || trade.source === 'house' || trade.politician;
+  
+  console.log('StockDetail opened with trade:', trade);
+  console.log('Is political trade:', isPoliticalTrade);
 
   useEffect(() => {
     fetchStockHistory(period);
@@ -140,6 +144,9 @@ const StockDetail = ({ trade, onClose }) => {
   const mergedChartData = () => {
     if (!stockHistory || !stockHistory.history) return [];
     
+    console.log('Building merged chart data...');
+    console.log('Political trades:', politicalTrades);
+    
     const data = [...stockHistory.history];
     
     // Create maps for insider purchases and sales by date
@@ -173,25 +180,30 @@ const StockDetail = ({ trade, onClose }) => {
     const politicalSalesByDate = {};
     
     if (politicalTrades) {
+      console.log('Processing political purchases:', politicalTrades.purchases);
       politicalTrades.purchases?.forEach(trade => {
-        const dateKey = trade.date;
+        const dateKey = trade.trade_date; // Use trade_date field
+        console.log('Mapping political purchase:', trade.politician, dateKey, trade.amount_value);
         if (!politicalPurchasesByDate[dateKey]) {
           politicalPurchasesByDate[dateKey] = { value: 0, count: 0, politicians: [] };
         }
-        politicalPurchasesByDate[dateKey].value += trade.amount_value;
+        politicalPurchasesByDate[dateKey].value += parseFloat(trade.amount_value) || 0;
         politicalPurchasesByDate[dateKey].count += 1;
         politicalPurchasesByDate[dateKey].politicians.push(trade.politician);
       });
+      console.log('Political purchases by date map:', politicalPurchasesByDate);
       
       politicalTrades.sales?.forEach(trade => {
-        const dateKey = trade.date;
+        const dateKey = trade.trade_date; // Use trade_date field  
+        console.log('Mapping political sale:', trade.politician, dateKey, trade.amount_value);
         if (!politicalSalesByDate[dateKey]) {
           politicalSalesByDate[dateKey] = { value: 0, count: 0, politicians: [] };
         }
-        politicalSalesByDate[dateKey].value += trade.amount_value;
+        politicalSalesByDate[dateKey].value += parseFloat(trade.amount_value) || 0;
         politicalSalesByDate[dateKey].count += 1;
         politicalSalesByDate[dateKey].politicians.push(trade.politician);
       });
+      console.log('Political sales by date map:', politicalSalesByDate);
     }
     
     // Merge with stock data
@@ -355,22 +367,39 @@ const StockDetail = ({ trade, onClose }) => {
 
           {/* Chart */}
           <div className="bg-slate-800/50 rounded-xl p-6 mb-6" style={{outline: 'none'}} tabIndex={-1}>
-            {/* Insider Activity Legend */}
-            {insiderTrades && (insiderTrades.total_purchases > 0 || insiderTrades.total_sales > 0) && (
-              <div className="flex justify-center gap-6 mb-4 text-sm">
-                {insiderTrades.total_purchases > 0 && (
+            {/* Trade Activity Legend */}
+            {((insiderTrades && (insiderTrades.total_purchases > 0 || insiderTrades.total_sales > 0)) || 
+              (politicalTrades && (politicalTrades.purchases?.length > 0 || politicalTrades.sales?.length > 0))) && (
+              <div className="flex justify-center gap-4 mb-4 text-sm flex-wrap">
+                {insiderTrades && insiderTrades.total_purchases > 0 && (
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-0.5 bg-emerald-400"></div>
                     <span className="text-slate-300">
-                      Insider Purchases ({insiderTrades.total_purchases})
+                      🏢 Insider Purchases ({insiderTrades.total_purchases})
                     </span>
                   </div>
                 )}
-                {insiderTrades.total_sales > 0 && (
+                {insiderTrades && insiderTrades.total_sales > 0 && (
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-0.5 bg-red-500" style={{backgroundImage: 'repeating-linear-gradient(90deg, #ef4444 0, #ef4444 3px, transparent 3px, transparent 6px)'}}></div>
                     <span className="text-slate-300">
-                      Insider Sales ({insiderTrades.total_sales})
+                      🏢 Insider Sales ({insiderTrades.total_sales})
+                    </span>
+                  </div>
+                )}
+                {politicalTrades && politicalTrades.purchases?.length > 0 && (
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-0.5 bg-blue-400"></div>
+                    <span className="text-slate-300">
+                      🏛️ Political Purchases ({politicalTrades.purchases.length})
+                    </span>
+                  </div>
+                )}
+                {politicalTrades && politicalTrades.sales?.length > 0 && (
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-0.5 bg-purple-500" style={{backgroundImage: 'repeating-linear-gradient(90deg, #a855f7 0, #a855f7 3px, transparent 3px, transparent 6px)'}}></div>
+                    <span className="text-slate-300">
+                      🏛️ Political Sales ({politicalTrades.sales.length})
                     </span>
                   </div>
                 )}
@@ -496,6 +525,74 @@ const StockDetail = ({ trade, onClose }) => {
                       }}
                     />
                   )}
+                  {politicalTrades && politicalTrades.purchases?.length > 0 && (
+                    <Line 
+                      yAxisId="price"
+                      type="monotone"
+                      dataKey="close"
+                      stroke="transparent"
+                      strokeWidth={0}
+                      dot={(dotProps) => {
+                        const { cx, cy, payload, index } = dotProps;
+                        if (payload && payload.politicalPurchases > 0) {
+                          // Large prominent blue square at the stock price level
+                          return (
+                            <g key={`pol-purchase-${index}`}>
+                              <rect x={cx - 10} y={cy - 10} width={20} height={20} fill="#3b82f6" stroke="#fff" strokeWidth={3} />
+                              <text x={cx} y={cy - 20} textAnchor="middle" fill="#3b82f6" fontSize="20" fontWeight="bold">🏛️</text>
+                            </g>
+                          );
+                        }
+                        return null;
+                      }}
+                      activeDot={(dotProps) => {
+                        const { cx, cy, payload, index } = dotProps;
+                        if (payload && payload.politicalPurchases > 0) {
+                          return (
+                            <g key={`pol-purchase-active-${index}`}>
+                              <rect x={cx - 14} y={cy - 14} width={28} height={28} fill="#3b82f6" stroke="#fff" strokeWidth={4} />
+                              <text x={cx} y={cy - 25} textAnchor="middle" fill="#3b82f6" fontSize="24" fontWeight="bold">🏛️</text>
+                            </g>
+                          );
+                        }
+                        return false;
+                      }}
+                    />
+                  )}
+                  {politicalTrades && politicalTrades.sales?.length > 0 && (
+                    <Line 
+                      yAxisId="price"
+                      type="monotone"
+                      dataKey="close"
+                      stroke="transparent"
+                      strokeWidth={0}
+                      dot={(dotProps) => {
+                        const { cx, cy, payload, index } = dotProps;
+                        if (payload && payload.politicalSales > 0) {
+                          // Large prominent purple diamond at the stock price level
+                          return (
+                            <g key={`pol-sale-${index}`}>
+                              <rect x={cx - 10} y={cy - 10} width={20} height={20} fill="#a855f7" stroke="#fff" strokeWidth={3} transform={`rotate(45 ${cx} ${cy})`} />
+                              <text x={cx} y={cy - 20} textAnchor="middle" fill="#a855f7" fontSize="20" fontWeight="bold">🏛️</text>
+                            </g>
+                          );
+                        }
+                        return null;
+                      }}
+                      activeDot={(dotProps) => {
+                        const { cx, cy, payload, index } = dotProps;
+                        if (payload && payload.politicalSales > 0) {
+                          return (
+                            <g key={`pol-sale-active-${index}`}>
+                              <rect x={cx - 14} y={cy - 14} width={28} height={28} fill="#a855f7" stroke="#fff" strokeWidth={4} transform={`rotate(45 ${cx} ${cy})`} />
+                              <text x={cx} y={cy - 25} textAnchor="middle" fill="#a855f7" fontSize="24" fontWeight="bold">🏛️</text>
+                            </g>
+                          );
+                        }
+                        return false;
+                      }}
+                    />
+                  )}
                 </ComposedChart>
               </ResponsiveContainer>
             )}
@@ -503,10 +600,101 @@ const StockDetail = ({ trade, onClose }) => {
 
           {/* Two Column Layout for Details */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Left Column: Insider Trade Info */}
+            {/* Left Column: Trade Info */}
             <div className="space-y-4">
-              <h3 className="text-xl font-bold text-white mb-4">Insider Trade Details</h3>
+              <h3 className="text-xl font-bold text-white mb-4">
+                {isPoliticalTrade ? '🏛️ Political Trade Details' : 'Insider Trade Details'}
+              </h3>
               
+              {isPoliticalTrade ? (
+                /* Political Trade Details */
+                <>
+                  {/* Political Trade Badges */}
+                  <div className="flex flex-wrap gap-2">
+                    <span className="px-3 py-2 bg-blue-500/20 text-blue-400 rounded-lg text-sm font-medium border border-blue-500/30">
+                      🏛️ {trade.politician}
+                    </span>
+                    <span className={`px-3 py-2 rounded-lg text-sm font-medium border ${
+                      trade.party === 'Democrat' ? 'bg-blue-500/20 text-blue-400 border-blue-500/30' :
+                      trade.party === 'Republican' ? 'bg-red-500/20 text-red-400 border-red-500/30' :
+                      'bg-gray-500/20 text-gray-400 border-gray-500/30'
+                    }`}>
+                      {trade.party} • {trade.state || trade.district}
+                    </span>
+                    {trade.committee && (
+                      <span className="px-3 py-2 bg-purple-500/20 text-purple-400 rounded-lg text-sm font-medium border border-purple-500/30">
+                        ⚖️ {trade.committee}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Political Trade Stats */}
+                  <div className="bg-slate-800/50 rounded-xl p-4 space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-400">Transaction Type</span>
+                      <span className={`font-semibold text-lg ${
+                        trade.trade_type === 'Purchase' ? 'text-emerald-400' : 'text-red-400'
+                      }`}>
+                        {trade.trade_type}
+                      </span>
+                    </div>
+                    
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-400">Amount Range</span>
+                      <span className="text-white font-semibold">{trade.amount_range}</span>
+                    </div>
+
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-400">Estimated Value</span>
+                      <span className="text-white font-semibold text-lg">
+                        ${(parseFloat(trade.amount_value) / 1000000).toFixed(1)}M
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-400">Trade Date</span>
+                      <span className="text-white font-semibold">{trade.trade_date}</span>
+                    </div>
+                  </div>
+
+                  {/* Other Politicians Trading This Stock */}
+                  {politicalTrades && (politicalTrades.purchases?.length > 0 || politicalTrades.sales?.length > 0) && (
+                    <div className="bg-slate-800/50 rounded-xl p-4">
+                      <div className="text-sm text-slate-400 mb-3 font-semibold">Other Political Activity on {ticker}</div>
+                      
+                      {politicalTrades.purchases?.length > 0 && (
+                        <div className="mb-3">
+                          <div className="text-xs text-emerald-400 mb-2">📈 Purchases ({politicalTrades.purchases.length})</div>
+                          {politicalTrades.purchases.slice(0, 5).map((pt, idx) => (
+                            <div key={idx} className="text-sm text-slate-300 mb-1">
+                              • {pt.politician} ({pt.party}) - {pt.trade_date} - {pt.amount_range}
+                            </div>
+                          ))}
+                          {politicalTrades.purchases.length > 5 && (
+                            <div className="text-xs text-slate-500 italic">+{politicalTrades.purchases.length - 5} more purchases</div>
+                          )}
+                        </div>
+                      )}
+                      
+                      {politicalTrades.sales?.length > 0 && (
+                        <div>
+                          <div className="text-xs text-red-400 mb-2">📉 Sales ({politicalTrades.sales.length})</div>
+                          {politicalTrades.sales.slice(0, 5).map((pt, idx) => (
+                            <div key={idx} className="text-sm text-slate-300 mb-1">
+                              • {pt.politician} ({pt.party}) - {pt.trade_date} - {pt.amount_range}
+                            </div>
+                          ))}
+                          {politicalTrades.sales.length > 5 && (
+                            <div className="text-xs text-slate-500 italic">+{politicalTrades.sales.length - 5} more sales</div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </>
+              ) : (
+                /* Insider Trade Details */
+                <>
               {/* Badges */}
               <div className="flex flex-wrap gap-2">
                 <Tooltip text={`Number of insiders buying this stock. Breakdown: ${roleBreakdownText}. CEO/CFO/COO buys = C-suite conviction (strongest signal).`}>
@@ -592,6 +780,8 @@ const StockDetail = ({ trade, onClose }) => {
                     </Tooltip>
                   )}
                 </div>
+              )}
+                </>
               )}
             </div>
 

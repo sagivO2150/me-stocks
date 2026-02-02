@@ -225,8 +225,48 @@ app.get('/api/political-trades', (req, res) => {
   
   try {
     const csvData = fs.readFileSync(csvPath, 'utf-8');
-    res.setHeader('Content-Type', 'text/csv');
-    res.send(csvData);
+    const lines = csvData.trim().split('\n');
+    
+    // Parse CSV properly handling quoted fields with commas
+    const parseCSVLine = (line) => {
+      const result = [];
+      let current = '';
+      let inQuotes = false;
+      
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        if (char === '"') {
+          inQuotes = !inQuotes;
+        } else if (char === ',' && !inQuotes) {
+          result.push(current.trim());
+          current = '';
+        } else {
+          current += char;
+        }
+      }
+      result.push(current.trim());
+      return result;
+    };
+    
+    const headers = parseCSVLine(lines[0]);
+    const trades = [];
+    
+    for (let i = 1; i < lines.length; i++) {
+      if (lines[i].trim()) {
+        const values = parseCSVLine(lines[i]);
+        const trade = {};
+        headers.forEach((header, idx) => {
+          trade[header] = values[idx] || '';
+        });
+        trades.push(trade);
+      }
+    }
+    
+    res.json({
+      success: true,
+      trades: trades,
+      total: trades.length
+    });
   } catch (err) {
     console.error('Error reading political trades CSV:', err);
     res.status(500).json({

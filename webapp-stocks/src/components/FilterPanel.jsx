@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Tooltip from './Tooltip';
 
-function FilterPanel({ onRunScraper, isLoading }) {
+function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onPoliticalFilterChange }) {
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({
     minPrice: 5,
@@ -21,10 +21,26 @@ function FilterPanel({ onRunScraper, isLoading }) {
     include10Owner: true,
     includeOther: true
   });
+  
+  // Political filters
+  const [politicalFilters, setPoliticalFilters] = useState({
+    minAmount: 50000, // $50K minimum
+    tradeType: 'all', // 'all', 'Purchase', 'Sale'
+    party: 'all', // 'all', 'Democrat', 'Republican', 'Independent'
+    chamber: 'all', // 'all', 'senate', 'house'
+    days: 90 // Last 90 days
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onRunScraper(filters);
+  };
+  
+  const handlePoliticalFilterChange = (newFilters) => {
+    setPoliticalFilters(newFilters);
+    if (onPoliticalFilterChange) {
+      onPoliticalFilterChange(newFilters);
+    }
   };
 
   const toggleCLevelRoles = () => {
@@ -45,7 +61,9 @@ function FilterPanel({ onRunScraper, isLoading }) {
   return (
     <div className="mb-8 bg-slate-800 rounded-lg p-6 border border-slate-700">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold text-white">🔧 Scraper Filters</h2>
+        <h2 className="text-2xl font-bold text-white">
+          {viewMode === 'political' || viewMode === 'both' ? '🏛️ Political Intelligence Filters' : '🔧 Insider Scraper Filters'}
+        </h2>
         <button
           onClick={() => setShowFilters(!showFilters)}
           className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition"
@@ -54,9 +72,177 @@ function FilterPanel({ onRunScraper, isLoading }) {
         </button>
       </div>
 
-      {showFilters && (
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Trade Type Toggle */}
+      {showFilters && viewMode === 'political' ? (
+        /* Political Filters */
+        <div className="space-y-6">
+          {/* Minimum Amount Filter */}
+          <div className="bg-slate-700/30 rounded-lg p-4 border border-slate-600">
+            <label className="block text-slate-300 mb-2">
+              <Tooltip text="Filter out small trades. Only show transactions above this threshold.">
+                <span className="border-b border-dotted border-slate-500">Minimum Transaction Amount</span>
+              </Tooltip>
+            </label>
+            <div className="flex items-center gap-4">
+              <input
+                type="range"
+                min="1000"
+                max="500000"
+                step="1000"
+                value={politicalFilters.minAmount}
+                onChange={(e) => handlePoliticalFilterChange({ ...politicalFilters, minAmount: parseInt(e.target.value) })}
+                className="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer"
+              />
+              <span className="text-white font-semibold min-w-20">
+                ${(politicalFilters.minAmount / 1000).toFixed(0)}K
+              </span>
+            </div>
+          </div>
+
+          {/* Trade Type Filter */}
+          <div className="bg-slate-700/30 rounded-lg p-4 border border-slate-600">
+            <label className="block text-slate-300 mb-3">Transaction Type</label>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => handlePoliticalFilterChange({ ...politicalFilters, tradeType: 'all' })}
+                className={`px-4 py-2 rounded-lg font-medium transition ${
+                  politicalFilters.tradeType === 'all'
+                    ? 'bg-purple-600 text-white'
+                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                }`}
+              >
+                All Trades
+              </button>
+              <button
+                type="button"
+                onClick={() => handlePoliticalFilterChange({ ...politicalFilters, tradeType: 'Purchase' })}
+                className={`px-4 py-2 rounded-lg font-medium transition ${
+                  politicalFilters.tradeType === 'Purchase'
+                    ? 'bg-emerald-600 text-white'
+                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                }`}
+              >
+                📈 Purchases
+              </button>
+              <button
+                type="button"
+                onClick={() => handlePoliticalFilterChange({ ...politicalFilters, tradeType: 'Sale' })}
+                className={`px-4 py-2 rounded-lg font-medium transition ${
+                  politicalFilters.tradeType === 'Sale'
+                    ? 'bg-red-600 text-white'
+                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                }`}
+              >
+                📉 Sales
+              </button>
+            </div>
+          </div>
+
+          {/* Party Filter */}
+          <div className="bg-slate-700/30 rounded-lg p-4 border border-slate-600">
+            <label className="block text-slate-300 mb-3">Political Party</label>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => handlePoliticalFilterChange({ ...politicalFilters, party: 'all' })}
+                className={`px-4 py-2 rounded-lg font-medium transition ${
+                  politicalFilters.party === 'all'
+                    ? 'bg-purple-600 text-white'
+                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                }`}
+              >
+                All Parties
+              </button>
+              <button
+                type="button"
+                onClick={() => handlePoliticalFilterChange({ ...politicalFilters, party: 'Democrat' })}
+                className={`px-4 py-2 rounded-lg font-medium transition ${
+                  politicalFilters.party === 'Democrat'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                }`}
+              >
+                Democrat
+              </button>
+              <button
+                type="button"
+                onClick={() => handlePoliticalFilterChange({ ...politicalFilters, party: 'Republican' })}
+                className={`px-4 py-2 rounded-lg font-medium transition ${
+                  politicalFilters.party === 'Republican'
+                    ? 'bg-red-600 text-white'
+                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                }`}
+              >
+                Republican
+              </button>
+            </div>
+          </div>
+
+          {/* Chamber Filter */}
+          <div className="bg-slate-700/30 rounded-lg p-4 border border-slate-600">
+            <label className="block text-slate-300 mb-3">Chamber</label>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => handlePoliticalFilterChange({ ...politicalFilters, chamber: 'all' })}
+                className={`px-4 py-2 rounded-lg font-medium transition ${
+                  politicalFilters.chamber === 'all'
+                    ? 'bg-purple-600 text-white'
+                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                }`}
+              >
+                Both Chambers
+              </button>
+              <button
+                type="button"
+                onClick={() => handlePoliticalFilterChange({ ...politicalFilters, chamber: 'senate' })}
+                className={`px-4 py-2 rounded-lg font-medium transition ${
+                  politicalFilters.chamber === 'senate'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                }`}
+              >
+                Senate
+              </button>
+              <button
+                type="button"
+                onClick={() => handlePoliticalFilterChange({ ...politicalFilters, chamber: 'house' })}
+                className={`px-4 py-2 rounded-lg font-medium transition ${
+                  politicalFilters.chamber === 'house'
+                    ? 'bg-red-600 text-white'
+                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                }`}
+              >
+                House
+              </button>
+            </div>
+          </div>
+
+          {/* Date Range Filter */}
+          <div className="bg-slate-700/30 rounded-lg p-4 border border-slate-600">
+            <label className="block text-slate-300 mb-2">
+              <Tooltip text="Show trades from the last X days.">
+                <span className="border-b border-dotted border-slate-500">Days Back</span>
+              </Tooltip>
+            </label>
+            <div className="flex items-center gap-4">
+              <input
+                type="range"
+                min="7"
+                max="365"
+                step="7"
+                value={politicalFilters.days}
+                onChange={(e) => handlePoliticalFilterChange({ ...politicalFilters, days: parseInt(e.target.value) })}
+                className="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer"
+              />
+              <span className="text-white font-semibold min-w-20">
+                {politicalFilters.days} days
+              </span>
+            </div>
+          </div>
+        </div>
+      ) : showFilters ? (
+        <form onSubmit={handleSubmit} className="space-y-6">{/* Trade Type Toggle */}
           <div className="bg-slate-700/30 rounded-lg p-4 border border-slate-600">
             <label className="block text-slate-300 mb-3">
               <Tooltip text="Choose whether to search for insider purchases (bullish signal - insiders buying stock) or sales (could indicate various reasons - profit taking, portfolio rebalancing, or concern about company).">
@@ -330,7 +516,7 @@ function FilterPanel({ onRunScraper, isLoading }) {
             </button>
           </div>
         </form>
-      )}
+      ) : null}
     </div>
   );
 }
