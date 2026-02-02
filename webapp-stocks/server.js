@@ -109,6 +109,52 @@ app.post('/api/scrape', (req, res) => {
   });
 });
 
+// Stock history endpoint
+app.get('/api/stock-history/:ticker', (req, res) => {
+  const ticker = req.params.ticker.toUpperCase();
+  const period = req.query.period || '1y'; // Default to 1 year
+  
+  console.log(`Fetching stock history for ${ticker}, period: ${period}`);
+  
+  const pythonScript = path.join(__dirname, '../scripts/fetch_stock_history.py');
+  const pythonProcess = spawn('/opt/homebrew/bin/python3', [pythonScript, ticker, period]);
+  
+  let output = '';
+  let errorOutput = '';
+  
+  pythonProcess.stdout.on('data', (data) => {
+    output += data.toString();
+  });
+  
+  pythonProcess.stderr.on('data', (data) => {
+    errorOutput += data.toString();
+    console.error(data.toString());
+  });
+  
+  pythonProcess.on('close', (code) => {
+    if (code === 0) {
+      try {
+        const result = JSON.parse(output);
+        res.json(result);
+      } catch (e) {
+        console.error('Failed to parse Python output:', e);
+        res.status(500).json({
+          success: false,
+          error: 'Failed to parse stock data',
+          details: e.message
+        });
+      }
+    } else {
+      console.error(`Python script exited with code ${code}`);
+      res.status(500).json({
+        success: false,
+        error: `Failed to fetch stock data (exit code ${code})`,
+        details: errorOutput
+      });
+    }
+  });
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Server is running' });

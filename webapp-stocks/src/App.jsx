@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Papa from 'papaparse';
 import TradeCard from './components/TradeCard';
 import FilterPanel from './components/FilterPanel';
+import StockDetail from './components/StockDetail';
 
 function App() {
   const [trades, setTrades] = useState([]);
@@ -9,6 +10,7 @@ function App() {
   const [error, setError] = useState(null);
   const [scraperLoading, setScraperLoading] = useState(false);
   const [scraperMessage, setScraperMessage] = useState('');
+  const [selectedTrade, setSelectedTrade] = useState(null);
 
   const loadCSV = async () => {
     try {
@@ -127,9 +129,16 @@ function App() {
         {/* Trade Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {trades.map((trade, index) => (
-            <TradeCard key={index} trade={trade} />
+            <div key={index} onClick={() => setSelectedTrade(trade)} className="cursor-pointer">
+              <TradeCard trade={trade} />
+            </div>
           ))}
         </div>
+
+        {/* Stock Detail Modal */}
+        {selectedTrade && (
+          <StockDetail trade={selectedTrade} onClose={() => setSelectedTrade(null)} />
+        )}
 
         {/* Footer */}
         <div className="mt-12 text-center text-slate-500 text-sm">

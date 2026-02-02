@@ -66,7 +66,7 @@ const TradeCard = ({ trade }) => {
   };
 
   return (
-    <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 hover:border-slate-600 transition-all hover:shadow-xl hover:shadow-slate-900/50">
+    <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 hover:border-blue-500 hover:shadow-2xl hover:shadow-blue-900/30 transition-all hover:scale-[1.02] cursor-pointer">
       {/* Header: Ticker */}
       <div className="flex justify-between items-start mb-4">
         <div>
