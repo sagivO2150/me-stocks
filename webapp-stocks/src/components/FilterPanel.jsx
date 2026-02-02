@@ -9,15 +9,36 @@ function FilterPanel({ onRunScraper, isLoading }) {
     minInsiders: 3,
     minValue: 150,
     minOwnChange: 0,
+    includeCOB: true,
     includeCEO: true,
+    includePres: true,
     includeCOO: true,
     includeCFO: true,
-    includeDirector: true
+    includeGC: true,
+    includeVP: true,
+    includeDirector: true,
+    include10Owner: true,
+    includeOther: true
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onRunScraper(filters);
+  };
+
+  const toggleCLevelRoles = () => {
+    const allCLevelEnabled = filters.includeCOB && filters.includeCEO && filters.includePres && 
+                             filters.includeCOO && filters.includeCFO && filters.includeGC && filters.includeVP;
+    setFilters({
+      ...filters,
+      includeCOB: !allCLevelEnabled,
+      includeCEO: !allCLevelEnabled,
+      includePres: !allCLevelEnabled,
+      includeCOO: !allCLevelEnabled,
+      includeCFO: !allCLevelEnabled,
+      includeGC: !allCLevelEnabled,
+      includeVP: !allCLevelEnabled
+    });
   };
 
   return (
@@ -111,53 +132,135 @@ function FilterPanel({ onRunScraper, isLoading }) {
             </div>
           </div>
 
-          {/* Insider Roles Section */}
+          {/* Insider Titles Section */}
           <div>
             <label className="block text-slate-300 mb-3">
-              <Tooltip text="Which executives to track. CEO = strategic vision, CFO = financial confidence, COO = operational insight, Director = board-level conviction. Top picks: CEO + CFO (most informed) or all 4 (broadest signal).">
-                <span className="border-b border-dotted border-slate-500">Include Insider Roles</span>
+              <Tooltip text="Filter by insider title. C-Level = top executives with strategic knowledge (strongest buy signals). Director = board members. 10% Owner = major shareholders. Other = various roles.">
+                <span className="border-b border-dotted border-slate-500">Include Insider Titles</span>
               </Tooltip>
             </label>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <label className="flex items-center space-x-2 text-slate-300 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={filters.includeCEO}
-                  onChange={(e) => setFilters({...filters, includeCEO: e.target.checked})}
-                  className="w-5 h-5 text-emerald-500 bg-slate-700 border-slate-600 rounded focus:ring-emerald-500"
-                />
-                <span>CEO</span>
-              </label>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* C-Level Section */}
+              <div className="bg-slate-700/30 rounded-lg p-4 border border-slate-600">
+                <div className="flex justify-between items-center mb-3">
+                  <div className="text-sm font-semibold text-emerald-400">👔 C-Level Officers</div>
+                  <button
+                    type="button"
+                    onClick={toggleCLevelRoles}
+                    className="text-xs px-2 py-1 bg-slate-600 hover:bg-slate-500 text-slate-300 rounded transition"
+                  >
+                    Toggle All
+                  </button>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <label className="flex items-center space-x-2 text-slate-300 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={filters.includeCOB}
+                      onChange={(e) => setFilters({...filters, includeCOB: e.target.checked})}
+                      className="w-4 h-4 text-emerald-500 bg-slate-700 border-slate-600 rounded focus:ring-emerald-500"
+                    />
+                    <span className="text-sm">COB</span>
+                  </label>
 
-              <label className="flex items-center space-x-2 text-slate-300 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={filters.includeCOO}
-                  onChange={(e) => setFilters({...filters, includeCOO: e.target.checked})}
-                  className="w-5 h-5 text-emerald-500 bg-slate-700 border-slate-600 rounded focus:ring-emerald-500"
-                />
-                <span>COO</span>
-              </label>
+                  <label className="flex items-center space-x-2 text-slate-300 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={filters.includeCEO}
+                      onChange={(e) => setFilters({...filters, includeCEO: e.target.checked})}
+                      className="w-4 h-4 text-emerald-500 bg-slate-700 border-slate-600 rounded focus:ring-emerald-500"
+                    />
+                    <span className="text-sm">CEO</span>
+                  </label>
 
-              <label className="flex items-center space-x-2 text-slate-300 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={filters.includeCFO}
-                  onChange={(e) => setFilters({...filters, includeCFO: e.target.checked})}
-                  className="w-5 h-5 text-emerald-500 bg-slate-700 border-slate-600 rounded focus:ring-emerald-500"
-                />
-                <span>CFO</span>
-              </label>
+                  <label className="flex items-center space-x-2 text-slate-300 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={filters.includePres}
+                      onChange={(e) => setFilters({...filters, includePres: e.target.checked})}
+                      className="w-4 h-4 text-emerald-500 bg-slate-700 border-slate-600 rounded focus:ring-emerald-500"
+                    />
+                    <span className="text-sm">Pres</span>
+                  </label>
 
-              <label className="flex items-center space-x-2 text-slate-300 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={filters.includeDirector}
-                  onChange={(e) => setFilters({...filters, includeDirector: e.target.checked})}
-                  className="w-5 h-5 text-emerald-500 bg-slate-700 border-slate-600 rounded focus:ring-emerald-500"
-                />
-                <span>Director</span>
-              </label>
+                  <label className="flex items-center space-x-2 text-slate-300 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={filters.includeCOO}
+                      onChange={(e) => setFilters({...filters, includeCOO: e.target.checked})}
+                      className="w-4 h-4 text-emerald-500 bg-slate-700 border-slate-600 rounded focus:ring-emerald-500"
+                    />
+                    <span className="text-sm">COO</span>
+                  </label>
+
+                  <label className="flex items-center space-x-2 text-slate-300 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={filters.includeCFO}
+                      onChange={(e) => setFilters({...filters, includeCFO: e.target.checked})}
+                      className="w-4 h-4 text-emerald-500 bg-slate-700 border-slate-600 rounded focus:ring-emerald-500"
+                    />
+                    <span className="text-sm">CFO</span>
+                  </label>
+
+                  <label className="flex items-center space-x-2 text-slate-300 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={filters.includeGC}
+                      onChange={(e) => setFilters({...filters, includeGC: e.target.checked})}
+                      className="w-4 h-4 text-emerald-500 bg-slate-700 border-slate-600 rounded focus:ring-emerald-500"
+                    />
+                    <span className="text-sm">GC</span>
+                  </label>
+
+                  <label className="flex items-center space-x-2 text-slate-300 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={filters.includeVP}
+                      onChange={(e) => setFilters({...filters, includeVP: e.target.checked})}
+                      className="w-4 h-4 text-emerald-500 bg-slate-700 border-slate-600 rounded focus:ring-emerald-500"
+                    />
+                    <span className="text-sm">VP</span>
+                  </label>
+                </div>
+              </div>
+              
+              {/* Other Roles Section */}
+              <div className="bg-slate-700/30 rounded-lg p-4 border border-slate-600">
+                <div className="text-sm font-semibold text-blue-400 mb-3">📋 Other Roles</div>
+                <div className="grid grid-cols-1 gap-2">
+                  <label className="flex items-center space-x-2 text-slate-300 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={filters.includeDirector}
+                      onChange={(e) => setFilters({...filters, includeDirector: e.target.checked})}
+                      className="w-4 h-4 text-blue-500 bg-slate-700 border-slate-600 rounded focus:ring-blue-500"
+                    />
+                    <span className="text-sm">Director</span>
+                  </label>
+
+                  <label className="flex items-center space-x-2 text-slate-300 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={filters.include10Owner}
+                      onChange={(e) => setFilters({...filters, include10Owner: e.target.checked})}
+                      className="w-4 h-4 text-blue-500 bg-slate-700 border-slate-600 rounded focus:ring-blue-500"
+                    />
+                    <span className="text-sm">10% Owner</span>
+                  </label>
+
+                  <label className="flex items-center space-x-2 text-slate-300 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={filters.includeOther}
+                      onChange={(e) => setFilters({...filters, includeOther: e.target.checked})}
+                      className="w-4 h-4 text-blue-500 bg-slate-700 border-slate-600 rounded focus:ring-blue-500"
+                    />
+                    <span className="text-sm">Other</span>
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
 

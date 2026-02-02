@@ -5,10 +5,16 @@ const TradeCard = ({ trade }) => {
   // Parse values
   const ticker = trade.Ticker;
   const insidersCount = parseInt(trade.Insiders) || 0;
+  const cobCount = parseInt(trade.COB_Count) || 0;
   const ceoCount = parseInt(trade.CEO_Count) || 0;
+  const presCount = parseInt(trade.Pres_Count) || 0;
   const cfoCount = parseInt(trade.CFO_Count) || 0;
   const cooCount = parseInt(trade.COO_Count) || 0;
+  const gcCount = parseInt(trade.GC_Count) || 0;
+  const vpCount = parseInt(trade.VP_Count) || 0;
   const directorCount = parseInt(trade.Director_Count) || 0;
+  const ownerCount = parseInt(trade.Owner_Count) || 0;
+  const otherCount = parseInt(trade.Other_Count) || 0;
   const value = trade.Value;
   const tradeDate = trade.Trade_Date;
   const deltaOwn = trade.Delta_Own;
@@ -25,10 +31,16 @@ const TradeCard = ({ trade }) => {
 
   // Build role breakdown text (no count for singular C-suite roles)
   const roleBreakdown = [];
+  if (cobCount > 0) roleBreakdown.push(cobCount === 1 ? 'COB' : `${cobCount} COBs`);
   if (ceoCount > 0) roleBreakdown.push(ceoCount === 1 ? 'CEO' : `${ceoCount} CEOs`);
+  if (presCount > 0) roleBreakdown.push(presCount === 1 ? 'Pres' : `${presCount} Pres`);
   if (cfoCount > 0) roleBreakdown.push(cfoCount === 1 ? 'CFO' : `${cfoCount} CFOs`);
   if (cooCount > 0) roleBreakdown.push(cooCount === 1 ? 'COO' : `${cooCount} COOs`);
+  if (gcCount > 0) roleBreakdown.push(gcCount === 1 ? 'GC' : `${gcCount} GCs`);
+  if (vpCount > 0) roleBreakdown.push(`${vpCount} VP${vpCount > 1 ? 's' : ''}`);
   if (directorCount > 0) roleBreakdown.push(`${directorCount} Director${directorCount > 1 ? 's' : ''}`);
+  if (ownerCount > 0) roleBreakdown.push(`${ownerCount} Owner${ownerCount > 1 ? 's' : ''}`);
+  if (otherCount > 0) roleBreakdown.push(`${otherCount} Other`);
   const roleBreakdownText = roleBreakdown.join(', ');
 
   // Calculate discount/upside

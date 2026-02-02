@@ -22,10 +22,16 @@ app.post('/api/scrape', (req, res) => {
     minInsiders = 3,
     minValue = 150,
     minOwnChange = 0,
+    includeCOB = true,
     includeCEO = true,
+    includePres = true,
     includeCOO = true,
     includeCFO = true,
-    includeDirector = true
+    includeGC = true,
+    includeVP = true,
+    includeDirector = true,
+    include10Owner = true,
+    includeOther = true
   } = req.body;
 
   console.log('Starting scraper with filters:', req.body);
@@ -38,10 +44,16 @@ app.post('/api/scrape', (req, res) => {
     '--min-insiders', minInsiders.toString(),
     '--min-value', minValue.toString(),
     '--min-own-change', minOwnChange.toString(),
+    '--include-cob', includeCOB ? '1' : '0',
     '--include-ceo', includeCEO ? '1' : '0',
+    '--include-pres', includePres ? '1' : '0',
     '--include-coo', includeCOO ? '1' : '0',
     '--include-cfo', includeCFO ? '1' : '0',
-    '--include-director', includeDirector ? '1' : '0'
+    '--include-gc', includeGC ? '1' : '0',
+    '--include-vp', includeVP ? '1' : '0',
+    '--include-director', includeDirector ? '1' : '0',
+    '--include-10owner', include10Owner ? '1' : '0',
+    '--include-other', includeOther ? '1' : '0'
   ];
 
   const pythonProcess = spawn('/opt/homebrew/bin/python3', args);

@@ -23,6 +23,207 @@ MAX_WORKERS = 8  # Number of parallel threads for API calls
 progress_lock = Lock()  # Thread-safe progress printing
 
 
+def scrape_ticker_details(ticker, filing_days=30):
+    """
+    Fetch individual trades for a specific ticker to get role breakdown
+    
+    Parameters:
+    - ticker: Stock ticker symbol
+    - filing_days: Only count trades within this many days
+    
+    Returns:
+    - Dictionary with role counts and trade details
+    """
+    from datetime import datetime, timedelta
+    
+    url = f"http://openinsider.com/search?q={ticker}"
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
+    }
+    
+    try:
+        time.sleep(0.3)  # Rate limiting
+        response = requests.get(url, headers=headers, timeout=30)
+        response.raise_for_status()
+        
+        soup = BeautifulSoup(response.content, 'html.parser')
+        table = soup.find('table', {'class': 'tinytable'})
+        
+        if not table:
+            return None
+        
+        # Calculate cutoff date
+        cutoff_date = datetime.now() - timedelta(days=filing_days)
+        
+        role_counts = {
+            'COB': 0, 'CEO': 0, 'Pres': 0, 'COO': 0, 'CFO': 0,
+            'GC': 0, 'VP': 0, 'Director': 0, 'Owner': 0, 'Other': 0
+        }
+        
+        purchase_trades = []
+        rows = table.find_all('tr')[1:]  # Skip header
+        
+        for row in rows:
+            cols = row.find_all('td')
+            if len(cols) < 8:
+                continue
+            
+            # Column structure: X | Filing Date | Trade Date | Ticker | Insider Name | Title | Trade Type | Price | ...
+            # Parse trade info
+            trade_date_str = cols[2].text.strip()
+            insider_name = cols[4].text.strip()
+            title = cols[5].text.strip()
+            trade_type = cols[6].text.strip()
+            
+            # Only process purchases within date range
+            if 'P - Purchase' not in trade_type:
+                continue
+            
+            try:
+                trade_date = datetime.strptime(trade_date_str, '%Y-%m-%d')
+                if trade_date < cutoff_date:
+                    continue
+            except:
+                continue
+            
+            # Count roles based on title
+            title_lower = title.lower()
+            
+            # Track which role to assign (highest priority)
+            assigned_role = None
+            
+            if 'cob' in title_lower or 'chairman' in title_lower:
+                assigned_role = 'COB'
+            elif 'ceo' in title_lower or 'chief executive' in title_lower:
+                assigned_role = 'CEO'
+            elif 'pres' in title_lower or 'president' in title_lower:
+                assigned_role = 'Pres'
+            elif 'cfo' in title_lower or 'chief financial' in title_lower:
+                assigned_role = 'CFO'
+            elif 'coo' in title_lower or 'chief operating' in title_lower:
+                assigned_role = 'COO'
+            elif 'gc' in title_lower or 'general counsel' in title_lower:
+                assigned_role = 'GC'
+            elif 'vp' in title_lower or 'vice pres' in title_lower:
+                assigned_role = 'VP'
+            elif 'dir' in title_lower or 'director' in title_lower:
+                assigned_role = 'Director'
+            elif '10%' in title or 'beneficial' in title_lower:
+                assigned_role = 'Owner'
+            else:
+                assigned_role = 'Other'
+            
+            purchase_trades.append({
+                'date': trade_date_str,
+                'title': title,
+                'role': assigned_role,
+                'insider': insider_name
+            })
+        
+        # Count unique insiders per role (not trades)
+        insider_roles = {}
+        for trade in purchase_trades:
+            insider_name = trade['insider']
+            role = trade['role']
+            
+            # Assign each insider to their highest priority role
+            if insider_name not in insider_roles:
+                insider_roles[insider_name] = role
+            else:
+                # Role priority
+                priority = {'COB': 10, 'CEO': 9, 'Pres': 8, 'CFO': 7, 'COO': 6,
+                           'GC': 5, 'VP': 4, 'Director': 3, 'Owner': 2, 'Other': 1}
+                if priority.get(role, 0) > priority.get(insider_roles[insider_name], 0):
+                    insider_roles[insider_name] = role
+        
+        # Count by role
+        for insider, role in insider_roles.items():
+            role_counts[role] += 1
+        
+        return {
+            'role_counts': role_counts,
+            'total_insiders': len(insider_roles),
+            'purchase_trades': purchase_trades
+        }
+        
+    except Exception as e:
+        print(f"Error fetching details for {ticker}: {e}")
+        return None
+
+
+def scrape_openinsider_simple(page=1, min_price=5, filing_days=30, min_insiders=3, 
+                               min_value=150, min_own_change=0):
+    """
+    Simplified scraper: Get companies with cluster buying using grouped view
+    
+    Returns companies that meet the basic criteria. Role breakdown will be
+    fetched separately per ticker.
+    """
+    base_url = "http://openinsider.com/screener"
+    
+    params = {
+        's': '', 'o': '', 'pl': str(min_price), 'ph': '',
+        'll': '', 'lh': '', 'fd': str(filing_days), 'fdr': '',
+        'td': '0', 'tdr': '', 'fdlyl': '', 'fdlyh': '',
+        'daysago': '', 'xp': '1', 'vl': '', 'vh': '',
+        'ocl': '', 'och': '', 'sic1': '-1', 'sicl': '', 'sich': '',
+        'iscob': '', 'isceo': '', 'ispres': '', 'iscoo': '', 'iscfo': '',
+        'isgc': '', 'isvp': '', 'isdirector': '', 'is10be': '', 'isother': '',
+        'grp': '2',  # Group by company
+        'nfl': '', 'nfh': '', 'nil': str(min_insiders), 'nih': '',
+        'nol': '', 'noh': '',
+        'v2l': str(min_value), 'v2h': '',
+        'oc2l': str(min_own_change) if min_own_change > 0 else '', 'oc2h': '',
+        'sortcol': '0', 'cnt': '100', 'page': str(page)
+    }
+    
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
+    }
+    
+    try:
+        response = requests.get(base_url, params=params, headers=headers, timeout=30)
+        response.raise_for_status()
+        
+        soup = BeautifulSoup(response.content, 'html.parser')
+        table = soup.find('table', {'class': 'tinytable'})
+        
+        if not table:
+            return []
+        
+        data = []
+        rows = table.find_all('tr')[1:]  # Skip header
+        
+        for row in rows:
+            cols = row.find_all('td')
+            if len(cols) < 13:
+                continue
+            
+            record = {
+                'X': cols[0].text.strip(),
+                'Filing_Date': cols[1].text.strip(),
+                'Trade_Date': cols[2].text.strip(),
+                'Ticker': cols[3].text.strip(),
+                'Company_Name': cols[4].text.strip(),
+                'Industry': cols[5].text.strip(),
+                'Insiders': cols[6].text.strip(),
+                'Trade_Type': cols[7].text.strip(),
+                'Price': cols[8].text.strip(),
+                'Qty': cols[9].text.strip(),
+                'Owned': cols[10].text.strip(),
+                'Delta_Own': cols[11].text.strip(),
+                'Value': cols[12].text.strip()
+            }
+            
+            data.append(record)
+        
+        return data
+        
+    except Exception as e:
+        print(f"Error fetching page {page}: {e}")
+        return []
+
+
 def scrape_openinsider_by_role(page=1, min_price=5, filing_days=30, min_value=150,
                                 min_own_change=0, role='CEO'):
     """
@@ -34,19 +235,25 @@ def scrape_openinsider_by_role(page=1, min_price=5, filing_days=30, min_value=15
     - filing_days: Filing date within X days
     - min_value: Minimum transaction value in thousands
     - min_own_change: Minimum ownership change percentage
-    - role: One of 'CEO', 'CFO', 'COO', 'Director'
+    - role: One of 'COB', 'CEO', 'Pres', 'COO', 'CFO', 'GC', 'VP', 'Director', '10Owner', 'Other'
     
     Returns:
     - List of individual trades with role information
     """
     base_url = "http://openinsider.com/screener"
     
-    # Set role-specific filters
+    # Set role-specific filters - OpenInsider uses these parameter names
     role_filters = {
-        'CEO': {'isceo': '1', 'iscoo': '', 'iscfo': '', 'isdirector': ''},
-        'COO': {'isceo': '', 'iscoo': '1', 'iscfo': '', 'isdirector': ''},
-        'CFO': {'isceo': '', 'iscoo': '', 'iscfo': '1', 'isdirector': ''},
-        'Director': {'isceo': '', 'iscoo': '', 'iscfo': '', 'isdirector': '1'}
+        'COB': {'iscob': '1', 'isceo': '', 'ispres': '', 'iscoo': '', 'iscfo': '', 'isgc': '', 'isvp': '', 'isdirector': '', 'is10be': '', 'isother': ''},
+        'CEO': {'iscob': '', 'isceo': '1', 'ispres': '', 'iscoo': '', 'iscfo': '', 'isgc': '', 'isvp': '', 'isdirector': '', 'is10be': '', 'isother': ''},
+        'Pres': {'iscob': '', 'isceo': '', 'ispres': '1', 'iscoo': '', 'iscfo': '', 'isgc': '', 'isvp': '', 'isdirector': '', 'is10be': '', 'isother': ''},
+        'COO': {'iscob': '', 'isceo': '', 'ispres': '', 'iscoo': '1', 'iscfo': '', 'isgc': '', 'isvp': '', 'isdirector': '', 'is10be': '', 'isother': ''},
+        'CFO': {'iscob': '', 'isceo': '', 'ispres': '', 'iscoo': '', 'iscfo': '1', 'isgc': '', 'isvp': '', 'isdirector': '', 'is10be': '', 'isother': ''},
+        'GC': {'iscob': '', 'isceo': '', 'ispres': '', 'iscoo': '', 'iscfo': '', 'isgc': '1', 'isvp': '', 'isdirector': '', 'is10be': '', 'isother': ''},
+        'VP': {'iscob': '', 'isceo': '', 'ispres': '', 'iscoo': '', 'iscfo': '', 'isgc': '', 'isvp': '1', 'isdirector': '', 'is10be': '', 'isother': ''},
+        'Director': {'iscob': '', 'isceo': '', 'ispres': '', 'iscoo': '', 'iscfo': '', 'isgc': '', 'isvp': '', 'isdirector': '1', 'is10be': '', 'isother': ''},
+        '10Owner': {'iscob': '', 'isceo': '', 'ispres': '', 'iscoo': '', 'iscfo': '', 'isgc': '', 'isvp': '', 'isdirector': '', 'is10be': '1', 'isother': ''},
+        'Other': {'iscob': '', 'isceo': '', 'ispres': '', 'iscoo': '', 'iscfo': '', 'isgc': '', 'isvp': '', 'isdirector': '', 'is10be': '', 'isother': '1'}
     }
     
     role_params = role_filters.get(role, role_filters['CEO'])
@@ -157,15 +364,24 @@ def aggregate_insider_trades(all_trades, min_insiders=3):
         'trades': [],
         'unique_trades': {},  # Key: (insider_name, trade_date, value) to dedupe
         'insider_roles': {},  # Track primary role for each insider
+        'COB_count': 0,
         'CEO_count': 0,
-        'CFO_count': 0,
+        'Pres_count': 0,
         'COO_count': 0,
+        'CFO_count': 0,
+        'GC_count': 0,
+        'VP_count': 0,
         'Director_count': 0,
+        'Owner_count': 0,
+        'Other_count': 0,
         'insider_names': set()
     })
     
     # Role priority for classification (higher = more important)
-    role_priority = {'CEO': 4, 'CFO': 3, 'COO': 2, 'Director': 1}
+    role_priority = {
+        'COB': 10, 'CEO': 9, 'Pres': 8, 'CFO': 7, 'COO': 6, 
+        'GC': 5, 'VP': 4, 'Director': 3, '10Owner': 2, 'Other': 1
+    }
     
     for trade in all_trades:
         ticker = trade['Ticker']
@@ -193,14 +409,26 @@ def aggregate_insider_trades(all_trades, min_insiders=3):
     # Now count roles based on primary assignments
     for ticker, group in ticker_groups.items():
         for insider_name, role in group['insider_roles'].items():
-            if role == 'CEO':
+            if role == 'COB':
+                group['COB_count'] += 1
+            elif role == 'CEO':
                 group['CEO_count'] += 1
+            elif role == 'Pres':
+                group['Pres_count'] += 1
             elif role == 'CFO':
                 group['CFO_count'] += 1
             elif role == 'COO':
                 group['COO_count'] += 1
+            elif role == 'GC':
+                group['GC_count'] += 1
+            elif role == 'VP':
+                group['VP_count'] += 1
             elif role == 'Director':
                 group['Director_count'] += 1
+            elif role == '10Owner':
+                group['Owner_count'] += 1
+            elif role == 'Other':
+                group['Other_count'] += 1
     
     # Aggregate and filter
     aggregated = []
@@ -257,10 +485,16 @@ def aggregate_insider_trades(all_trades, min_insiders=3):
             'Trade_Date': latest['Trade_Date'],
             'Filing_Date': latest['Filing_Date'],
             'Total_Insiders': total_insiders,
+            'COB_Count': group['COB_count'],
             'CEO_Count': group['CEO_count'],
+            'Pres_Count': group['Pres_count'],
             'CFO_Count': group['CFO_count'],
             'COO_Count': group['COO_count'],
+            'GC_Count': group['GC_count'],
+            'VP_Count': group['VP_count'],
             'Director_Count': group['Director_count'],
+            'Owner_Count': group['Owner_count'],
+            'Other_Count': group['Other_count'],
             'Total_Value': f"+${int(total_value):,}",
             'Total_Qty': f"+{total_qty:,}",
             'Price': latest['Price'],
@@ -275,7 +509,9 @@ def aggregate_insider_trades(all_trades, min_insiders=3):
 
 
 def scrape_openinsider(page=1, min_price=5, filing_days=30, min_insiders=3, min_value=150,
-                       min_own_change=0, include_ceo=True, include_coo=True, include_cfo=True, include_director=True):
+                       min_own_change=0, include_cob=True, include_ceo=True, include_pres=True, 
+                       include_coo=True, include_cfo=True, include_gc=True, include_vp=True,
+                       include_director=True, include_10owner=True, include_other=True):
     """
     Scrape OpenInsider with role breakdown by fetching each role separately
     
@@ -286,10 +522,16 @@ def scrape_openinsider(page=1, min_price=5, filing_days=30, min_insiders=3, min_
     - min_insiders: Minimum number of insiders (default: 3)
     - min_value: Minimum transaction value in thousands (default: 150)
     - min_own_change: Minimum ownership change percentage (default: 0)
+    - include_cob: Include COB trades (default: True)
     - include_ceo: Include CEO trades (default: True)
+    - include_pres: Include President trades (default: True)
     - include_coo: Include COO trades (default: True)
     - include_cfo: Include CFO trades (default: True)
+    - include_gc: Include GC trades (default: True)
+    - include_vp: Include VP trades (default: True)
     - include_director: Include Director trades (default: True)
+    - include_10owner: Include 10% Owner trades (default: True)
+    - include_other: Include Other trades (default: True)
     
     Returns:
     - List of dictionaries containing aggregated insider trading data with role breakdowns
@@ -300,14 +542,16 @@ def scrape_openinsider(page=1, min_price=5, filing_days=30, min_insiders=3, min_
     all_trades = []
     roles_to_fetch = []
     
-    if include_ceo:
-        roles_to_fetch.append('CEO')
-    if include_cfo:
-        roles_to_fetch.append('CFO')
-    if include_coo:
-        roles_to_fetch.append('COO')
-    if include_director:
-        roles_to_fetch.append('Director')
+    if include_cob: roles_to_fetch.append('COB')
+    if include_ceo: roles_to_fetch.append('CEO')
+    if include_pres: roles_to_fetch.append('Pres')
+    if include_coo: roles_to_fetch.append('COO')
+    if include_cfo: roles_to_fetch.append('CFO')
+    if include_gc: roles_to_fetch.append('GC')
+    if include_vp: roles_to_fetch.append('VP')
+    if include_director: roles_to_fetch.append('Director')
+    if include_10owner: roles_to_fetch.append('10Owner')
+    if include_other: roles_to_fetch.append('Other')
     
     # Fetch trades for each role
     for role in roles_to_fetch:
@@ -356,10 +600,16 @@ def scrape_openinsider(page=1, min_price=5, filing_days=30, min_insiders=3, min_
             'Company_Name': record['Company_Name'],
             'Industry': '',
             'Insiders': str(record['Total_Insiders']),
+            'COB_Count': record['COB_Count'],
             'CEO_Count': record['CEO_Count'],
+            'Pres_Count': record['Pres_Count'],
             'CFO_Count': record['CFO_Count'],
             'COO_Count': record['COO_Count'],
+            'GC_Count': record['GC_Count'],
+            'VP_Count': record['VP_Count'],
             'Director_Count': record['Director_Count'],
+            'Owner_Count': record['Owner_Count'],
+            'Other_Count': record['Other_Count'],
             'Trade_Type': record['Trade_Type'],
             'Price': record['Price'],
             'Qty': record['Total_Qty'],
@@ -739,19 +989,37 @@ def main():
     parser.add_argument('--min-insiders', type=int, default=3, help='Minimum number of insiders (default: 3)')
     parser.add_argument('--min-value', type=int, default=150, help='Minimum transaction value in thousands (default: 150)')
     parser.add_argument('--min-own-change', type=int, default=0, help='Minimum ownership change percentage (default: 0)')
+    parser.add_argument('--include-cob', type=int, default=1, help='Include COB trades (1=yes, 0=no, default: 1)')
     parser.add_argument('--include-ceo', type=int, default=1, help='Include CEO trades (1=yes, 0=no, default: 1)')
+    parser.add_argument('--include-pres', type=int, default=1, help='Include President trades (1=yes, 0=no, default: 1)')
     parser.add_argument('--include-coo', type=int, default=1, help='Include COO trades (1=yes, 0=no, default: 1)')
     parser.add_argument('--include-cfo', type=int, default=1, help='Include CFO trades (1=yes, 0=no, default: 1)')
+    parser.add_argument('--include-gc', type=int, default=1, help='Include GC trades (1=yes, 0=no, default: 1)')
+    parser.add_argument('--include-vp', type=int, default=1, help='Include VP trades (1=yes, 0=no, default: 1)')
     parser.add_argument('--include-director', type=int, default=1, help='Include Director trades (1=yes, 0=no, default: 1)')
+    parser.add_argument('--include-10owner', type=int, default=1, help='Include 10% Owner trades (1=yes, 0=no, default: 1)')
+    parser.add_argument('--include-other', type=int, default=1, help='Include Other trades (1=yes, 0=no, default: 1)')
     
     args = parser.parse_args()
+    
+    enabled_roles = []
+    if args.include_cob: enabled_roles.append('COB')
+    if args.include_ceo: enabled_roles.append('CEO')
+    if args.include_pres: enabled_roles.append('Pres')
+    if args.include_coo: enabled_roles.append('COO')
+    if args.include_cfo: enabled_roles.append('CFO')
+    if args.include_gc: enabled_roles.append('GC')
+    if args.include_vp: enabled_roles.append('VP')
+    if args.include_director: enabled_roles.append('Director')
+    if args.include_10owner: enabled_roles.append('10% Owner')
+    if args.include_other: enabled_roles.append('Other')
     
     print("OpenInsider Screener + Financial Health Analyzer")
     print("=" * 50)
     print("\nFilters applied:")
     print(f"- Minimum price: ${args.min_price}")
     print(f"- Filing date: Last {args.filing_days} days")
-    print(f"- Insiders: {', '.join([r for r, inc in [('CEO', args.include_ceo), ('COO', args.include_coo), ('CFO', args.include_cfo), ('Director', args.include_director)] if inc])}")
+    print(f"- Insiders: {', '.join(enabled_roles)}")
     print(f"- Minimum insiders: {args.min_insiders}")
     print(f"- Minimum value: ${args.min_value}k+")
     if args.min_own_change > 0:
@@ -765,39 +1033,149 @@ def main():
     print("=" * 50)
     print()
     
-    # Scrape all available pages automatically
-    all_data = []
+    # Step 1: Get companies with cluster buying using simple grouped view
+    all_companies = []
     page = 1
-    max_pages = 10  # Safety limit to avoid infinite loops
+    max_pages = 10
     
     while page <= max_pages:
-        print(f"\n🔍 Checking page {page}...")
-        data = scrape_openinsider(
+        print(f"\n📊 Fetching companies page {page} (grouped view)...")
+        companies = scrape_openinsider_simple(
             page=page,
             min_price=args.min_price,
             filing_days=args.filing_days,
             min_insiders=args.min_insiders,
             min_value=args.min_value,
-            min_own_change=args.min_own_change,
-            include_ceo=bool(args.include_ceo),
-            include_coo=bool(args.include_coo),
-            include_cfo=bool(args.include_cfo),
-            include_director=bool(args.include_director)
+            min_own_change=args.min_own_change
         )
         
-        # Stop if no data found on this page
-        if not data:
-            print(f"No more data found. Stopping at page {page - 1}.")
+        if not companies:
+            print(f"No more companies found. Stopping at page {page - 1}.")
             break
-            
-        all_data.extend(data)
+        
+        print(f"  Found {len(companies)} companies on this page")
+        all_companies.extend(companies)
         page += 1
         
-        # Be respectful to the server
         if page <= max_pages:
             time.sleep(2)
     
-    print(f"\n✅ Scraped {len(all_data)} total records from {page - 1} page(s)")
+    # Deduplicate by ticker
+    unique_companies = {}
+    for company in all_companies:
+        ticker = company['Ticker']
+        if ticker not in unique_companies:
+            unique_companies[ticker] = company
+        else:
+            # Keep more recent trade
+            existing_date = unique_companies[ticker].get('Trade_Date', '')
+            new_date = company.get('Trade_Date', '')
+            if new_date > existing_date:
+                unique_companies[ticker] = company
+    
+    all_companies = list(unique_companies.values())
+    print(f"\n✅ Found {len(all_companies)} unique companies with cluster buying")
+    
+    # Step 2: For each company, fetch individual trades to get role breakdown
+    print(f"\n🔍 Fetching role breakdown for each company...")
+    enriched_companies = []
+    
+    for idx, company in enumerate(all_companies, 1):
+        ticker = company['Ticker']
+        print(f"\n  [{idx}/{len(all_companies)}] {ticker}: {company['Company_Name']}")
+        
+        # Get individual trades and role breakdown
+        details = scrape_ticker_details(ticker, filing_days=args.filing_days)
+        
+        if details:
+            # Filter by enabled roles
+            role_counts = details['role_counts']
+            
+            # Apply role filters
+            if not args.include_cob:
+                role_counts['COB'] = 0
+            if not args.include_ceo:
+                role_counts['CEO'] = 0
+            if not args.include_pres:
+                role_counts['Pres'] = 0
+            if not args.include_coo:
+                role_counts['COO'] = 0
+            if not args.include_cfo:
+                role_counts['CFO'] = 0
+            if not args.include_gc:
+                role_counts['GC'] = 0
+            if not args.include_vp:
+                role_counts['VP'] = 0
+            if not args.include_director:
+                role_counts['Director'] = 0
+            if not args.include_10owner:
+                role_counts['Owner'] = 0
+            if not args.include_other:
+                role_counts['Other'] = 0
+            
+            # Count remaining insiders after filtering
+            remaining_insiders = sum(role_counts.values())
+            
+            # Check if still meets minimum insiders requirement
+            if remaining_insiders < args.min_insiders:
+                print(f"    ⏭️  Skipped (only {remaining_insiders} insiders after role filtering)")
+                continue
+            
+            # Add role breakdown to company record
+            company['COB_Count'] = role_counts['COB']
+            company['CEO_Count'] = role_counts['CEO']
+            company['Pres_Count'] = role_counts['Pres']
+            company['CFO_Count'] = role_counts['CFO']
+            company['COO_Count'] = role_counts['COO']
+            company['GC_Count'] = role_counts['GC']
+            company['VP_Count'] = role_counts['VP']
+            company['Director_Count'] = role_counts['Director']
+            company['Owner_Count'] = role_counts['Owner']
+            company['Other_Count'] = role_counts['Other']
+            company['Insiders'] = str(remaining_insiders)
+            
+            print(f"    ✅ {remaining_insiders} insiders: ", end='')
+            breakdown = []
+            if role_counts['COB'] > 0:
+                breakdown.append(f"COB({role_counts['COB']})")
+            if role_counts['CEO'] > 0:
+                breakdown.append(f"CEO({role_counts['CEO']})")
+            if role_counts['Pres'] > 0:
+                breakdown.append(f"Pres({role_counts['Pres']})")
+            if role_counts['CFO'] > 0:
+                breakdown.append(f"CFO({role_counts['CFO']})")
+            if role_counts['COO'] > 0:
+                breakdown.append(f"COO({role_counts['COO']})")
+            if role_counts['GC'] > 0:
+                breakdown.append(f"GC({role_counts['GC']})")
+            if role_counts['VP'] > 0:
+                breakdown.append(f"VP({role_counts['VP']})")
+            if role_counts['Director'] > 0:
+                breakdown.append(f"Dir({role_counts['Director']})")
+            if role_counts['Owner'] > 0:
+                breakdown.append(f"10Own({role_counts['Owner']})")
+            if role_counts['Other'] > 0:
+                breakdown.append(f"Other({role_counts['Other']})")
+            print(', '.join(breakdown))
+            
+            enriched_companies.append(company)
+        else:
+            print(f"    ❌ Could not fetch details")
+            # Add empty role counts
+            company['COB_Count'] = 0
+            company['CEO_Count'] = 0
+            company['Pres_Count'] = 0
+            company['CFO_Count'] = 0
+            company['COO_Count'] = 0
+            company['GC_Count'] = 0
+            company['VP_Count'] = 0
+            company['Director_Count'] = 0
+            company['Owner_Count'] = 0
+            company['Other_Count'] = 0
+            enriched_companies.append(company)
+    
+    all_data = enriched_companies
+    print(f"\n✅ {len(all_data)} companies meet all criteria with role breakdown")
     
     # Enrich with financial data
     if all_data:
