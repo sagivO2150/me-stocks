@@ -5,6 +5,10 @@ const TradeCard = ({ trade }) => {
   // Parse values
   const ticker = trade.Ticker;
   const insidersCount = parseInt(trade.Insiders) || 0;
+  const ceoCount = parseInt(trade.CEO_Count) || 0;
+  const cfoCount = parseInt(trade.CFO_Count) || 0;
+  const cooCount = parseInt(trade.COO_Count) || 0;
+  const directorCount = parseInt(trade.Director_Count) || 0;
   const value = trade.Value;
   const tradeDate = trade.Trade_Date;
   const deltaOwn = trade.Delta_Own;
@@ -18,6 +22,14 @@ const TradeCard = ({ trade }) => {
   const betaClass = trade.Beta_Classification;
   const whaleStatus = trade.Whale_Status;
   const scoreReasons = trade.Score_Reasons;
+
+  // Build role breakdown text (no count for singular C-suite roles)
+  const roleBreakdown = [];
+  if (ceoCount > 0) roleBreakdown.push(ceoCount === 1 ? 'CEO' : `${ceoCount} CEOs`);
+  if (cfoCount > 0) roleBreakdown.push(cfoCount === 1 ? 'CFO' : `${cfoCount} CFOs`);
+  if (cooCount > 0) roleBreakdown.push(cooCount === 1 ? 'COO' : `${cooCount} COOs`);
+  if (directorCount > 0) roleBreakdown.push(`${directorCount} Director${directorCount > 1 ? 's' : ''}`);
+  const roleBreakdownText = roleBreakdown.join(', ');
 
   // Calculate discount/upside
   let upside = 'N/A';
@@ -63,10 +75,10 @@ const TradeCard = ({ trade }) => {
 
       {/* Badges Row */}
       <div className="flex flex-wrap gap-2 mb-4">
-        {/* Insiders Count */}
-        <Tooltip text="Number of insiders buying this stock. Cluster buying (3+) is statistically one of the most reliable predictors of future price appreciation. Multiple executives buying = they see something the market doesn't.">
+        {/* Insiders Count with Role Breakdown */}
+        <Tooltip text={`Number of insiders buying this stock. Breakdown: ${roleBreakdownText}. CEO/CFO/COO buys = C-suite conviction (strongest signal). Directors = board approval (less valuable if alone). Cluster buying (3+) is statistically one of the most reliable predictors of future price appreciation.`}>
           <span className="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-sm font-medium border border-blue-500/30">
-            👥 {insidersCount} Insiders
+            👥 {insidersCount} Insiders ({roleBreakdownText})
           </span>
         </Tooltip>
 
