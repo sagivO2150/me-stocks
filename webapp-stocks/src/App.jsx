@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 import Papa from 'papaparse';
 import TradeCard from './components/TradeCard';
+import PoliticalTradeCard from './components/PoliticalTradeCard';
 import FilterPanel from './components/FilterPanel';
 import StockDetail from './components/StockDetail';
 
 function App() {
   const [trades, setTrades] = useState([]);
+  const [politicalTrades, setPoliticalTrades] = useState([]);
+  const [viewMode, setViewMode] = useState('insider'); // 'insider', 'political', or 'both'
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [scraperLoading, setScraperLoading] = useState(false);
@@ -35,6 +38,30 @@ function App() {
     } catch (err) {
       setError(err.message);
       setLoading(false);
+    }
+  };
+
+  const loadPoliticalCSV = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/api/political-trades');
+      if (!response.ok) {
+        console.log('Political trades data not available yet');
+        return;
+      }
+      
+      const csvText = await response.text();
+      
+      Papa.parse(csvText, {
+        header: true,
+        complete: (results) => {
+          setPoliticalTrades(results.data.filter(row => row.ticker)); // Filter out empty rows
+        },
+        error: (error) => {
+          console.error('Error parsing political trades:', error.message);
+        }
+      });
+    } catch (err) {
+      console.error('Error loading political trades:', err.message);
     }
   };
 
@@ -76,6 +103,7 @@ function App() {
 
   useEffect(() => {
     loadCSV();
+    loadPoliticalCSV();
   }, []);
 
   if (loading) {
@@ -100,15 +128,69 @@ function App() {
         {/* Header */}
         <div className="mb-8 text-center">
           <h1 className="text-5xl font-bold text-white mb-3">
-            🏰 Insider Trading Fortress
+            🏰 Multi-Vector Intelligence Platform
           </h1>
-          <p className="text-slate-300 text-lg">
-            Smart Money Moves • Rainy Day Strategy
+          <p className="text-slate-300 text-lg mb-4">
+            Smart Money Moves • Corporate Insiders • Political Intelligence
           </p>
+          
+          {/* View Mode Switcher */}
+          <div className="mt-4 inline-flex bg-slate-800 rounded-lg p-1 border border-slate-700">
+            <button
+              onClick={() => setViewMode('insider')}
+              className={`px-6 py-2 rounded-md font-medium transition ${
+                viewMode === 'insider'
+                  ? 'bg-emerald-600 text-white'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              📊 Corporate Insiders
+            </button>
+            <button
+              onClick={() => setViewMode('political')}
+              className={`px-6 py-2 rounded-md font-medium transition ${
+                viewMode === 'political'
+                  ? 'bg-blue-600 text-white'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              🏛️ Political Trades
+            </button>
+            <button
+              onClick={() => setViewMode('both')}
+              className={`px-6 py-2 rounded-md font-medium transition ${
+                viewMode === 'both'
+                  ? 'bg-purple-600 text-white'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              🔥 Combined View
+            </button>
+          </div>
+
           <div className="mt-4 inline-block bg-slate-800 rounded-lg px-6 py-3 border border-slate-700">
-            <span className="text-slate-400">Found </span>
-            <span className="text-emerald-400 font-bold text-xl">{trades.length}</span>
-            <span className="text-slate-400"> high-conviction insider trades</span>
+            {viewMode === 'insider' && (
+              <>
+                <span className="text-slate-400">Found </span>
+                <span className="text-emerald-400 font-bold text-xl">{trades.length}</span>
+                <span className="text-slate-400"> high-conviction insider trades</span>
+              </>
+            )}
+            {viewMode === 'political' && (
+              <>
+                <span className="text-slate-400">Found </span>
+                <span className="text-blue-400 font-bold text-xl">{politicalTrades.length}</span>
+                <span className="text-slate-400"> political trades</span>
+              </>
+            )}
+            {viewMode === 'both' && (
+              <>
+                <span className="text-emerald-400 font-bold text-xl">{trades.length}</span>
+                <span className="text-slate-400"> insiders + </span>
+                <span className="text-blue-400 font-bold text-xl">{politicalTrades.length}</span>
+                <span className="text-slate-400"> political trades</span>
+              </>
+            )}
           </div>
         </div>
 
@@ -128,9 +210,17 @@ function App() {
 
         {/* Trade Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {trades.map((trade, index) => (
-            <div key={index} onClick={() => setSelectedTrade(trade)} className="cursor-pointer">
+          {/* Show insider trades */}
+          {(viewMode === 'insider' || viewMode === 'both') && trades.map((trade, index) => (
+            <div key={`insider-${index}`} onClick={() => setSelectedTrade(trade)} className="cursor-pointer">
               <TradeCard trade={trade} />
+            </div>
+          ))}
+          
+          {/* Show political trades */}
+          {(viewMode === 'political' || viewMode === 'both') && politicalTrades.map((trade, index) => (
+            <div key={`political-${index}`} onClick={() => setSelectedTrade(trade)} className="cursor-pointer">
+              <PoliticalTradeCard trade={trade} />
             </div>
           ))}
         </div>

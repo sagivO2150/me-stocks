@@ -5,12 +5,14 @@ import Tooltip from './Tooltip';
 const StockDetail = ({ trade, onClose }) => {
   const [stockHistory, setStockHistory] = useState(null);
   const [insiderTrades, setInsiderTrades] = useState(null);
+  const [politicalTrades, setPoliticalTrades] = useState(null);
   const [loading, setLoading] = useState(true);
   const [insiderLoading, setInsiderLoading] = useState(true);
+  const [politicalLoading, setPoliticalLoading] = useState(true);
   const [error, setError] = useState(null);
   const [period, setPeriod] = useState('1y');
 
-  const ticker = trade.Ticker;
+  const ticker = trade.Ticker || trade.ticker;
 
   useEffect(() => {
     fetchStockHistory(period);
@@ -18,6 +20,7 @@ const StockDetail = ({ trade, onClose }) => {
 
   useEffect(() => {
     fetchInsiderTrades();
+    fetchPoliticalTrades();
   }, [ticker]);
 
   const fetchStockHistory = async (selectedPeriod) => {
@@ -54,6 +57,23 @@ const StockDetail = ({ trade, onClose }) => {
       console.error('Failed to fetch insider trades:', err);
     } finally {
       setInsiderLoading(false);
+    }
+  };
+
+  const fetchPoliticalTrades = async () => {
+    setPoliticalLoading(true);
+    
+    try {
+      const response = await fetch(`http://localhost:3001/api/political-trades/${ticker}`);
+      const data = await response.json();
+      
+      if (data.success) {
+        setPoliticalTrades(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch political trades:', err);
+    } finally {
+      setPoliticalLoading(false);
     }
   };
 
@@ -116,37 +136,63 @@ const StockDetail = ({ trade, onClose }) => {
     return 'bg-orange-500/20';
   };
 
-  // Merge insider trades with stock history for chart display
+  // Merge insider and political trades with stock history for chart display
   const mergedChartData = () => {
     if (!stockHistory || !stockHistory.history) return [];
     
     const data = [...stockHistory.history];
     
-    if (!insiderTrades) return data;
+    // Create maps for insider purchases and sales by date
+    const insiderPurchasesByDate = {};
+    const insiderSalesByDate = {};
     
-    // Create maps for purchases and sales by date (just date, not time)
-    const purchasesByDate = {};
-    const salesByDate = {};
+    if (insiderTrades) {
+      insiderTrades.purchases?.forEach(trade => {
+        const dateKey = trade.date;
+        if (!insiderPurchasesByDate[dateKey]) {
+          insiderPurchasesByDate[dateKey] = { shares: 0, value: 0, count: 0 };
+        }
+        insiderPurchasesByDate[dateKey].shares += trade.shares;
+        insiderPurchasesByDate[dateKey].value += trade.value;
+        insiderPurchasesByDate[dateKey].count += 1;
+      });
+      
+      insiderTrades.sales?.forEach(trade => {
+        const dateKey = trade.date;
+        if (!insiderSalesByDate[dateKey]) {
+          insiderSalesByDate[dateKey] = { shares: 0, value: 0, count: 0 };
+        }
+        insiderSalesByDate[dateKey].shares += trade.shares;
+        insiderSalesByDate[dateKey].value += trade.value;
+        insiderSalesByDate[dateKey].count += 1;
+      });
+    }
     
-    insiderTrades.purchases?.forEach(trade => {
-      const dateKey = trade.date; // Already in YYYY-MM-DD format
-      if (!purchasesByDate[dateKey]) {
-        purchasesByDate[dateKey] = { shares: 0, value: 0, count: 0 };
-      }
-      purchasesByDate[dateKey].shares += trade.shares;
-      purchasesByDate[dateKey].value += trade.value;
-      purchasesByDate[dateKey].count += 1;
-    });
+    // Create maps for political purchases and sales by date
+    const politicalPurchasesByDate = {};
+    const politicalSalesByDate = {};
     
-    insiderTrades.sales?.forEach(trade => {
-      const dateKey = trade.date;
-      if (!salesByDate[dateKey]) {
-        salesByDate[dateKey] = { shares: 0, value: 0, count: 0 };
-      }
-      salesByDate[dateKey].shares += trade.shares;
-      salesByDate[dateKey].value += trade.value;
-      salesByDate[dateKey].count += 1;
-    });
+    if (politicalTrades) {
+      politicalTrades.purchases?.forEach(trade => {
+        const dateKey = trade.date;
+        if (!politicalPurchasesByDate[dateKey]) {
+          politicalPurchasesByDate[dateKey] = { value: 0, count: 0, politicians: [] };
+        }
+        politicalPurchasesByDate[dateKey].value += trade.amount_value;
+        politicalPurchasesByDate[dateKey].count += 1;
+        politicalPurchasesByDate[dateKey].politicians.push(trade.politician);
+      });
+      
+      politicalTrades.sales?.forEach(trade => {
+        const dateKey = trade.date;
+        if (!politicalSalesByDate[dateKey]) {
+          politicalSalesByDate[dateKey] = { value: 0, count: 0, politicians: [] };
+        }
+        politicalSalesByDate[dateKey].value += trade.amount_value;
+        politicalSalesByDate[dateKey].count += 1;
+        politicalSalesByDate[dateKey].politicians.push(trade.politician);
+      });
+    }
     
     // Merge with stock data
     return data.map(point => {
@@ -154,61 +200,86 @@ const StockDetail = ({ trade, onClose }) => {
       
       return {
         ...point,
-        purchases: purchasesByDate[dateKey]?.value || 0,
-        sales: salesByDate[dateKey]?.value || 0,
-        purchaseShares: purchasesByDate[dateKey]?.shares || 0,
-        saleShares: salesByDate[dateKey]?.shares || 0,
-        purchaseCount: purchasesByDate[dateKey]?.count || 0,
-        saleCount: salesByDate[dateKey]?.count || 0
+        // Insider data
+        purchases: insiderPurchasesByDate[dateKey]?.value || 0,
+        sales: insiderSalesByDate[dateKey]?.value || 0,
+        purchaseShares: insiderPurchasesByDate[dateKey]?.shares || 0,
+        saleShares: insiderSalesByDate[dateKey]?.shares || 0,
+        purchaseCount: insiderPurchasesByDate[dateKey]?.count || 0,
+        saleCount: insiderSalesByDate[dateKey]?.count || 0,
+        // Political data
+        politicalPurchases: politicalPurchasesByDate[dateKey]?.value || 0,
+        politicalSales: politicalSalesByDate[dateKey]?.value || 0,
+        politicalPurchaseCount: politicalPurchasesByDate[dateKey]?.count || 0,
+        politicalSaleCount: politicalSalesByDate[dateKey]?.count || 0,
+        politicians: [
+          ...(politicalPurchasesByDate[dateKey]?.politicians || []),
+          ...(politicalSalesByDate[dateKey]?.politicians || [])
+        ]
       };
     });
   };
 
-  // Custom tooltip for chart - show on hover with insider activity highlighted
+  // Custom tooltip for chart - show on hover with insider and political activity highlighted
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       
-      // Show tooltip, but only highlight insider activity if present
+      // Check for insider and political activity
       const hasInsiderActivity = data.purchaseCount > 0 || data.saleCount > 0;
+      const hasPoliticalActivity = data.politicalPurchaseCount > 0 || data.politicalSaleCount > 0;
       
       return (
         <div className="bg-slate-800 border border-slate-600 rounded-lg p-3 shadow-xl">
           <p className="text-slate-300 text-sm font-semibold mb-2">{data.date}</p>
-          {!hasInsiderActivity && (
-            <p className="text-slate-500 text-xs italic">No insider activity</p>
-          )}
-          {data.purchaseCount > 0 && (
-            <div className="mt-2 pt-2 border-t border-slate-700">
-              <p className="text-emerald-400 text-sm font-semibold">
-                🟢 {data.purchaseCount} Insider Purchase{data.purchaseCount > 1 ? 's' : ''}
-              </p>
-              <p className="text-emerald-400 text-xs">
-                {data.purchaseShares.toLocaleString()} shares • ${
-                  data.purchases >= 1000000 
-                    ? (data.purchases / 1000000).toFixed(2) + 'M'
-                    : data.purchases >= 1000
-                    ? (data.purchases / 1000).toFixed(1) + 'K'
-                    : data.purchases.toFixed(0)
-                }
-              </p>
+          
+          {/* Stock Price */}
+          <div className="mb-2">
+            <p className="text-xs text-slate-400">Price:</p>
+            <p className="text-white font-bold">${data.close?.toFixed(2)}</p>
+          </div>
+          
+          {/* Insider Activity */}
+          {hasInsiderActivity && (
+            <div className="mb-2 border-t border-slate-700 pt-2">
+              <p className="text-xs text-emerald-400 font-semibold mb-1">🏢 Insider Activity</p>
+              {data.purchaseCount > 0 && (
+                <p className="text-xs text-emerald-300">
+                  📈 {data.purchaseCount} purchase{data.purchaseCount > 1 ? 's' : ''} (${(data.purchases / 1000).toFixed(0)}K)
+                </p>
+              )}
+              {data.saleCount > 0 && (
+                <p className="text-xs text-red-300">
+                  📉 {data.saleCount} sale{data.saleCount > 1 ? 's' : ''} (${(data.sales / 1000).toFixed(0)}K)
+                </p>
+              )}
             </div>
           )}
-          {data.saleCount > 0 && (
-            <div className="mt-2 pt-2 border-t border-slate-700">
-              <p className="text-red-400 text-sm font-semibold">
-                🔴 {data.saleCount} Insider Sale{data.saleCount > 1 ? 's' : ''}
-              </p>
-              <p className="text-red-400 text-xs">
-                {data.saleShares.toLocaleString()} shares • ${
-                  data.sales >= 1000000 
-                    ? (data.sales / 1000000).toFixed(2) + 'M'
-                    : data.sales >= 1000
-                    ? (data.sales / 1000).toFixed(1) + 'K'
-                    : data.sales.toFixed(0)
-                }
-              </p>
+          
+          {/* Political Activity */}
+          {hasPoliticalActivity && (
+            <div className="mb-2 border-t border-slate-700 pt-2">
+              <p className="text-xs text-blue-400 font-semibold mb-1">🏛️ Political Trades</p>
+              {data.politicalPurchaseCount > 0 && (
+                <p className="text-xs text-blue-300">
+                  📈 {data.politicalPurchaseCount} purchase{data.politicalPurchaseCount > 1 ? 's' : ''} (${(data.politicalPurchases / 1000).toFixed(0)}K)
+                </p>
+              )}
+              {data.politicalSaleCount > 0 && (
+                <p className="text-xs text-red-300">
+                  📉 {data.politicalSaleCount} sale{data.politicalSaleCount > 1 ? 's' : ''} (${(data.politicalSales / 1000).toFixed(0)}K)
+                </p>
+              )}
+              {data.politicians && data.politicians.length > 0 && (
+                <p className="text-xs text-slate-400 mt-1">
+                  by {data.politicians.slice(0, 2).join(', ')}{data.politicians.length > 2 ? ` +${data.politicians.length - 2} more` : ''}
+                </p>
+              )}
             </div>
+          )}
+          
+          {!hasInsiderActivity && !hasPoliticalActivity && (
+            <p className="text-slate-500 text-xs italic">No trade activity</p>
           )}
         </div>
       );

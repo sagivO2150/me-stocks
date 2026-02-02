@@ -1,0 +1,218 @@
+Computational Intelligence and Multi-Vector Analysis: A Framework for Institutional and Political Signal Integration in Retail Financial Systems
+The evolution of financial technology has historically favored institutional participants who possess the capital to acquire proprietary data feeds and the computational power to process them in near-real-time. However, a significant shift is occurring as public disclosure requirements and open-source software libraries begin to democratize access to "smart money" signals. By strategically leveraging the Python ecosystem alongside official government repositories, it is possible to construct an expert-level stock discovery and analysis platform that replicates institutional workflows on a strictly cost-neutral infrastructure. This report examines the technical architecture, quantitative methodologies, and user-experience design patterns required to synthesize disclosures from political figures and large institutional investors into a high-conviction decision-making system.
+The Architecture of Cost-Neutral Financial Data Acquisition
+The primary constraint of a free-tier financial application is the trade-off between data latency and procurement cost. Commercial APIs often provide convenience at the expense of restrictive rate limits or prohibitive subscription fees. To achieve an expert-level result without capital expenditure, the architecture must interface directly with "source of truth" repositories provided by regulatory bodies and utilize highly optimized open-source wrappers.1
+Leveraging the SEC EDGAR Ecosystem
+The Securities and Exchange Commission’s Electronic Data Gathering, Analysis, and Retrieval (EDGAR) system serves as the foundational data layer for institutional tracking. While raw EDGAR data is hosted in complex SGML and XBRL formats, the advent of specialized Python libraries has significantly lowered the barrier to entry for developers.1
+The library known as edgartools provides a high-performance interface for downloading and analyzing SEC filings, including Forms 3, 4, and 5 for insider trading, and Form 13F for institutional holdings.1 Unlike many commercial wrappers, edgartools is optimized for large datasets and handles the SEC's specific rate-limiting requirements automatically.1 The SEC restricts clients to ten requests per second, and exceeding this threshold leads to temporary IP blacklisting.4 Advanced implementations utilize local caching to minimize redundant requests, ensuring that the application remains responsive even as the volume of tracked entities grows.1
+For developers seeking to build a 13F parser from scratch, the sec-web-scraper-13f repository offers a blueprint for utilizing BeautifulSoup and lxml to extract holdings data directly into tabular formats like CSV or TSV.5 This granular control is essential when analyzing the "Information Table" of a 13F-HR filing, which contains the name of the issuer, the class of security, the CUSIP number, and the total market value of the holding.6
+Market Data and Fundamental Ratios via yfinance
+While EDGAR provides the "who" and the "what," yfinance provides the "when" and the "how much." By wrapping Yahoo Finance’s public endpoints, yfinance offers a comprehensive suite of market data, including real-time prices, historical volume, and fundamental valuation metrics.3
+Senior investors rely on a specific set of vectors to validate "smart money" moves. The yfinance.Ticker.info method returns a dictionary containing metrics such as forward P/E ratios, dividend yields, market capitalization, and debt-to-equity ratios.7 However, the fragility of certain yfinance methods—particularly those related to historical financials and cash flow statements—necessitates the inclusion of secondary libraries like yahoo_fin or direct scraping of SEC 10-K and 10-Q filings to ensure data integrity.2
+
+Data Category
+Primary Source
+Python Implementation
+Update Frequency
+Institutional Holdings
+SEC EDGAR (13F)
+edgartools
+Quarterly (45-day lag) 1
+Insider/5% Stakes
+SEC EDGAR (13D/G)
+edgartools / sec-api
+Real-time / 5-10 days 10
+Market Metrics
+Yahoo Finance
+yfinance
+Intraday / Real-time 3
+Political Trades
+House/Senate Portals
+requests / BeautifulSoup
+Periodic (45-day lag) 13
+Fundamental Ratios
+SEC Filings / Yahoo
+yfinance / edgartools
+Quarterly / Annual 8
+
+Quantitative Modeling of Political Intelligence
+Political figures often operate at the intersection of legislative policy and economic outcome, leading to perceived informational advantages in specific sectors.13 Tracking these signals requires a specialized ingestion pipeline capable of parsing the U.S. House and Senate disclosure portals, which were mandated by the STOCK Act of 2012.14
+The Pelosi Effect and Sectoral Concentration
+Nancy Pelosi’s trading activity serves as a primary benchmark for political signal analysis. Data indicates a heavy concentration in the technology and financial sectors, with high-conviction positions often established through LEAPS (Long-term Equity Anticipation Securities).17 For instance, recent disclosures highlighted significant transactions in NVIDIA, Alphabet, and Amazon, often involving call options with strike prices significantly below market value, indicating a leveraged bullish outlook.19
+To incorporate these signals, the application must normalize the "Amount" field, which is typically reported in broad ranges (e.g.,  or ).16 By assigning a midpoint value or using a logarithmic scale to estimate trade size, the system can calculate a representative dollar volume for each political figure.16
+Multi-Member Clustering and Committee Jurisdiction
+Individual trades are often noisy; however, "clustering"—where multiple members of Congress buy the same security or sector within a short window—serves as a powerful signal of impending policy tailwinds.16 Research suggests that clustering is most effective when cross-referenced with committee assignments.17 A member of the House Committee on Transportation and Infrastructure purchasing Tesla shares immediately preceding a shift in trade policy provides a high-conviction signal that technical indicators alone might miss.17
+The "House Stock Watcher" and "Senate Stock Watcher" APIs provide the necessary JSON endpoints to track these movements programmatically.22 The timothycarambat/senate-stock-watcher-data repository on GitHub offers a pre-processed data stream that minimizes the need for complex PDF scraping, which is the primary hurdle for House disclosures.23
+Institutional Signal Synthesis: Tracking the Market Masters
+Tracking large investors like Warren Buffett (Berkshire Hathaway) requires a different analytical lens. Unlike the relatively high-frequency, smaller-dollar trades of politicians, institutional filings represent the movements of massive capital pools that can dictate market trends for years.9
+The 13F Filing: Delayed but Definitive
+The 13F filing is a quarterly requirement for institutional managers with over  million in assets under management (AUM).6 While these reports are filed with a 45-day lag, they reveal "new entrants" and "position changes" that define institutional sentiment.9 For Berkshire Hathaway, the top five holdings typically comprise over  of the portfolio, making any adjustment to positions in Apple, American Express, or Bank of America a significant market event.27
+Senior investors look beyond the raw holdings to calculate the "Hedge Fund Conviction" score. This is derived from:
+Net Position Change: The percentage increase or decrease in shares owned since the previous quarter.16
+Breadth: The number of independent institutions initiating new positions in the same quarter.16
+Portfolio Concentration: Whether the security represents a meaningful allocation (e.g.,  of AUM).11
+Real-Time Signals: 13D and 13G Filings
+To mitigate the 45-day lag of 13F filings, a sophisticated application must monitor Schedule 13D and 13G filings.10 A 13D is filed when an entity acquires  or more of a company with "activist" intent, while a 13G represents a "passive" stake.10 These filings are submitted within five business days of the transaction, providing a much fresher signal than the 13F.10 Tracking these "activist" campaigns allows retail investors to follow the moves of strategic investors who intend to force value-unlocking changes at the corporate level.10
+
+Filing Type
+Lag Time
+Purpose
+Filer Requirement
+Form 4
+2 Business Days
+Insider Trades (Officers/Directors)
+Any trade by a corporate insider 10
+13D
+5 Business Days
+Activist Stakes ()
+Intent to influence management 10
+13G
+45 Days (Year-end)
+Passive Stakes ()
+Long-term institutional interest 29
+13F
+45 Days (Quarterly)
+Full Portfolio Disclosure
+Managers with M AUM 6
+
+The Senior Investor’s Evaluation Vectors
+Integrating "smart money" signals is only the first step. To transform a discovery tool into an analytical powerhouse, the application must implement the evaluation vectors used by senior investors to validate these entries.32 These vectors are categorized into quantitative fundamentals, technical patterns, and qualitative "economic moats".15
+Quantitative Fundamentals and Intrinsic Value
+Fundamental analysis seeks to determine a security's intrinsic value by examining its financial health and growth prospects.32 The following metrics should be calculated for every security in the "drill-down" view:
+Earnings Power and Valuation: The Price-to-Earnings (P/E) ratio compared to industry peers identifies if the stock is undervalued.15 The PEG ratio (P/E divided by growth) further refines this by accounting for future earnings potential.34
+Balance Sheet Strength: The Debt-to-Equity (D/E) ratio and Current Ratio indicate if the company can survive economic downturns.15 Senior investors prioritize low leverage, especially in volatile market environments.36
+Profitability Efficiency: Return on Equity (ROE) and Return on Assets (ROA) measure management’s ability to generate profit from shareholder capital.15
+For a more rigorous analysis, the application can implement a Discounted Cash Flow (DCF) model using historical cash flow data from Yahoo Finance.15 The DCF calculates the present value of all future cash flows to estimate what a stock is worth today, regardless of its current market price.15
+
+Where  is the cash flow in period , and  is the discount rate (Weighted Average Cost of Capital).15
+Technical Context and Market Timing
+Technical analysis provides the "timing" component to the fundamental "opportunity".32 Senior investors use technicals to ensure they are not "catching a falling knife" even if an insider is buying.33
+Moving Averages: The relationship between the 50-day and 200-day Simple Moving Averages (SMA) helps identify the prevailing trend.37
+Momentum Indicators: The Relative Strength Index (RSI) and MACD (Moving Average Convergence Divergence) signal if a stock is overbought or oversold.33
+Volume Profile: Analyzing volume spikes alongside insider buying confirms the conviction behind a price move.33
+Qualitative Moats and Management Quality
+A company’s "economic moat" is a structural advantage that allows it to maintain high margins and fend off competitors.15 While qualitative, these factors can be proxied in the application through metadata:
+Brand Loyalty: Reflected in premium pricing and stable margins.15
+Switching Costs: Common in software (SaaS) and high-tech ecosystems.15
+Management Track Record: The application should link to the bios and previous performance of the executive team.34 A CEO buy is significantly more meaningful if that CEO has a history of successful turnarounds.16
+Implementation of the Discovery and Analysis Interface
+A sophisticated financial dashboard must balance information density with clarity. The design should follow the "Inverted Pyramid" layout, presenting the most critical insights at the top and allowing for progressive disclosure of granular data.39
+The Birds-Eye View: Discovery and Surveillance
+The "birds-eye" view is designed for high-level pattern recognition.42 It should utilize interactive elements to segment the market into "signal clusters".40
+Signal Heatmap: A treemap of sectors where color intensity represents the dollar volume of recent insider and congressional activity.44
+Top Conviction Table: A ranked list of stocks where the "Conviction Score" (a synthesis of political, institutional, and insider signals) is highest.16
+Real-Time Filing Feed: A sidebar showing the most recent , , and  filings as they hit the EDGAR system.10
+The Drill-Down View: Verification and conviction
+The "drill-down" view provides the depth required for a senior investor to commit capital.42 This view transitions from "what is happening" to "why it is happening".42
+Trading Timeline: A price chart with markers for every reported political and insider trade. Clicking a marker should display the representative's name, the transaction amount, and their committee assignments.21
+Fundamental Comparison Matrix: A table comparing the ticker’s valuation metrics against its top 5 competitors.7
+Sentiment Scorecard: A 0-3 score for three categories: Congressional support, Institutional accumulation, and Insider conviction.16
+
+UI Element
+Discovery (Birds-Eye)
+Analysis (Drill-Down)
+Chart Type
+Sector Treemaps / Bubble Charts
+Candlestick / Volume Profile 37
+Data Level
+Aggregated Sector/Market
+Ticker-specific Transactional 43
+Primary KPI
+Net Insider Buy/Sell Ratio
+Intrinsic Value (DCF) / RSI 15
+Goal
+Identify Anomalous Activity
+Validate Investment Thesis 42
+
+Quantitative Synthesis: The Multi-Signal Conviction Algorithm
+To avoid the pitfalls of "data snooping" or reacting to noise, the application should implement a weighted scoring algorithm.16 This algorithm normalizes signals from disparate sources into a unified metric of "informed conviction".48
+Building the Weighted Score
+The score for each security is calculated as a composite of three sentiment streams, each assigned a value from 0 to 3 16:
+Congressional Score (): Based on the volume of buying, the number of distinct members involved, and the clustering within specific committees.16
+Institutional Score (): Calculated from quarterly 13F changes, specifically tracking "new entrants" and funds with high "WhaleScores" (historical outperformance).11
+Insider Score (): Prioritizes open-market buys by C-suite executives (CEO/CFO) over non-executive directors.16
+The final Conviction Score is a weighted average:
+
+Where weights () are adjusted based on historical signal reliability. Research suggests that insider buying is a more reliable predictor of short-term performance than 13F filings, which are often stale by the time of disclosure.9
+Cluster Detection via Machine Learning
+For a more advanced implementation, the application can use unsupervised learning to identify "clumps" of transactions.50 A K-means clustering algorithm can be applied to a dataset of transactions where the features are:
+Time Delta: The number of days between trades.52
+Sector Proximity: Whether the companies are in the same GICS sub-industry.53
+Filer Relationship: If filers sit on the same congressional committee or are part of the same investment conglomerate.22
+Identifying these clusters helps the user see when a broad "macro" move is being made by informed participants, such as a simultaneous move into semiconductors by multiple senators and hedge funds.17
+Deployment and Scalability on a Free-Tier Infrastructure
+Maintaining an expert-level application without a budget requires careful selection of hosting and database services. A modern React + Python stack can be deployed with zero recurring costs by utilizing "serverless" and "edge" computing.54
+The Technology Stack
+Frontend: React.js deployed on Vercel or Netlify. These platforms offer robust free tiers for frontend applications.54
+Backend / API: Python (FastAPI or Flask) running as Vercel Serverless Functions. This allows the backend to scale automatically and only "run" when a request is made.54
+Database: Supabase (Free Tier). Supabase provides a managed PostgreSQL database with real-time capabilities, ideal for storing processed trade data and user watchlists.24
+Scheduled Scrapers: GitHub Actions. By setting up a "cron" schedule in GitHub Actions, the application can run Python scripts every hour to scrape EDGAR and Congressional portals, update the Supabase database, and trigger notifications.24
+Data Pipeline and Normalization
+A critical part of the pipeline is cleaning the raw data. Disclosures from the House of Representatives often contain "incorrect values," such as invalid dates or misspelled ticker symbols.58 The normalization script must:
+Standardize Tickers: Cross-reference asset descriptions with a ticker database to fix missing symbols.58
+Date Correction: Use datetime parsing to handle various formats and flag "impossible" dates (e.g., transactions reported for the year 0009).58
+Currency Normalization: Convert reported amount ranges into a single numeric "conviction value" using a conservative midpoint approach.16
+Strategic Conclusion and Recommendations
+The evolution of an insider trading app into a comprehensive "smart money" dashboard represents a significant upgrade in both technical complexity and analytical value. By bypassing restrictive commercial APIs in favor of direct government disclosures and open-source libraries like edgartools and yfinance, a developer can build a platform that matches institutional capabilities while adhering to a strict zero-dollar budget.1
+The transition from "discovery" to "analysis" is the most critical hurdle. A professional-grade system must not only surface trades but provide the fundamental and technical context required to act on them.33 Implementing a multi-vector conviction score—weighted by the seniority of the insider and the clustering of political interests—provides a systematic way to filter out noise and focus on high-probability opportunities.16
+Finally, the UI design must support the senior investor’s workflow. By offering a "birds-eye" view for rapid signal scanning and a "drill-down" view for deep fundamental validation, the application ensures that the user is always moving from data to insight to action.40 This framework provides a sustainable, scalable, and professional path for the independent developer to democratize the world of informed capital.
+Works cited
+Overview - EdgarTools - Python Library for SEC Data Analysis, accessed February 2, 2026, https://edgartools.readthedocs.io/
+dgunning/edgartools: Python library to access and analyze SEC Edgar filings, XBRL financial statements, 10-K, 10-Q, and 8-K reports - GitHub, accessed February 2, 2026, https://github.com/dgunning/edgartools
+yfinance - PyPI, accessed February 2, 2026, https://pypi.org/project/yfinance/
+How to scrape the SEC in 2024 [Open-Source] : r/webscraping - Reddit, accessed February 2, 2026, https://www.reddit.com/r/webscraping/comments/1htlh0v/how_to_scrape_the_sec_in_2024_opensource/
+Python Web scraper for parsing 13F filings (mutual fund holdings) from SEC website - GitHub, accessed February 2, 2026, https://github.com/CodeWritingCow/sec-web-scraper-13f
+Berkshire Hathaway Inc - Filing History - Warren Buffett - Fintel, accessed February 2, 2026, https://fintel.io/i13fs/berkshire-hathaway
+Stock Performance with Yahoo! Finance (yfinance) - Kaggle, accessed February 2, 2026, https://www.kaggle.com/code/asimislam/stock-performance-with-yahoo-finance-yfinance
+yfinance Library - A Complete Guide - AlgoTrading101 Blog, accessed February 2, 2026, https://algotrading101.com/learn/yfinance-guide/
+How to mirror the stock picks of Warren Buffett and Ray Dalio - Quartz, accessed February 2, 2026, https://qz.com/stock-picking-mirroring-ai-warren-buffett-cathie-wood-ray-dalio
+Insider Trading Tracker | SEC Form 4 Filings and Insider Trade Analytics, accessed February 2, 2026, https://www.secform4.com/
+7 Best Free Websites to Track Hedge Fund Portfolios | TIKR.com, accessed February 2, 2026, https://www.tikr.com/blog/7-best-free-websites-to-track-hedge-fund-portfolios
+yfinance Library – A Complete Guide | IBKR Quant, accessed February 2, 2026, https://www.interactivebrokers.com/campus/ibkr-quant-news/yfinance-library-a-complete-guide/
+Government Trades - API (Agora, Inc.) - TrendSpider, accessed February 2, 2026, https://trendspider.com/markets/symbols/API/government-trades/
+How You Can Find Out Exactly What Lawmakers Are Investing In - Investopedia, accessed February 2, 2026, https://www.investopedia.com/how-to-find-lawmaker-investments-11753849
+Fundamental Analysis of Stocks: Key Concepts, Metrics, and Techniques, accessed February 2, 2026, https://onlinedegrees.scu.edu/media/blog/fundamental-analysis-stocks
+The Three Hidden Sentiment Signals Most Traders Ignore: Congress, Institutions, and Insiders | by Trading Dude | Medium, accessed February 2, 2026, https://medium.com/@trading.dude/the-three-hidden-sentiment-signals-most-traders-ignore-congress-institutions-and-insiders-b78ff8deab50
+Congress Trading Report 2025 - Analysis of Congressional Trading - Unusual Whales, accessed February 2, 2026, https://unusualwhales.com/congress-trading-report-2025
+Senate Trading Activity API - Financial Modeling Prep, accessed February 2, 2026, https://site.financialmodelingprep.com/developer/docs/stable/senate-trading
+Nancy Pelosi Stock Trades - Stockcircle, accessed February 2, 2026, https://stockcircle.com/congress-stock-trades/nancy-pelosi
+Nancy Pelosi Trading Activity | Quiver Quantitative, accessed February 2, 2026, https://www.quiverquant.com/congresstrading/politician/Nancy%20Pelosi-P000197
+Suspicious-Senator-Trading/Collect Senator Data.ipynb at master - GitHub, accessed February 2, 2026, https://github.com/paulmtree/Suspicious-Senator-Trading/blob/master/Collect%20Senator%20Data.ipynb
+semerriam/congress-stock-trades - GitHub, accessed February 2, 2026, https://github.com/semerriam/congress-stock-trades
+Senate and House Stock watcher Python3 data listing - GitHubのGist, accessed February 2, 2026, https://gist.github.com/timothycarambat/db52c7b475edc0bdf0771e064874a2c5
+burd5/congress_stock_trading - GitHub, accessed February 2, 2026, https://github.com/burd5/congress_stock_trading
+timothycarambat/senate-stock-watcher-data - GitHub, accessed February 2, 2026, https://github.com/timothycarambat/senate-stock-watcher-data
+Analysing Institutional Investor Transactions with Python - Financial Modeling Prep, accessed February 2, 2026, https://site.financialmodelingprep.com/developer/docs/blog/analysing-institutional-investor-transactions-with-python
+Warren Buffett Portfolio (2025 Q3) - Berkshire Hathaway Holdings 13F - Valuesider, accessed February 2, 2026, https://valuesider.com/guru/warren-buffett-berkshire-hathaway/portfolio
+Berkshire Hathaway Portfolio | Warren Buffett 13F Holdings & Trades - HedgeFollow, accessed February 2, 2026, https://hedgefollow.com/funds/Berkshire+Hathaway
+Berkshire Hathaway Inc Portfolio Holdings - Fintel, accessed February 2, 2026, https://fintel.io/i/berkshire-hathaway
+CONVICTION, CONCENTRATION, AND QUANT - Acadian Asset Management, accessed February 2, 2026, https://www.acadian-asset.com/-/media/files/thematic-research-paper-pdfs/acadian---conviction-concentration-and-quant.pdf
+Python Example | Insider Trading Data API, accessed February 2, 2026, https://sec-api.io/docs/insider-ownership-trading-api/python-example
+Fundamental vs. Technical Financial Analysis.Fundamental and Technical Financial Analysis | Research Starters - EBSCO, accessed February 2, 2026, https://www.ebsco.com/research-starters/business-and-management/fundamental-vs-technical-financial-analysisfundamental
+Stock Analysis 101: Your Complete Guide to Evaluating Stocks, accessed February 2, 2026, https://www.vectorvest.com/blog/stock-analysis/stock-analysis-guide/
+Fundamental Analysis: Principles, Types, and How to Use It - Investopedia, accessed February 2, 2026, https://www.investopedia.com/terms/f/fundamentalanalysis.asp
+Guide To Importance Of Fundamental Analysis - Daloopa, accessed February 2, 2026, https://daloopa.com/blog/analyst-best-practices/guide-to-importance-of-fundamental-analysis
+Testing strategies based on multiple signals - mySimon, accessed February 2, 2026, https://mysimon.rochester.edu/novy-marx/research/MSES.pdf
+Build an AI-Powered Stock Analyzer Using Python, yFinance, NewsAPI & Gemini AI, accessed February 2, 2026, https://medium.com/@reach2rahul/build-an-ai-powered-stock-analyzer-using-python-yfinance-newsapi-gemini-ai-15f1f4ee5737
+How To Combine The Best Indicators And Avoid Wrong Signals - - Tradeciety, accessed February 2, 2026, https://tradeciety.com/how-to-choose-the-best-indicators-for-your-trading
+Dashboard Design Best Practices Every Leader Should Know - Vizule, accessed February 2, 2026, https://vizule.io/dashboard-design-best-practices/
+Dashboard Design: Examples and Best Practices - ThoughtSpot, accessed February 2, 2026, https://www.thoughtspot.com/data-trends/dashboard-design-examples-best-practices
+Investor Dashboards: Features and Best Practices, accessed February 2, 2026, https://www.lucid.now/blog/investor-dashboards-features-best-practices/
+The Ultimate Guide to Drill Down Reports: From Creation to Analysis - Improvado, accessed February 2, 2026, https://improvado.io/blog/drill-down-reports-guide
+What is Drill-Down and Drill-Up in Dashboards - Bold BI, accessed February 2, 2026, https://www.boldbi.com/blog/what-is-drill-down-and-drill-up-in-dashboards/
+Analyzing politicians' stock trading in Python | by CHRISTOPHER KARDATZKE - Medium, accessed February 2, 2026, https://kardatzke.medium.com/analyzing-politicians-stock-trading-in-python-1e61aafc5bf4
+6 Manufacturing Dashboards for Visualizing Production - Tulip Interfaces, accessed February 2, 2026, https://tulip.co/blog/6-manufacturing-dashboards-for-visualizing-production/
+How I Made Smarter Trades Tracking Insider Activity with Python + EODHD API, accessed February 2, 2026, https://python.plainenglish.io/how-i-made-smarter-trades-tracking-insider-activity-with-python-eodhd-api-96c30f01787b
+Wealth Management Insights - Bernstein, accessed February 2, 2026, https://www.bernstein.com/our-insights/insights.html
+Synthesizing Information-driven Insider Trade Signals, accessed February 2, 2026, http://wp.lancs.ac.uk/fofi2024/files/2024/04/FoFI-2024-009-Jens-Heckmann.pdf
+Building an Insider Trading Scanner - Finbrain. tech, accessed February 2, 2026, https://finbrain.tech/blog/building-insider-trading-scanner/
+sigma_coding_youtube/python/python-data-science/machine-learning/k-means/Clustering Stocks - KMeans.ipynb at master - GitHub, accessed February 2, 2026, https://github.com/areed1192/sigma_coding_youtube/blob/master/python/python-data-science/machine-learning/k-means/Clustering%20Stocks%20-%20KMeans.ipynb
+K-Means Clustering Algorithm For Pair Selection In Python - QuantInsti Blog, accessed February 2, 2026, https://blog.quantinsti.com/k-means-clustering-pair-selection-python/
+Time Series Clustering: Techniques and Applications - GeeksforGeeks, accessed February 2, 2026, https://www.geeksforgeeks.org/machine-learning/time-series-clustering-techniques-and-applications/
+Clustering stocks for investment recommendation - Kaggle, accessed February 2, 2026, https://www.kaggle.com/code/mariyamalshatta/clustering-stocks-for-investment-recommendation
+16 Best React Dashboards in 2026 | Untitled UI, accessed February 2, 2026, https://www.untitledui.com/blog/react-dashboards
+Building a React dashboard to visualize workflow and job events - CircleCI, accessed February 2, 2026, https://circleci.com/blog/react-webhook-dashboard/
+NarinCodes/Insider_Trading_Predictor - GitHub, accessed February 2, 2026, https://github.com/NarinCodes/Insider_Trading_Predictor
+Public domain data collectors for the work of Congress, including legislation, amendments, and votes. - GitHub, accessed February 2, 2026, https://github.com/unitedstates/congress
+noodleslove/House-of-Representative-Analysis-I: This project uses public data about the stock trades made by members of the US House of Representatives. - GitHub, accessed February 2, 2026, https://github.com/noodleslove/House-of-Representative-Analysis-I
+Screen Scraping Government Data with Python | At These Coordinates, accessed February 2, 2026, https://atcoordinates.info/2025/04/21/screen-scraping-government-data-with-python/

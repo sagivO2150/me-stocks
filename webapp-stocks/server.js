@@ -208,6 +208,167 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Server is running' });
 });
 
+// Political trades endpoint - Get all political trades
+app.get('/api/political-trades', (req, res) => {
+  console.log('Fetching all political trades from CSV');
+  
+  const csvPath = path.join(__dirname, '../output CSVs/political_trades_latest.csv');
+  
+  // Check if file exists
+  if (!fs.existsSync(csvPath)) {
+    res.status(404).json({
+      success: false,
+      error: 'Political trades data not found. Run the political trades scraper first.'
+    });
+    return;
+  }
+  
+  try {
+    const csvData = fs.readFileSync(csvPath, 'utf-8');
+    res.setHeader('Content-Type', 'text/csv');
+    res.send(csvData);
+  } catch (err) {
+    console.error('Error reading political trades CSV:', err);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to read political trades data',
+      details: err.message
+    });
+  }
+});
+
+// Political trades by ticker endpoint
+app.get('/api/political-trades/:ticker', (req, res) => {
+  const ticker = req.params.ticker.toUpperCase();
+  console.log(`Fetching political trades for ${ticker}`);
+  
+  const csvPath = path.join(__dirname, '../output CSVs/political_trades_latest.csv');
+  
+  // Check if file exists
+  if (!fs.existsSync(csvPath)) {
+    res.json({
+      success: true,
+      ticker: ticker,
+      purchases: [],
+      sales: [],
+      total_politicians: 0,
+      message: 'No political trades data available yet'
+    });
+    return;
+  }
+  
+  try {
+    const csvData = fs.readFileSync(csvPath, 'utf-8');
+    const lines = csvData.split('\n');
+    const headers = lines[0].split(',');
+    
+    const purchases = [];
+    const sales = [];
+    const politicians = new Set();
+    
+    for (let i = 1; i < lines.length; i++) {
+      if (!lines[i].trim()) continue;
+      
+      const values = lines[i].split(',');
+      const tradeTicker = values[2]?.trim().toUpperCase();
+      
+      if (tradeTicker === ticker) {
+        const tradeType = values[4]?.trim();
+        const politician = values[1]?.trim();
+        const tradeDate = values[5]?.trim();
+        const amountRange = values[7]?.trim();
+        const amountValue = parseFloat(values[8]) || 0;
+        const party = values[9]?.trim();
+        const source = values[0]?.trim();
+        
+        politicians.add(politician);
+        
+        const trade = {
+          politician,
+          party,
+          source,
+          date: tradeDate,
+          amount_range: amountRange,
+          amount_value: amountValue
+        };
+        
+        if (tradeType === 'Purchase') {
+          purchases.push(trade);
+        } else {
+          sales.push(trade);
+        }
+      }
+    }
+    
+    res.json({
+      success: true,
+      ticker: ticker,
+      purchases,
+      sales,
+      total_politicians: politicians.size
+    });
+  } catch (err) {
+    console.error('Error parsing political trades CSV:', err);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to parse political trades data',
+      details: err.message
+    });
+  }
+});
+
+// Run political trades scraper endpoint
+app.post('/api/scrape-political', (req, res) => {
+  const {
+    daysBack = 60,
+    source = 'both'
+  } = req.body;
+
+  console.log('Starting political trades scraper with params:', req.body);
+
+  const pythonScript = path.join(__dirname, '../scripts/fetch_political_trades.py');
+  const args = [
+    pythonScript,
+    '--days', daysBack.toString(),
+    '--source', source
+  ];
+
+  const pythonProcess = spawn('/opt/homebrew/bin/python3', args);
+  
+  let output = '';
+  let errorOutput = '';
+
+  pythonProcess.stdout.on('data', (data) => {
+    const chunk = data.toString();
+    output += chunk;
+    console.log(chunk);
+  });
+
+  pythonProcess.stderr.on('data', (data) => {
+    const chunk = data.toString();
+    errorOutput += chunk;
+    console.error(chunk);
+  });
+
+  pythonProcess.on('close', (code) => {
+    if (code === 0) {
+      console.log('Political trades scraper completed successfully');
+      res.json({ 
+        success: true, 
+        message: 'Political trades data fetched successfully!',
+        output: output
+      });
+    } else {
+      console.error(`Political trades scraper exited with code ${code}`);
+      res.status(500).json({ 
+        success: false, 
+        message: `Political trades scraper failed with exit code ${code}`,
+        error: errorOutput 
+      });
+    }
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Backend server running on http://localhost:${PORT}`);
 });
