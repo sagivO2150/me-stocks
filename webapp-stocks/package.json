@@ -13,6 +13,7 @@
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.18",
     "autoprefixer": "^10.4.24",
+    "better-sqlite3": "^12.6.2",
     "cors": "^2.8.6",
     "express": "^4.22.1",
     "papaparse": "^5.5.3",

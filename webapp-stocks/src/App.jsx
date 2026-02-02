@@ -8,9 +8,22 @@ import StockDetail from './components/StockDetail';
 function App() {
   const [trades, setTrades] = useState([]);
   const [politicalTrades, setPoliticalTrades] = useState([]);
-  const [allPoliticalTrades, setAllPoliticalTrades] = useState([]); // Store original unfiltered
+  const [politicalPagination, setPoliticalPagination] = useState({
+    page: 1,
+    limit: 50,
+    total: 0,
+    hasMore: false
+  });
+  const [politicalFilters, setPoliticalFilters] = useState({
+    minAmount: 50000,
+    tradeType: 'all',
+    party: 'all',
+    chamber: 'all',
+    days: 90
+  });
   const [viewMode, setViewMode] = useState('insider'); // 'insider', 'political', or 'both'
   const [loading, setLoading] = useState(true);
+  const [politicalLoading, setPoliticalLoading] = useState(false);
   const [error, setError] = useState(null);
   const [scraperLoading, setScraperLoading] = useState(false);
   const [scraperMessage, setScraperMessage] = useState('');
@@ -42,22 +55,44 @@ function App() {
     }
   };
 
-  const loadPoliticalCSV = async () => {
+  const loadPoliticalTrades = async (page = 1, filters = politicalFilters, append = false) => {
+    setPoliticalLoading(true);
+    
     try {
-      const response = await fetch('http://localhost:3001/api/political-trades');
+      // Build query params
+      const params = new URLSearchParams({
+        page: page.toString(),
+        limit: '50'
+      });
+      
+      if (filters.minAmount) params.append('min_amount', filters.minAmount);
+      if (filters.tradeType !== 'all') params.append('trade_type', filters.tradeType);
+      if (filters.party !== 'all') params.append('party', filters.party);
+      if (filters.chamber !== 'all') params.append('chamber', filters.chamber);
+      if (filters.days) params.append('days', filters.days);
+      
+      const response = await fetch(`http://localhost:3001/api/political-trades?${params}`);
       if (!response.ok) {
         console.log('Political trades data not available yet');
+        setPoliticalLoading(false);
         return;
       }
       
       const data = await response.json();
       if (data.success && data.trades) {
-        const allTrades = data.trades;
-        setAllPoliticalTrades(allTrades); // Store original
-        setPoliticalTrades(allTrades); // Display all initially
+        if (append) {
+          // Append for infinite scroll
+          setPoliticalTrades(prev => [...prev, ...data.trades]);
+        } else {
+          // Replace for new filters
+          setPoliticalTrades(data.trades);
+        }
+        setPoliticalPagination(data.pagination);
       }
     } catch (err) {
       console.error('Error loading political trades:', err.message);
+    } finally {
+      setPoliticalLoading(false);
     }
   };
 
@@ -99,7 +134,7 @@ function App() {
 
   useEffect(() => {
     loadCSV();
-    loadPoliticalCSV();
+    loadPoliticalTrades();
   }, []);
 
   if (loading) {
@@ -196,47 +231,8 @@ function App() {
           isLoading={scraperLoading} 
           viewMode={viewMode}
           onPoliticalFilterChange={(filters) => {
-            console.log('Applying political filters:', filters);
-            
-            // Apply political filters to original data
-            const filtered = allPoliticalTrades.filter(trade => {
-              // Amount filter
-              const tradeAmount = parseFloat(trade.amount_value);
-              if (isNaN(tradeAmount) || tradeAmount < filters.minAmount) {
-                return false;
-              }
-              
-              // Trade type filter
-              if (filters.tradeType !== 'all' && trade.trade_type !== filters.tradeType) {
-                return false;
-              }
-              
-              // Party filter
-              if (filters.party !== 'all' && trade.party !== filters.party) {
-                return false;
-              }
-              
-              // Chamber filter - case insensitive comparison
-              if (filters.chamber !== 'all') {
-                const tradeChamber = (trade.source || '').toLowerCase();
-                if (tradeChamber !== filters.chamber.toLowerCase()) {
-                  return false;
-                }
-              }
-              
-              // Date filter
-              const tradeDate = new Date(trade.trade_date);
-              const cutoffDate = new Date();
-              cutoffDate.setDate(cutoffDate.getDate() - filters.days);
-              if (tradeDate < cutoffDate) {
-                return false;
-              }
-              
-              return true;
-            });
-            
-            console.log(`Filtered: ${filtered.length} / ${allPoliticalTrades.length} trades`);
-            setPoliticalTrades(filtered);
+            setPoliticalFilters(filters);
+            loadPoliticalTrades(1, filters, false); // Reset to page 1 with new filters
           }}
         />
 
@@ -262,11 +258,24 @@ function App() {
           
           {/* Show political trades */}
           {(viewMode === 'political' || viewMode === 'both') && politicalTrades.map((trade, index) => (
-            <div key={`political-${index}`} onClick={() => setSelectedTrade(trade)} className="cursor-pointer">
+            <div key={`political-${trade.id || index}`} onClick={() => setSelectedTrade(trade)} className="cursor-pointer">
               <PoliticalTradeCard trade={trade} />
             </div>
           ))}
         </div>
+
+        {/* Load More Button for Political Trades */}
+        {(viewMode === 'political' || viewMode === 'both') && politicalPagination.hasMore && (
+          <div className="mt-8 text-center">
+            <button
+              onClick={() => loadPoliticalTrades(politicalPagination.page + 1, politicalFilters, true)}
+              disabled={politicalLoading}
+              className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {politicalLoading ? '⏳ Loading...' : `📄 Load More (${politicalTrades.length} of ${politicalPagination.total})`}
+            </button>
+          </div>
+        )}
 
         {/* Stock Detail Modal */}
         {selectedTrade && (

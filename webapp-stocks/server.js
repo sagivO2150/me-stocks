@@ -4,9 +4,15 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
+import Database from 'better-sqlite3';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Initialize SQLite database for political trades
+const dbPath = path.join(__dirname, 'political_trades.db');
+const db = new Database(dbPath);
+console.log(`📊 Connected to political trades database: ${dbPath}`);
 
 const app = express();
 app.use(cors());
@@ -208,70 +214,102 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Server is running' });
 });
 
-// Political trades endpoint - Get all political trades
+// Political trades endpoint - Get paginated/filtered political trades from SQLite
 app.get('/api/political-trades', (req, res) => {
-  console.log('Fetching all political trades from CSV');
-  
-  const csvPath = path.join(__dirname, '../output CSVs/political_trades_latest.csv');
-  
-  // Check if file exists
-  if (!fs.existsSync(csvPath)) {
-    res.status(404).json({
-      success: false,
-      error: 'Political trades data not found. Run the political trades scraper first.'
-    });
-    return;
-  }
-  
   try {
-    const csvData = fs.readFileSync(csvPath, 'utf-8');
-    const lines = csvData.trim().split('\n');
+    // Pagination params
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 50;
+    const offset = (page - 1) * limit;
     
-    // Parse CSV properly handling quoted fields with commas
-    const parseCSVLine = (line) => {
-      const result = [];
-      let current = '';
-      let inQuotes = false;
-      
-      for (let i = 0; i < line.length; i++) {
-        const char = line[i];
-        if (char === '"') {
-          inQuotes = !inQuotes;
-        } else if (char === ',' && !inQuotes) {
-          result.push(current.trim());
-          current = '';
-        } else {
-          current += char;
-        }
-      }
-      result.push(current.trim());
-      return result;
-    };
+    // Filter params
+    const { 
+      ticker,
+      politician,
+      party,
+      chamber,
+      trade_type,
+      min_amount,
+      days
+    } = req.query;
     
-    const headers = parseCSVLine(lines[0]);
-    const trades = [];
+    // Build query dynamically
+    let whereConditions = [];
+    let params = [];
     
-    for (let i = 1; i < lines.length; i++) {
-      if (lines[i].trim()) {
-        const values = parseCSVLine(lines[i]);
-        const trade = {};
-        headers.forEach((header, idx) => {
-          trade[header] = values[idx] || '';
-        });
-        trades.push(trade);
-      }
+    if (ticker) {
+      whereConditions.push('ticker = ?');
+      params.push(ticker.toUpperCase());
     }
+    
+    if (politician) {
+      whereConditions.push('politician LIKE ?');
+      params.push(`%${politician}%`);
+    }
+    
+    if (party && party !== 'all') {
+      whereConditions.push('party = ?');
+      params.push(party);
+    }
+    
+    if (chamber && chamber !== 'all') {
+      whereConditions.push('LOWER(source) = ?');
+      params.push(chamber.toLowerCase());
+    }
+    
+    if (trade_type && trade_type !== 'all') {
+      whereConditions.push('trade_type = ?');
+      params.push(trade_type);
+    }
+    
+    if (min_amount) {
+      whereConditions.push('amount_value >= ?');
+      params.push(parseFloat(min_amount));
+    }
+    
+    if (days) {
+      const cutoffDate = new Date();
+      cutoffDate.setDate(cutoffDate.getDate() - parseInt(days));
+      whereConditions.push('trade_date >= ?');
+      params.push(cutoffDate.toISOString().split('T')[0]);
+    }
+    
+    const whereClause = whereConditions.length > 0 
+      ? 'WHERE ' + whereConditions.join(' AND ')
+      : '';
+    
+    // Get total count
+    const countQuery = `SELECT COUNT(*) as total FROM political_trades ${whereClause}`;
+    const countResult = db.prepare(countQuery).get(...params);
+    const total = countResult.total;
+    
+    // Get paginated data
+    const dataQuery = `
+      SELECT * FROM political_trades 
+      ${whereClause}
+      ORDER BY trade_date DESC
+      LIMIT ? OFFSET ?
+    `;
+    const trades = db.prepare(dataQuery).all(...params, limit, offset);
+    
+    console.log(`📊 Political trades: page ${page}, ${trades.length} trades (${total} total)`);
     
     res.json({
       success: true,
       trades: trades,
-      total: trades.length
+      pagination: {
+        page: page,
+        limit: limit,
+        total: total,
+        pages: Math.ceil(total / limit),
+        hasMore: page < Math.ceil(total / limit)
+      }
     });
   } catch (err) {
-    console.error('Error reading political trades CSV:', err);
+    console.error('Error fetching political trades:', err);
     res.status(500).json({
       success: false,
-      error: 'Failed to read political trades data',
+      error: 'Failed to fetch political trades',
       details: err.message
     });
   }
