@@ -24,7 +24,7 @@ progress_lock = Lock()  # Thread-safe progress printing
 
 
 def scrape_openinsider(page=1, min_price=5, filing_days=30, min_insiders=3, min_value=150,
-                       include_ceo=True, include_coo=True, include_cfo=True, include_director=True):
+                       min_own_change=0, include_ceo=True, include_coo=True, include_cfo=True, include_director=True):
     """
     Scrape OpenInsider with the specified filters
     
@@ -34,6 +34,7 @@ def scrape_openinsider(page=1, min_price=5, filing_days=30, min_insiders=3, min_
     - filing_days: Filing date within X days (default: 30)
     - min_insiders: Minimum number of insiders (default: 3)
     - min_value: Minimum transaction value in thousands (default: 150)
+    - min_own_change: Minimum ownership change percentage (default: 0)
     - include_ceo: Include CEO trades (default: True)
     - include_coo: Include COO trades (default: True)
     - include_cfo: Include CFO trades (default: True)
@@ -81,7 +82,7 @@ def scrape_openinsider(page=1, min_price=5, filing_days=30, min_insiders=3, min_
         'noh': '',
         'v2l': str(min_value),       # Volume filter
         'v2h': '',
-        'oc2l': '',
+        'oc2l': str(min_own_change) if min_own_change > 0 else '',  # Ownership change %
         'oc2h': '',
         'sortcol': '0',
         'cnt': '100',       # Results per page
@@ -516,11 +517,11 @@ def main():
     parser.add_argument('--filing-days', type=int, default=30, help='Filing date within X days (default: 30)')
     parser.add_argument('--min-insiders', type=int, default=3, help='Minimum number of insiders (default: 3)')
     parser.add_argument('--min-value', type=int, default=150, help='Minimum transaction value in thousands (default: 150)')
+    parser.add_argument('--min-own-change', type=int, default=0, help='Minimum ownership change percentage (default: 0)')
     parser.add_argument('--include-ceo', type=int, default=1, help='Include CEO trades (1=yes, 0=no, default: 1)')
     parser.add_argument('--include-coo', type=int, default=1, help='Include COO trades (1=yes, 0=no, default: 1)')
     parser.add_argument('--include-cfo', type=int, default=1, help='Include CFO trades (1=yes, 0=no, default: 1)')
     parser.add_argument('--include-director', type=int, default=1, help='Include Director trades (1=yes, 0=no, default: 1)')
-    parser.add_argument('--num-pages', type=int, default=1, help='Number of pages to scrape (default: 1)')
     
     args = parser.parse_args()
     
@@ -532,6 +533,8 @@ def main():
     print(f"- Insiders: {', '.join([r for r, inc in [('CEO', args.include_ceo), ('COO', args.include_coo), ('CFO', args.include_cfo), ('Director', args.include_director)] if inc])}")
     print(f"- Minimum insiders: {args.min_insiders}")
     print(f"- Minimum value: ${args.min_value}k+")
+    if args.min_own_change > 0:
+        print(f"- Minimum ownership change: {args.min_own_change}%+")
     print("\nFinancial Metrics (yfinance - FREE):") 
     print("- Debt-to-Equity, Current Ratio, Quick Ratio, ROE")
     print("- Profit & Operating Margins")
@@ -541,26 +544,39 @@ def main():
     print("=" * 50)
     print()
     
-    # Scrape pages
+    # Scrape all available pages automatically
     all_data = []
+    page = 1
+    max_pages = 10  # Safety limit to avoid infinite loops
     
-    for page in range(1, args.num_pages + 1):
+    while page <= max_pages:
+        print(f"\n🔍 Checking page {page}...")
         data = scrape_openinsider(
             page=page,
             min_price=args.min_price,
             filing_days=args.filing_days,
             min_insiders=args.min_insiders,
             min_value=args.min_value,
+            min_own_change=args.min_own_change,
             include_ceo=bool(args.include_ceo),
             include_coo=bool(args.include_coo),
             include_cfo=bool(args.include_cfo),
             include_director=bool(args.include_director)
         )
+        
+        # Stop if no data found on this page
+        if not data:
+            print(f"No more data found. Stopping at page {page - 1}.")
+            break
+            
         all_data.extend(data)
+        page += 1
         
         # Be respectful to the server
-        if page < args.num_pages:
+        if page <= max_pages:
             time.sleep(2)
+    
+    print(f"\n✅ Scraped {len(all_data)} total records from {page - 1} page(s)")
     
     # Enrich with financial data
     if all_data:

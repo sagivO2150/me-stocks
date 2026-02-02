@@ -21,11 +21,11 @@ app.post('/api/scrape', (req, res) => {
     filingDays = 30,
     minInsiders = 3,
     minValue = 150,
+    minOwnChange = 0,
     includeCEO = true,
     includeCOO = true,
     includeCFO = true,
-    includeDirector = true,
-    numPages = 1
+    includeDirector = true
   } = req.body;
 
   console.log('Starting scraper with filters:', req.body);
@@ -37,11 +37,11 @@ app.post('/api/scrape', (req, res) => {
     '--filing-days', filingDays.toString(),
     '--min-insiders', minInsiders.toString(),
     '--min-value', minValue.toString(),
+    '--min-own-change', minOwnChange.toString(),
     '--include-ceo', includeCEO ? '1' : '0',
     '--include-coo', includeCOO ? '1' : '0',
     '--include-cfo', includeCFO ? '1' : '0',
-    '--include-director', includeDirector ? '1' : '0',
-    '--num-pages', numPages.toString()
+    '--include-director', includeDirector ? '1' : '0'
   ];
 
   const pythonProcess = spawn('/opt/homebrew/bin/python3', args);

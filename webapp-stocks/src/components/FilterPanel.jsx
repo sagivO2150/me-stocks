@@ -8,11 +8,11 @@ function FilterPanel({ onRunScraper, isLoading }) {
     filingDays: 30,
     minInsiders: 3,
     minValue: 150,
+    minOwnChange: 0,
     includeCEO: true,
     includeCOO: true,
     includeCFO: true,
-    includeDirector: true,
-    numPages: 1
+    includeDirector: true
   });
 
   const handleSubmit = (e) => {
@@ -98,17 +98,15 @@ function FilterPanel({ onRunScraper, isLoading }) {
 
             <div>
               <label className="block text-slate-300 mb-2">
-                <Tooltip text="How many pages of insider trades to scan from OpenInsider. Each page = ~20 trades. 1 page = quick scan (top opportunities), 3-5 pages = deep dive (more comprehensive). More pages = slower scraping but more thorough.">
-                  <span className="border-b border-dotted border-slate-500">Pages to Scrape</span>
+                <Tooltip text="Minimum ownership increase percentage. 0% = any increase, 10%+ = meaningful commitment, 50%+ = major stake increase, 100%+ = doubling or more. Higher values = stronger conviction but fewer results. Filters for 'skin in the game'.">
+                  <span className="border-b border-dotted border-slate-500">Min Ownership Chg (%)</span>
                 </Tooltip>
               </label>
               <input
                 type="number"
-                value={filters.numPages}
-                onChange={(e) => setFilters({...filters, numPages: parseInt(e.target.value) || 1})}
+                value={filters.minOwnChange}
+                onChange={(e) => setFilters({...filters, minOwnChange: parseInt(e.target.value) || 0})}
                 className="w-full px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-emerald-500 focus:outline-none"
-                min="1"
-                max="5"
               />
             </div>
           </div>
