@@ -205,6 +205,15 @@ const StockDetail = ({ trade, onClose }) => {
                     tick={{ fill: '#94a3b8' }}
                     tickFormatter={(value) => {
                       const date = new Date(value);
+                      // For intraday data (includes time), show time
+                      if (value.includes(':')) {
+                        const hours = date.getHours();
+                        const minutes = date.getMinutes();
+                        const ampm = hours >= 12 ? 'PM' : 'AM';
+                        const displayHours = hours % 12 || 12;
+                        return `${displayHours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+                      }
+                      // For daily data, show month/day
                       return `${date.getMonth() + 1}/${date.getDate()}`;
                     }}
                   />
@@ -369,7 +378,7 @@ const StockDetail = ({ trade, onClose }) => {
 
               {/* Analyst Targets */}
               {targetMeanPrice && !isNaN(targetMeanPrice) && (
-                <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/30 rounded-xl p-4">
+                <div className="bg-linear-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/30 rounded-xl p-4">
                   <div className="text-slate-400 text-sm mb-2">Analyst Price Target</div>
                   <div className="text-white font-bold text-3xl">${targetMeanPrice.toFixed(2)}</div>
                   {currentPrice && (

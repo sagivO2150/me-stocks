@@ -34,8 +34,16 @@ def fetch_stock_history(ticker_symbol, period="1y"):
         # Create ticker object
         stock = yf.Ticker(ticker_symbol)
         
+        # For short periods, use intraday intervals for more data points
+        interval_map = {
+            '1d': '5m',   # 5-minute intervals for 1 day
+            '5d': '15m',  # 15-minute intervals for 5 days
+        }
+        
+        interval = interval_map.get(period, '1d')  # Default to daily data
+        
         # Get historical data
-        history_data = stock.history(period=period)
+        history_data = stock.history(period=period, interval=interval)
         
         if history_data.empty:
             return {
@@ -59,8 +67,14 @@ def fetch_stock_history(ticker_symbol, period="1y"):
         # Format history data for chart (Date and Close only)
         history_list = []
         for date, row in history_data.iterrows():
+            # For intraday data, include time; for daily data, just date
+            if interval in ['5m', '15m', '30m', '1h']:
+                date_str = date.strftime("%Y-%m-%d %H:%M")
+            else:
+                date_str = date.strftime("%Y-%m-%d")
+            
             history_list.append({
-                "date": date.strftime("%Y-%m-%d"),
+                "date": date_str,
                 "close": float(row['Close']),
                 "volume": int(row['Volume'])
             })
