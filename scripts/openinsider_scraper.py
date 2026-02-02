@@ -155,6 +155,8 @@ def aggregate_insider_trades(all_trades, min_insiders=3):
     # Group by ticker
     ticker_groups = defaultdict(lambda: {
         'trades': [],
+        'unique_trades': {},  # Key: (insider_name, trade_date, value) to dedupe
+        'insider_roles': {},  # Track primary role for each insider
         'CEO_count': 0,
         'CFO_count': 0,
         'COO_count': 0,
@@ -162,23 +164,43 @@ def aggregate_insider_trades(all_trades, min_insiders=3):
         'insider_names': set()
     })
     
+    # Role priority for classification (higher = more important)
+    role_priority = {'CEO': 4, 'CFO': 3, 'COO': 2, 'Director': 1}
+    
     for trade in all_trades:
         ticker = trade['Ticker']
         role = trade['Role']
         insider_name = trade['Insider_Name']
+        trade_date = trade['Trade_Date']
+        value = trade.get('Value', '')
         
-        ticker_groups[ticker]['trades'].append(trade)
+        # Create unique key to avoid double-counting same trade
+        trade_key = (insider_name, trade_date, value)
+        
+        # Only add if this exact trade hasn't been seen before
+        if trade_key not in ticker_groups[ticker]['unique_trades']:
+            ticker_groups[ticker]['unique_trades'][trade_key] = trade
+            ticker_groups[ticker]['trades'].append(trade)
+        
+        # Track insider names
         ticker_groups[ticker]['insider_names'].add(insider_name)
         
-        # Count by role
-        if role == 'CEO':
-            ticker_groups[ticker]['CEO_count'] += 1
-        elif role == 'CFO':
-            ticker_groups[ticker]['CFO_count'] += 1
-        elif role == 'COO':
-            ticker_groups[ticker]['COO_count'] += 1
-        elif role == 'Director':
-            ticker_groups[ticker]['Director_count'] += 1
+        # Assign insider to their highest priority role
+        current_role = ticker_groups[ticker]['insider_roles'].get(insider_name)
+        if current_role is None or role_priority.get(role, 0) > role_priority.get(current_role, 0):
+            ticker_groups[ticker]['insider_roles'][insider_name] = role
+    
+    # Now count roles based on primary assignments
+    for ticker, group in ticker_groups.items():
+        for insider_name, role in group['insider_roles'].items():
+            if role == 'CEO':
+                group['CEO_count'] += 1
+            elif role == 'CFO':
+                group['CFO_count'] += 1
+            elif role == 'COO':
+                group['COO_count'] += 1
+            elif role == 'Director':
+                group['Director_count'] += 1
     
     # Aggregate and filter
     aggregated = []
@@ -306,6 +328,21 @@ def scrape_openinsider(page=1, min_price=5, filing_days=30, min_insiders=3, min_
     print(f"  Aggregating {len(all_trades)} total trades by company...")
     aggregated = aggregate_insider_trades(all_trades, min_insiders=min_insiders)
     
+    # Filter by minimum total value (convert from $k to dollars)
+    min_value_dollars = min_value * 1000
+    filtered = []
+    for company in aggregated:
+        try:
+            # Parse the total value
+            value_str = company['Total_Value'].replace('+$', '').replace('$', '').replace(',', '').strip()
+            if value_str and float(value_str) >= min_value_dollars:
+                filtered.append(company)
+            else:
+                print(f"    Filtered out {company['Ticker']} (${float(value_str):,.0f} < ${min_value_dollars:,.0f})")
+        except:
+            filtered.append(company)  # Keep if can't parse
+    
+    aggregated = filtered
     print(f"  ✅ Found {len(aggregated)} companies meeting criteria")
     
     # Convert to format compatible with existing enrichment code
