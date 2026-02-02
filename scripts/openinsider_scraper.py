@@ -166,9 +166,9 @@ def scrape_openinsider_simple(page=1, min_price=5, filing_days=30, min_insiders=
         'll': '', 'lh': '', 'fd': str(filing_days), 'fdr': '',
         'td': '0', 'tdr': '', 'fdlyl': '', 'fdlyh': '',
         'daysago': '', 'xp': '1', 'vl': '', 'vh': '',
-        'ocl': '', 'och': '', 'sic1': '-1', 'sicl': '', 'sich': '',
-        'iscob': '', 'isceo': '', 'ispres': '', 'iscoo': '', 'iscfo': '',
-        'isgc': '', 'isvp': '', 'isdirector': '', 'is10be': '', 'isother': '',
+        'ocl': '', 'och': '', 'sic1': '-1', 'sicl': '100', 'sich': '9999',  # Exclude funds (SIC < 100)
+        'isofficer': '1', 'iscob': '1', 'isceo': '1', 'ispres': '1', 'iscoo': '1', 'iscfo': '1',
+        'isgc': '1', 'isvp': '1', 'isdirector': '1', 'istenpercent': '1', 'isother': '1',
         'grp': '2',  # Group by company
         'nfl': '', 'nfh': '', 'nil': str(min_insiders), 'nih': '',
         'nol': '', 'noh': '',
