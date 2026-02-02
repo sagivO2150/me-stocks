@@ -32,12 +32,13 @@ def fetch_insider_trades(ticker_symbol, days_back=1461):
     """
     try:
         # Build OpenInsider URL for specific ticker
-        # Only include actual purchases (P) and sales (S), exclude S+OE and F
+        # To get BOTH purchases and sales: use td=0 with NO xs parameter
+        # Removed xp=1 to include all transaction types (it was too restrictive)
         url = (
             f"http://openinsider.com/screener"
             f"?s={ticker_symbol.upper()}"
             f"&o=&pl=&ph=&ll=&lh=&fd={days_back}&fdr=&td=0&tdr="
-            f"&fdlyl=&fdlyh=&daysago=&xp=1&xs=1"  # xp=1 (purchases), xs=1 (sales)
+            f"&fdlyl=&fdlyh=&daysago="  # NO xp to get all transactions
             f"&vl=&vh=&ocl=&och=&sic1=-1&sicl=100&sich=9999"
             f"&isofficer=1&iscob=1&isceo=1&ispres=1&iscoo=1&iscfo=1"
             f"&isgc=1&isvp=1&isdirector=1&istenpercent=1&isother=1"
@@ -76,13 +77,15 @@ def fetch_insider_trades(ticker_symbol, days_back=1461):
             
             try:
                 # Extract data from columns
-                # Column layout: X | Filing Date | Trade Date | Ticker | Insider | Title | Type | Price | Shares | Value | ...
+                # Column layout: X | Filing Date | Trade Date | Ticker | Insider | Title | Type | Price | Shares | Owned | ΔOwn% | Value | ...
+                # cols[0]=X, cols[1]=Filing, cols[2]=Trade Date, cols[3]=Ticker, cols[4]=Insider, cols[5]=Title,
+                # cols[6]=Type, cols[7]=Price, cols[8]=Shares, cols[9]=Owned, cols[10]=ΔOwn%, cols[11]=Value
                 trade_type_col = cols[6]  # Transaction type
                 trade_date_col = cols[2]  # Trade date
                 insider_name_col = cols[4]  # Insider name
                 title_col = cols[5]  # Title
-                shares_col = cols[8]  # Shares
-                value_col = cols[9]  # Value
+                shares_col = cols[8]  # Shares traded
+                value_col = cols[11]  # Value (dollar amount of change)
                 
                 trade_type = trade_type_col.text.strip()
                 
