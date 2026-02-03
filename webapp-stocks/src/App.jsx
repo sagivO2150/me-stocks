@@ -15,11 +15,11 @@ function App() {
     hasMore: false
   });
   const [politicalFilters, setPoliticalFilters] = useState({
-    minAmount: 50000,
+    minAmount: 1000,      // Lower threshold to show more trades
     tradeType: 'all',
     party: 'all',
-    chamber: 'all',
-    days: 90
+    chamber: 'senate',    // Default to senate since that's what we have
+    days: 3650            // ~10 years to show historical Senate data
   });
   const [viewMode, setViewMode] = useState('insider'); // 'insider', 'political', or 'both'
   const [loading, setLoading] = useState(true);
@@ -230,9 +230,13 @@ function App() {
           onRunScraper={handleRunScraper} 
           isLoading={scraperLoading} 
           viewMode={viewMode}
-          onPoliticalFilterChange={(filters) => {
+          onApplyPoliticalFilters={(filters) => {
             setPoliticalFilters(filters);
             loadPoliticalTrades(1, filters, false); // Reset to page 1 with new filters
+          }}
+          onUpdatePoliticalData={() => {
+            // Reload political trades after update
+            loadPoliticalTrades(1, politicalFilters, false);
           }}
         />
 
@@ -262,6 +266,22 @@ function App() {
               <PoliticalTradeCard trade={trade} />
             </div>
           ))}
+          
+          {/* No results message for political trades */}
+          {(viewMode === 'political' || viewMode === 'both') && !politicalLoading && politicalTrades.length === 0 && (
+            <div className="col-span-full bg-yellow-900/30 border border-yellow-700 rounded-lg p-8 text-center">
+              <div className="text-yellow-300 text-xl mb-2">⚠️ No trades found</div>
+              <div className="text-yellow-200 text-sm">
+                <p className="mb-2">Current data is from 2020 (historical Senate trades)</p>
+                <p>Try adjusting your filters:</p>
+                <ul className="mt-2 text-left inline-block">
+                  <li>• Increase "Days Back" to 3650 (10 years)</li>
+                  <li>• Lower minimum amount to $1K</li>
+                  <li>• Select "Senate" chamber (we only have Senate data currently)</li>
+                </ul>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Load More Button for Political Trades */}

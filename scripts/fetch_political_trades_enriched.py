@@ -21,12 +21,24 @@ class EnrichedPoliticalTradesFetcher:
         self.legislators_current_url = "https://raw.githubusercontent.com/unitedstates/congress-legislators/gh-pages/legislators-current.json"
         self.legislators_historical_url = "https://raw.githubusercontent.com/unitedstates/congress-legislators/gh-pages/legislators-historical.json"
         
-        # Try alternative House URL patterns
+        # House data sources with User-Agent headers to bypass blocking
         self.house_urls_to_try = [
-            "https://raw.githubusercontent.com/timothycarambat/house-stock-watcher/master/data/all_transactions.json",
-            "https://raw.githubusercontent.com/timothycarambat/house-stock-watcher-data/main/aggregate/all_transactions.json",
-            "https://housestockwatcher.com/api/all_transactions"
+            # Official API endpoint (preferred)
+            "https://housestockwatcher.com/api/latest_trades",
+            # S3 bucket with year-specific files
+            "https://house-stock-watcher-data.s3-us-west-2.amazonaws.com/data/all_transactions.json",
+            # GitHub yearly files (fallback)
+            "https://raw.githubusercontent.com/timothycarambat/house-stock-watcher-data/master/data/2026.json",
+            "https://raw.githubusercontent.com/timothycarambat/house-stock-watcher-data/master/data/2025.json",
         ]
+        
+        # Browser headers to bypass 403 blocks
+        self.headers = {
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'application/json,text/html,application/xhtml+xml',
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Referer': 'https://housestockwatcher.com/'
+        }
         
         self.legislator_map = {}
         
@@ -156,7 +168,7 @@ class EnrichedPoliticalTradesFetcher:
         print(f"🔄 Fetching Senate data from GitHub mirror...")
         
         try:
-            response = requests.get(self.senate_url, timeout=30)
+            response = requests.get(self.senate_url, headers=self.headers, timeout=30)
             response.raise_for_status()
             
             data = response.json()
@@ -168,21 +180,52 @@ class EnrichedPoliticalTradesFetcher:
             return []
     
     def fetch_house_data(self):
-        """Try multiple House data sources"""
+        """Try multiple House data sources with browser headers"""
+        # First, try loading from stealth scraper cache
         print(f"🔄 Attempting to fetch House data...")
+        stealth_file = os.path.join(os.path.dirname(__file__), '..', 'output CSVs', 'house_trades_raw.json')
+        if os.path.exists(stealth_file):
+            try:
+                print(f"   🕵️  Found stealth cache: {stealth_file}")
+                with open(stealth_file, 'r') as f:
+                    data = json.load(f)
+                if isinstance(data, list) and len(data) > 0:
+                    print(f"   ✅ Loaded {len(data)} House records from stealth cache")
+                    return data
+            except Exception as e:
+                print(f"   ⚠️ Failed to load stealth cache: {e}")
         
+        print(f"   📡 Trying direct URLs with browser headers...")
         for url in self.house_urls_to_try:
             try:
-                print(f"   Trying: {url}")
-                response = requests.get(url, timeout=30)
+                print(f"   📡 Trying: {url}")
+                response = requests.get(url, headers=self.headers, timeout=30, allow_redirects=True)
                 response.raise_for_status()
                 
                 data = response.json()
-                print(f"✅ Found House data! Fetched {len(data)} records")
-                return data
                 
+                # Handle different response formats
+                if isinstance(data, dict):
+                    # API might return {trades: [...]} or {data: [...]}
+                    if 'trades' in data:
+                        data = data['trades']
+                    elif 'data' in data:
+                        data = data['data']
+                    elif 'transactions' in data:
+                        data = data['transactions']
+                
+                if data and len(data) > 0:
+                    print(f"✅ Found House data! Fetched {len(data)} records")
+                    return data
+                else:
+                    print(f"   ⚠️ Empty response")
+                    continue
+                
+            except requests.exceptions.HTTPError as e:
+                print(f"   ❌ HTTP {e.response.status_code}: {e}")
+                continue
             except Exception as e:
-                print(f"   ❌ Failed: {type(e).__name__}")
+                print(f"   ❌ Failed: {type(e).__name__}: {str(e)[:100]}")
                 continue
         
         print(f"⚠️ No House data source available - continuing with Senate only")

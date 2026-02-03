@@ -447,6 +447,47 @@ app.post('/api/scrape-political', (req, res) => {
   });
 });
 
+// Update political trades database endpoint
+app.post('/api/update-political-trades', (req, res) => {
+  console.log('🔄 Starting political trades database update...');
+
+  const updateScript = path.join(__dirname, '../scripts/update_political_trades.sh');
+  const updateProcess = spawn('bash', [updateScript]);
+  
+  let output = '';
+  let errorOutput = '';
+
+  updateProcess.stdout.on('data', (data) => {
+    const chunk = data.toString();
+    output += chunk;
+    console.log(chunk);
+  });
+
+  updateProcess.stderr.on('data', (data) => {
+    const chunk = data.toString();
+    errorOutput += chunk;
+    console.error(chunk);
+  });
+
+  updateProcess.on('close', (code) => {
+    if (code === 0) {
+      console.log('✅ Political trades update completed successfully');
+      res.json({ 
+        success: true, 
+        message: 'Political trades database updated successfully! Refresh to see new data.',
+        output: output
+      });
+    } else {
+      console.error(`❌ Update script exited with code ${code}`);
+      res.status(500).json({ 
+        success: false, 
+        message: `Update failed with exit code ${code}`,
+        error: errorOutput 
+      });
+    }
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Backend server running on http://localhost:${PORT}`);
 });

@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import Tooltip from './Tooltip';
 
-function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onPoliticalFilterChange }) {
+function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onApplyPoliticalFilters, onUpdatePoliticalData }) {
   const [showFilters, setShowFilters] = useState(false);
+  const [updateLoading, setUpdateLoading] = useState(false);
+  const [updateMessage, setUpdateMessage] = useState('');
   const [filters, setFilters] = useState({
     minPrice: 5,
     filingDays: 30,
@@ -22,13 +24,13 @@ function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onPolitica
     includeOther: true
   });
   
-  // Political filters
+  // Political filters - local state only, applied on button click
   const [politicalFilters, setPoliticalFilters] = useState({
-    minAmount: 50000, // $50K minimum
-    tradeType: 'all', // 'all', 'Purchase', 'Sale'
-    party: 'all', // 'all', 'Democrat', 'Republican', 'Independent'
-    chamber: 'all', // 'all', 'senate', 'house'
-    days: 90 // Last 90 days
+    minAmount: 1000,
+    tradeType: 'all',
+    party: 'all',
+    chamber: 'senate',
+    days: 3650
   });
 
   const handleSubmit = (e) => {
@@ -36,10 +38,37 @@ function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onPolitica
     onRunScraper(filters);
   };
   
-  const handlePoliticalFilterChange = (newFilters) => {
-    setPoliticalFilters(newFilters);
-    if (onPoliticalFilterChange) {
-      onPoliticalFilterChange(newFilters);
+  const handleApplyPoliticalFilters = () => {
+    if (onApplyPoliticalFilters) {
+      onApplyPoliticalFilters(politicalFilters);
+    }
+  };
+  
+  const handleUpdatePoliticalData = async () => {
+    setUpdateLoading(true);
+    setUpdateMessage('');
+    
+    try {
+      const response = await fetch('http://localhost:3001/api/update-political-trades', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        setUpdateMessage('✅ ' + data.message);
+        if (onUpdatePoliticalData) {
+          onUpdatePoliticalData(); // Callback to reload data
+        }
+      } else {
+        setUpdateMessage('❌ ' + data.message);
+      }
+    } catch (err) {
+      setUpdateMessage('❌ Failed to update: ' + err.message);
+    } finally {
+      setUpdateLoading(false);
+      setTimeout(() => setUpdateMessage(''), 8000);
     }
   };
 
@@ -64,13 +93,35 @@ function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onPolitica
         <h2 className="text-2xl font-bold text-white">
           {viewMode === 'political' || viewMode === 'both' ? '🏛️ Political Intelligence Filters' : '🔧 Insider Scraper Filters'}
         </h2>
-        <button
-          onClick={() => setShowFilters(!showFilters)}
-          className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition"
-        >
-          {showFilters ? 'Hide Filters' : 'Show Filters'}
-        </button>
+        <div className="flex gap-2">
+          {(viewMode === 'political' || viewMode === 'both') && (
+            <button
+              onClick={handleUpdatePoliticalData}
+              disabled={updateLoading}
+              className="px-4 py-2 bg-blue-700 hover:bg-blue-600 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+              title="Fetch latest political trades and update database"
+            >
+              {updateLoading ? '⏳ Updating...' : '🔄 Update Data'}
+            </button>
+          )}
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition"
+          >
+            {showFilters ? 'Hide Filters' : 'Show Filters'}
+          </button>
+        </div>
       </div>
+      
+      {updateMessage && (
+        <div className={`mb-4 p-3 rounded-lg text-sm ${
+          updateMessage.startsWith('✅')
+            ? 'bg-emerald-900/50 border border-emerald-700 text-emerald-300'
+            : 'bg-red-900/50 border border-red-700 text-red-300'
+        }`}>
+          {updateMessage}
+        </div>
+      )}
 
       {showFilters && viewMode === 'political' ? (
         /* Political Filters */
@@ -89,7 +140,7 @@ function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onPolitica
                 max="500000"
                 step="1000"
                 value={politicalFilters.minAmount}
-                onChange={(e) => handlePoliticalFilterChange({ ...politicalFilters, minAmount: parseInt(e.target.value) })}
+                onChange={(e) => setPoliticalFilters({ ...politicalFilters, minAmount: parseInt(e.target.value) })}
                 className="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer"
               />
               <span className="text-white font-semibold min-w-20">
@@ -104,7 +155,7 @@ function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onPolitica
             <div className="flex flex-wrap gap-2">
               <button
                 type="button"
-                onClick={() => handlePoliticalFilterChange({ ...politicalFilters, tradeType: 'all' })}
+                onClick={() => setPoliticalFilters({ ...politicalFilters, tradeType: 'all' })}
                 className={`px-4 py-2 rounded-lg font-medium transition ${
                   politicalFilters.tradeType === 'all'
                     ? 'bg-purple-600 text-white'
@@ -115,7 +166,7 @@ function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onPolitica
               </button>
               <button
                 type="button"
-                onClick={() => handlePoliticalFilterChange({ ...politicalFilters, tradeType: 'Purchase' })}
+                onClick={() => setPoliticalFilters({ ...politicalFilters, tradeType: 'Purchase' })}
                 className={`px-4 py-2 rounded-lg font-medium transition ${
                   politicalFilters.tradeType === 'Purchase'
                     ? 'bg-emerald-600 text-white'
@@ -126,7 +177,7 @@ function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onPolitica
               </button>
               <button
                 type="button"
-                onClick={() => handlePoliticalFilterChange({ ...politicalFilters, tradeType: 'Sale' })}
+                onClick={() => setPoliticalFilters({ ...politicalFilters, tradeType: 'Sale' })}
                 className={`px-4 py-2 rounded-lg font-medium transition ${
                   politicalFilters.tradeType === 'Sale'
                     ? 'bg-red-600 text-white'
@@ -144,7 +195,7 @@ function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onPolitica
             <div className="flex flex-wrap gap-2">
               <button
                 type="button"
-                onClick={() => handlePoliticalFilterChange({ ...politicalFilters, party: 'all' })}
+                onClick={() => setPoliticalFilters({ ...politicalFilters, party: 'all' })}
                 className={`px-4 py-2 rounded-lg font-medium transition ${
                   politicalFilters.party === 'all'
                     ? 'bg-purple-600 text-white'
@@ -155,7 +206,7 @@ function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onPolitica
               </button>
               <button
                 type="button"
-                onClick={() => handlePoliticalFilterChange({ ...politicalFilters, party: 'Democrat' })}
+                onClick={() => setPoliticalFilters({ ...politicalFilters, party: 'Democrat' })}
                 className={`px-4 py-2 rounded-lg font-medium transition ${
                   politicalFilters.party === 'Democrat'
                     ? 'bg-blue-600 text-white'
@@ -166,7 +217,7 @@ function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onPolitica
               </button>
               <button
                 type="button"
-                onClick={() => handlePoliticalFilterChange({ ...politicalFilters, party: 'Republican' })}
+                onClick={() => setPoliticalFilters({ ...politicalFilters, party: 'Republican' })}
                 className={`px-4 py-2 rounded-lg font-medium transition ${
                   politicalFilters.party === 'Republican'
                     ? 'bg-red-600 text-white'
@@ -184,7 +235,7 @@ function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onPolitica
             <div className="flex flex-wrap gap-2">
               <button
                 type="button"
-                onClick={() => handlePoliticalFilterChange({ ...politicalFilters, chamber: 'all' })}
+                onClick={() => setPoliticalFilters({ ...politicalFilters, chamber: 'all' })}
                 className={`px-4 py-2 rounded-lg font-medium transition ${
                   politicalFilters.chamber === 'all'
                     ? 'bg-purple-600 text-white'
@@ -195,7 +246,7 @@ function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onPolitica
               </button>
               <button
                 type="button"
-                onClick={() => handlePoliticalFilterChange({ ...politicalFilters, chamber: 'senate' })}
+                onClick={() => setPoliticalFilters({ ...politicalFilters, chamber: 'senate' })}
                 className={`px-4 py-2 rounded-lg font-medium transition ${
                   politicalFilters.chamber === 'senate'
                     ? 'bg-blue-600 text-white'
@@ -206,7 +257,7 @@ function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onPolitica
               </button>
               <button
                 type="button"
-                onClick={() => handlePoliticalFilterChange({ ...politicalFilters, chamber: 'house' })}
+                onClick={() => setPoliticalFilters({ ...politicalFilters, chamber: 'house' })}
                 className={`px-4 py-2 rounded-lg font-medium transition ${
                   politicalFilters.chamber === 'house'
                     ? 'bg-red-600 text-white'
@@ -232,13 +283,24 @@ function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onPolitica
                 max="365"
                 step="7"
                 value={politicalFilters.days}
-                onChange={(e) => handlePoliticalFilterChange({ ...politicalFilters, days: parseInt(e.target.value) })}
+                onChange={(e) => setPoliticalFilters({ ...politicalFilters, days: parseInt(e.target.value) })}
                 className="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer"
               />
               <span className="text-white font-semibold min-w-20">
                 {politicalFilters.days} days
               </span>
             </div>
+          </div>
+          
+          {/* Apply Filters Button */}
+          <div className="mt-6">
+            <button
+              type="button"
+              onClick={handleApplyPoliticalFilters}
+              className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg transition-colors"
+            >
+              🔍 Apply Filters & Search
+            </button>
           </div>
         </div>
       ) : showFilters ? (

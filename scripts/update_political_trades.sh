@@ -11,10 +11,25 @@ echo ""
 # Get script directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+VENV_PYTHON="$PROJECT_ROOT/.venv/bin/python"
 
-# Step 1: Fetch latest data from GitHub mirrors
+# Step 0: Run stealth scraper for House data
+echo "🕵️  Step 0: Stealth scrape for House data..."
+if [ -f "$SCRIPT_DIR/house_stealth_fetcher.py" ]; then
+    $VENV_PYTHON "$SCRIPT_DIR/house_stealth_fetcher.py"
+    if [ $? -eq 0 ]; then
+        echo "   ✅ Stealth scraper completed"
+    else
+        echo "   ⚠️ Stealth scraper failed (will try fallback methods)"
+    fi
+else
+    echo "   ⚠️ Stealth scraper not found, skipping..."
+fi
+echo ""
+
+# Step 1: Fetch latest data from GitHub mirrors (will use stealth cache if available)
 echo "📥 Step 1: Fetching latest data..."
-/opt/homebrew/bin/python3 "$SCRIPT_DIR/fetch_political_trades_enriched.py"
+$VENV_PYTHON "$SCRIPT_DIR/fetch_political_trades_enriched.py"
 
 if [ $? -ne 0 ]; then
     echo "❌ Failed to fetch data"
@@ -25,7 +40,7 @@ echo ""
 
 # Step 2: Import to database
 echo "📊 Step 2: Updating database..."
-/opt/homebrew/bin/python3 "$SCRIPT_DIR/import_to_db.py"
+$VENV_PYTHON "$SCRIPT_DIR/import_to_db.py"
 
 if [ $? -ne 0 ]; then
     echo "❌ Failed to update database"
