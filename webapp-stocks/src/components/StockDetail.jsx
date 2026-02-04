@@ -162,6 +162,29 @@ const StockDetail = ({ trade, onClose }) => {
     return true;
   };
 
+  // Classify insider role from title
+  const classifyInsiderRole = (title) => {
+    if (!title) return 'Other';
+    
+    const titleLower = title.toLowerCase();
+    
+    // C-level executives
+    if (titleLower.includes('ceo') || titleLower.includes('chief executive')) return 'C-Level';
+    if (titleLower.includes('cfo') || titleLower.includes('chief financial')) return 'C-Level';
+    if (titleLower.includes('coo') || titleLower.includes('chief operating')) return 'C-Level';
+    if (titleLower.includes('cob') || titleLower.includes('chairman')) return 'C-Level';
+    if (titleLower.includes('pres') && !titleLower.includes('vp') && !titleLower.includes('vice')) return 'C-Level';
+    if (titleLower.includes('chief')) return 'C-Level';
+    
+    // 10% owners
+    if (titleLower.includes('10%') || titleLower.includes('beneficial owner')) return '10% Owner';
+    
+    // Directors
+    if (titleLower.includes('director') && !titleLower.includes('chief')) return 'Director';
+    
+    return 'Other';
+  };
+
   const mergedChartData = () => {
     if (!stockHistory || !stockHistory.history) return [];
     
@@ -178,21 +201,23 @@ const StockDetail = ({ trade, onClose }) => {
       insiderTrades.purchases?.forEach(trade => {
         const dateKey = trade.date;
         if (!insiderPurchasesByDate[dateKey]) {
-          insiderPurchasesByDate[dateKey] = { shares: 0, value: 0, count: 0 };
+          insiderPurchasesByDate[dateKey] = { shares: 0, value: 0, count: 0, roles: [] };
         }
         insiderPurchasesByDate[dateKey].shares += trade.shares;
         insiderPurchasesByDate[dateKey].value += trade.value;
         insiderPurchasesByDate[dateKey].count += 1;
+        insiderPurchasesByDate[dateKey].roles.push(classifyInsiderRole(trade.title));
       });
       
       insiderTrades.sales?.forEach(trade => {
         const dateKey = trade.date;
         if (!insiderSalesByDate[dateKey]) {
-          insiderSalesByDate[dateKey] = { shares: 0, value: 0, count: 0 };
+          insiderSalesByDate[dateKey] = { shares: 0, value: 0, count: 0, roles: [] };
         }
         insiderSalesByDate[dateKey].shares += trade.shares;
         insiderSalesByDate[dateKey].value += trade.value;
         insiderSalesByDate[dateKey].count += 1;
+        insiderSalesByDate[dateKey].roles.push(classifyInsiderRole(trade.title));
       });
     }
     
@@ -246,6 +271,8 @@ const StockDetail = ({ trade, onClose }) => {
         saleShares: (point.date.includes(':') && !isFirstPointOfDay) ? 0 : (insiderSalesByDate[dateKey]?.shares || 0),
         purchaseCount: (point.date.includes(':') && !isFirstPointOfDay) ? 0 : (insiderPurchasesByDate[dateKey]?.count || 0),
         saleCount: (point.date.includes(':') && !isFirstPointOfDay) ? 0 : (insiderSalesByDate[dateKey]?.count || 0),
+        purchaseRoles: (point.date.includes(':') && !isFirstPointOfDay) ? [] : (insiderPurchasesByDate[dateKey]?.roles || []),
+        saleRoles: (point.date.includes(':') && !isFirstPointOfDay) ? [] : (insiderSalesByDate[dateKey]?.roles || []),
         // Political data
         politicalPurchases: (point.date.includes(':') && !isFirstPointOfDay) ? 0 : (politicalPurchasesByDate[dateKey]?.value || 0),
         politicalSales: (point.date.includes(':') && !isFirstPointOfDay) ? 0 : (politicalSalesByDate[dateKey]?.value || 0),
@@ -280,16 +307,25 @@ const StockDetail = ({ trade, onClose }) => {
           {/* Insider Activity */}
           {hasInsiderActivity && (
             <div className="mb-2">
-              <p className="text-xs text-emerald-400 font-semibold mb-1">🏢 Insider Activity</p>
               {data.purchaseCount > 0 && (
-                <p className="text-xs text-emerald-300">
-                  📈 {data.purchaseCount} purchase{data.purchaseCount > 1 ? 's' : ''} (${data.purchases >= 1000000 ? (data.purchases / 1000000).toFixed(1) + 'M' : (data.purchases / 1000).toFixed(0) + 'K'})
-                </p>
+                <>
+                  <p className="text-xs text-emerald-400 font-semibold mb-1">
+                    🏢 {data.purchaseRoles && data.purchaseRoles.length > 0 ? data.purchaseRoles[0] : 'Insider'} Purchase{data.purchaseCount > 1 ? 's' : ''}
+                  </p>
+                  <p className="text-xs text-emerald-300">
+                    📈 {data.purchaseCount} transaction{data.purchaseCount > 1 ? 's' : ''} (${data.purchases >= 1000000 ? (data.purchases / 1000000).toFixed(1) + 'M' : (data.purchases / 1000).toFixed(0) + 'K'})
+                  </p>
+                </>
               )}
               {data.saleCount > 0 && (
-                <p className="text-xs text-red-300">
-                  📉 {data.saleCount} sale{data.saleCount > 1 ? 's' : ''} (${data.sales >= 1000000 ? (data.sales / 1000000).toFixed(1) + 'M' : (data.sales / 1000).toFixed(0) + 'K'})
-                </p>
+                <>
+                  <p className={`text-xs text-red-400 font-semibold ${data.purchaseCount > 0 ? 'mt-2' : ''} mb-1`}>
+                    🏢 {data.saleRoles && data.saleRoles.length > 0 ? data.saleRoles[0] : 'Insider'} Sale{data.saleCount > 1 ? 's' : ''}
+                  </p>
+                  <p className="text-xs text-red-300">
+                    📉 {data.saleCount} transaction{data.saleCount > 1 ? 's' : ''} (${data.sales >= 1000000 ? (data.sales / 1000000).toFixed(1) + 'M' : (data.sales / 1000).toFixed(0) + 'K'})
+                  </p>
+                </>
               )}
             </div>
           )}
