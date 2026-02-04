@@ -162,26 +162,42 @@ const StockDetail = ({ trade, onClose }) => {
     return true;
   };
 
-  // Classify insider role from title
+  // Classify insider role from title - MUST match openinsider_scraper.py classification
   const classifyInsiderRole = (title) => {
     if (!title) return 'Other';
     
     const titleLower = title.toLowerCase();
     
-    // C-level executives
-    if (titleLower.includes('ceo') || titleLower.includes('chief executive')) return 'C-Level';
-    if (titleLower.includes('cfo') || titleLower.includes('chief financial')) return 'C-Level';
-    if (titleLower.includes('coo') || titleLower.includes('chief operating')) return 'C-Level';
+    // Priority order (same as scraper):
+    // 1. COB/Chairman
     if (titleLower.includes('cob') || titleLower.includes('chairman')) return 'C-Level';
-    if (titleLower.includes('pres') && !titleLower.includes('vp') && !titleLower.includes('vice')) return 'C-Level';
-    if (titleLower.includes('chief')) return 'C-Level';
     
-    // 10% owners
-    if (titleLower.includes('10%') || titleLower.includes('beneficial owner')) return '10% Owner';
+    // 2. CEO
+    if (titleLower.includes('ceo') || titleLower.includes('chief executive')) return 'C-Level';
     
-    // Directors
-    if (titleLower.includes('director') && !titleLower.includes('chief')) return 'Director';
+    // 3. President (but not VP)
+    if ((titleLower.includes('pres') || titleLower.includes('president')) && 
+        !titleLower.includes('vp') && !titleLower.includes('vice')) return 'C-Level';
     
+    // 4. CFO
+    if (titleLower.includes('cfo') || titleLower.includes('chief financial')) return 'C-Level';
+    
+    // 5. COO
+    if (titleLower.includes('coo') || titleLower.includes('chief operating')) return 'C-Level';
+    
+    // 6. General Counsel
+    if (titleLower.includes('gc') || titleLower.includes('general counsel')) return 'C-Level';
+    
+    // 7. VP
+    if (titleLower.includes('vp') || titleLower.includes('vice pres')) return 'C-Level';
+    
+    // 8. Director (must check BEFORE checking for "dir" alone)
+    if (titleLower.includes('dir') || titleLower.includes('director')) return 'Director';
+    
+    // 9. 10% owners
+    if (title.includes('10%') || titleLower.includes('beneficial')) return '10% Owner';
+    
+    // 10. Everything else
     return 'Other';
   };
 
@@ -299,6 +315,15 @@ const StockDetail = ({ trade, onClose }) => {
       if (!hasInsiderActivity && !hasPoliticalActivity) {
         return null;
       }
+
+      // Helper function to group roles and count them
+      const groupRoles = (roles) => {
+        const roleCounts = {};
+        roles.forEach(role => {
+          roleCounts[role] = (roleCounts[role] || 0) + 1;
+        });
+        return roleCounts;
+      };
       
       return (
         <div className="bg-slate-800 border border-slate-600 rounded-lg p-3 shadow-xl">
@@ -310,21 +335,33 @@ const StockDetail = ({ trade, onClose }) => {
               {data.purchaseCount > 0 && (
                 <>
                   <p className="text-xs text-emerald-400 font-semibold mb-1">
-                    🏢 {data.purchaseRoles && data.purchaseRoles.length > 0 ? data.purchaseRoles[0] : 'Insider'} Purchase{data.purchaseCount > 1 ? 's' : ''}
+                    🏢 Insider Purchase{data.purchaseCount > 1 ? 's' : ''} (${data.purchases >= 1000000 ? (data.purchases / 1000000).toFixed(1) + 'M' : (data.purchases / 1000).toFixed(0) + 'K'})
                   </p>
-                  <p className="text-xs text-emerald-300">
-                    📈 {data.purchaseCount} transaction{data.purchaseCount > 1 ? 's' : ''} (${data.purchases >= 1000000 ? (data.purchases / 1000000).toFixed(1) + 'M' : (data.purchases / 1000).toFixed(0) + 'K'})
-                  </p>
+                  {data.purchaseRoles && data.purchaseRoles.length > 0 && (
+                    <div className="pl-2">
+                      {Object.entries(groupRoles(data.purchaseRoles)).map(([role, count]) => (
+                        <p key={role} className="text-xs text-emerald-300">
+                          • {count} {role}{count > 1 ? 's' : ''}
+                        </p>
+                      ))}
+                    </div>
+                  )}
                 </>
               )}
               {data.saleCount > 0 && (
                 <>
                   <p className={`text-xs text-red-400 font-semibold ${data.purchaseCount > 0 ? 'mt-2' : ''} mb-1`}>
-                    🏢 {data.saleRoles && data.saleRoles.length > 0 ? data.saleRoles[0] : 'Insider'} Sale{data.saleCount > 1 ? 's' : ''}
+                    🏢 Insider Sale{data.saleCount > 1 ? 's' : ''} (${data.sales >= 1000000 ? (data.sales / 1000000).toFixed(1) + 'M' : (data.sales / 1000).toFixed(0) + 'K'})
                   </p>
-                  <p className="text-xs text-red-300">
-                    📉 {data.saleCount} transaction{data.saleCount > 1 ? 's' : ''} (${data.sales >= 1000000 ? (data.sales / 1000000).toFixed(1) + 'M' : (data.sales / 1000).toFixed(0) + 'K'})
-                  </p>
+                  {data.saleRoles && data.saleRoles.length > 0 && (
+                    <div className="pl-2">
+                      {Object.entries(groupRoles(data.saleRoles)).map(([role, count]) => (
+                        <p key={role} className="text-xs text-red-300">
+                          • {count} {role}{count > 1 ? 's' : ''}
+                        </p>
+                      ))}
+                    </div>
+                  )}
                 </>
               )}
             </div>
