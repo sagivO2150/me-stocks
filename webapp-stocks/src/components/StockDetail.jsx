@@ -283,7 +283,7 @@ const StockDetail = ({ trade, onClose }) => {
     });
   };
 
-  // Custom tooltip for chart - show on hover with insider and political activity highlighted
+  // Custom tooltip for chart - only show when there's insider or political activity
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
@@ -292,19 +292,18 @@ const StockDetail = ({ trade, onClose }) => {
       const hasInsiderActivity = data.purchaseCount > 0 || data.saleCount > 0;
       const hasPoliticalActivity = data.politicalPurchaseCount > 0 || data.politicalSaleCount > 0;
       
+      // Only show tooltip if there's actual trade activity
+      if (!hasInsiderActivity && !hasPoliticalActivity) {
+        return null;
+      }
+      
       return (
         <div className="bg-slate-800 border border-slate-600 rounded-lg p-3 shadow-xl">
           <p className="text-slate-300 text-sm font-semibold mb-2">{data.date}</p>
           
-          {/* Stock Price */}
-          <div className="mb-2">
-            <p className="text-xs text-slate-400">Price:</p>
-            <p className="text-white font-bold">${data.close?.toFixed(2)}</p>
-          </div>
-          
           {/* Insider Activity */}
           {hasInsiderActivity && (
-            <div className="mb-2 border-t border-slate-700 pt-2">
+            <div className="mb-2">
               <p className="text-xs text-emerald-400 font-semibold mb-1">🏢 Insider Activity</p>
               {data.purchaseCount > 0 && (
                 <p className="text-xs text-emerald-300">
@@ -321,7 +320,7 @@ const StockDetail = ({ trade, onClose }) => {
           
           {/* Political Activity */}
           {hasPoliticalActivity && (
-            <div className="mb-2 border-t border-slate-700 pt-2">
+            <div className={hasInsiderActivity ? "border-t border-slate-700 pt-2" : ""}>
               <p className="text-xs text-blue-400 font-semibold mb-1">🏛️ Political Trades</p>
               {data.politicalPurchaseCount > 0 && (
                 <p className="text-xs text-blue-300">
@@ -339,10 +338,6 @@ const StockDetail = ({ trade, onClose }) => {
                 </p>
               )}
             </div>
-          )}
-          
-          {!hasInsiderActivity && !hasPoliticalActivity && (
-            <p className="text-slate-500 text-xs italic">No trade activity</p>
           )}
         </div>
       );
@@ -455,7 +450,7 @@ const StockDetail = ({ trade, onClose }) => {
           </div>
 
           {/* Chart */}
-          <div className="bg-slate-800/50 rounded-xl p-6 mb-6" style={{outline: 'none'}} tabIndex={-1}>
+          <div className="bg-slate-800/50 rounded-xl p-6 mb-6" style={{outline: 'none'}} tabIndex={-1} onClickCapture={(e) => e.stopPropagation()}>
             {/* Trade Activity Legend */}
             {((insiderTrades && (insiderTrades.total_purchases > 0 || insiderTrades.total_sales > 0)) || 
               (politicalTrades && (politicalTrades.purchases?.length > 0 || politicalTrades.sales?.length > 0))) && (
@@ -509,7 +504,10 @@ const StockDetail = ({ trade, onClose }) => {
             
             {!loading && !error && stockHistory && stockHistory.history && (
               <ResponsiveContainer width="100%" height={400}>
-                <ComposedChart data={mergedChartData()} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                <ComposedChart 
+                  data={mergedChartData()} 
+                  margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                >
                   <defs>
                     <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor={chartColor} stopOpacity={0.3}/>
@@ -553,7 +551,12 @@ const StockDetail = ({ trade, onClose }) => {
                       return `$${value}`;
                     }}
                   />
-                  <ChartTooltip content={<CustomTooltip />} trigger="axis" cursor={{ stroke: '#475569', strokeWidth: 1, strokeDasharray: '3 3' }} />
+                  <ChartTooltip 
+                    content={<CustomTooltip />} 
+                    cursor={{ stroke: '#475569', strokeWidth: 1, strokeDasharray: '3 3' }}
+                    allowEscapeViewBox={{ x: false, y: false }}
+                    wrapperStyle={{ zIndex: 1000 }}
+                  />
                   <Area 
                     yAxisId="price"
                     type="monotone" 
@@ -572,6 +575,7 @@ const StockDetail = ({ trade, onClose }) => {
                       dataKey="purchases"
                       stroke="#10b981"
                       strokeWidth={3}
+                      isAnimationActive={false}
                       strokeDasharray="3 3"
                       dot={(dotProps) => {
                         const { cx, cy, payload } = dotProps;
@@ -598,6 +602,7 @@ const StockDetail = ({ trade, onClose }) => {
                       stroke="#ef4444"
                       strokeWidth={3}
                       strokeDasharray="5 5"
+                      isAnimationActive={false}
                       dot={(dotProps) => {
                         const { cx, cy, payload } = dotProps;
                         if (payload && payload.sales > 0) {
@@ -620,6 +625,7 @@ const StockDetail = ({ trade, onClose }) => {
                       yAxisId="price"
                       dataKey="politicalPurchases"
                       fill="#3b82f6"
+                      isAnimationActive={false}
                       shape={(props) => {
                         const { cx, cy, payload } = props;
                         if (!payload || payload.politicalPurchases <= 0) return null;
@@ -639,6 +645,7 @@ const StockDetail = ({ trade, onClose }) => {
                       yAxisId="price"
                       dataKey="politicalSales"
                       fill="#a855f7"
+                      isAnimationActive={false}
                       shape={(props) => {
                         const { cx, cy, payload } = props;
                         if (!payload || payload.politicalSales <= 0) return null;
