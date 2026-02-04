@@ -189,16 +189,6 @@ function App() {
             >
               🏛️ Political Trades
             </button>
-            <button
-              onClick={() => setViewMode('both')}
-              className={`px-6 py-2 rounded-md font-medium transition ${
-                viewMode === 'both'
-                  ? 'bg-purple-600 text-white'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              🔥 Combined View
-            </button>
           </div>
 
           <div className="mt-4 inline-block bg-slate-800 rounded-lg px-6 py-3 border border-slate-700">
@@ -212,14 +202,6 @@ function App() {
             {viewMode === 'political' && (
               <>
                 <span className="text-slate-400">Found </span>
-                <span className="text-blue-400 font-bold text-xl">{politicalTrades.length}</span>
-                <span className="text-slate-400"> political trades</span>
-              </>
-            )}
-            {viewMode === 'both' && (
-              <>
-                <span className="text-emerald-400 font-bold text-xl">{trades.length}</span>
-                <span className="text-slate-400"> insiders + </span>
                 <span className="text-blue-400 font-bold text-xl">{politicalTrades.length}</span>
                 <span className="text-slate-400"> political trades</span>
               </>
@@ -257,21 +239,21 @@ function App() {
         {/* Trade Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Show insider trades */}
-          {(viewMode === 'insider' || viewMode === 'both') && trades.map((trade, index) => (
+          {viewMode === 'insider' && trades.map((trade, index) => (
             <div key={`insider-${index}`} onClick={() => setSelectedTrade(trade)} className="cursor-pointer">
               <TradeCard trade={trade} />
             </div>
           ))}
           
           {/* Show political trades */}
-          {(viewMode === 'political' || viewMode === 'both') && politicalTrades.map((trade, index) => (
+          {viewMode === 'political' && politicalTrades.map((trade, index) => (
             <div key={`political-${trade.id || index}`} onClick={() => setSelectedTrade(trade)} className="cursor-pointer">
               <PoliticalTradeCard trade={trade} />
             </div>
           ))}
           
           {/* No results message for political trades */}
-          {(viewMode === 'political' || viewMode === 'both') && !politicalLoading && politicalTrades.length === 0 && (
+          {viewMode === 'political' && !politicalLoading && politicalTrades.length === 0 && (
             <div className="col-span-full bg-yellow-900/30 border border-yellow-700 rounded-lg p-8 text-center">
               <div className="text-yellow-300 text-xl mb-2">⚠️ No trades found</div>
               <div className="text-yellow-200 text-sm">
@@ -288,7 +270,7 @@ function App() {
         </div>
 
         {/* Load More Button for Political Trades */}
-        {(viewMode === 'political' || viewMode === 'both') && politicalPagination.hasMore && (
+        {viewMode === 'political' && politicalPagination.hasMore && (
           <div className="mt-8 text-center">
             <button
               onClick={() => loadPoliticalTrades(politicalPagination.page + 1, politicalFilters, true)}
