@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import Papa from 'papaparse';
 import TradeCard from './components/TradeCard';
 import PoliticalTradeCard from './components/PoliticalTradeCard';
+import TopMonthlyCard from './components/TopMonthlyCard';
 import FilterPanel from './components/FilterPanel';
 import StockDetail from './components/StockDetail';
 
 function App() {
   const [trades, setTrades] = useState([]);
   const [politicalTrades, setPoliticalTrades] = useState([]);
+  const [topMonthlyTrades, setTopMonthlyTrades] = useState([]);
   const [politicalPagination, setPoliticalPagination] = useState({
     page: 1,
     limit: 50,
@@ -21,9 +23,10 @@ function App() {
     chamber: 'all',
     days: 0              // No time limit - show all trades
   });
-  const [viewMode, setViewMode] = useState('insider'); // 'insider', 'political', or 'both'
+  const [viewMode, setViewMode] = useState('insider'); // 'insider', 'political', 'monthly'
   const [loading, setLoading] = useState(true);
   const [politicalLoading, setPoliticalLoading] = useState(false);
+  const [monthlyLoading, setMonthlyLoading] = useState(false);
   const [error, setError] = useState(null);
   const [scraperLoading, setScraperLoading] = useState(false);
   const [scraperMessage, setScraperMessage] = useState('');
@@ -98,6 +101,55 @@ function App() {
     }
   };
 
+  const loadTopMonthlyTrades = async () => {
+    setMonthlyLoading(true);
+    
+    try {
+      const response = await fetch('http://localhost:3001/api/top-monthly-trades');
+      const data = await response.json();
+      
+      if (data.success && data.data) {
+        setTopMonthlyTrades(data.data);
+      }
+    } catch (err) {
+      console.error('Error loading top monthly trades:', err.message);
+    } finally {
+      setMonthlyLoading(false);
+    }
+  };
+
+  const handleRunMonthlyUpdate = async () => {
+    setScraperLoading(true);
+    setScraperMessage('');
+    
+    try {
+      const response = await fetch('http://localhost:3001/api/scrape-top-monthly', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        setScraperMessage('✅ ' + data.message);
+        // Reload monthly data after successful scrape
+        setTimeout(() => {
+          loadTopMonthlyTrades();
+        }, 1000);
+      } else {
+        setScraperMessage('❌ ' + data.message);
+      }
+    } catch (err) {
+      setScraperMessage('❌ Failed to update monthly data: ' + err.message);
+    } finally {
+      setScraperLoading(false);
+      // Clear message after 5 seconds
+      setTimeout(() => setScraperMessage(''), 5000);
+    }
+  };
+
   const handleRunScraper = async (filters) => {
     setScraperLoading(true);
     setScraperMessage('');
@@ -137,6 +189,7 @@ function App() {
   useEffect(() => {
     loadCSV();
     loadPoliticalTrades();
+    loadTopMonthlyTrades();
   }, []);
 
   if (loading) {
@@ -189,6 +242,16 @@ function App() {
             >
               🏛️ Political Trades
             </button>
+            <button
+              onClick={() => setViewMode('monthly')}
+              className={`px-6 py-2 rounded-md font-medium transition ${
+                viewMode === 'monthly'
+                  ? 'bg-purple-600 text-white'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              🔥 Top Monthly Activity
+            </button>
           </div>
 
           <div className="mt-4 inline-block bg-slate-800 rounded-lg px-6 py-3 border border-slate-700">
@@ -204,6 +267,13 @@ function App() {
                 <span className="text-slate-400">Found </span>
                 <span className="text-blue-400 font-bold text-xl">{politicalTrades.length}</span>
                 <span className="text-slate-400"> political trades</span>
+              </>
+            )}
+            {viewMode === 'monthly' && (
+              <>
+                <span className="text-slate-400">Showing top </span>
+                <span className="text-purple-400 font-bold text-xl">{topMonthlyTrades.length}</span>
+                <span className="text-slate-400"> stocks by insider activity</span>
               </>
             )}
           </div>
@@ -223,6 +293,7 @@ function App() {
             // Reload political trades after update
             loadPoliticalTrades(1, politicalFilters, false);
           }}
+          onUpdateMonthlyData={handleRunMonthlyUpdate}
         />
 
         {/* Scraper Message */}
@@ -252,6 +323,13 @@ function App() {
             </div>
           ))}
           
+          {/* Show top monthly trades */}
+          {viewMode === 'monthly' && topMonthlyTrades.map((stock, index) => (
+            <div key={`monthly-${stock.ticker}-${index}`} onClick={() => setSelectedTrade({ Ticker: stock.ticker, ticker: stock.ticker })} className="cursor-pointer">
+              <TopMonthlyCard stock={stock} />
+            </div>
+          ))}
+          
           {/* No results message for political trades */}
           {viewMode === 'political' && !politicalLoading && politicalTrades.length === 0 && (
             <div className="col-span-full bg-yellow-900/30 border border-yellow-700 rounded-lg p-8 text-center">
@@ -264,6 +342,17 @@ function App() {
                   <li>• Lower minimum amount to $1K</li>
                   <li>• Select "All Parties" and "Both Chambers"</li>
                 </ul>
+              </div>
+            </div>
+          )}
+          
+          {/* No results message for monthly trades */}
+          {viewMode === 'monthly' && !monthlyLoading && topMonthlyTrades.length === 0 && (
+            <div className="col-span-full bg-yellow-900/30 border border-yellow-700 rounded-lg p-8 text-center">
+              <div className="text-yellow-300 text-xl mb-2">⚠️ No monthly data available</div>
+              <div className="text-yellow-200 text-sm">
+                <p className="mb-2">Monthly insider trading data hasn't been loaded yet.</p>
+                <p>Click the "Update Monthly Data" button in the filter panel to fetch the latest data.</p>
               </div>
             </div>
           )}

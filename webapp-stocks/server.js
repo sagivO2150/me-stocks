@@ -636,6 +636,92 @@ app.get('/api/politician-stats', (req, res) => {
   }
 });
 
+// Endpoint to get top monthly insider trading stocks
+app.get('/api/top-monthly-trades', (req, res) => {
+  try {
+    const jsonPath = path.join(__dirname, '../output CSVs/top_monthly_insider_trades.json');
+    
+    if (!fs.existsSync(jsonPath)) {
+      return res.json({
+        success: false,
+        message: 'Top monthly trades data not available. Run the scraper first.'
+      });
+    }
+    
+    const data = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+    
+    res.json({
+      success: true,
+      ...data
+    });
+  } catch (err) {
+    console.error('Error reading top monthly trades:', err);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to load top monthly trades data',
+      details: err.message
+    });
+  }
+});
+
+// Endpoint to run the top monthly trades scraper
+app.post('/api/scrape-top-monthly', (req, res) => {
+  console.log('Starting top monthly trades scraper...');
+  
+  const pythonScript = path.join(__dirname, '../scripts/fetch_top_monthly_insider_trades.py');
+  const pythonProcess = spawn('/opt/homebrew/bin/python3', [pythonScript]);
+  
+  let output = '';
+  let errorOutput = '';
+  
+  pythonProcess.stdout.on('data', (data) => {
+    const chunk = data.toString();
+    output += chunk;
+    console.log(chunk);
+  });
+  
+  pythonProcess.stderr.on('data', (data) => {
+    const chunk = data.toString();
+    errorOutput += chunk;
+    console.error(chunk);
+  });
+  
+  pythonProcess.on('close', (code) => {
+    if (code === 0) {
+      console.log('Top monthly trades scraper completed successfully');
+      
+      // Copy JSON to public folder for direct access
+      const sourceJSON = path.join(__dirname, '../output CSVs/top_monthly_insider_trades.json');
+      const destJSON = path.join(__dirname, 'public/top_monthly_insider_trades.json');
+      
+      fs.copyFile(sourceJSON, destJSON, (err) => {
+        if (err) {
+          console.error('Error copying JSON:', err);
+          res.status(500).json({
+            success: false,
+            message: 'Scraper completed but failed to copy JSON',
+            error: err.message
+          });
+        } else {
+          console.log('JSON copied to public folder');
+          res.json({
+            success: true,
+            message: 'Top monthly trades data updated successfully!',
+            output: output
+          });
+        }
+      });
+    } else {
+      console.error('Scraper failed with code', code);
+      res.status(500).json({
+        success: false,
+        message: 'Scraper failed',
+        error: errorOutput || output
+      });
+    }
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Backend server running on http://localhost:${PORT}`);
 });

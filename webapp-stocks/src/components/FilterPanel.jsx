@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Tooltip from './Tooltip';
 
-function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onApplyPoliticalFilters, onUpdatePoliticalData }) {
+function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onApplyPoliticalFilters, onUpdatePoliticalData, onUpdateMonthlyData }) {
   const [showFilters, setShowFilters] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
   const [updateMessage, setUpdateMessage] = useState('');
@@ -123,10 +123,12 @@ function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onApplyPol
     <div className="mb-8 bg-slate-800 rounded-lg p-6 border border-slate-700">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold text-white">
-          {viewMode === 'political' || viewMode === 'both' ? '🏛️ Political Intelligence Filters' : '🔧 Insider Scraper Filters'}
+          {viewMode === 'political' ? '🏛️ Political Intelligence Filters' : 
+           viewMode === 'monthly' ? '🔥 Top Monthly Activity' :
+           '🔧 Insider Scraper Filters'}
         </h2>
         <div className="flex gap-2">
-          {(viewMode === 'political' || viewMode === 'both') && (
+          {viewMode === 'political' && (
             <>
               <button
                 onClick={handleFetchQuiverTrades}
@@ -151,6 +153,19 @@ function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onApplyPol
                 {updateLoading ? '⏳ Updating...' : '🔄 Update Database'}
               </button>
             </>
+          )}
+          {viewMode === 'monthly' && (
+            <button
+              onClick={onUpdateMonthlyData}
+              disabled={isLoading}
+              className={`px-4 py-2 rounded-lg font-medium transition ${
+                isLoading
+                  ? 'bg-slate-600 cursor-not-allowed text-slate-400'
+                  : 'bg-purple-600 hover:bg-purple-700 text-white'
+              }`}
+            >
+              {isLoading ? '⏳ Updating...' : '🔄 Update Monthly Data'}
+            </button>
           )}
           <button
             onClick={() => setShowFilters(!showFilters)}
