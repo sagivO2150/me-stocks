@@ -488,6 +488,154 @@ app.post('/api/update-political-trades', (req, res) => {
   });
 });
 
+// Fetch latest Quiver trades and import to database
+app.post('/api/fetch-quiver-trades', (req, res) => {
+  console.log('🔥 Fetching latest Quiver political trades...');
+
+  const venvPython = path.join(__dirname, '../.venv/bin/python');
+  const fetchScript = path.join(__dirname, '../scripts/fetch_quiver_trades.py');
+  const fetchProcess = spawn(venvPython, [fetchScript]);
+  
+  let output = '';
+  let errorOutput = '';
+
+  fetchProcess.stdout.on('data', (data) => {
+    const chunk = data.toString();
+    output += chunk;
+    console.log(chunk);
+  });
+
+  fetchProcess.stderr.on('data', (data) => {
+    const chunk = data.toString();
+    errorOutput += chunk;
+    console.error(chunk);
+  });
+
+  fetchProcess.on('close', (code) => {
+    if (code === 0) {
+      console.log('✅ Quiver trades fetched successfully, now importing to database...');
+      
+      // Import the CSV to database
+      const importScript = path.join(__dirname, '../scripts/import_to_db.py');
+      const csvPath = path.join(__dirname, '../output CSVs/quiver_trades_current.csv');
+      const importProcess = spawn(venvPython, [importScript, csvPath]);
+      
+      let importOutput = '';
+      let importError = '';
+      
+      importProcess.stdout.on('data', (data) => {
+        const chunk = data.toString();
+        importOutput += chunk;
+        console.log(chunk);
+      });
+      
+      importProcess.stderr.on('data', (data) => {
+        const chunk = data.toString();
+        importError += chunk;
+        console.error(chunk);
+      });
+      
+      importProcess.on('close', (importCode) => {
+        if (importCode === 0) {
+          console.log('✅ Database updated with Quiver trades');
+          res.json({ 
+            success: true, 
+            message: 'Latest political trades fetched and imported! Refresh to see new data.',
+            output: output + '\n' + importOutput
+          });
+        } else {
+          console.error(`❌ Import failed with code ${importCode}`);
+          res.status(500).json({ 
+            success: false, 
+            message: `Data fetched but import failed with exit code ${importCode}`,
+            error: importError 
+          });
+        }
+      });
+    } else {
+      console.error(`❌ Fetch script exited with code ${code}`);
+      res.status(500).json({ 
+        success: false, 
+        message: `Failed to fetch Quiver trades with exit code ${code}`,
+        error: errorOutput 
+      });
+    }
+  });
+});
+
+// Politician aggregation endpoint for advanced filtering
+app.get('/api/politician-stats', (req, res) => {
+  try {
+    const { 
+      minTotalAmount,
+      minTradeCount,
+      days,
+      tradeType  // 'purchase', 'sale', or 'all'
+    } = req.query;
+    
+    // Build WHERE clause for filtering
+    let whereConditions = [];
+    let params = [];
+    
+    if (days) {
+      const cutoffDate = new Date();
+      cutoffDate.setDate(cutoffDate.getDate() - parseInt(days));
+      whereConditions.push('trade_date >= ?');
+      params.push(cutoffDate.toISOString().split('T')[0]);
+    }
+    
+    if (tradeType && tradeType !== 'all') {
+      whereConditions.push('LOWER(trade_type) = ?');
+      params.push(tradeType.toLowerCase());
+    }
+    
+    const whereClause = whereConditions.length > 0 
+      ? 'WHERE ' + whereConditions.join(' AND ')
+      : '';
+    
+    // Aggregate by politician
+    const query = `
+      SELECT 
+        politician,
+        party,
+        source as chamber,
+        COUNT(*) as trade_count,
+        SUM(amount_value) as total_amount,
+        MIN(trade_date) as earliest_trade,
+        MAX(trade_date) as latest_trade,
+        GROUP_CONCAT(DISTINCT ticker) as tickers
+      FROM political_trades
+      ${whereClause}
+      GROUP BY politician, party, source
+      HAVING 1=1
+        ${minTotalAmount ? 'AND total_amount >= ?' : ''}
+        ${minTradeCount ? 'AND trade_count >= ?' : ''}
+      ORDER BY total_amount DESC
+    `;
+    
+    // Add HAVING clause params
+    if (minTotalAmount) params.push(parseFloat(minTotalAmount));
+    if (minTradeCount) params.push(parseInt(minTradeCount));
+    
+    const politicians = db.prepare(query).all(...params);
+    
+    console.log(`📊 Politician stats: ${politicians.length} politicians match criteria`);
+    
+    res.json({
+      success: true,
+      politicians: politicians,
+      count: politicians.length
+    });
+  } catch (err) {
+    console.error('Error fetching politician stats:', err);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch politician statistics',
+      details: err.message
+    });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Backend server running on http://localhost:${PORT}`);
 });

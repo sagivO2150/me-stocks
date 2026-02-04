@@ -77,7 +77,9 @@ class PoliticalTradesDB:
         
     def import_from_csv(self, csv_path):
         """Import trades from CSV file"""
-        csv_path = os.path.join(os.path.dirname(__file__), csv_path)
+        # If not absolute path, make it relative to script directory
+        if not os.path.isabs(csv_path):
+            csv_path = os.path.join(os.path.dirname(__file__), csv_path)
         
         if not os.path.exists(csv_path):
             print(f"❌ CSV file not found: {csv_path}")
@@ -89,10 +91,44 @@ class PoliticalTradesDB:
         with open(csv_path, 'r', encoding='utf-8') as f:
             reader = csv.DictReader(f)
             
+            # Check if this is a Quiver-format CSV (has min_amount/max_amount)
+            # vs enriched format (has amount_value)
+            first_row = next(reader, None)
+            if not first_row:
+                print("❌ CSV file is empty")
+                return False
+            
+            is_quiver_format = 'min_amount' in first_row and 'max_amount' in first_row
+            print(f"   Format detected: {'Quiver' if is_quiver_format else 'Enriched'}")
+            
+            # Reset to beginning
+            f.seek(0)
+            next(reader)  # Skip header again
+            
             for row in reader:
                 # Skip rows with missing required fields
                 if not row.get('ticker') or not row.get('politician'):
                     continue
+                
+                # Calculate amount_value based on format
+                if is_quiver_format:
+                    # Quiver format: calculate average of min and max
+                    min_amt = float(row.get('min_amount', 0) or 0)
+                    max_amt = float(row.get('max_amount', 0) or 0)
+                    amount_value = (min_amt + max_amt) / 2.0 if min_amt or max_amt else 0.0
+                    
+                    # Map Quiver fields to database fields
+                    source = row.get('chamber', '').lower()  # 'House' or 'Senate'
+                    trade_type = row.get('transaction', '').lower()  # 'purchase' or 'sale'
+                    disclosure_date = row.get('report_date', '')
+                    asset_description = row.get('asset_name', '')
+                else:
+                    # Enriched format: use amount_value directly
+                    amount_value = float(row.get('amount_value', 0) or 0)
+                    source = row.get('source', '')
+                    trade_type = row.get('trade_type', '')
+                    disclosure_date = row.get('disclosure_date', '')
+                    asset_description = row.get('asset_description', '')
                     
                 self.cursor.execute('''
                     INSERT INTO political_trades (
@@ -101,15 +137,15 @@ class PoliticalTradesDB:
                         party, state, district, committee, ptr_link
                     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ''', (
-                    row.get('source', ''),
+                    source,
                     row.get('politician', ''),
                     row.get('ticker', ''),
-                    row.get('asset_description', ''),
-                    row.get('trade_type', ''),
+                    asset_description,
+                    trade_type,
                     row.get('trade_date', ''),
-                    row.get('disclosure_date', ''),
+                    disclosure_date,
                     row.get('amount_range', ''),
-                    float(row.get('amount_value', 0) or 0),
+                    amount_value,
                     row.get('party', ''),
                     row.get('state', ''),
                     row.get('district', ''),
@@ -159,6 +195,8 @@ class PoliticalTradesDB:
             print("🔒 Database connection closed")
 
 def main():
+    import sys
+    
     print("=" * 70)
     print("🏛️  Political Trades Database Importer")
     print("=" * 70)
@@ -170,8 +208,16 @@ def main():
     # Clear existing data
     db.clear_trades()
     
+    # Determine CSV path - use command line argument or default
+    if len(sys.argv) > 1:
+        csv_path = sys.argv[1]
+        print(f"📂 Using CSV from command line: {csv_path}")
+    else:
+        csv_path = '../output CSVs/political_trades_latest.csv'
+        print(f"📂 Using default CSV: {csv_path}")
+    
     # Import from CSV
-    success = db.import_from_csv('../output CSVs/political_trades_latest.csv')
+    success = db.import_from_csv(csv_path)
     
     if success:
         # Show stats

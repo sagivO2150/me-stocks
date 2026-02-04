@@ -15,11 +15,11 @@ function App() {
     hasMore: false
   });
   const [politicalFilters, setPoliticalFilters] = useState({
-    minAmount: 1000,      // Lower threshold to show more trades
+    minAmount: 0,        // No minimum filter
     tradeType: 'all',
     party: 'all',
-    chamber: 'senate',    // Default to senate since that's what we have
-    days: 3650            // ~10 years to show historical Senate data
+    chamber: 'all',
+    days: 0              // No time limit - show all trades
   });
   const [viewMode, setViewMode] = useState('insider'); // 'insider', 'political', or 'both'
   const [loading, setLoading] = useState(true);
@@ -65,11 +65,13 @@ function App() {
         limit: '50'
       });
       
-      if (filters.minAmount) params.append('min_amount', filters.minAmount);
-      if (filters.tradeType !== 'all') params.append('trade_type', filters.tradeType);
-      if (filters.party !== 'all') params.append('party', filters.party);
-      if (filters.chamber !== 'all') params.append('chamber', filters.chamber);
-      if (filters.days) params.append('days', filters.days);
+      console.log('Loading political trades with filters:', filters);
+      
+      if (filters.minAmount && filters.minAmount > 0) params.append('min_amount', filters.minAmount);
+      if (filters.tradeType && filters.tradeType !== 'all') params.append('trade_type', filters.tradeType);
+      if (filters.party && filters.party !== 'all') params.append('party', filters.party);
+      if (filters.chamber && filters.chamber !== 'all') params.append('chamber', filters.chamber);
+      if (filters.days && filters.days > 0) params.append('days', filters.days);
       
       const response = await fetch(`http://localhost:3001/api/political-trades?${params}`);
       if (!response.ok) {
@@ -231,6 +233,7 @@ function App() {
           isLoading={scraperLoading} 
           viewMode={viewMode}
           onApplyPoliticalFilters={(filters) => {
+            console.log('📊 App.jsx received filters:', filters);
             setPoliticalFilters(filters);
             loadPoliticalTrades(1, filters, false); // Reset to page 1 with new filters
           }}
@@ -272,12 +275,12 @@ function App() {
             <div className="col-span-full bg-yellow-900/30 border border-yellow-700 rounded-lg p-8 text-center">
               <div className="text-yellow-300 text-xl mb-2">⚠️ No trades found</div>
               <div className="text-yellow-200 text-sm">
-                <p className="mb-2">Current data is from 2020 (historical Senate trades)</p>
+                <p className="mb-2">No political trades match your current filters.</p>
                 <p>Try adjusting your filters:</p>
                 <ul className="mt-2 text-left inline-block">
-                  <li>• Increase "Days Back" to 3650 (10 years)</li>
+                  <li>• Increase "Days Back" to 365 or more</li>
                   <li>• Lower minimum amount to $1K</li>
-                  <li>• Select "Senate" chamber (we only have Senate data currently)</li>
+                  <li>• Select "All Parties" and "Both Chambers"</li>
                 </ul>
               </div>
             </div>

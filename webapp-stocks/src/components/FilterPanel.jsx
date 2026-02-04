@@ -26,12 +26,15 @@ function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onApplyPol
   
   // Political filters - local state only, applied on button click
   const [politicalFilters, setPoliticalFilters] = useState({
-    minAmount: 1000,
+    minAmount: 0,
     tradeType: 'all',
     party: 'all',
-    chamber: 'senate',
-    days: 3650
+    chamber: 'all',
+    days: 0
   });
+  
+  const [quiverLoading, setQuiverLoading] = useState(false);
+  const [quiverMessage, setQuiverMessage] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -39,6 +42,7 @@ function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onApplyPol
   };
   
   const handleApplyPoliticalFilters = () => {
+    console.log('🔍 Applying political filters:', politicalFilters);
     if (onApplyPoliticalFilters) {
       onApplyPoliticalFilters(politicalFilters);
     }
@@ -71,6 +75,34 @@ function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onApplyPol
       setTimeout(() => setUpdateMessage(''), 8000);
     }
   };
+  
+  const handleFetchQuiverTrades = async () => {
+    setQuiverLoading(true);
+    setQuiverMessage('');
+    
+    try {
+      const response = await fetch('http://localhost:3001/api/fetch-quiver-trades', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        setQuiverMessage('✅ ' + data.message);
+        if (onUpdatePoliticalData) {
+          onUpdatePoliticalData(); // Callback to reload data
+        }
+      } else {
+        setQuiverMessage('❌ ' + data.message);
+      }
+    } catch (err) {
+      setQuiverMessage('❌ Failed to fetch: ' + err.message);
+    } finally {
+      setQuiverLoading(false);
+      setTimeout(() => setQuiverMessage(''), 8000);
+    }
+  };
 
   const toggleCLevelRoles = () => {
     const allCLevelEnabled = filters.includeCOB && filters.includeCEO && filters.includePres && 
@@ -95,14 +127,30 @@ function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onApplyPol
         </h2>
         <div className="flex gap-2">
           {(viewMode === 'political' || viewMode === 'both') && (
-            <button
-              onClick={handleUpdatePoliticalData}
-              disabled={updateLoading}
-              className="px-4 py-2 bg-blue-700 hover:bg-blue-600 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
-              title="Fetch latest political trades and update database"
-            >
-              {updateLoading ? '⏳ Updating...' : '🔄 Update Data'}
-            </button>
+            <>
+              <button
+                onClick={handleFetchQuiverTrades}
+                disabled={quiverLoading}
+                className={`px-4 py-2 rounded-lg font-medium transition ${
+                  quiverLoading
+                    ? 'bg-slate-600 cursor-not-allowed text-slate-400'
+                    : 'bg-orange-600 hover:bg-orange-700 text-white'
+                }`}
+              >
+                {quiverLoading ? '⏳ Fetching...' : '🔥 Fetch Quiver Trades'}
+              </button>
+              <button
+                onClick={handleUpdatePoliticalData}
+                disabled={updateLoading}
+                className={`px-4 py-2 rounded-lg font-medium transition ${
+                  updateLoading
+                    ? 'bg-slate-600 cursor-not-allowed text-slate-400'
+                    : 'bg-blue-600 hover:bg-blue-700 text-white'
+                }`}
+              >
+                {updateLoading ? '⏳ Updating...' : '🔄 Update Database'}
+              </button>
+            </>
           )}
           <button
             onClick={() => setShowFilters(!showFilters)}
@@ -113,13 +161,19 @@ function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onApplyPol
         </div>
       </div>
       
+      {/* Status Messages */}
       {updateMessage && (
-        <div className={`mb-4 p-3 rounded-lg text-sm ${
-          updateMessage.startsWith('✅')
-            ? 'bg-emerald-900/50 border border-emerald-700 text-emerald-300'
-            : 'bg-red-900/50 border border-red-700 text-red-300'
+        <div className={`mt-2 p-3 rounded-lg ${
+          updateMessage.startsWith('✅') ? 'bg-green-900/30 text-green-300' : 'bg-red-900/30 text-red-300'
         }`}>
           {updateMessage}
+        </div>
+      )}
+      {quiverMessage && (
+        <div className={`mt-2 p-3 rounded-lg ${
+          quiverMessage.startsWith('✅') ? 'bg-green-900/30 text-green-300' : 'bg-red-900/30 text-red-300'
+        }`}>
+          {quiverMessage}
         </div>
       )}
 
@@ -129,24 +183,45 @@ function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onApplyPol
           {/* Minimum Amount Filter */}
           <div className="bg-slate-700/30 rounded-lg p-4 border border-slate-600">
             <label className="block text-slate-300 mb-2">
-              <Tooltip text="Filter out small trades. Only show transactions above this threshold.">
-                <span className="border-b border-dotted border-slate-500">Minimum Transaction Amount</span>
-              </Tooltip>
+              Minimum Transaction Amount
             </label>
-            <div className="flex items-center gap-4">
-              <input
-                type="range"
-                min="1000"
-                max="500000"
-                step="1000"
-                value={politicalFilters.minAmount}
-                onChange={(e) => setPoliticalFilters({ ...politicalFilters, minAmount: parseInt(e.target.value) })}
-                className="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer"
-              />
-              <span className="text-white font-semibold min-w-20">
-                ${(politicalFilters.minAmount / 1000).toFixed(0)}K
-              </span>
+            <div className="flex gap-2 items-end">
+              <div className="flex-1">
+                <input
+                  type="number"
+                  value={politicalFilters.minAmount}
+                  onChange={(e) => setPoliticalFilters({ ...politicalFilters, minAmount: parseInt(e.target.value) || 0 })}
+                  className="w-full px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-purple-500 focus:outline-none"
+                  placeholder="0"
+                />
+              </div>
+              <div className="flex gap-1">
+                <button
+                  type="button"
+                  onClick={() => setPoliticalFilters({ ...politicalFilters, minAmount: 10000 })}
+                  className="px-3 py-2 bg-slate-600 hover:bg-slate-500 text-white text-sm rounded transition"
+                >
+                  $10K
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPoliticalFilters({ ...politicalFilters, minAmount: 50000 })}
+                  className="px-3 py-2 bg-slate-600 hover:bg-slate-500 text-white text-sm rounded transition"
+                >
+                  $50K
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPoliticalFilters({ ...politicalFilters, minAmount: 100000 })}
+                  className="px-3 py-2 bg-slate-600 hover:bg-slate-500 text-white text-sm rounded transition"
+                >
+                  $100K
+                </button>
+              </div>
             </div>
+            <p className="text-xs text-slate-400 mt-1">
+              {politicalFilters.minAmount === 0 ? '💡 Showing all amounts (no filter)' : `✅ Filtering: Only show trades ≥ $${politicalFilters.minAmount.toLocaleString()}`}
+            </p>
           </div>
 
           {/* Trade Type Filter */}
@@ -272,24 +347,18 @@ function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onApplyPol
           {/* Date Range Filter */}
           <div className="bg-slate-700/30 rounded-lg p-4 border border-slate-600">
             <label className="block text-slate-300 mb-2">
-              <Tooltip text="Show trades from the last X days.">
-                <span className="border-b border-dotted border-slate-500">Days Back</span>
-              </Tooltip>
+              Days Back
             </label>
-            <div className="flex items-center gap-4">
-              <input
-                type="range"
-                min="7"
-                max="365"
-                step="7"
-                value={politicalFilters.days}
-                onChange={(e) => setPoliticalFilters({ ...politicalFilters, days: parseInt(e.target.value) })}
-                className="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer"
-              />
-              <span className="text-white font-semibold min-w-20">
-                {politicalFilters.days} days
-              </span>
-            </div>
+            <input
+              type="number"
+              value={politicalFilters.days}
+              onChange={(e) => setPoliticalFilters({ ...politicalFilters, days: parseInt(e.target.value) || 7 })}
+              className="w-full px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-purple-500 focus:outline-none"
+              placeholder="0 = all time"
+            />
+            <p className="text-xs text-slate-400 mt-1">
+              {politicalFilters.days === 0 ? 'Showing all trades (all time)' : `Show trades from the last ${politicalFilters.days} days`}
+            </p>
           </div>
           
           {/* Apply Filters Button */}
