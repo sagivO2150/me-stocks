@@ -308,12 +308,12 @@ const StockDetail = ({ trade, onClose }) => {
               <p className="text-xs text-emerald-400 font-semibold mb-1">🏢 Insider Activity</p>
               {data.purchaseCount > 0 && (
                 <p className="text-xs text-emerald-300">
-                  📈 {data.purchaseCount} purchase{data.purchaseCount > 1 ? 's' : ''} (${(data.purchases / 1000).toFixed(0)}K)
+                  📈 {data.purchaseCount} purchase{data.purchaseCount > 1 ? 's' : ''} (${data.purchases >= 1000000 ? (data.purchases / 1000000).toFixed(1) + 'M' : (data.purchases / 1000).toFixed(0) + 'K'})
                 </p>
               )}
               {data.saleCount > 0 && (
                 <p className="text-xs text-red-300">
-                  📉 {data.saleCount} sale{data.saleCount > 1 ? 's' : ''} (${(data.sales / 1000).toFixed(0)}K)
+                  📉 {data.saleCount} sale{data.saleCount > 1 ? 's' : ''} (${data.sales >= 1000000 ? (data.sales / 1000000).toFixed(1) + 'M' : (data.sales / 1000).toFixed(0) + 'K'})
                 </p>
               )}
             </div>
@@ -325,12 +325,12 @@ const StockDetail = ({ trade, onClose }) => {
               <p className="text-xs text-blue-400 font-semibold mb-1">🏛️ Political Trades</p>
               {data.politicalPurchaseCount > 0 && (
                 <p className="text-xs text-blue-300">
-                  📈 {data.politicalPurchaseCount} purchase{data.politicalPurchaseCount > 1 ? 's' : ''} (${(data.politicalPurchases / 1000).toFixed(0)}K)
+                  📈 {data.politicalPurchaseCount} purchase{data.politicalPurchaseCount > 1 ? 's' : ''} (${data.politicalPurchases >= 1000000 ? (data.politicalPurchases / 1000000).toFixed(1) + 'M' : (data.politicalPurchases / 1000).toFixed(0) + 'K'})
                 </p>
               )}
               {data.politicalSaleCount > 0 && (
                 <p className="text-xs text-red-300">
-                  📉 {data.politicalSaleCount} sale{data.politicalSaleCount > 1 ? 's' : ''} (${(data.politicalSales / 1000).toFixed(0)}K)
+                  📉 {data.politicalSaleCount} sale{data.politicalSaleCount > 1 ? 's' : ''} (${data.politicalSales >= 1000000 ? (data.politicalSales / 1000000).toFixed(1) + 'M' : (data.politicalSales / 1000).toFixed(0) + 'K'})
                 </p>
               )}
               {data.politicians && data.politicians.length > 0 && (
