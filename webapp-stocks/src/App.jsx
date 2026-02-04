@@ -24,6 +24,7 @@ function App() {
     days: 0              // No time limit - show all trades
   });
   const [viewMode, setViewMode] = useState('insider'); // 'insider', 'political', 'monthly'
+  const [monthlySortType, setMonthlySortType] = useState('amount'); // 'amount', 'c-level', '10-percent'
   const [loading, setLoading] = useState(true);
   const [politicalLoading, setPoliticalLoading] = useState(false);
   const [monthlyLoading, setMonthlyLoading] = useState(false);
@@ -307,6 +308,22 @@ function App() {
           </div>
         )}
 
+        {/* Monthly Sort Dropdown */}
+        {viewMode === 'monthly' && topMonthlyTrades.length > 0 && (
+          <div className="mb-6 flex items-center gap-4">
+            <span className="text-slate-400 text-sm font-medium">Sort by:</span>
+            <select
+              value={monthlySortType}
+              onChange={(e) => setMonthlySortType(e.target.value)}
+              className="px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-purple-500 transition"
+            >
+              <option value="amount">💰 Biggest Trading Amount</option>
+              <option value="c-level">🎯 Most C-Level Purchases</option>
+              <option value="10-percent">🏢 Most 10%er Purchases</option>
+            </select>
+          </div>
+        )}
+
         {/* Trade Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Show insider trades */}
@@ -324,11 +341,37 @@ function App() {
           ))}
           
           {/* Show top monthly trades */}
-          {viewMode === 'monthly' && topMonthlyTrades.map((stock, index) => (
-            <div key={`monthly-${stock.ticker}-${index}`} onClick={() => setSelectedTrade({ Ticker: stock.ticker, ticker: stock.ticker })} className="cursor-pointer">
-              <TopMonthlyCard stock={stock} />
-            </div>
-          ))}
+          {viewMode === 'monthly' && (() => {
+            // Sort monthly trades based on selected sort type
+            const sortedTrades = [...topMonthlyTrades].sort((a, b) => {
+              if (monthlySortType === 'amount') {
+                return b.total_value - a.total_value;
+              } else if (monthlySortType === 'c-level') {
+                // Calculate C-level + Directors count
+                const aCount = (a.role_counts.COB || 0) + (a.role_counts.CEO || 0) + 
+                               (a.role_counts.Pres || 0) + (a.role_counts.CFO || 0) + 
+                               (a.role_counts.COO || 0) + (a.role_counts.GC || 0) + 
+                               (a.role_counts.Director || 0);
+                const bCount = (b.role_counts.COB || 0) + (b.role_counts.CEO || 0) + 
+                               (b.role_counts.Pres || 0) + (b.role_counts.CFO || 0) + 
+                               (b.role_counts.COO || 0) + (b.role_counts.GC || 0) + 
+                               (b.role_counts.Director || 0);
+                return bCount - aCount;
+              } else if (monthlySortType === '10-percent') {
+                // Calculate 10% Owners count
+                const aCount = (a.role_counts['10% Owner'] || 0);
+                const bCount = (b.role_counts['10% Owner'] || 0);
+                return bCount - aCount;
+              }
+              return 0;
+            });
+            
+            return sortedTrades.map((stock, index) => (
+              <div key={`monthly-${stock.ticker}-${index}`} onClick={() => setSelectedTrade({ Ticker: stock.ticker, ticker: stock.ticker })} className="cursor-pointer">
+                <TopMonthlyCard stock={stock} />
+              </div>
+            ));
+          })()}
           
           {/* No results message for political trades */}
           {viewMode === 'political' && !politicalLoading && politicalTrades.length === 0 && (

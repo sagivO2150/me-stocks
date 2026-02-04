@@ -64,14 +64,14 @@ const TopMonthlyCard = ({ stock }) => {
       <div className="flex flex-wrap gap-2 mb-4">
         {/* Insiders Count with Role Breakdown */}
         <Tooltip text={`Number of unique insiders buying this stock in the past month. Breakdown: ${roleBreakdownText}. CEO/CFO/COO buys = C-suite conviction (strongest signal).`}>
-          <span className="px-3 py-2 bg-blue-500/20 text-blue-400 rounded-lg text-sm font-medium border border-blue-500/30">
+          <span className="px-3 py-2 bg-blue-500/20 text-blue-400 rounded-lg text-sm font-medium">
             👥 {uniqueInsiders} Insider{uniqueInsiders > 1 ? 's' : ''}
           </span>
         </Tooltip>
 
         {/* Total Purchases Count */}
         <Tooltip text={`Total number of purchase transactions made by insiders. Multiple purchases can indicate sustained conviction.`}>
-          <span className="px-3 py-2 bg-purple-500/20 text-purple-400 rounded-lg text-sm font-medium border border-purple-500/30">
+          <span className="px-3 py-2 bg-purple-500/20 text-purple-400 rounded-lg text-sm font-medium">
             📊 {totalPurchases} Purchase{totalPurchases > 1 ? 's' : ''}
           </span>
         </Tooltip>
@@ -79,7 +79,7 @@ const TopMonthlyCard = ({ stock }) => {
         {/* C-Suite Badge */}
         {(cobCount + ceoCount + presCount + cfoCount + cooCount > 0) && (
           <Tooltip text="C-Suite executives are buying. This is a strong signal of insider confidence in the company's future.">
-            <span className="px-3 py-2 bg-emerald-500/20 text-emerald-400 rounded-lg text-sm font-medium border border-emerald-500/30">
+            <span className="px-3 py-2 bg-emerald-500/20 text-emerald-400 rounded-lg text-sm font-medium">
               🎯 C-Suite Activity
             </span>
           </Tooltip>
@@ -87,9 +87,9 @@ const TopMonthlyCard = ({ stock }) => {
 
         {/* 10% Owner Badge */}
         {ownerCount > 0 && (
-          <Tooltip text="10%+ beneficial owners are buying. Large shareholders increasing positions often signals strong conviction.">
-            <span className="px-3 py-2 bg-yellow-500/20 text-yellow-400 rounded-lg text-sm font-medium border border-yellow-500/30">
-              🐋 Whale Activity
+          <Tooltip text="10%+ beneficial owners are buying. Large shareholders increasing positions often signals strong conviction or potential acquisition activity.">
+            <span className="px-3 py-2 bg-yellow-500/20 text-yellow-400 rounded-lg text-sm font-medium">
+              🏢 10%+ Owner
             </span>
           </Tooltip>
         )}
@@ -106,14 +106,29 @@ const TopMonthlyCard = ({ stock }) => {
         <div className="bg-slate-900/30 rounded-lg p-3">
           <div className="text-slate-500 text-xs mb-1">Avg per Trade</div>
           <div className="text-white font-semibold">
-            ${(stock.total_value / totalPurchases / 1000).toFixed(0)}K
+            {(() => {
+              const avgValue = stock.total_value / totalPurchases;
+              if (avgValue >= 1_000_000_000) {
+                return `$${(avgValue / 1_000_000_000).toFixed(2)}B`;
+              } else if (avgValue >= 1_000_000) {
+                return `$${(avgValue / 1_000_000).toFixed(1)}M`;
+              } else if (avgValue >= 1_000) {
+                return `$${(avgValue / 1_000).toFixed(0)}K`;
+              } else {
+                return `$${avgValue.toFixed(0)}`;
+              }
+            })()}
           </div>
         </div>
         
         <div className="bg-slate-900/30 rounded-lg p-3">
-          <div className="text-slate-500 text-xs mb-1">Trades per Insider</div>
+          <div className="text-slate-500 text-xs mb-1">C-Level/Directors</div>
           <div className="text-white font-semibold">
-            {(totalPurchases / uniqueInsiders).toFixed(1)}
+            {cobCount + ceoCount + presCount + cfoCount + cooCount + gcCount + directorCount}
+          </div>
+          <div className="text-slate-500 text-xs mt-1">10%ers/Other</div>
+          <div className="text-white font-semibold text-sm">
+            {ownerCount + otherCount}
           </div>
         </div>
       </div>
