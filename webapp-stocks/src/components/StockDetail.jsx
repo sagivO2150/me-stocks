@@ -566,26 +566,52 @@ const StockDetail = ({ trade, onClose }) => {
                     isAnimationActive={false}
                   />
                   {insiderTrades && insiderTrades.total_purchases > 0 && (
-                    <Scatter
+                    <Line
                       yAxisId="insider"
+                      type="monotone"
                       dataKey="purchases"
-                      fill="#10b981"
-                      shape={(props) => {
-                        const { cx, cy, payload } = props;
-                        if (!payload || payload.purchases <= 0) return null;
-                        return <circle cx={cx} cy={cy} r={8} fill="#10b981" stroke="#fff" strokeWidth={2} />;
+                      stroke="#10b981"
+                      strokeWidth={3}
+                      strokeDasharray="3 3"
+                      dot={(dotProps) => {
+                        const { cx, cy, payload } = dotProps;
+                        if (payload && payload.purchases > 0) {
+                          return <circle key={`purchase-${cx}-${cy}`} cx={cx} cy={cy} r={8} fill="#10b981" stroke="#fff" strokeWidth={2} />;
+                        }
+                        // Return invisible dot to maintain line continuity
+                        return <circle key={`purchase-empty-${cx}-${cy}`} cx={cx} cy={cy} r={0} fill="none" />;
+                      }}
+                      activeDot={(dotProps) => {
+                        const { cx, cy, payload } = dotProps;
+                        if (payload && payload.purchases > 0) {
+                          return <circle key={`purchase-active-${cx}-${cy}`} cx={cx} cy={cy} r={12} fill="#10b981" stroke="#fff" strokeWidth={3} />;
+                        }
+                        return false;
                       }}
                     />
                   )}
                   {insiderTrades && insiderTrades.total_sales > 0 && (
-                    <Scatter
+                    <Line
                       yAxisId="insider"
+                      type="monotone"
                       dataKey="sales"
-                      fill="#ef4444"
-                      shape={(props) => {
-                        const { cx, cy, payload } = props;
-                        if (!payload || payload.sales <= 0) return null;
-                        return <circle cx={cx} cy={cy} r={8} fill="#ef4444" stroke="#fff" strokeWidth={2} />;
+                      stroke="#ef4444"
+                      strokeWidth={3}
+                      strokeDasharray="5 5"
+                      dot={(dotProps) => {
+                        const { cx, cy, payload } = dotProps;
+                        if (payload && payload.sales > 0) {
+                          return <circle key={`sale-${cx}-${cy}`} cx={cx} cy={cy} r={8} fill="#ef4444" stroke="#fff" strokeWidth={2} />;
+                        }
+                        // Return invisible dot to maintain line continuity
+                        return <circle key={`sale-empty-${cx}-${cy}`} cx={cx} cy={cy} r={0} fill="none" />;
+                      }}
+                      activeDot={(dotProps) => {
+                        const { cx, cy, payload } = dotProps;
+                        if (payload && payload.sales > 0) {
+                          return <circle key={`sale-active-${cx}-${cy}`} cx={cx} cy={cy} r={12} fill="#ef4444" stroke="#fff" strokeWidth={3} />;
+                        }
+                        return false;
                       }}
                     />
                   )}
