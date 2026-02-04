@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as ChartTooltip, ResponsiveContainer, Area, AreaChart, ComposedChart } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as ChartTooltip, ResponsiveContainer, Area, AreaChart, ComposedChart, Scatter } from 'recharts';
 import Tooltip from './Tooltip';
 
 const StockDetail = ({ trade, onClose }) => {
@@ -141,6 +141,51 @@ const StockDetail = ({ trade, onClose }) => {
   };
 
   // Merge insider and political trades with stock history for chart display
+  // Get the actual date range of available data
+  const getAvailableDateRange = () => {
+    if (!stockHistory || !stockHistory.history || stockHistory.history.length === 0) {
+      return null;
+    }
+    
+    const firstDate = new Date(stockHistory.history[0].date);
+    const lastDate = new Date(stockHistory.history[stockHistory.history.length - 1].date);
+    const dataPoints = stockHistory.history.length;
+    
+    // For intraday data (same day), calculate hours instead of days
+    const isIntraday = stockHistory.history[0].date.includes(':');
+    
+    return { firstDate, lastDate, dataPoints, isIntraday };
+  };
+
+  // Check if a period has enough data
+  const hasDataForPeriod = (periodString) => {
+    const range = getAvailableDateRange();
+    if (!range) return false;
+    
+    const { firstDate, lastDate, dataPoints, isIntraday } = range;
+    
+    // For intraday data (1d period), check if we have enough data points
+    if (isIntraday) {
+      return periodString === '1d' || periodString === '5d';
+    }
+    
+    // For daily data, check actual day span
+    const daysDiff = Math.floor((lastDate - firstDate) / (1000 * 60 * 60 * 24));
+    
+    const periodDays = {
+      '1d': 1,
+      '5d': 5,
+      '1mo': 30,
+      '3mo': 90,
+      '6mo': 180,
+      '1y': 365,
+      '2y': 730,
+      '5y': 1825
+    };
+    
+    return daysDiff >= periodDays[periodString] * 0.8; // Allow 20% tolerance
+  };
+
   const mergedChartData = () => {
     if (!stockHistory || !stockHistory.history) return [];
     
@@ -210,20 +255,26 @@ const StockDetail = ({ trade, onClose }) => {
     return data.map(point => {
       const dateKey = point.date.split(' ')[0]; // Extract date part (YYYY-MM-DD)
       
+      // For intraday data, aggregate all trades for that day on the first data point of the day
+      const isFirstPointOfDay = !data.find(p => {
+        const pDate = p.date.split(' ')[0];
+        return pDate === dateKey && data.indexOf(p) < data.indexOf(point);
+      });
+      
       return {
         ...point,
-        // Insider data
-        purchases: insiderPurchasesByDate[dateKey]?.value || 0,
-        sales: insiderSalesByDate[dateKey]?.value || 0,
-        purchaseShares: insiderPurchasesByDate[dateKey]?.shares || 0,
-        saleShares: insiderSalesByDate[dateKey]?.shares || 0,
-        purchaseCount: insiderPurchasesByDate[dateKey]?.count || 0,
-        saleCount: insiderSalesByDate[dateKey]?.count || 0,
+        // Insider data - for intraday, only show on first point of day
+        purchases: (point.date.includes(':') && !isFirstPointOfDay) ? 0 : (insiderPurchasesByDate[dateKey]?.value || 0),
+        sales: (point.date.includes(':') && !isFirstPointOfDay) ? 0 : (insiderSalesByDate[dateKey]?.value || 0),
+        purchaseShares: (point.date.includes(':') && !isFirstPointOfDay) ? 0 : (insiderPurchasesByDate[dateKey]?.shares || 0),
+        saleShares: (point.date.includes(':') && !isFirstPointOfDay) ? 0 : (insiderSalesByDate[dateKey]?.shares || 0),
+        purchaseCount: (point.date.includes(':') && !isFirstPointOfDay) ? 0 : (insiderPurchasesByDate[dateKey]?.count || 0),
+        saleCount: (point.date.includes(':') && !isFirstPointOfDay) ? 0 : (insiderSalesByDate[dateKey]?.count || 0),
         // Political data
-        politicalPurchases: politicalPurchasesByDate[dateKey]?.value || 0,
-        politicalSales: politicalSalesByDate[dateKey]?.value || 0,
-        politicalPurchaseCount: politicalPurchasesByDate[dateKey]?.count || 0,
-        politicalSaleCount: politicalSalesByDate[dateKey]?.count || 0,
+        politicalPurchases: (point.date.includes(':') && !isFirstPointOfDay) ? 0 : (politicalPurchasesByDate[dateKey]?.value || 0),
+        politicalSales: (point.date.includes(':') && !isFirstPointOfDay) ? 0 : (politicalSalesByDate[dateKey]?.value || 0),
+        politicalPurchaseCount: (point.date.includes(':') && !isFirstPointOfDay) ? 0 : (politicalPurchasesByDate[dateKey]?.count || 0),
+        politicalSaleCount: (point.date.includes(':') && !isFirstPointOfDay) ? 0 : (politicalSalesByDate[dateKey]?.count || 0),
         politicians: [
           ...(politicalPurchasesByDate[dateKey]?.politicians || []),
           ...(politicalSalesByDate[dateKey]?.politicians || [])
@@ -349,20 +400,58 @@ const StockDetail = ({ trade, onClose }) => {
         {/* Content */}
         <div className="p-6">
           {/* Period Selector */}
-          <div className="mb-6 flex gap-2">
-            {['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y'].map((p) => (
-              <button
-                key={p}
-                onClick={() => setPeriod(p)}
-                className={`px-4 py-2 rounded-lg transition-all ${
-                  period === p
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white'
-                }`}
-              >
-                {p.toUpperCase()}
-              </button>
-            ))}
+          <div className="mb-6">
+            <div className="flex gap-2 flex-wrap">
+              {['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y'].map((p) => {
+                const hasData = hasDataForPeriod(p);
+                return (
+                  <button
+                    key={p}
+                    onClick={() => hasData && setPeriod(p)}
+                    disabled={!hasData}
+                    className={`px-4 py-2 rounded-lg transition-all ${
+                      period === p
+                        ? 'bg-blue-600 text-white'
+                        : hasData
+                        ? 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white'
+                        : 'bg-slate-800/30 text-slate-600 cursor-not-allowed'
+                    }`}
+                    title={!hasData ? 'Insufficient historical data for this period' : ''}
+                  >
+                    {p.toUpperCase()}
+                  </button>
+                );
+              })}
+            </div>
+            
+            {/* Show limited data warning */}
+            {(() => {
+              const range = getAvailableDateRange();
+              if (!range) return null;
+              
+              const { firstDate, lastDate, dataPoints, isIntraday } = range;
+              
+              // For intraday data, don't calculate days - just show we're in intraday mode
+              if (isIntraday) {
+                return null; // No warning for intraday data
+              }
+              
+              const daysDiff = Math.floor((lastDate - firstDate) / (1000 * 60 * 60 * 24));
+              
+              // Show warning if less than 60 days of data
+              if (daysDiff < 60) {
+                return (
+                  <div className="mt-3 px-4 py-2 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
+                    <p className="text-yellow-400 text-sm">
+                      ⚠️ Limited historical data available: Only {daysDiff} days since {firstDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                      {daysDiff < 30 && ' (Recently IPO\'d stock)'}
+                    </p>
+                  </div>
+                );
+              }
+              
+              return null;
+            })()}
           </div>
 
           {/* Chart */}
@@ -477,119 +566,63 @@ const StockDetail = ({ trade, onClose }) => {
                     isAnimationActive={false}
                   />
                   {insiderTrades && insiderTrades.total_purchases > 0 && (
-                    <Line 
+                    <Scatter
                       yAxisId="insider"
-                      type="monotone"
                       dataKey="purchases"
-                      stroke="#10b981"
-                      strokeWidth={3}
-                      dot={(dotProps) => {
-                        const { cx, cy, payload } = dotProps;
-                        if (payload && payload.purchases > 0) {
-                          return <circle key={`purchase-${cx}-${cy}`} cx={cx} cy={cy} r={8} fill="#10b981" stroke="#fff" strokeWidth={2} />;
-                        }
-                        // Return invisible dot to maintain line continuity
-                        return <circle key={`purchase-empty-${cx}-${cy}`} cx={cx} cy={cy} r={0} fill="none" />;
-                      }}
-                      activeDot={(dotProps) => {
-                        const { cx, cy, payload } = dotProps;
-                        if (payload && payload.purchases > 0) {
-                          return <circle key={`purchase-active-${cx}-${cy}`} cx={cx} cy={cy} r={12} fill="#10b981" stroke="#fff" strokeWidth={3} />;
-                        }
-                        return false;
+                      fill="#10b981"
+                      shape={(props) => {
+                        const { cx, cy, payload } = props;
+                        if (!payload || payload.purchases <= 0) return null;
+                        return <circle cx={cx} cy={cy} r={8} fill="#10b981" stroke="#fff" strokeWidth={2} />;
                       }}
                     />
                   )}
                   {insiderTrades && insiderTrades.total_sales > 0 && (
-                    <Line 
+                    <Scatter
                       yAxisId="insider"
-                      type="monotone"
                       dataKey="sales"
-                      stroke="#ef4444"
-                      strokeWidth={3}
-                      strokeDasharray="5 5"
-                      dot={(dotProps) => {
-                        const { cx, cy, payload } = dotProps;
-                        if (payload && payload.sales > 0) {
-                          return <circle key={`sale-${cx}-${cy}`} cx={cx} cy={cy} r={8} fill="#ef4444" stroke="#fff" strokeWidth={2} />;
-                        }
-                        // Return invisible dot to maintain line continuity
-                        return <circle key={`sale-empty-${cx}-${cy}`} cx={cx} cy={cy} r={0} fill="none" />;
-                      }}
-                      activeDot={(dotProps) => {
-                        const { cx, cy, payload } = dotProps;
-                        if (payload && payload.sales > 0) {
-                          return <circle key={`sale-active-${cx}-${cy}`} cx={cx} cy={cy} r={12} fill="#ef4444" stroke="#fff" strokeWidth={3} />;
-                        }
-                        return false;
+                      fill="#ef4444"
+                      shape={(props) => {
+                        const { cx, cy, payload } = props;
+                        if (!payload || payload.sales <= 0) return null;
+                        return <circle cx={cx} cy={cy} r={8} fill="#ef4444" stroke="#fff" strokeWidth={2} />;
                       }}
                     />
                   )}
                   {politicalTrades && politicalTrades.purchases?.length > 0 && (
-                    <Line 
+                    <Scatter
                       yAxisId="price"
-                      type="monotone"
-                      dataKey="close"
-                      stroke="transparent"
-                      strokeWidth={0}
-                      dot={(dotProps) => {
-                        const { cx, cy, payload, index } = dotProps;
-                        if (payload && payload.politicalPurchases > 0) {
-                          // Large prominent blue square at the stock price level
-                          return (
-                            <g key={`pol-purchase-${index}`}>
-                              <rect x={cx - 10} y={cy - 10} width={20} height={20} fill="#3b82f6" stroke="#fff" strokeWidth={3} />
-                              <text x={cx} y={cy - 20} textAnchor="middle" fill="#3b82f6" fontSize="20" fontWeight="bold">🏛️</text>
-                            </g>
-                          );
-                        }
-                        return null;
-                      }}
-                      activeDot={(dotProps) => {
-                        const { cx, cy, payload, index } = dotProps;
-                        if (payload && payload.politicalPurchases > 0) {
-                          return (
-                            <g key={`pol-purchase-active-${index}`}>
-                              <rect x={cx - 14} y={cy - 14} width={28} height={28} fill="#3b82f6" stroke="#fff" strokeWidth={4} />
-                              <text x={cx} y={cy - 25} textAnchor="middle" fill="#3b82f6" fontSize="24" fontWeight="bold">🏛️</text>
-                            </g>
-                          );
-                        }
-                        return false;
+                      dataKey="politicalPurchases"
+                      fill="#3b82f6"
+                      shape={(props) => {
+                        const { cx, cy, payload } = props;
+                        if (!payload || payload.politicalPurchases <= 0) return null;
+                        // Use the close price for positioning
+                        const priceY = cy;
+                        return (
+                          <g>
+                            <rect x={cx - 10} y={priceY - 10} width={20} height={20} fill="#3b82f6" stroke="#fff" strokeWidth={3} />
+                            <text x={cx} y={priceY - 20} textAnchor="middle" fill="#3b82f6" fontSize="20" fontWeight="bold">🏛️</text>
+                          </g>
+                        );
                       }}
                     />
                   )}
                   {politicalTrades && politicalTrades.sales?.length > 0 && (
-                    <Line 
+                    <Scatter
                       yAxisId="price"
-                      type="monotone"
-                      dataKey="close"
-                      stroke="transparent"
-                      strokeWidth={0}
-                      dot={(dotProps) => {
-                        const { cx, cy, payload, index } = dotProps;
-                        if (payload && payload.politicalSales > 0) {
-                          // Large prominent purple diamond at the stock price level
-                          return (
-                            <g key={`pol-sale-${index}`}>
-                              <rect x={cx - 10} y={cy - 10} width={20} height={20} fill="#a855f7" stroke="#fff" strokeWidth={3} transform={`rotate(45 ${cx} ${cy})`} />
-                              <text x={cx} y={cy - 20} textAnchor="middle" fill="#a855f7" fontSize="20" fontWeight="bold">🏛️</text>
-                            </g>
-                          );
-                        }
-                        return null;
-                      }}
-                      activeDot={(dotProps) => {
-                        const { cx, cy, payload, index } = dotProps;
-                        if (payload && payload.politicalSales > 0) {
-                          return (
-                            <g key={`pol-sale-active-${index}`}>
-                              <rect x={cx - 14} y={cy - 14} width={28} height={28} fill="#a855f7" stroke="#fff" strokeWidth={4} transform={`rotate(45 ${cx} ${cy})`} />
-                              <text x={cx} y={cy - 25} textAnchor="middle" fill="#a855f7" fontSize="24" fontWeight="bold">🏛️</text>
-                            </g>
-                          );
-                        }
-                        return false;
+                      dataKey="politicalSales"
+                      fill="#a855f7"
+                      shape={(props) => {
+                        const { cx, cy, payload } = props;
+                        if (!payload || payload.politicalSales <= 0) return null;
+                        const priceY = cy;
+                        return (
+                          <g>
+                            <rect x={cx - 10} y={priceY - 10} width={20} height={20} fill="#a855f7" stroke="#fff" strokeWidth={3} transform={`rotate(45 ${cx} ${priceY})`} />
+                            <text x={cx} y={priceY - 20} textAnchor="middle" fill="#a855f7" fontSize="20" fontWeight="bold">🏛️</text>
+                          </g>
+                        );
                       }}
                     />
                   )}
