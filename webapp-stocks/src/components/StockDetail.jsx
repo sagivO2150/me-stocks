@@ -209,7 +209,7 @@ const StockDetail = ({ trade, onClose }) => {
     
     const data = [...stockHistory.history];
     
-    // Create maps for insider purchases and sales by date
+    // Create maps for insider purchases and sales by date - KEEP INDIVIDUAL TRADES
     const insiderPurchasesByDate = {};
     const insiderSalesByDate = {};
     
@@ -217,23 +217,33 @@ const StockDetail = ({ trade, onClose }) => {
       insiderTrades.purchases?.forEach(trade => {
         const dateKey = trade.date;
         if (!insiderPurchasesByDate[dateKey]) {
-          insiderPurchasesByDate[dateKey] = { shares: 0, value: 0, count: 0, roles: [] };
+          insiderPurchasesByDate[dateKey] = { trades: [], totalValue: 0, count: 0 };
         }
-        insiderPurchasesByDate[dateKey].shares += trade.shares;
-        insiderPurchasesByDate[dateKey].value += trade.value;
+        insiderPurchasesByDate[dateKey].trades.push({
+          insider: trade.insider_name,
+          title: trade.title,
+          role: classifyInsiderRole(trade.title),
+          shares: trade.shares,
+          value: trade.value
+        });
+        insiderPurchasesByDate[dateKey].totalValue += trade.value;
         insiderPurchasesByDate[dateKey].count += 1;
-        insiderPurchasesByDate[dateKey].roles.push(classifyInsiderRole(trade.title));
       });
       
       insiderTrades.sales?.forEach(trade => {
         const dateKey = trade.date;
         if (!insiderSalesByDate[dateKey]) {
-          insiderSalesByDate[dateKey] = { shares: 0, value: 0, count: 0, roles: [] };
+          insiderSalesByDate[dateKey] = { trades: [], totalValue: 0, count: 0 };
         }
-        insiderSalesByDate[dateKey].shares += trade.shares;
-        insiderSalesByDate[dateKey].value += trade.value;
+        insiderSalesByDate[dateKey].trades.push({
+          insider: trade.insider_name,
+          title: trade.title,
+          role: classifyInsiderRole(trade.title),
+          shares: trade.shares,
+          value: trade.value
+        });
+        insiderSalesByDate[dateKey].totalValue += trade.value;
         insiderSalesByDate[dateKey].count += 1;
-        insiderSalesByDate[dateKey].roles.push(classifyInsiderRole(trade.title));
       });
     }
     
@@ -280,15 +290,13 @@ const StockDetail = ({ trade, onClose }) => {
       
       return {
         ...point,
-        // Insider data - for intraday, only show on first point of day
-        purchases: (point.date.includes(':') && !isFirstPointOfDay) ? 0 : (insiderPurchasesByDate[dateKey]?.value || 0),
-        sales: (point.date.includes(':') && !isFirstPointOfDay) ? 0 : (insiderSalesByDate[dateKey]?.value || 0),
-        purchaseShares: (point.date.includes(':') && !isFirstPointOfDay) ? 0 : (insiderPurchasesByDate[dateKey]?.shares || 0),
-        saleShares: (point.date.includes(':') && !isFirstPointOfDay) ? 0 : (insiderSalesByDate[dateKey]?.shares || 0),
+        // Insider data - store individual trades list and totals
+        purchases: (point.date.includes(':') && !isFirstPointOfDay) ? 0 : (insiderPurchasesByDate[dateKey]?.totalValue || 0),
+        sales: (point.date.includes(':') && !isFirstPointOfDay) ? 0 : (insiderSalesByDate[dateKey]?.totalValue || 0),
         purchaseCount: (point.date.includes(':') && !isFirstPointOfDay) ? 0 : (insiderPurchasesByDate[dateKey]?.count || 0),
         saleCount: (point.date.includes(':') && !isFirstPointOfDay) ? 0 : (insiderSalesByDate[dateKey]?.count || 0),
-        purchaseRoles: (point.date.includes(':') && !isFirstPointOfDay) ? [] : (insiderPurchasesByDate[dateKey]?.roles || []),
-        saleRoles: (point.date.includes(':') && !isFirstPointOfDay) ? [] : (insiderSalesByDate[dateKey]?.roles || []),
+        purchaseTrades: (point.date.includes(':') && !isFirstPointOfDay) ? [] : (insiderPurchasesByDate[dateKey]?.trades || []),
+        saleTrades: (point.date.includes(':') && !isFirstPointOfDay) ? [] : (insiderSalesByDate[dateKey]?.trades || []),
         // Political data
         politicalPurchases: (point.date.includes(':') && !isFirstPointOfDay) ? 0 : (politicalPurchasesByDate[dateKey]?.value || 0),
         politicalSales: (point.date.includes(':') && !isFirstPointOfDay) ? 0 : (politicalSalesByDate[dateKey]?.value || 0),
@@ -302,12 +310,35 @@ const StockDetail = ({ trade, onClose }) => {
     });
   };
 
-  // Custom tooltip for chart - only show when there's insider or political activity
+  // Custom tooltip for chart - show individual trade when hovering a dot, or all trades for a date
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       
-      // Check for insider and political activity
+      // Check if this is a single trade (from Scatter) with insider_name
+      if (data.insider_name) {
+        const isPurchase = data.type !== 'Sale';
+        return (
+          <div className="bg-slate-800 border border-slate-600 rounded-lg p-3 shadow-xl">
+            <p className="text-slate-300 text-sm font-semibold mb-2">{data.date}</p>
+            <div className="space-y-1">
+              <p className={`text-xs font-semibold ${isPurchase ? 'text-emerald-400' : 'text-red-400'}`}>
+                {isPurchase ? '📈' : '📉'} {data.role} {isPurchase ? 'Purchase' : 'Sale'}
+              </p>
+              <p className="text-xs text-slate-300">👤 {data.insider_name}</p>
+              <p className="text-xs text-slate-400">💼 {data.title}</p>
+              <p className={`text-xs font-bold ${isPurchase ? 'text-emerald-300' : 'text-red-300'}`}>
+                💰 ${data.value >= 1000000 ? (data.value / 1000000).toFixed(2) + 'M' : (data.value / 1000).toFixed(0) + 'K'}
+              </p>
+              <p className="text-xs text-slate-400">
+                📊 {data.shares.toLocaleString()} shares
+              </p>
+            </div>
+          </div>
+        );
+      }
+      
+      // Otherwise show aggregated data for the date (for political or when hovering the line)
       const hasInsiderActivity = data.purchaseCount > 0 || data.saleCount > 0;
       const hasPoliticalActivity = data.politicalPurchaseCount > 0 || data.politicalSaleCount > 0;
       
@@ -315,54 +346,45 @@ const StockDetail = ({ trade, onClose }) => {
       if (!hasInsiderActivity && !hasPoliticalActivity) {
         return null;
       }
-
-      // Helper function to group roles and count them
-      const groupRoles = (roles) => {
-        const roleCounts = {};
-        roles.forEach(role => {
-          roleCounts[role] = (roleCounts[role] || 0) + 1;
-        });
-        return roleCounts;
-      };
       
       return (
-        <div className="bg-slate-800 border border-slate-600 rounded-lg p-3 shadow-xl">
-          <p className="text-slate-300 text-sm font-semibold mb-2">{data.date}</p>
+        <div className="bg-slate-800 border border-slate-600 rounded-lg p-3 shadow-xl max-h-96 overflow-y-auto">
+          <p className="text-slate-300 text-sm font-semibold mb-2 sticky top-0 bg-slate-800">{data.date}</p>
           
-          {/* Insider Activity */}
+          {/* Insider Activity - Show EACH trade individually */}
           {hasInsiderActivity && (
-            <div className="mb-2">
-              {data.purchaseCount > 0 && (
-                <>
+            <div className="mb-2 space-y-2">
+              {data.purchaseTrades && data.purchaseTrades.length > 0 && (
+                <div>
                   <p className="text-xs text-emerald-400 font-semibold mb-1">
-                    🏢 Insider Purchase{data.purchaseCount > 1 ? 's' : ''} (${data.purchases >= 1000000 ? (data.purchases / 1000000).toFixed(1) + 'M' : (data.purchases / 1000).toFixed(0) + 'K'})
+                    🏢 Purchases ({data.purchaseCount})
                   </p>
-                  {data.purchaseRoles && data.purchaseRoles.length > 0 && (
-                    <div className="pl-2">
-                      {Object.entries(groupRoles(data.purchaseRoles)).map(([role, count]) => (
-                        <p key={role} className="text-xs text-emerald-300">
-                          • {count} {role}{count > 1 ? 's' : ''}
-                        </p>
-                      ))}
-                    </div>
-                  )}
-                </>
+                  <div className="pl-2 space-y-1.5">
+                    {data.purchaseTrades.map((trade, idx) => (
+                      <div key={`purchase-${idx}`} className="text-xs border-l-2 border-emerald-500 pl-2 py-1">
+                        <p className="text-emerald-300 font-semibold">{trade.role} - ${trade.value >= 1000000 ? (trade.value / 1000000).toFixed(2) + 'M' : (trade.value / 1000).toFixed(0) + 'K'}</p>
+                        <p className="text-slate-300">{trade.insider}</p>
+                        <p className="text-slate-400 text-[10px]">{trade.title} • {trade.shares.toLocaleString()} shares</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               )}
-              {data.saleCount > 0 && (
-                <>
-                  <p className={`text-xs text-red-400 font-semibold ${data.purchaseCount > 0 ? 'mt-2' : ''} mb-1`}>
-                    🏢 Insider Sale{data.saleCount > 1 ? 's' : ''} (${data.sales >= 1000000 ? (data.sales / 1000000).toFixed(1) + 'M' : (data.sales / 1000).toFixed(0) + 'K'})
+              {data.saleTrades && data.saleTrades.length > 0 && (
+                <div className={data.purchaseTrades && data.purchaseTrades.length > 0 ? 'mt-2' : ''}>
+                  <p className="text-xs text-red-400 font-semibold mb-1">
+                    🏢 Sales ({data.saleCount})
                   </p>
-                  {data.saleRoles && data.saleRoles.length > 0 && (
-                    <div className="pl-2">
-                      {Object.entries(groupRoles(data.saleRoles)).map(([role, count]) => (
-                        <p key={role} className="text-xs text-red-300">
-                          • {count} {role}{count > 1 ? 's' : ''}
-                        </p>
-                      ))}
-                    </div>
-                  )}
-                </>
+                  <div className="pl-2 space-y-1.5">
+                    {data.saleTrades.map((trade, idx) => (
+                      <div key={`sale-${idx}`} className="text-xs border-l-2 border-red-500 pl-2 py-1">
+                        <p className="text-red-300 font-semibold">{trade.role} - ${trade.value >= 1000000 ? (trade.value / 1000000).toFixed(2) + 'M' : (trade.value / 1000).toFixed(0) + 'K'}</p>
+                        <p className="text-slate-300">{trade.insider}</p>
+                        <p className="text-slate-400 text-[10px]">{trade.title} • {trade.shares.toLocaleString()} shares</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               )}
             </div>
           )}
@@ -640,11 +662,37 @@ const StockDetail = ({ trade, onClose }) => {
                       strokeDasharray="3 3"
                       dot={(dotProps) => {
                         const { cx, cy, payload } = dotProps;
-                        if (payload && payload.purchases > 0) {
-                          return <circle key={`purchase-${cx}-${cy}`} cx={cx} cy={cy} r={8} fill="#10b981" stroke="#fff" strokeWidth={2} />;
+                        if (!payload || !payload.purchaseTrades || payload.purchaseTrades.length === 0) {
+                          return <circle key={`purchase-empty-${cx}-${cy}`} cx={cx} cy={cy} r={0} fill="none" />;
                         }
-                        // Return invisible dot to maintain line continuity
-                        return <circle key={`purchase-empty-${cx}-${cy}`} cx={cx} cy={cy} r={0} fill="none" />;
+                        
+                        // Render multiple dots if there are multiple trades
+                        const trades = payload.purchaseTrades;
+                        const numTrades = trades.length;
+                        
+                        if (numTrades === 1) {
+                          // Single trade - one dot
+                          return <circle key={`purchase-${cx}-${cy}`} cx={cx} cy={cy} r={8} fill="#10b981" stroke="#fff" strokeWidth={2} />;
+                        } else {
+                          // Multiple trades - render multiple dots with x-offset
+                          const spacing = 4;
+                          const startX = cx - ((numTrades - 1) * spacing) / 2;
+                          return (
+                            <g key={`purchase-group-${cx}-${cy}`}>
+                              {trades.map((trade, idx) => (
+                                <circle
+                                  key={`purchase-${cx}-${cy}-${idx}`}
+                                  cx={startX + (idx * spacing)}
+                                  cy={cy}
+                                  r={7}
+                                  fill="#10b981"
+                                  stroke="#fff"
+                                  strokeWidth={2}
+                                />
+                              ))}
+                            </g>
+                          );
+                        }
                       }}
                       activeDot={(dotProps) => {
                         const { cx, cy, payload } = dotProps;
@@ -666,11 +714,37 @@ const StockDetail = ({ trade, onClose }) => {
                       isAnimationActive={false}
                       dot={(dotProps) => {
                         const { cx, cy, payload } = dotProps;
-                        if (payload && payload.sales > 0) {
-                          return <circle key={`sale-${cx}-${cy}`} cx={cx} cy={cy} r={8} fill="#ef4444" stroke="#fff" strokeWidth={2} />;
+                        if (!payload || !payload.saleTrades || payload.saleTrades.length === 0) {
+                          return <circle key={`sale-empty-${cx}-${cy}`} cx={cx} cy={cy} r={0} fill="none" />;
                         }
-                        // Return invisible dot to maintain line continuity
-                        return <circle key={`sale-empty-${cx}-${cy}`} cx={cx} cy={cy} r={0} fill="none" />;
+                        
+                        // Render multiple dots if there are multiple trades
+                        const trades = payload.saleTrades;
+                        const numTrades = trades.length;
+                        
+                        if (numTrades === 1) {
+                          // Single trade - one dot
+                          return <circle key={`sale-${cx}-${cy}`} cx={cx} cy={cy} r={8} fill="#ef4444" stroke="#fff" strokeWidth={2} />;
+                        } else {
+                          // Multiple trades - render multiple dots with x-offset
+                          const spacing = 4;
+                          const startX = cx - ((numTrades - 1) * spacing) / 2;
+                          return (
+                            <g key={`sale-group-${cx}-${cy}`}>
+                              {trades.map((trade, idx) => (
+                                <circle
+                                  key={`sale-${cx}-${cy}-${idx}`}
+                                  cx={startX + (idx * spacing)}
+                                  cy={cy}
+                                  r={7}
+                                  fill="#ef4444"
+                                  stroke="#fff"
+                                  strokeWidth={2}
+                                />
+                              ))}
+                            </g>
+                          );
+                        }
                       }}
                       activeDot={(dotProps) => {
                         const { cx, cy, payload } = dotProps;
