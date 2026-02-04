@@ -450,7 +450,19 @@ const StockDetail = ({ trade, onClose }) => {
           </div>
 
           {/* Chart */}
-          <div className="bg-slate-800/50 rounded-xl p-6 mb-6" style={{outline: 'none'}} tabIndex={-1} onClickCapture={(e) => e.stopPropagation()}>
+          <div 
+            className="bg-slate-800/50 rounded-xl p-6 mb-6" 
+            style={{ userSelect: 'none' }}
+            onMouseEnter={() => {
+              if (document.activeElement) {
+                document.activeElement.blur();
+              }
+            }}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              return false;
+            }}
+          >
             {/* Trade Activity Legend */}
             {((insiderTrades && (insiderTrades.total_purchases > 0 || insiderTrades.total_sales > 0)) || 
               (politicalTrades && (politicalTrades.purchases?.length > 0 || politicalTrades.sales?.length > 0))) && (
@@ -555,7 +567,7 @@ const StockDetail = ({ trade, onClose }) => {
                     content={<CustomTooltip />} 
                     cursor={{ stroke: '#475569', strokeWidth: 1, strokeDasharray: '3 3' }}
                     allowEscapeViewBox={{ x: false, y: false }}
-                    wrapperStyle={{ zIndex: 1000 }}
+                    wrapperStyle={{ zIndex: 1000, outline: 'none', pointerEvents: 'none' }}
                   />
                   <Area 
                     yAxisId="price"
