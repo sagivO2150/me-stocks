@@ -10,7 +10,7 @@ const StockDetail = ({ trade, onClose }) => {
   const [insiderLoading, setInsiderLoading] = useState(true);
   const [politicalLoading, setPoliticalLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [period, setPeriod] = useState('1y');
+  const [period, setPeriod] = useState('1y'); // Start with 1 year as default
 
   const ticker = trade.Ticker || trade.ticker;
   const isPoliticalTrade = trade.source === 'senate' || trade.source === 'house' || trade.politician;
@@ -157,33 +157,9 @@ const StockDetail = ({ trade, onClose }) => {
     return { firstDate, lastDate, dataPoints, isIntraday };
   };
 
-  // Check if a period has enough data
+  // All periods are always available - clicking a button will fetch that period's data
   const hasDataForPeriod = (periodString) => {
-    const range = getAvailableDateRange();
-    if (!range) return false;
-    
-    const { firstDate, lastDate, dataPoints, isIntraday } = range;
-    
-    // For intraday data (1d period), check if we have enough data points
-    if (isIntraday) {
-      return periodString === '1d' || periodString === '5d';
-    }
-    
-    // For daily data, check actual day span
-    const daysDiff = Math.floor((lastDate - firstDate) / (1000 * 60 * 60 * 24));
-    
-    const periodDays = {
-      '1d': 1,
-      '5d': 5,
-      '1mo': 30,
-      '3mo': 90,
-      '6mo': 180,
-      '1y': 365,
-      '2y': 730,
-      '5y': 1825
-    };
-    
-    return daysDiff >= periodDays[periodString] * 0.8; // Allow 20% tolerance
+    return true;
   };
 
   const mergedChartData = () => {
@@ -397,23 +373,22 @@ const StockDetail = ({ trade, onClose }) => {
           {/* Period Selector */}
           <div className="mb-6">
             <div className="flex gap-2 flex-wrap">
-              {['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y'].map((p) => {
-                const hasData = hasDataForPeriod(p);
+              {['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', 'max'].map((p) => {
                 return (
                   <button
                     key={p}
-                    onClick={() => hasData && setPeriod(p)}
-                    disabled={!hasData}
+                    onClick={() => setPeriod(p)}
+                    disabled={loading}
                     className={`px-4 py-2 rounded-lg transition-all ${
                       period === p
                         ? 'bg-blue-600 text-white'
-                        : hasData
-                        ? 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white'
-                        : 'bg-slate-800/30 text-slate-600 cursor-not-allowed'
+                        : loading
+                        ? 'bg-slate-800/30 text-slate-600 cursor-not-allowed'
+                        : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white'
                     }`}
-                    title={!hasData ? 'Insufficient historical data for this period' : ''}
+                    title={p === 'max' ? 'All available historical data' : ''}
                   >
-                    {p.toUpperCase()}
+                    {loading && period === p ? '⏳' : (p === 'max' ? 'MAX' : p.toUpperCase())}
                   </button>
                 );
               })}
@@ -433,8 +408,9 @@ const StockDetail = ({ trade, onClose }) => {
               
               const daysDiff = Math.floor((lastDate - firstDate) / (1000 * 60 * 60 * 24));
               
-              // Show warning if less than 60 days of data
-              if (daysDiff < 60) {
+              // Only show warning if viewing MAX period and still have less than 60 days
+              // (This means the stock is genuinely new, not just a short period selection)
+              if (period === 'max' && daysDiff < 60) {
                 return (
                   <div className="mt-3 px-4 py-2 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
                     <p className="text-yellow-400 text-sm">

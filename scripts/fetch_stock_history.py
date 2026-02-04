@@ -37,7 +37,6 @@ def fetch_stock_history(ticker_symbol, period="1y"):
         # For short periods, use intraday intervals for more data points
         interval_map = {
             '1d': '5m',   # 5-minute intervals for 1 day
-            '5d': '15m',  # 15-minute intervals for 5 days
         }
         
         interval = interval_map.get(period, '1d')  # Default to daily data
@@ -78,6 +77,16 @@ def fetch_stock_history(ticker_symbol, period="1y"):
                 "close": float(row['Close']),
                 "volume": int(row['Volume'])
             })
+        
+        # Downsample data for long periods to improve performance
+        # This prevents browser freezing when rendering thousands of data points
+        max_points = 1000  # Maximum data points to send to frontend
+        
+        if len(history_list) > max_points:
+            # Calculate step size to downsample
+            step = len(history_list) // max_points
+            history_list = history_list[::step]  # Take every Nth point
+            print(f"Downsampled from {len(history_data)} to {len(history_list)} points for performance", file=sys.stderr)
         
         # Get additional info
         try:
