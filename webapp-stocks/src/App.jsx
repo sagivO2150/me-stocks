@@ -320,6 +320,7 @@ function App() {
               <option value="amount">💰 Biggest Trading Amount</option>
               <option value="c-level">🎯 Most C-Level Purchases</option>
               <option value="10-percent">🏢 Most 10%er Purchases</option>
+              <option value="combined">🔥 Most Combined (C-Level + 10%ers)</option>
             </select>
           </div>
         )}
@@ -361,6 +362,17 @@ function App() {
                 // Calculate 10% Owners count
                 const aCount = (a.role_counts['10% Owner'] || 0);
                 const bCount = (b.role_counts['10% Owner'] || 0);
+                return bCount - aCount;
+              } else if (monthlySortType === 'combined') {
+                // Calculate combined C-level + Directors + 10% Owners count
+                const aCount = (a.role_counts.COB || 0) + (a.role_counts.CEO || 0) + 
+                               (a.role_counts.Pres || 0) + (a.role_counts.CFO || 0) + 
+                               (a.role_counts.COO || 0) + (a.role_counts.GC || 0) + 
+                               (a.role_counts.Director || 0) + (a.role_counts['10% Owner'] || 0);
+                const bCount = (b.role_counts.COB || 0) + (b.role_counts.CEO || 0) + 
+                               (b.role_counts.Pres || 0) + (b.role_counts.CFO || 0) + 
+                               (b.role_counts.COO || 0) + (b.role_counts.GC || 0) + 
+                               (b.role_counts.Director || 0) + (b.role_counts['10% Owner'] || 0);
                 return bCount - aCount;
               }
               return 0;

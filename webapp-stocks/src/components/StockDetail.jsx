@@ -602,6 +602,7 @@ const StockDetail = ({ trade, onClose }) => {
                     dataKey="date" 
                     stroke="#94a3b8"
                     tick={{ fill: '#94a3b8' }}
+                    minTickGap={period === '5y' || period === 'max' ? 100 : period === '1y' || period === '2y' ? 50 : 30}
                     tickFormatter={(value) => {
                       const date = new Date(value);
                       // For intraday data (includes time), show time
@@ -612,7 +613,16 @@ const StockDetail = ({ trade, onClose }) => {
                         const displayHours = hours % 12 || 12;
                         return `${displayHours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
                       }
-                      // For daily data, show day/month (Israeli/European format)
+                      // For long periods (2y+), show year only
+                      if (period === '5y' || period === 'max') {
+                        return date.getFullYear();
+                      }
+                      // For 1-2 year periods, show month/year
+                      if (period === '1y' || period === '2y') {
+                        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                        return `${monthNames[date.getMonth()]} '${date.getFullYear().toString().slice(-2)}`;
+                      }
+                      // For shorter periods, show day/month
                       return `${date.getDate()}/${date.getMonth() + 1}`;
                     }}
                   />

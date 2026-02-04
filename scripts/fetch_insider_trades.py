@@ -31,8 +31,8 @@ def fetch_insider_trades(ticker_symbol, days_back=1461):
         - error: Error message if failed
     """
     try:
-        # Use simple search URL - much more reliable
-        url = f"http://openinsider.com/search?q={ticker_symbol.upper()}"
+        # Use direct ticker page - most reliable and gets all available data
+        url = f"http://openinsider.com/{ticker_symbol.upper()}"
         
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
