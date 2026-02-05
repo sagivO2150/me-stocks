@@ -32,6 +32,7 @@ function App() {
   const [scraperLoading, setScraperLoading] = useState(false);
   const [scraperMessage, setScraperMessage] = useState('');
   const [selectedTrade, setSelectedTrade] = useState(null);
+  const [searchTicker, setSearchTicker] = useState('');
 
   const loadCSV = async () => {
     try {
@@ -116,6 +117,15 @@ function App() {
       console.error('Error loading top monthly trades:', err.message);
     } finally {
       setMonthlyLoading(false);
+    }
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const ticker = searchTicker.trim().toUpperCase();
+    if (ticker) {
+      setSelectedTrade({ Ticker: ticker, ticker: ticker });
+      setSearchTicker('');
     }
   };
 
@@ -220,6 +230,25 @@ function App() {
           <p className="text-slate-300 text-lg mb-4">
             Smart Money Moves • Corporate Insiders • Political Intelligence
           </p>
+          
+          {/* Stock Search */}
+          <form onSubmit={handleSearch} className="mb-6 max-w-md mx-auto">
+            <div className="relative">
+              <input
+                type="text"
+                value={searchTicker}
+                onChange={(e) => setSearchTicker(e.target.value.toUpperCase())}
+                placeholder="Search stock ticker (e.g., AAPL, TSLA, NVDA)..."
+                className="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition"
+              />
+              <button
+                type="submit"
+                className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md transition font-medium"
+              >
+                🔍 Search
+              </button>
+            </div>
+          </form>
           
           {/* View Mode Switcher */}
           <div className="mt-4 inline-flex bg-slate-800 rounded-lg p-1 border border-slate-700">
