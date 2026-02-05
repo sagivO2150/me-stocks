@@ -201,6 +201,83 @@ const StockDetail = ({ trade, onClose }) => {
     return 'Other';
   };
 
+  // Calculate smart X-axis ticks based on period (like Google Finance)
+  const getXAxisTicks = () => {
+    if (!stockHistory || !stockHistory.history || stockHistory.history.length === 0) return [];
+    
+    const data = stockHistory.history;
+    const totalPoints = data.length;
+    
+    // Define target tick counts per period
+    const tickCounts = {
+      '1d': 6,   // 6 time points
+      '5d': 4,   // 4 date points
+      '1m': 7,   // 7 date points
+      '3m': 5,   // 5 points
+      '6m': 3,   // 3 points
+      '1y': 1,   // 1 point (year change)
+      '2y': 2,   // 2 points (year changes)
+      '5y': 5,   // 5 points (year changes)
+      'max': 6   // Up to 6 evenly spaced years
+    };
+    
+    const targetCount = tickCounts[period] || 6;
+    
+    // For 1Y, 2Y, 5Y - find year boundaries
+    if (['1y', '2y', '5y'].includes(period)) {
+      const yearBoundaries = [];
+      let lastYear = null;
+      
+      data.forEach((point, idx) => {
+        const date = new Date(point.date);
+        const year = date.getFullYear();
+        if (lastYear !== null && year !== lastYear) {
+          yearBoundaries.push(point.date);
+        }
+        lastYear = year;
+      });
+      
+      return yearBoundaries.length > 0 ? yearBoundaries : [data[Math.floor(totalPoints / 2)].date];
+    }
+    
+    // For Max - space out years evenly
+    if (period === 'max') {
+      const firstDate = new Date(data[0].date);
+      const lastDate = new Date(data[totalPoints - 1].date);
+      const yearSpan = lastDate.getFullYear() - firstDate.getFullYear();
+      
+      if (yearSpan >= 6) {
+        const yearGap = Math.ceil(yearSpan / 6);
+        const ticks = [];
+        let currentYear = firstDate.getFullYear();
+        
+        data.forEach(point => {
+          const pointYear = new Date(point.date).getFullYear();
+          if (pointYear >= currentYear) {
+            ticks.push(point.date);
+            currentYear += yearGap;
+          }
+        });
+        
+        return ticks.slice(0, 6);
+      }
+    }
+    
+    // For other periods - evenly space points
+    if (totalPoints <= targetCount) {
+      return data.map(p => p.date);
+    }
+    
+    const step = Math.floor(totalPoints / targetCount);
+    const ticks = [];
+    for (let i = 0; i < targetCount; i++) {
+      const idx = Math.min(i * step, totalPoints - 1);
+      ticks.push(data[idx].date);
+    }
+    
+    return ticks;
+  };
+
   const mergedChartData = () => {
     if (!stockHistory || !stockHistory.history) return [];
     
@@ -481,7 +558,6 @@ const StockDetail = ({ trade, onClose }) => {
                         ? 'bg-slate-800/30 text-slate-600 cursor-not-allowed'
                         : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white'
                     }`}
-                    title={p === 'max' ? 'All available historical data' : ''}
                   >
                     {loading && period === p ? '⏳' : (p === 'max' ? 'MAX' : p.toUpperCase())}
                   </button>
@@ -602,28 +678,27 @@ const StockDetail = ({ trade, onClose }) => {
                     dataKey="date" 
                     stroke="#94a3b8"
                     tick={{ fill: '#94a3b8' }}
-                    minTickGap={period === '5y' || period === 'max' ? 100 : period === '1y' || period === '2y' ? 50 : 30}
+                    ticks={getXAxisTicks()}
                     tickFormatter={(value) => {
                       const date = new Date(value);
-                      // For intraday data (includes time), show time
-                      if (value.includes(':')) {
-                        const hours = date.getHours();
-                        const minutes = date.getMinutes();
-                        const ampm = hours >= 12 ? 'PM' : 'AM';
-                        const displayHours = hours % 12 || 12;
-                        return `${displayHours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+                      
+                      // For intraday data (1D), show time
+                      if (period === '1d' && value.includes(':')) {
+                        return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
                       }
-                      // For long periods (2y+), show year only
-                      if (period === '5y' || period === 'max') {
-                        return date.getFullYear();
+                      
+                      // For 5D and 1M, show day + month
+                      if (period === '5d' || period === '1m') {
+                        return `${date.getDate()} ${date.toLocaleString('en-US', { month: 'short' })}`;
                       }
-                      // For 1-2 year periods, show month/year
-                      if (period === '1y' || period === '2y') {
-                        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                        return `${monthNames[date.getMonth()]} '${date.getFullYear().toString().slice(-2)}`;
+                      
+                      // For 3M and 6M, show month + year
+                      if (period === '3m' || period === '6m') {
+                        return date.toLocaleString('en-US', { month: 'short', year: 'numeric' });
                       }
-                      // For shorter periods, show day/month
-                      return `${date.getDate()}/${date.getMonth() + 1}`;
+                      
+                      // For 1Y, 2Y, 5Y, Max - show year only
+                      return date.getFullYear().toString();
                     }}
                   />
                   <YAxis 
