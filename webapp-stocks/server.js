@@ -212,7 +212,7 @@ app.get('/api/insider-trades/:ticker', (req, res) => {
 // EDGAR historical data endpoint (extended history beyond 2 years)
 app.get('/api/edgar-trades/:ticker', (req, res) => {
   const ticker = req.params.ticker.toUpperCase();
-  const maxYears = req.query.years || 10; // Default to 10 years
+  const maxYears = req.query.years || 5; // Default to 5 years for faster response
   
   console.log(`Fetching EDGAR historical trades for ${ticker}, max years: ${maxYears}`);
   

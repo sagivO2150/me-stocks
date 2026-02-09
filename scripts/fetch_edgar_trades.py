@@ -16,16 +16,40 @@ from datetime import datetime, timedelta
 import time
 import re
 import xml.etree.ElementTree as ET
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import threading
 
 
 # SEC EDGAR Rate limits: 10 requests/second max
 RATE_LIMIT_DELAY = 0.12  # ~8 requests/sec, safely under limit
+MAX_WORKERS = 5  # Parallel workers for fetching Form 4s
+
+# Thread-safe rate limiter
+rate_limit_lock = threading.Lock()
+last_request_time = [0]  # Mutable to share across threads
+
+# Thread-safe rate limiter
+rate_limit_lock = threading.Lock()
+last_request_time = [0]  # Mutable to share across threads
 
 HEADERS = {
     'User-Agent': 'Stock-Insider-Tracker/1.0 sagiv.oron@example.com',
     'Accept-Encoding': 'gzip, deflate',
     'Host': 'www.sec.gov'
 }
+
+
+def rate_limited_request(url, **kwargs):
+    """Thread-safe rate-limited HTTP request"""
+    with rate_limit_lock:
+        # Ensure we don't exceed rate limit
+        elapsed = time.time() - last_request_time[0]
+        if elapsed < RATE_LIMIT_DELAY:
+            time.sleep(RATE_LIMIT_DELAY - elapsed)
+        
+        response = requests.get(url, headers=HEADERS, **kwargs)
+        last_request_time[0] = time.time()
+        return response
 
 
 def ticker_to_cik(ticker):
@@ -87,15 +111,11 @@ def ticker_to_cik(ticker):
     return None
 
 
-def fetch_form4_list(cik, max_count=200):
-    """Get list of Form 4 filings from EDGAR"""
-    time.sleep(RATE_LIMIT_DELAY)
-    
-    # Use HTML output instead of XML (more reliable)
-    url = f'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK={cik}&type=4&count={max_count}'
-    
+def fetch_form4_page(cik, start, page_size, cutoff_date, max_years):
+    """Fetch a single page of Form 4 filings (for parallel execution)"""
     try:
-        response = requests.get(url, headers=HEADERS, timeout=30)
+        url = f'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK={cik}&type=4&count={page_size}&start={start}'
+        response = rate_limited_request(url, timeout=30)
         soup = BeautifulSoup(response.text, 'html.parser')
         
         # Find the filings table
@@ -103,8 +123,12 @@ def fetch_form4_list(cik, max_count=200):
         if not table:
             return []
         
-        filings = []
-        for row in table.find_all('tr')[1:]:  # Skip header
+        rows = table.find_all('tr')[1:]  # Skip header
+        if not rows:
+            return []
+        
+        page_filings = []
+        for row in rows:
             cols = row.find_all('td')
             if len(cols) < 4:
                 continue
@@ -114,6 +138,11 @@ def fetch_form4_list(cik, max_count=200):
                 continue
             
             filing_date = cols[3].text.strip()
+            filing_datetime = datetime.strptime(filing_date, '%Y-%m-%d')
+            
+            # Only include filings within date range
+            if filing_datetime < cutoff_date:
+                continue
             
             # Get document link
             doc_link = cols[1].find('a', {'id': 'documentsbutton'})
@@ -122,27 +151,69 @@ def fetch_form4_list(cik, max_count=200):
             
             # Convert to direct filing URL (.txt format)
             doc_url = 'https://www.sec.gov' + doc_link['href']
-            # Change -index.htm to .txt
             doc_url = doc_url.replace('-index.htm', '.txt')
             
-            filings.append({
+            page_filings.append({
                 'date': filing_date,
                 'url': doc_url
             })
         
-        return filings
-    
+        return page_filings
+        
     except Exception as e:
-        print(f'Error fetching Form 4 list: {e}', file=sys.stderr)
+        print(f'Error fetching page start={start}: {e}', file=sys.stderr)
         return []
 
 
-def parse_form4_xml(filing_url):
-    """Parse a Form 4 filing and extract buy/sell transactions"""
-    time.sleep(RATE_LIMIT_DELAY)
+def fetch_form4_list(cik, max_years=5):
+    """Get list of Form 4 filings from EDGAR with PARALLEL page fetching"""
+    page_size = 100
+    cutoff_date = datetime.now() - timedelta(days=max_years * 365)
     
+    print(f'Fetching Form 4 filings for CIK {cik} (last {max_years} years)...', file=sys.stderr)
+    
+    # Fetch first page to see if there are results
+    first_page = fetch_form4_page(cik, 0, page_size, cutoff_date, max_years)
+    if not first_page:
+        return []
+    
+    all_filings = first_page
+    print(f'  First page: {len(first_page)} filings', file=sys.stderr)
+    
+    # Estimate max pages to fetch (assume ~500 filings in 5 years, so ~5 pages)
+    # We'll fetch multiple pages in parallel and stop when we get empty results
+    max_pages_to_try = 10  # Try up to 10 pages (1000 filings)
+    
+    # Create page fetch jobs (start=100, 200, 300, etc.)
+    page_starts = [page_size * i for i in range(1, max_pages_to_try)]
+    
+    print(f'  Fetching up to {max_pages_to_try} pages in parallel...', file=sys.stderr)
+    
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        # Submit all page fetch jobs
+        future_to_start = {
+            executor.submit(fetch_form4_page, cik, start, page_size, cutoff_date, max_years): start
+            for start in page_starts
+        }
+        
+        # Collect results as they complete
+        for future in as_completed(future_to_start):
+            try:
+                page_filings = future.result()
+                if page_filings:
+                    all_filings.extend(page_filings)
+                    print(f'  Fetched {len(all_filings)} filings so far...', file=sys.stderr)
+            except Exception as e:
+                print(f'Error processing page: {e}', file=sys.stderr)
+    
+    print(f'Found {len(all_filings)} Form 4 filings within date range', file=sys.stderr)
+    return all_filings
+
+
+def parse_form4_xml(filing_url):
+    """Parse a Form 4 filing and extract buy/sell transactions (thread-safe)"""
     try:
-        response = requests.get(filing_url, headers=HEADERS, timeout=30)
+        response = rate_limited_request(filing_url, timeout=30)
         
         # The .txt file contains the full submission, need to extract XML
         content = response.text
@@ -235,14 +306,15 @@ def parse_form4_xml(filing_url):
         return None
 
 
-def fetch_edgar_insider_trades(ticker_symbol, max_years=10):
+def fetch_edgar_insider_trades(ticker_symbol, max_years=5, max_transactions=100):
     """
     Fetch insider trading data from EDGAR (extends beyond OpenInsider's 2-year limit).
     Returns same format as fetch_insider_trades.py for compatibility.
     
     Args:
         ticker_symbol: Stock ticker (e.g., 'AAPL', 'GME')
-        max_years: Maximum years of history to fetch (default: 10)
+        max_years: Maximum years of history to fetch (default: 5)
+        max_transactions: Stop after finding this many purchases+sales (default: 100)
     
     Returns:
         JSON object with same structure as OpenInsider scraper
@@ -261,8 +333,8 @@ def fetch_edgar_insider_trades(ticker_symbol, max_years=10):
         
         print(f'Found CIK: {cik}', file=sys.stderr)
         
-        # Step 2: Fetch Form 4 filings list
-        filings = fetch_form4_list(cik, max_count=200)
+        # Step 2: Fetch ALL Form 4 filings with pagination
+        filings = fetch_form4_list(cik, max_years=max_years)
         if not filings:
             return {
                 "success": True,
@@ -278,32 +350,49 @@ def fetch_edgar_insider_trades(ticker_symbol, max_years=10):
                 "source": "EDGAR"
             }
         
-        print(f'Found {len(filings)} Form 4 filings', file=sys.stderr)
-        
-        # Filter by date range
-        cutoff_date = datetime.now() - timedelta(days=max_years * 365)
-        recent_filings = [
-            f for f in filings 
-            if datetime.strptime(f['date'], '%Y-%m-%d') >= cutoff_date
-        ]
-        
-        print(f'Processing {len(recent_filings)} filings within {max_years} years...', file=sys.stderr)
-        
-        # Step 3: Parse each Form 4 for transactions
+        # Step 3: Parse Form 4 filings in PARALLEL (thread-safe with rate limiting)
+        print(f'Processing {len(filings)} filings with {MAX_WORKERS} parallel workers...', file=sys.stderr)
         all_purchases = []
         all_sales = []
+        processed_count = 0
         
-        for i, filing in enumerate(recent_filings):
-            if i % 10 == 0:
-                print(f'Progress: {i}/{len(recent_filings)}', file=sys.stderr)
+        with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+            # Submit all filing parsing jobs
+            future_to_filing = {
+                executor.submit(parse_form4_xml, filing['url']): filing 
+                for filing in filings
+            }
             
-            transactions = parse_form4_xml(filing['url'])
-            if transactions:
-                for txn in transactions:
-                    if txn['type'] == 'P - Purchase':
-                        all_purchases.append(txn)
-                    elif txn['type'] == 'S - Sale':
-                        all_sales.append(txn)
+            # Process results as they complete
+            for future in as_completed(future_to_filing):
+                processed_count += 1
+                
+                # Progress update every 10 filings
+                if processed_count % 10 == 0:
+                    total_transactions = len(all_purchases) + len(all_sales)
+                    print(f'Progress: {processed_count}/{len(filings)}, found {total_transactions} transactions so far', file=sys.stderr)
+                
+                try:
+                    transactions = future.result()
+                    if transactions:
+                        for txn in transactions:
+                            if txn['type'] == 'P - Purchase':
+                                all_purchases.append(txn)
+                            elif txn['type'] == 'S - Sale':
+                                all_sales.append(txn)
+                except Exception as e:
+                    # Log but continue on individual filing errors
+                    print(f'Error processing filing: {e}', file=sys.stderr)
+                    continue
+                
+                # Early exit if we have enough transactions
+                total_transactions = len(all_purchases) + len(all_sales)
+                if total_transactions >= max_transactions:
+                    print(f'Found {total_transactions} transactions, stopping early...', file=sys.stderr)
+                    # Cancel remaining futures
+                    for f in future_to_filing:
+                        f.cancel()
+                    break
         
         # Sort by date (oldest first)
         all_purchases.sort(key=lambda x: x['date'])
@@ -343,7 +432,7 @@ def main():
         sys.exit(1)
     
     ticker = sys.argv[1].upper()
-    max_years = int(sys.argv[2]) if len(sys.argv) > 2 else 10
+    max_years = int(sys.argv[2]) if len(sys.argv) > 2 else 5
     
     result = fetch_edgar_insider_trades(ticker, max_years)
     print(json.dumps(result, indent=2))
