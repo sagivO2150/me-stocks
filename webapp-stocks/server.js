@@ -209,6 +209,51 @@ app.get('/api/insider-trades/:ticker', (req, res) => {
   });
 });
 
+// EDGAR historical data endpoint (extended history beyond 2 years)
+app.get('/api/edgar-trades/:ticker', (req, res) => {
+  const ticker = req.params.ticker.toUpperCase();
+  const maxYears = req.query.years || 10; // Default to 10 years
+  
+  console.log(`Fetching EDGAR historical trades for ${ticker}, max years: ${maxYears}`);
+  
+  const pythonScript = path.join(__dirname, '../scripts/fetch_edgar_trades.py');
+  const pythonProcess = spawn('/opt/homebrew/bin/python3', [pythonScript, ticker, maxYears]);
+  
+  let output = '';
+  let errorOutput = '';
+  
+  pythonProcess.stdout.on('data', (data) => {
+    output += data.toString();
+  });
+  
+  pythonProcess.stderr.on('data', (data) => {
+    errorOutput += data.toString();
+  });
+  
+  pythonProcess.on('close', (code) => {
+    if (code === 0) {
+      try {
+        const result = JSON.parse(output);
+        res.json(result);
+      } catch (e) {
+        console.error('Failed to parse EDGAR data:', e);
+        res.status(500).json({
+          success: false,
+          error: 'Failed to parse EDGAR historical data',
+          details: e.message
+        });
+      }
+    } else {
+      console.error(`EDGAR script exited with code ${code}`);
+      res.status(500).json({
+        success: false,
+        error: `Failed to fetch EDGAR data (exit code ${code})`,
+        details: errorOutput
+      });
+    }
+  });
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Server is running' });

@@ -11,6 +11,9 @@ const StockDetail = ({ trade, onClose }) => {
   const [politicalLoading, setPoliticalLoading] = useState(true);
   const [error, setError] = useState(null);
   const [period, setPeriod] = useState('1y'); // Start with 1 year as default
+  const [useEdgarData, setUseEdgarData] = useState(false);
+  const [edgarLoading, setEdgarLoading] = useState(false);
+  const [edgarTrades, setEdgarTrades] = useState(null);
 
   const ticker = trade.Ticker || trade.ticker;
   const isPoliticalTrade = trade.source === 'senate' || trade.source === 'house' || trade.politician;
@@ -61,6 +64,28 @@ const StockDetail = ({ trade, onClose }) => {
       console.error('Failed to fetch insider trades:', err);
     } finally {
       setInsiderLoading(false);
+    }
+  };
+
+  const fetchEdgarTrades = async () => {
+    setEdgarLoading(true);
+    
+    try {
+      const response = await fetch(`http://localhost:3001/api/edgar-trades/${ticker}?years=10`);
+      const data = await response.json();
+      
+      if (data.success) {
+        setEdgarTrades(data);
+        setUseEdgarData(true);
+      } else {
+        console.error('Failed to fetch EDGAR data:', data.error);
+        alert(`Failed to load EDGAR data: ${data.error}`);
+      }
+    } catch (err) {
+      console.error('Failed to fetch EDGAR trades:', err);
+      alert('Failed to connect to server for EDGAR data');
+    } finally {
+      setEdgarLoading(false);
     }
   };
 
@@ -286,12 +311,15 @@ const StockDetail = ({ trade, onClose }) => {
     
     const data = [...stockHistory.history];
     
+    // Use EDGAR data if loaded, otherwise use OpenInsider data
+    const activeInsiderTrades = useEdgarData && edgarTrades ? edgarTrades : insiderTrades;
+    
     // Create maps for insider purchases and sales by date - KEEP INDIVIDUAL TRADES
     const insiderPurchasesByDate = {};
     const insiderSalesByDate = {};
     
-    if (insiderTrades) {
-      insiderTrades.purchases?.forEach(trade => {
+    if (activeInsiderTrades) {
+      activeInsiderTrades.purchases?.forEach(trade => {
         const dateKey = trade.date;
         if (!insiderPurchasesByDate[dateKey]) {
           insiderPurchasesByDate[dateKey] = { trades: [], totalValue: 0, count: 0 };
@@ -307,7 +335,7 @@ const StockDetail = ({ trade, onClose }) => {
         insiderPurchasesByDate[dateKey].count += 1;
       });
       
-      insiderTrades.sales?.forEach(trade => {
+      activeInsiderTrades.sales?.forEach(trade => {
         const dateKey = trade.date;
         if (!insiderSalesByDate[dateKey]) {
           insiderSalesByDate[dateKey] = { trades: [], totalValue: 0, count: 0 };
@@ -565,6 +593,49 @@ const StockDetail = ({ trade, onClose }) => {
               })}
             </div>
             
+            {/* EDGAR Historical Data Button */}
+            <div className="mt-3 flex items-center gap-3">
+              {!useEdgarData ? (
+                <button
+                  onClick={fetchEdgarTrades}
+                  disabled={edgarLoading}
+                  className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                    edgarLoading
+                      ? 'bg-slate-700 text-slate-500 cursor-wait'
+                      : 'bg-green-600 text-white hover:bg-green-500'
+                  }`}
+                >
+                  {edgarLoading ? (
+                    <>
+                      <span className="inline-block animate-spin mr-2">⏳</span>
+                      Loading Historical Data (EDGAR)...
+                    </>
+                  ) : (
+                    <>
+                      📈 Load Extended History (EDGAR)
+                    </>
+                  )}
+                </button>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <span className="px-3 py-1 bg-green-600/20 border border-green-600/50 rounded-lg text-green-400 text-sm font-medium">
+                    ✓ Extended Historical Data Loaded ({edgarTrades?.total_purchases + edgarTrades?.total_sales || 0} trades)
+                  </span>
+                  <button
+                    onClick={() => { setUseEdgarData(false); setEdgarTrades(null); }}
+                    className="px-3 py-1 bg-slate-700 text-slate-400 hover:bg-slate-600 hover:text-white rounded-lg text-sm transition-all"
+                  >
+                    Use OpenInsider Only
+                  </button>
+                </div>
+              )}
+              {!useEdgarData && (
+                <span className="text-slate-500 text-sm">
+                  Current data: ~2 years from OpenInsider
+                </span>
+              )}
+            </div>
+            
             {/* Show limited data warning */}
             {(() => {
               const range = getAvailableDateRange();
@@ -612,21 +683,27 @@ const StockDetail = ({ trade, onClose }) => {
           >
             {/* Trade Activity Legend */}
             {((insiderTrades && (insiderTrades.total_purchases > 0 || insiderTrades.total_sales > 0)) || 
+              (edgarTrades && useEdgarData && (edgarTrades.total_purchases > 0 || edgarTrades.total_sales > 0)) ||
               (politicalTrades && (politicalTrades.purchases?.length > 0 || politicalTrades.sales?.length > 0))) && (
               <div className="flex justify-center gap-4 mb-4 text-sm flex-wrap">
-                {insiderTrades && insiderTrades.total_purchases > 0 && (
+                {/* Use EDGAR counts if loaded, otherwise OpenInsider counts */}
+                {((useEdgarData && edgarTrades && edgarTrades.total_purchases > 0) || 
+                  (!useEdgarData && insiderTrades && insiderTrades.total_purchases > 0)) && (
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-0.5 bg-emerald-400"></div>
                     <span className="text-slate-300">
-                      🏢 Insider Purchases ({insiderTrades.total_purchases})
+                      🏢 Insider Purchases ({(useEdgarData && edgarTrades) ? edgarTrades.total_purchases : insiderTrades.total_purchases})
+                      {useEdgarData && <span className="ml-1 text-green-400 text-xs">(EDGAR)</span>}
                     </span>
                   </div>
                 )}
-                {insiderTrades && insiderTrades.total_sales > 0 && (
+                {((useEdgarData && edgarTrades && edgarTrades.total_sales > 0) || 
+                  (!useEdgarData && insiderTrades && insiderTrades.total_sales > 0)) && (
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-0.5 bg-red-500" style={{backgroundImage: 'repeating-linear-gradient(90deg, #ef4444 0, #ef4444 3px, transparent 3px, transparent 6px)'}}></div>
                     <span className="text-slate-300">
-                      🏢 Insider Sales ({insiderTrades.total_sales})
+                      🏢 Insider Sales ({(useEdgarData && edgarTrades) ? edgarTrades.total_sales : insiderTrades.total_sales})
+                      {useEdgarData && <span className="ml-1 text-green-400 text-xs">(EDGAR)</span>}
                     </span>
                   </div>
                 )}
