@@ -306,7 +306,7 @@ def parse_form4_xml(filing_url):
         return None
 
 
-def fetch_edgar_insider_trades(ticker_symbol, max_years=5, max_transactions=100):
+def fetch_edgar_insider_trades(ticker_symbol, max_years=5):
     """
     Fetch insider trading data from EDGAR (extends beyond OpenInsider's 2-year limit).
     Returns same format as fetch_insider_trades.py for compatibility.
@@ -314,7 +314,6 @@ def fetch_edgar_insider_trades(ticker_symbol, max_years=5, max_transactions=100)
     Args:
         ticker_symbol: Stock ticker (e.g., 'AAPL', 'GME')
         max_years: Maximum years of history to fetch (default: 5)
-        max_transactions: Stop after finding this many purchases+sales (default: 100)
     
     Returns:
         JSON object with same structure as OpenInsider scraper
@@ -384,15 +383,6 @@ def fetch_edgar_insider_trades(ticker_symbol, max_years=5, max_transactions=100)
                     # Log but continue on individual filing errors
                     print(f'Error processing filing: {e}', file=sys.stderr)
                     continue
-                
-                # Early exit if we have enough transactions
-                total_transactions = len(all_purchases) + len(all_sales)
-                if total_transactions >= max_transactions:
-                    print(f'Found {total_transactions} transactions, stopping early...', file=sys.stderr)
-                    # Cancel remaining futures
-                    for f in future_to_filing:
-                        f.cancel()
-                    break
         
         # Sort by date (oldest first)
         all_purchases.sort(key=lambda x: x['date'])
