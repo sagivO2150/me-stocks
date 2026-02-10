@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Tooltip from './Tooltip';
 
-function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onApplyPoliticalFilters, onUpdatePoliticalData, onUpdateMonthlyData }) {
+function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onApplyPoliticalFilters, onUpdatePoliticalData, onUpdateMonthlyData, onUpdateLivePurchases }) {
   const [showFilters, setShowFilters] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
   const [updateMessage, setUpdateMessage] = useState('');
@@ -167,12 +167,29 @@ function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onApplyPol
               {isLoading ? '⏳ Updating...' : '🔄 Update Monthly Data'}
             </button>
           )}
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition"
-          >
-            {showFilters ? 'Hide Filters' : 'Show Filters'}
-          </button>
+          {viewMode === 'live' && (
+            <button
+              onClick={onUpdateLivePurchases}
+              disabled={isLoading}
+              className={`px-4 py-2 rounded-lg font-medium transition ${
+                isLoading
+                  ? 'bg-slate-600 cursor-not-allowed text-slate-400'
+                  : 'bg-red-600 hover:bg-red-700 text-white animate-pulse'
+              }`}
+              title="Fetch today's insider purchases from SEC EDGAR (takes ~60 seconds)"
+            >
+              {isLoading ? '⏳ Fetching...' : '🔴 Update Live Purchases'}
+            </button>
+          )}
+          {/* Only show "Show/Hide Filters" button for insider and political views */}
+          {(viewMode === 'insider' || viewMode === 'political') && (
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition"
+            >
+              {showFilters ? 'Hide Filters' : 'Show Filters'}
+            </button>
+          )}
         </div>
       </div>
       
@@ -192,6 +209,7 @@ function FilterPanel({ onRunScraper, isLoading, viewMode = 'insider', onApplyPol
         </div>
       )}
 
+      {/* Only show filters for insider and political views, NOT for live or monthly */}
       {showFilters && viewMode === 'political' ? (
         /* Political Filters */
         <div className="space-y-6">

@@ -709,6 +709,95 @@ app.get('/api/top-monthly-trades', (req, res) => {
   }
 });
 
+// Endpoint to run the live EDGAR purchases scraper
+app.post('/api/scrape-live-purchases', (req, res) => {
+  console.log('Starting live EDGAR purchases scraper...');
+  
+  const daysBack = req.body.days || 1; // Default to last 2 days
+  const pythonScript = path.join(__dirname, '../scripts/fetch_live_edgar_purchases.py');
+  const pythonPath = path.join(__dirname, '../.venv/bin/python');
+  const pythonProcess = spawn(pythonPath, [pythonScript, '--days', daysBack.toString()]);
+  
+  let output = '';
+  let errorOutput = '';
+  
+  pythonProcess.stdout.on('data', (data) => {
+    const chunk = data.toString();
+    output += chunk;
+    console.log(chunk);
+  });
+  
+  pythonProcess.stderr.on('data', (data) => {
+    const chunk = data.toString();
+    errorOutput += chunk;
+    console.error(chunk);
+  });
+  
+  pythonProcess.on('close', (code) => {
+    if (code === 0) {
+      try {
+        const result = JSON.parse(output);
+        console.log('Live purchases scraper completed successfully');
+        
+        // Save to public folder for caching
+        const destJSON = path.join(__dirname, 'public/live_edgar_purchases.json');
+        fs.writeFile(destJSON, output, (err) => {
+          if (err) {
+            console.error('Error saving live purchases JSON:', err);
+          } else {
+            console.log('Live purchases JSON saved to public folder');
+          }
+        });
+        
+        res.json(result);
+      } catch (e) {
+        console.error('Failed to parse live purchases output:', e);
+        res.status(500).json({
+          success: false,
+          message: 'Scraper completed but failed to parse output',
+          error: e.message,
+          raw: output
+        });
+      }
+    } else {
+      console.error('Live purchases scraper failed with code', code);
+      res.status(500).json({
+        success: false,
+        message: 'Scraper failed',
+        error: errorOutput || output
+      });
+    }
+  });
+});
+
+// Endpoint to get cached live purchases data
+app.get('/api/live-purchases', (req, res) => {
+  const jsonPath = path.join(__dirname, 'public/live_edgar_purchases.json');
+  
+  fs.readFile(jsonPath, 'utf8', (err, data) => {
+    if (err) {
+      console.error('No cached live purchases data found');
+      res.json({
+        success: false,
+        message: 'No data available. Click "Update Live Purchases" to fetch.',
+        companies: []
+      });
+    } else {
+      try {
+        const result = JSON.parse(data);
+        res.json(result);
+      } catch (e) {
+        console.error('Failed to parse cached live purchases:', e);
+        res.status(500).json({
+          success: false,
+          message: 'Failed to parse cached data',
+          error: e.message
+        });
+      }
+    }
+  });
+});
+
 // Endpoint to run the top monthly trades scraper
 app.post('/api/scrape-top-monthly', (req, res) => {
   console.log('Starting top monthly trades scraper...');

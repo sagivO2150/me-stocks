@@ -3,6 +3,7 @@ import Papa from 'papaparse';
 import TradeCard from './components/TradeCard';
 import PoliticalTradeCard from './components/PoliticalTradeCard';
 import TopMonthlyCard from './components/TopMonthlyCard';
+import LivePurchasesCard from './components/LivePurchasesCard';
 import FilterPanel from './components/FilterPanel';
 import StockDetail from './components/StockDetail';
 
@@ -10,6 +11,7 @@ function App() {
   const [trades, setTrades] = useState([]);
   const [politicalTrades, setPoliticalTrades] = useState([]);
   const [topMonthlyTrades, setTopMonthlyTrades] = useState([]);
+  const [livePurchases, setLivePurchases] = useState([]);
   const [politicalPagination, setPoliticalPagination] = useState({
     page: 1,
     limit: 50,
@@ -23,11 +25,12 @@ function App() {
     chamber: 'all',
     days: 0              // No time limit - show all trades
   });
-  const [viewMode, setViewMode] = useState('insider'); // 'insider', 'political', 'monthly'
+  const [viewMode, setViewMode] = useState('insider'); // 'insider', 'political', 'monthly', 'live'
   const [monthlySortType, setMonthlySortType] = useState('amount'); // 'amount', 'c-level', '10-percent'
   const [loading, setLoading] = useState(true);
   const [politicalLoading, setPoliticalLoading] = useState(false);
   const [monthlyLoading, setMonthlyLoading] = useState(false);
+  const [liveLoading, setLiveLoading] = useState(false);
   const [error, setError] = useState(null);
   const [scraperLoading, setScraperLoading] = useState(false);
   const [scraperMessage, setScraperMessage] = useState('');
@@ -120,6 +123,26 @@ function App() {
     }
   };
 
+  const loadLivePurchases = async () => {
+    setLiveLoading(true);
+    
+    try {
+      const response = await fetch('http://localhost:3001/api/live-purchases');
+      const data = await response.json();
+      
+      if (data.success && data.companies) {
+        setLivePurchases(data.companies);
+      } else {
+        setLivePurchases([]);
+      }
+    } catch (err) {
+      console.error('Error loading live purchases:', err.message);
+      setLivePurchases([]);
+    } finally {
+      setLiveLoading(false);
+    }
+  };
+
   const handleSearch = (e) => {
     e.preventDefault();
     const ticker = searchTicker.trim().toUpperCase();
@@ -156,8 +179,38 @@ function App() {
       setScraperMessage('❌ Failed to update monthly data: ' + err.message);
     } finally {
       setScraperLoading(false);
-      // Clear message after 5 seconds
       setTimeout(() => setScraperMessage(''), 5000);
+    }
+  };
+
+  const handleRunLivePurchasesUpdate = async () => {
+    setScraperLoading(true);
+    setScraperMessage('Fetching live EDGAR purchases... This may take 30-60 seconds...');
+    
+    try {
+      const response = await fetch('http://localhost:3001/api/scrape-live-purchases', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ days: 1 }) // Last 2 days (today + yesterday)
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        setScraperMessage(`✅ Found ${data.total_companies} stocks with purchases today!`);
+        setLivePurchases(data.companies || []);
+      } else {
+        setScraperMessage('❌ ' + (data.message || 'Failed to fetch live purchases'));
+        setLivePurchases([]);
+      }
+    } catch (err) {
+      setScraperMessage('❌ Failed to fetch live purchases: ' + err.message);
+      setLivePurchases([]);
+    } finally {
+      setScraperLoading(false);
+      setTimeout(() => setScraperMessage(''), 8000);
     }
   };
 
@@ -201,6 +254,7 @@ function App() {
     loadCSV();
     loadPoliticalTrades();
     loadTopMonthlyTrades();
+    loadLivePurchases();
   }, []);
 
   if (loading) {
@@ -282,6 +336,16 @@ function App() {
             >
               🔥 Top Monthly Activity
             </button>
+            <button
+              onClick={() => setViewMode('live')}
+              className={`px-6 py-2 rounded-md font-medium transition ${
+                viewMode === 'live'
+                  ? 'bg-red-600 text-white'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              🔴 Live Purchases
+            </button>
           </div>
 
           <div className="mt-4 inline-block bg-slate-800 rounded-lg px-6 py-3 border border-slate-700">
@@ -306,6 +370,13 @@ function App() {
                 <span className="text-slate-400"> stocks by insider activity</span>
               </>
             )}
+            {viewMode === 'live' && (
+              <>
+                <span className="text-slate-400">Found </span>
+                <span className="text-red-400 font-bold text-xl">{livePurchases.length}</span>
+                <span className="text-slate-400"> stocks with purchases today</span>
+              </>
+            )}
           </div>
         </div>
 
@@ -324,6 +395,7 @@ function App() {
             loadPoliticalTrades(1, politicalFilters, false);
           }}
           onUpdateMonthlyData={handleRunMonthlyUpdate}
+          onUpdateLivePurchases={handleRunLivePurchasesUpdate}
         />
 
         {/* Scraper Message */}
@@ -413,6 +485,41 @@ function App() {
               </div>
             ));
           })()}
+          
+          {/* Show live purchases */}
+          {viewMode === 'live' && (
+            <>
+              {liveLoading ? (
+                <div className="col-span-full text-center text-slate-400 py-12">
+                  Loading live purchases...
+                </div>
+              ) : livePurchases.length === 0 ? (
+                <div className="col-span-full bg-slate-800/50 border border-slate-700 rounded-lg p-8 text-center">
+                  <div className="text-slate-300 text-xl mb-4">🔴 No Live Purchase Data</div>
+                  <div className="text-slate-400 text-sm mb-4">
+                    Click "Update Live Purchases" to fetch today's insider buying activity from SEC EDGAR.
+                  </div>
+                  <div className="text-slate-500 text-xs">
+                    This will scan Form 4 filings from today and analyze:
+                    <ul className="mt-2 space-y-1">
+                      <li>• Shopping sprees (multiple insiders buying)</li>
+                      <li>• C-suite purchases (CEO, CFO, COO)</li>
+                      <li>• Large purchase signals vs. historical data</li>
+                    </ul>
+                  </div>
+                </div>
+              ) : (
+                livePurchases.map((stock, index) => (
+                  <div key={`live-${stock.ticker}-${index}`}>
+                    <LivePurchasesCard 
+                      stock={stock} 
+                      onClick={() => setSelectedTrade({ Ticker: stock.ticker, ticker: stock.ticker })}
+                    />
+                  </div>
+                ))
+              )}
+            </>
+          )}
           
           {/* No results message for political trades */}
           {viewMode === 'political' && !politicalLoading && politicalTrades.length === 0 && (
