@@ -21,8 +21,8 @@ import threading
 
 
 # SEC EDGAR Rate limits: 10 requests/second max
-RATE_LIMIT_DELAY = 0.12  # ~8 requests/sec, safely under limit
-MAX_WORKERS = 5  # Parallel workers for fetching Form 4s
+RATE_LIMIT_DELAY = 0.08  # ~12 requests/sec, slightly aggressive but safe
+MAX_WORKERS = 10  # Parallel workers for fetching Form 4s
 
 # Thread-safe rate limiter
 rate_limit_lock = threading.Lock()
@@ -180,8 +180,7 @@ def fetch_form4_list(cik, max_years=5):
     all_filings = first_page
     print(f'  First page: {len(first_page)} filings', file=sys.stderr)
     
-    # Estimate max pages to fetch (assume ~500 filings in 5 years, so ~5 pages)
-    # We'll fetch multiple pages in parallel and stop when we get empty results
+    # Fetch multiple pages in parallel to get ALL data within time window
     max_pages_to_try = 10  # Try up to 10 pages (1000 filings)
     
     # Create page fetch jobs (start=100, 200, 300, etc.)
