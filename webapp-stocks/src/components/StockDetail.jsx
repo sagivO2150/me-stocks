@@ -16,8 +16,7 @@ const StockDetail = ({ trade, onClose }) => {
   const [edgarTrades, setEdgarTrades] = useState(null);
   const [edgarProgress, setEdgarProgress] = useState({ current: 0, total: 0, found: 0 });
   const [edgarStatus, setEdgarStatus] = useState('');
-  const [zoomDate, setZoomDate] = useState(null);
-  const [zoomRange, setZoomRange] = useState('1m'); // Default zoom range: 1 month
+  const [focusDate, setFocusDate] = useState(''); // Empty by default, can be set to any date
 
   const ticker = trade.Ticker || trade.ticker;
   const isPoliticalTrade = trade.source === 'senate' || trade.source === 'house' || trade.politician;
@@ -26,8 +25,34 @@ const StockDetail = ({ trade, onClose }) => {
   console.log('Is political trade:', isPoliticalTrade);
 
   useEffect(() => {
+    // When focus date is set, always ensure we have MAX data to cover any historical date
+    if (focusDate) {
+      // Always fetch MAX when a focus date is set to ensure we have enough historical data
+      if (stockHistory?.history) {
+        const firstAvailableDate = new Date(stockHistory.history[0].date.split('T')[0].split(' ')[0]);
+        const lastAvailableDate = new Date(stockHistory.history[stockHistory.history.length - 1].date.split('T')[0].split(' ')[0]);
+        const targetDate = new Date(focusDate + 'T00:00:00');
+        
+        console.log('Focus date:', targetDate.toISOString().split('T')[0]);
+        console.log('Available range:', firstAvailableDate.toISOString().split('T')[0], 'to', lastAvailableDate.toISOString().split('T')[0]);
+        
+        // If focus date is outside current range, fetch MAX to get all available data
+        if (targetDate < firstAvailableDate || targetDate > lastAvailableDate) {
+          console.log('Focus date outside current range, fetching MAX period');
+          fetchStockHistory('max');
+          return;
+        }
+      } else {
+        // No data yet, fetch MAX
+        console.log('No stock history yet, fetching MAX to cover focus date');
+        fetchStockHistory('max');
+        return;
+      }
+    }
+    
+    // Normal period fetch when no focus date
     fetchStockHistory(period);
-  }, [period, ticker]);
+  }, [period, ticker, focusDate]);
 
   useEffect(() => {
     fetchInsiderTrades();
@@ -264,22 +289,53 @@ const StockDetail = ({ trade, onClose }) => {
     
     const totalPoints = chartData.length;
     
-    // If zoomed, adjust tick counts for better visibility
-    if (zoomDate) {
-      const zoomTickCounts = {
+    // If focus date is set, adjust tick counts for better visibility in zoomed view
+    if (focusDate) {
+      const focusTickCounts = {
         '1d': 6,   // 6 time points for single day
         '5d': 5,   // 5 date points
-        '1m': 6,   // 6 date points
-        '3m': 6,   // 6 points
-        '6m': 6,   // 6 points
-        '1y': 12   // 12 points (monthly)
+        '1mo': 6,  // 6 date points
+        '3mo': 6,  // 6 points
+        '6mo': 6,  // 6 points
+        '1y': 12,  // 12 points (monthly)
+        '2y': 12,  // 12 points
+        '5y': 10   // 10 points
       };
-      const targetCount = zoomTickCounts[zoomRange] || 6;
+      const targetCount = focusTickCounts[period] || 6;
       
       if (totalPoints <= targetCount) {
         return chartData.map(p => p.date);
       }
       
+      // For 1Y with focus, try to show month boundaries
+      if (period === '1y') {
+        const monthBoundaries = [];
+        let lastMonth = null;
+        
+        chartData.forEach((point) => {
+          const date = new Date(point.date);
+          const monthKey = `${date.getFullYear()}-${date.getMonth()}`;
+          if (lastMonth !== monthKey) {
+            monthBoundaries.push(point.date);
+            lastMonth = monthKey;
+          }
+        });
+        
+        // If we have too many month boundaries, sample them evenly
+        if (monthBoundaries.length > targetCount) {
+          const step = Math.floor(monthBoundaries.length / targetCount);
+          const sampledTicks = [];
+          for (let i = 0; i < targetCount; i++) {
+            const idx = Math.min(i * step, monthBoundaries.length - 1);
+            sampledTicks.push(monthBoundaries[idx]);
+          }
+          return sampledTicks;
+        }
+        
+        return monthBoundaries.length > 0 ? monthBoundaries : [chartData[Math.floor(totalPoints / 2)].date];
+      }
+      
+      // For other periods, evenly space the ticks
       const step = Math.floor(totalPoints / targetCount);
       const ticks = [];
       for (let i = 0; i < targetCount; i++) {
@@ -289,7 +345,7 @@ const StockDetail = ({ trade, onClose }) => {
       return ticks;
     }
     
-    // Original logic for non-zoomed view
+    // Original logic for non-focused view
     // Define target tick counts per period
     const tickCounts = {
       '1d': 6,   // 6 time points
@@ -368,38 +424,75 @@ const StockDetail = ({ trade, onClose }) => {
     
     let data = [...stockHistory.history];
     
-    // Apply zoom filtering if zoomDate is set
-    if (zoomDate) {
-      const focusDate = new Date(zoomDate);
+    // Apply date-based filtering if focusDate is set
+    if (focusDate) {
+      console.log('Focus date set:', focusDate, 'Period:', period);
+      console.log('Data before filter:', data.length, 'points');
+      if (data.length > 0) {
+        console.log('First data point:', data[0].date, 'Last data point:', data[data.length - 1].date);
+      }
+      
+      const centerDate = new Date(focusDate + 'T00:00:00'); // Ensure we're at midnight UTC
       const rangeInDays = {
         '1d': 0,
         '5d': 5,
-        '1m': 30,
-        '3m': 90,
-        '6m': 180,
-        '1y': 365
-      }[zoomRange] || 30;
+        '1mo': 30,
+        '3mo': 90,
+        '6mo': 180,
+        '1y': 365,
+        '2y': 730,
+        '5y': 1825,
+        'max': null // Don't filter for max
+      }[period];
       
-      // For 1 day zoom, show that specific day only
-      if (zoomRange === '1d') {
-        data = data.filter(point => {
-          const pointDate = new Date(point.date.split(' ')[0]);
-          return pointDate.toDateString() === focusDate.toDateString();
-        });
-      } else {
-        // For other ranges, show data centered around the focus date
-        const startDate = new Date(focusDate);
-        startDate.setDate(startDate.getDate() - Math.floor(rangeInDays / 2));
-        const endDate = new Date(focusDate);
-        endDate.setDate(endDate.getDate() + Math.floor(rangeInDays / 2));
+      console.log('Range in days:', rangeInDays, 'Center date:', centerDate.toISOString());
+      
+      if (rangeInDays !== null && rangeInDays !== undefined) {
+        // For 1 day, show that specific day only
+        if (period === '1d') {
+          data = data.filter(point => {
+            // Extract just the date part (YYYY-MM-DD) regardless of format
+            const dateStr = point.date.split('T')[0].split(' ')[0];
+            const pointDate = new Date(dateStr + 'T00:00:00');
+            const isSameDay = pointDate.getFullYear() === centerDate.getFullYear() &&
+                              pointDate.getMonth() === centerDate.getMonth() &&
+                              pointDate.getDate() === centerDate.getDate();
+            return isSameDay;
+          });
+        } else {
+          // For other ranges, show data CENTERED around the focus date
+          // Calculate start and end dates
+          const halfRange = rangeInDays / 2;
+          const startDate = new Date(centerDate);
+          startDate.setDate(startDate.getDate() - halfRange);
+          const endDate = new Date(centerDate);
+          endDate.setDate(endDate.getDate() + halfRange);
+          
+          console.log('Date range (centered):', 
+            startDate.toISOString().split('T')[0], 
+            'to', 
+            endDate.toISOString().split('T')[0],
+            '(center:', centerDate.toISOString().split('T')[0], ')');
+          
+          data = data.filter(point => {
+            // Extract just the date part (YYYY-MM-DD) regardless of format
+            const dateStr = point.date.split('T')[0].split(' ')[0];
+            const pointDate = new Date(dateStr + 'T00:00:00');
+            const isInRange = pointDate >= startDate && pointDate <= endDate;
+            return isInRange;
+          });
+        }
         
-        data = data.filter(point => {
-          const pointDate = new Date(point.date.split(' ')[0]);
-          return pointDate >= startDate && pointDate <= endDate;
-        });
+        console.log(`Focus date filter applied: ${data.length} data points in range`);
+        if (data.length > 0) {
+          console.log('Filtered first:', data[0].date, 'Filtered last:', data[data.length - 1].date);
+        }
+        
+        // If filtering resulted in no data, show a warning
+        if (data.length === 0) {
+          console.warn('No data points found in the selected range. Try a wider period or different date.');
+        }
       }
-      
-      console.log(`Zoom applied: ${data.length} data points in range`);
     }
     
     // Use EDGAR data if loaded, otherwise use OpenInsider data
@@ -410,8 +503,11 @@ const StockDetail = ({ trade, onClose }) => {
     const insiderSalesByDate = {};
     
     if (activeInsiderTrades) {
+      console.log('Processing insider trades...');
       activeInsiderTrades.purchases?.forEach(trade => {
-        const dateKey = trade.date;
+        // Normalize date to YYYY-MM-DD format
+        const dateKey = trade.date.split('T')[0].split(' ')[0];
+        console.log('Insider purchase date:', trade.date, '-> normalized:', dateKey);
         if (!insiderPurchasesByDate[dateKey]) {
           insiderPurchasesByDate[dateKey] = { trades: [], totalValue: 0, count: 0 };
         }
@@ -427,7 +523,8 @@ const StockDetail = ({ trade, onClose }) => {
       });
       
       activeInsiderTrades.sales?.forEach(trade => {
-        const dateKey = trade.date;
+        // Normalize date to YYYY-MM-DD format
+        const dateKey = trade.date.split('T')[0].split(' ')[0];
         if (!insiderSalesByDate[dateKey]) {
           insiderSalesByDate[dateKey] = { trades: [], totalValue: 0, count: 0 };
         }
@@ -441,6 +538,8 @@ const StockDetail = ({ trade, onClose }) => {
         insiderSalesByDate[dateKey].totalValue += trade.value;
         insiderSalesByDate[dateKey].count += 1;
       });
+      
+      console.log('Insider purchases by date:', Object.keys(insiderPurchasesByDate));
     }
     
     // Create maps for political purchases and sales by date
@@ -476,11 +575,16 @@ const StockDetail = ({ trade, onClose }) => {
     
     // Merge with stock data
     return data.map(point => {
-      const dateKey = point.date.split(' ')[0]; // Extract date part (YYYY-MM-DD)
+      // Normalize stock history date to YYYY-MM-DD format
+      const dateKey = point.date.split('T')[0].split(' ')[0];
+      
+      console.log('Stock data point:', point.date, '-> normalized:', dateKey, 
+        'Has purchases?', !!insiderPurchasesByDate[dateKey], 
+        'Has sales?', !!insiderSalesByDate[dateKey]);
       
       // For intraday data, aggregate all trades for that day on the first data point of the day
       const isFirstPointOfDay = !data.find(p => {
-        const pDate = p.date.split(' ')[0];
+        const pDate = p.date.split('T')[0].split(' ')[0];
         return pDate === dateKey && data.indexOf(p) < data.indexOf(point);
       });
       
@@ -661,9 +765,9 @@ const StockDetail = ({ trade, onClose }) => {
 
         {/* Content */}
         <div className="p-6">
-          {/* Period Selector */}
+          {/* Period Selector with Date Picker */}
           <div className="mb-6">
-            <div className="flex gap-2 flex-wrap">
+            <div className="flex gap-2 flex-wrap items-center">
               {['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', 'max'].map((p) => {
                 return (
                   <button
@@ -682,7 +786,49 @@ const StockDetail = ({ trade, onClose }) => {
                   </button>
                 );
               })}
+              
+              {/* Date Picker for Focus Date */}
+              <div className="flex items-center gap-2 ml-2">
+                <span className="text-slate-400 text-sm">Focus:</span>
+                <input
+                  type="date"
+                  value={focusDate}
+                  onChange={(e) => setFocusDate(e.target.value)}
+                  min={stockHistory?.history?.[0]?.date.split('T')[0].split(' ')[0]}
+                  max={stockHistory?.history?.[stockHistory.history.length - 1]?.date.split('T')[0].split(' ')[0]}
+                  className="px-3 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-purple-500 focus:outline-none text-sm"
+                  placeholder="Today"
+                />
+                {focusDate && (
+                  <button
+                    onClick={() => setFocusDate('')}
+                    className="px-3 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg transition-all text-sm"
+                    title="Clear focus date"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
             </div>
+            
+            {focusDate && (
+              <div className="mt-2 text-sm text-purple-400">
+                📍 Viewing {period.toUpperCase()} around {new Date(focusDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                {(() => {
+                  const chartData = mergedChartData();
+                  if (chartData.length > 0) {
+                    const firstDate = chartData[0].date.split('T')[0].split(' ')[0];
+                    const lastDate = chartData[chartData.length - 1].date.split('T')[0].split(' ')[0];
+                    return (
+                      <span className="ml-2 text-xs text-slate-500">
+                        (Showing: {new Date(firstDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} - {new Date(lastDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })})
+                      </span>
+                    );
+                  }
+                  return null;
+                })()}
+              </div>
+            )}
             
             {/* EDGAR Historical Data Button */}
             <div className="mt-3 flex items-center gap-3">
@@ -814,7 +960,13 @@ const StockDetail = ({ trade, onClose }) => {
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-0.5 bg-emerald-400"></div>
                     <span className="text-slate-300">
-                      🏢 Insider Purchases ({(useEdgarData && edgarTrades) ? edgarTrades.total_purchases : insiderTrades.total_purchases})
+                      🏢 Insider Purchases ({(() => {
+                        // Count visible purchases in filtered data
+                        const chartData = mergedChartData();
+                        const visibleCount = chartData.filter(d => d.purchaseCount > 0).reduce((sum, d) => sum + d.purchaseCount, 0);
+                        const totalCount = (useEdgarData && edgarTrades) ? edgarTrades.total_purchases : insiderTrades.total_purchases;
+                        return focusDate && visibleCount < totalCount ? `${visibleCount}/${totalCount}` : totalCount;
+                      })()})
                       {useEdgarData && <span className="ml-1 text-green-400 text-xs">(EDGAR)</span>}
                     </span>
                   </div>
@@ -824,7 +976,13 @@ const StockDetail = ({ trade, onClose }) => {
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-0.5 bg-red-500" style={{backgroundImage: 'repeating-linear-gradient(90deg, #ef4444 0, #ef4444 3px, transparent 3px, transparent 6px)'}}></div>
                     <span className="text-slate-300">
-                      🏢 Insider Sales ({(useEdgarData && edgarTrades) ? edgarTrades.total_sales : insiderTrades.total_sales})
+                      🏢 Insider Sales ({(() => {
+                        // Count visible sales in filtered data
+                        const chartData = mergedChartData();
+                        const visibleCount = chartData.filter(d => d.saleCount > 0).reduce((sum, d) => sum + d.saleCount, 0);
+                        const totalCount = (useEdgarData && edgarTrades) ? edgarTrades.total_sales : insiderTrades.total_sales;
+                        return focusDate && visibleCount < totalCount ? `${visibleCount}/${totalCount}` : totalCount;
+                      })()})
                       {useEdgarData && <span className="ml-1 text-green-400 text-xs">(EDGAR)</span>}
                     </span>
                   </div>
@@ -851,6 +1009,23 @@ const StockDetail = ({ trade, onClose }) => {
             {loading && (
               <div className="h-96 flex items-center justify-center">
                 <div className="text-slate-400 text-xl">Loading chart...</div>
+              </div>
+            )}
+            
+            {!loading && !error && mergedChartData().length === 0 && (
+              <div className="h-96 flex items-center justify-center">
+                <div className="bg-yellow-900/30 border border-yellow-700 rounded-lg p-6 max-w-2xl">
+                  <div className="text-yellow-300 text-xl mb-2">⚠️ No Data in Selected Range</div>
+                  <div className="text-yellow-200 text-sm">
+                    <p className="mb-2">No chart data available for the selected focus date and time range.</p>
+                    {focusDate && (
+                      <p className="text-xs text-yellow-300/70 mt-1">
+                        Try selecting a different date, or clear the focus date to view all available data.
+                        <br />The current stock history may not extend back to {new Date(focusDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}.
+                      </p>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
             
@@ -904,16 +1079,24 @@ const StockDetail = ({ trade, onClose }) => {
                       }
                       
                       // For 5D and 1M, show day + month
-                      if (period === '5d' || period === '1m') {
+                      if (period === '5d' || period === '1mo') {
                         return `${date.getDate()} ${date.toLocaleString('en-US', { month: 'short' })}`;
                       }
                       
                       // For 3M and 6M, show month + year
-                      if (period === '3m' || period === '6m') {
+                      if (period === '3mo' || period === '6mo') {
                         return date.toLocaleString('en-US', { month: 'short', year: 'numeric' });
                       }
                       
-                      // For 1Y, 2Y, 5Y, Max - show year only
+                      // For 1Y - show month + year when focus date is set, otherwise just year
+                      if (period === '1y') {
+                        if (focusDate) {
+                          return date.toLocaleString('en-US', { month: 'short', year: '2-digit' });
+                        }
+                        return date.getFullYear().toString();
+                      }
+                      
+                      // For 2Y, 5Y, Max - show year only
                       return date.getFullYear().toString();
                     }}
                   />
@@ -1098,61 +1281,6 @@ const StockDetail = ({ trade, onClose }) => {
                 </ComposedChart>
               </ResponsiveContainer>
             )}
-          </div>
-
-          {/* Zoom Controls */}
-          <div className="bg-slate-800/50 rounded-xl p-6 mb-6">
-            <h3 className="text-lg font-bold text-white mb-4">🔍 Zoom to Time Period</h3>
-            
-            <div className="space-y-4">
-              {/* Date Picker */}
-              <div>
-                <label className="text-slate-400 text-sm mb-2 block">Select Focus Date:</label>
-                <div className="flex items-center gap-3">
-                  <input
-                    type="date"
-                    value={zoomDate || ''}
-                    onChange={(e) => setZoomDate(e.target.value)}
-                    min={stockHistory?.history?.[0]?.date.split('T')[0]}
-                    max={stockHistory?.history?.[stockHistory.history.length - 1]?.date.split('T')[0]}
-                    className="px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-blue-500 focus:outline-none"
-                  />
-                  {zoomDate && (
-                    <button
-                      onClick={() => setZoomDate(null)}
-                      className="px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg transition-all"
-                    >
-                      Reset Zoom
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              {/* Zoom Range Selector */}
-              {zoomDate && (
-                <div>
-                  <label className="text-slate-400 text-sm mb-2 block">Zoom Range:</label>
-                  <div className="flex gap-2 flex-wrap">
-                    {['1d', '5d', '1m', '3m', '6m', '1y'].map((range) => (
-                      <button
-                        key={range}
-                        onClick={() => setZoomRange(range)}
-                        className={`px-4 py-2 rounded-lg transition-all ${
-                          zoomRange === range
-                            ? 'bg-purple-600 text-white'
-                            : 'bg-slate-700 text-slate-400 hover:bg-slate-600 hover:text-white'
-                        }`}
-                      >
-                        {range.toUpperCase()}
-                      </button>
-                    ))}
-                  </div>
-                  <p className="text-slate-500 text-xs mt-2">
-                    Viewing {zoomRange.toUpperCase()} around {new Date(zoomDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
-                  </p>
-                </div>
-              )}
-            </div>
           </div>
 
           {/* Two Column Layout for Details */}
