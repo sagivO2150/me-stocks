@@ -16,6 +16,8 @@ const StockDetail = ({ trade, onClose }) => {
   const [edgarTrades, setEdgarTrades] = useState(null);
   const [edgarProgress, setEdgarProgress] = useState({ current: 0, total: 0, found: 0 });
   const [edgarStatus, setEdgarStatus] = useState('');
+  const [zoomDate, setZoomDate] = useState(null);
+  const [zoomRange, setZoomRange] = useState('1m'); // Default zoom range: 1 month
 
   const ticker = trade.Ticker || trade.ticker;
   const isPoliticalTrade = trade.source === 'senate' || trade.source === 'house' || trade.politician;
@@ -257,11 +259,37 @@ const StockDetail = ({ trade, onClose }) => {
 
   // Calculate smart X-axis ticks based on period (like Google Finance)
   const getXAxisTicks = () => {
-    if (!stockHistory || !stockHistory.history || stockHistory.history.length === 0) return [];
+    const chartData = mergedChartData();
+    if (!chartData || chartData.length === 0) return [];
     
-    const data = stockHistory.history;
-    const totalPoints = data.length;
+    const totalPoints = chartData.length;
     
+    // If zoomed, adjust tick counts for better visibility
+    if (zoomDate) {
+      const zoomTickCounts = {
+        '1d': 6,   // 6 time points for single day
+        '5d': 5,   // 5 date points
+        '1m': 6,   // 6 date points
+        '3m': 6,   // 6 points
+        '6m': 6,   // 6 points
+        '1y': 12   // 12 points (monthly)
+      };
+      const targetCount = zoomTickCounts[zoomRange] || 6;
+      
+      if (totalPoints <= targetCount) {
+        return chartData.map(p => p.date);
+      }
+      
+      const step = Math.floor(totalPoints / targetCount);
+      const ticks = [];
+      for (let i = 0; i < targetCount; i++) {
+        const idx = Math.min(i * step, totalPoints - 1);
+        ticks.push(chartData[idx].date);
+      }
+      return ticks;
+    }
+    
+    // Original logic for non-zoomed view
     // Define target tick counts per period
     const tickCounts = {
       '1d': 6,   // 6 time points
@@ -282,7 +310,7 @@ const StockDetail = ({ trade, onClose }) => {
       const yearBoundaries = [];
       let lastYear = null;
       
-      data.forEach((point, idx) => {
+      chartData.forEach((point, idx) => {
         const date = new Date(point.date);
         const year = date.getFullYear();
         if (lastYear !== null && year !== lastYear) {
@@ -291,13 +319,13 @@ const StockDetail = ({ trade, onClose }) => {
         lastYear = year;
       });
       
-      return yearBoundaries.length > 0 ? yearBoundaries : [data[Math.floor(totalPoints / 2)].date];
+      return yearBoundaries.length > 0 ? yearBoundaries : [chartData[Math.floor(totalPoints / 2)].date];
     }
     
     // For Max - space out years evenly
     if (period === 'max') {
-      const firstDate = new Date(data[0].date);
-      const lastDate = new Date(data[totalPoints - 1].date);
+      const firstDate = new Date(chartData[0].date);
+      const lastDate = new Date(chartData[totalPoints - 1].date);
       const yearSpan = lastDate.getFullYear() - firstDate.getFullYear();
       
       if (yearSpan >= 6) {
@@ -305,7 +333,7 @@ const StockDetail = ({ trade, onClose }) => {
         const ticks = [];
         let currentYear = firstDate.getFullYear();
         
-        data.forEach(point => {
+        chartData.forEach(point => {
           const pointYear = new Date(point.date).getFullYear();
           if (pointYear >= currentYear) {
             ticks.push(point.date);
@@ -319,14 +347,14 @@ const StockDetail = ({ trade, onClose }) => {
     
     // For other periods - evenly space points
     if (totalPoints <= targetCount) {
-      return data.map(p => p.date);
+      return chartData.map(p => p.date);
     }
     
     const step = Math.floor(totalPoints / targetCount);
     const ticks = [];
     for (let i = 0; i < targetCount; i++) {
       const idx = Math.min(i * step, totalPoints - 1);
-      ticks.push(data[idx].date);
+      ticks.push(chartData[idx].date);
     }
     
     return ticks;
@@ -338,7 +366,41 @@ const StockDetail = ({ trade, onClose }) => {
     console.log('Building merged chart data...');
     console.log('Political trades:', politicalTrades);
     
-    const data = [...stockHistory.history];
+    let data = [...stockHistory.history];
+    
+    // Apply zoom filtering if zoomDate is set
+    if (zoomDate) {
+      const focusDate = new Date(zoomDate);
+      const rangeInDays = {
+        '1d': 0,
+        '5d': 5,
+        '1m': 30,
+        '3m': 90,
+        '6m': 180,
+        '1y': 365
+      }[zoomRange] || 30;
+      
+      // For 1 day zoom, show that specific day only
+      if (zoomRange === '1d') {
+        data = data.filter(point => {
+          const pointDate = new Date(point.date.split(' ')[0]);
+          return pointDate.toDateString() === focusDate.toDateString();
+        });
+      } else {
+        // For other ranges, show data centered around the focus date
+        const startDate = new Date(focusDate);
+        startDate.setDate(startDate.getDate() - Math.floor(rangeInDays / 2));
+        const endDate = new Date(focusDate);
+        endDate.setDate(endDate.getDate() + Math.floor(rangeInDays / 2));
+        
+        data = data.filter(point => {
+          const pointDate = new Date(point.date.split(' ')[0]);
+          return pointDate >= startDate && pointDate <= endDate;
+        });
+      }
+      
+      console.log(`Zoom applied: ${data.length} data points in range`);
+    }
     
     // Use EDGAR data if loaded, otherwise use OpenInsider data
     const activeInsiderTrades = useEdgarData && edgarTrades ? edgarTrades : insiderTrades;
@@ -1036,6 +1098,61 @@ const StockDetail = ({ trade, onClose }) => {
                 </ComposedChart>
               </ResponsiveContainer>
             )}
+          </div>
+
+          {/* Zoom Controls */}
+          <div className="bg-slate-800/50 rounded-xl p-6 mb-6">
+            <h3 className="text-lg font-bold text-white mb-4">🔍 Zoom to Time Period</h3>
+            
+            <div className="space-y-4">
+              {/* Date Picker */}
+              <div>
+                <label className="text-slate-400 text-sm mb-2 block">Select Focus Date:</label>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="date"
+                    value={zoomDate || ''}
+                    onChange={(e) => setZoomDate(e.target.value)}
+                    min={stockHistory?.history?.[0]?.date.split('T')[0]}
+                    max={stockHistory?.history?.[stockHistory.history.length - 1]?.date.split('T')[0]}
+                    className="px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-blue-500 focus:outline-none"
+                  />
+                  {zoomDate && (
+                    <button
+                      onClick={() => setZoomDate(null)}
+                      className="px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg transition-all"
+                    >
+                      Reset Zoom
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Zoom Range Selector */}
+              {zoomDate && (
+                <div>
+                  <label className="text-slate-400 text-sm mb-2 block">Zoom Range:</label>
+                  <div className="flex gap-2 flex-wrap">
+                    {['1d', '5d', '1m', '3m', '6m', '1y'].map((range) => (
+                      <button
+                        key={range}
+                        onClick={() => setZoomRange(range)}
+                        className={`px-4 py-2 rounded-lg transition-all ${
+                          zoomRange === range
+                            ? 'bg-purple-600 text-white'
+                            : 'bg-slate-700 text-slate-400 hover:bg-slate-600 hover:text-white'
+                        }`}
+                      >
+                        {range.toUpperCase()}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-slate-500 text-xs mt-2">
+                    Viewing {zoomRange.toUpperCase()} around {new Date(zoomDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Two Column Layout for Details */}

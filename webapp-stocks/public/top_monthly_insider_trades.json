@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-02-11T21:29:02.975005",
-  "total_tickers": 114,
+  "updated_at": "2026-02-12T00:07:42.785903",
+  "total_tickers": 108,
   "total_trades": 200,
   "data": [
     {
@@ -77,6 +77,132 @@
           "trade_date": "2026-02-05",
           "value": "+$2,835,251",
           "qty": "+40,000"
+        }
+      ]
+    },
+    {
+      "ticker": "SGP",
+      "company_name": "Spyglass Pharma, Inc.",
+      "total_value": 162440000.0,
+      "total_value_formatted": "$162.4M",
+      "total_purchases": 14,
+      "unique_insiders": 14,
+      "role_counts": {
+        "10% Owner": 11,
+        "Other": 3
+      },
+      "trades": [
+        {
+          "insider_name": "Florence Anthony A. Jr.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Walker Paul Edward",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Mathers Edward T",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Chang Carmen",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Sandell Scott D",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Makhzoumi Mohamad",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Yang Rick",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "New Enterprise Associates 17, L.P.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Baskett Forest",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Behbahani Ali",
+          "title": "Dir, 10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Pardo Geoffrey B",
+          "title": "Dir",
+          "role": "Other",
+          "trade_date": "2026-02-09",
+          "value": "+$5,000,000",
+          "qty": "+312,500"
+        },
+        {
+          "insider_name": "Nielsen Kirk G.",
+          "title": "Dir",
+          "role": "Other",
+          "trade_date": "2026-02-09",
+          "value": "+$2,640,000",
+          "qty": "+165,000"
+        },
+        {
+          "insider_name": "Vensana Capital I Gp, LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$2,640,000",
+          "qty": "+165,000"
+        },
+        {
+          "insider_name": "Khan Bilal Arshad",
+          "title": "Dir",
+          "role": "Other",
+          "trade_date": "2026-02-09",
+          "value": "+$2,160,000",
+          "qty": "+135,000"
         }
       ]
     },
@@ -180,16 +306,16 @@
       },
       "trades": [
         {
-          "insider_name": "Longitude Capital Partners V, LLC",
-          "title": "10%",
+          "insider_name": "Enright Patrick G",
+          "title": "Dir, 10%",
           "role": "10% Owner",
           "trade_date": "2026-02-05",
           "value": "+$18,275,000",
           "qty": "+1,075,000"
         },
         {
-          "insider_name": "Enright Patrick G",
-          "title": "Dir, 10%",
+          "insider_name": "Longitude Capital Partners V, LLC",
+          "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-05",
           "value": "+$18,275,000",
@@ -416,9 +542,9 @@
           "qty": "+671,000"
         },
         {
-          "insider_name": "Hc VIII Sponsor LLC",
-          "title": "10%",
-          "role": "10% Owner",
+          "insider_name": "Hennessy Thomas D",
+          "title": "Pres, 10%",
+          "role": "Pres",
           "trade_date": "2026-02-06",
           "value": "+$6,710,000",
           "qty": "+671,000"
@@ -432,9 +558,9 @@
           "qty": "+671,000"
         },
         {
-          "insider_name": "Hennessy Thomas D",
-          "title": "Pres, 10%",
-          "role": "Pres",
+          "insider_name": "Hc VIII Sponsor LLC",
+          "title": "10%",
+          "role": "10% Owner",
           "trade_date": "2026-02-06",
           "value": "+$6,710,000",
           "qty": "+671,000"
@@ -568,12 +694,12 @@
     {
       "ticker": "ASA",
       "company_name": "Asa Gold & Precious Metals Ltd",
-      "total_value": 19168606.0,
-      "total_value_formatted": "$19.2M",
-      "total_purchases": 6,
+      "total_value": 17871254.0,
+      "total_value_formatted": "$17.9M",
+      "total_purchases": 5,
       "unique_insiders": 1,
       "role_counts": {
-        "10% Owner": 6
+        "10% Owner": 5
       },
       "trades": [
         {
@@ -615,14 +741,6 @@
           "trade_date": "2026-02-05",
           "value": "+$2,032,967",
           "qty": "+31,219"
-        },
-        {
-          "insider_name": "Saba Capital Management, L.P.",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-13",
-          "value": "+$1,297,352",
-          "qty": "+20,162"
         }
       ]
     },
@@ -935,12 +1053,12 @@
     {
       "ticker": "YYAI",
       "company_name": "Airwa Inc.",
-      "total_value": 7273763.0,
-      "total_value_formatted": "$7.3M",
-      "total_purchases": 2,
+      "total_value": 5774550.0,
+      "total_value_formatted": "$5.8M",
+      "total_purchases": 1,
       "unique_insiders": 1,
       "role_counts": {
-        "Other": 2
+        "Other": 1
       },
       "trades": [
         {
@@ -950,14 +1068,6 @@
           "trade_date": "2026-01-21",
           "value": "+$5,774,550",
           "qty": "+4,215,000"
-        },
-        {
-          "insider_name": "Zhou Hongyu",
-          "title": "Dir",
-          "role": "Other",
-          "trade_date": "2026-01-11",
-          "value": "+$1,499,213",
-          "qty": "+1,109,922"
         }
       ]
     },
@@ -987,74 +1097,6 @@
           "trade_date": "2026-01-28",
           "value": "+$2,115,728",
           "qty": "+428,626"
-        }
-      ]
-    },
-    {
-      "ticker": "SGP",
-      "company_name": "Spyglass Pharma, Inc.",
-      "total_value": 5280000.0,
-      "total_value_formatted": "$5.3M",
-      "total_purchases": 2,
-      "unique_insiders": 2,
-      "role_counts": {
-        "Other": 1,
-        "10% Owner": 1
-      },
-      "trades": [
-        {
-          "insider_name": "Nielsen Kirk G.",
-          "title": "Dir",
-          "role": "Other",
-          "trade_date": "2026-02-09",
-          "value": "+$2,640,000",
-          "qty": "+165,000"
-        },
-        {
-          "insider_name": "Vensana Capital I Gp, LLC",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-09",
-          "value": "+$2,640,000",
-          "qty": "+165,000"
-        }
-      ]
-    },
-    {
-      "ticker": "ABT",
-      "company_name": "Abbott Laboratories",
-      "total_value": 5115265.0,
-      "total_value_formatted": "$5.1M",
-      "total_purchases": 3,
-      "unique_insiders": 2,
-      "role_counts": {
-        "COB": 2,
-        "Other": 1
-      },
-      "trades": [
-        {
-          "insider_name": "Ford Robert B",
-          "title": "COB, CEO",
-          "role": "COB",
-          "trade_date": "2026-01-23",
-          "value": "+$2,013,967",
-          "qty": "+18,800"
-        },
-        {
-          "insider_name": "Ford Robert B",
-          "title": "COB, CEO",
-          "role": "COB",
-          "trade_date": "2026-01-23",
-          "value": "+$2,013,967",
-          "qty": "+18,800"
-        },
-        {
-          "insider_name": "Starks Daniel J",
-          "title": "Dir",
-          "role": "Other",
-          "trade_date": "2026-02-04",
-          "value": "+$1,087,331",
-          "qty": "+10,000"
         }
       ]
     },
@@ -1151,43 +1193,6 @@
       ]
     },
     {
-      "ticker": "NFJ",
-      "company_name": "Virtus Dividend, Interest & Premium Strategy Fund",
-      "total_value": 4292142.0,
-      "total_value_formatted": "$4.3M",
-      "total_purchases": 3,
-      "unique_insiders": 1,
-      "role_counts": {
-        "10% Owner": 3
-      },
-      "trades": [
-        {
-          "insider_name": "Saba Capital Management, L.P.",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-03",
-          "value": "+$1,829,465",
-          "qty": "+135,407"
-        },
-        {
-          "insider_name": "Saba Capital Management, L.P.",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-27",
-          "value": "+$1,271,369",
-          "qty": "+94,290"
-        },
-        {
-          "insider_name": "Saba Capital Management, L.P.",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-29",
-          "value": "+$1,191,308",
-          "qty": "+88,639"
-        }
-      ]
-    },
-    {
       "ticker": "RUM",
       "company_name": "Rumble Inc.",
       "total_value": 4220298.0,
@@ -1205,6 +1210,35 @@
           "trade_date": "2026-02-03",
           "value": "+$4,220,298",
           "qty": "+777,012"
+        }
+      ]
+    },
+    {
+      "ticker": "ABT",
+      "company_name": "Abbott Laboratories",
+      "total_value": 4027934.0,
+      "total_value_formatted": "$4.0M",
+      "total_purchases": 2,
+      "unique_insiders": 1,
+      "role_counts": {
+        "COB": 2
+      },
+      "trades": [
+        {
+          "insider_name": "Ford Robert B",
+          "title": "COB, CEO",
+          "role": "COB",
+          "trade_date": "2026-01-23",
+          "value": "+$2,013,967",
+          "qty": "+18,800"
+        },
+        {
+          "insider_name": "Ford Robert B",
+          "title": "COB, CEO",
+          "role": "COB",
+          "trade_date": "2026-01-23",
+          "value": "+$2,013,967",
+          "qty": "+18,800"
         }
       ]
     },
@@ -1364,35 +1398,6 @@
       ]
     },
     {
-      "ticker": "CLBRU",
-      "company_name": "Colombier Acquisition Corp. III",
-      "total_value": 3000000.0,
-      "total_value_formatted": "$3.0M",
-      "total_purchases": 2,
-      "unique_insiders": 1,
-      "role_counts": {
-        "10% Owner": 2
-      },
-      "trades": [
-        {
-          "insider_name": "Malik Omeed",
-          "title": "See Remarks, 10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-05",
-          "value": "+$1,500,000",
-          "qty": "+150,000"
-        },
-        {
-          "insider_name": "Malik Omeed",
-          "title": "See Remarks, 10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-05",
-          "value": "+$1,500,000",
-          "qty": "+150,000"
-        }
-      ]
-    },
-    {
       "ticker": "CEPS",
       "company_name": "Cantor Equity Partners Vi, Inc.",
       "total_value": 3000000.0,
@@ -1410,35 +1415,6 @@
           "trade_date": "2026-02-06",
           "value": "+$3,000,000",
           "qty": "+300,000"
-        }
-      ]
-    },
-    {
-      "ticker": "TDG",
-      "company_name": "Transdigm Group Inc",
-      "total_value": 2440096.0,
-      "total_value_formatted": "$2.4M",
-      "total_purchases": 2,
-      "unique_insiders": 1,
-      "role_counts": {
-        "CEO": 2
-      },
-      "trades": [
-        {
-          "insider_name": "Lisman Michael",
-          "title": "Pres, CEO",
-          "role": "CEO",
-          "trade_date": "2026-02-06",
-          "value": "+$1,220,048",
-          "qty": "+950"
-        },
-        {
-          "insider_name": "Lisman Michael",
-          "title": "Pres, CEO",
-          "role": "CEO",
-          "trade_date": "2026-02-06",
-          "value": "+$1,220,048",
-          "qty": "+950"
         }
       ]
     },
@@ -1532,6 +1508,69 @@
           "trade_date": "2026-02-09",
           "value": "+$1,800,000",
           "qty": "+184,805"
+        }
+      ]
+    },
+    {
+      "ticker": "NFJ",
+      "company_name": "Virtus Dividend, Interest & Premium Strategy Fund",
+      "total_value": 1829465.0,
+      "total_value_formatted": "$1.8M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-03",
+          "value": "+$1,829,465",
+          "qty": "+135,407"
+        }
+      ]
+    },
+    {
+      "ticker": "BATRA",
+      "company_name": "Atlanta Braves Holdings, Inc.",
+      "total_value": 1724786.0,
+      "total_value_formatted": "$1.7M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Malone John C",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-05",
+          "value": "+$1,724,786",
+          "qty": "+38,669"
+        }
+      ]
+    },
+    {
+      "ticker": "CLBRU",
+      "company_name": "Colombier Acquisition Corp. III",
+      "total_value": 1500000.0,
+      "total_value_formatted": "$1.5M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Malik Omeed",
+          "title": "See Remarks, 10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-05",
+          "value": "+$1,500,000",
+          "qty": "+150,000"
         }
       ]
     }
