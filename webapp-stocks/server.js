@@ -217,7 +217,8 @@ app.get('/api/edgar-trades/:ticker', (req, res) => {
   console.log(`Fetching EDGAR historical trades for ${ticker}, max years: ${maxYears}`);
   
   const pythonScript = path.join(__dirname, '../scripts/fetch_edgar_trades.py');
-  const pythonProcess = spawn('/opt/homebrew/bin/python3', [pythonScript, ticker, maxYears]);
+  const pythonPath = path.join(__dirname, '../.venv/bin/python');
+  const pythonProcess = spawn(pythonPath, [pythonScript, ticker, maxYears]);
   
   let output = '';
   let errorOutput = '';

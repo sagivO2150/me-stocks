@@ -64,11 +64,35 @@ def get_company_info(cik):
             cik_int = int(cik)
             for entry in data.values():
                 if entry.get('cik_str') == cik_int:
-                    return entry.get('ticker', ''), entry.get('title', '')
+                    ticker = entry.get('ticker', '')
+                    # Normalize ticker (remove warrant/unit/rights suffixes)
+                    ticker = normalize_ticker(ticker)
+                    return ticker, entry.get('title', '')
     except Exception as e:
         print(f'Error fetching company info for CIK {cik}: {e}', file=sys.stderr)
     
     return '', ''
+
+
+def normalize_ticker(ticker):
+    """
+    Normalize ticker by removing warrant/unit/rights suffixes.
+    Examples: ENTXW -> ENTX, ABCDU -> ABCD, XYZR -> XYZ
+    This matches how OpenInsider normalizes tickers.
+    """
+    if not ticker:
+        return ticker
+    
+    ticker = ticker.upper()
+    
+    # Remove common suffixes (warrants, units, rights)
+    # W = Warrants, U = Units (stock + warrant bundle), R = Rights
+    if len(ticker) > 1 and ticker[-1] in ('W', 'U', 'R'):
+        base_ticker = ticker[:-1]
+        print(f'Normalized {ticker} -> {base_ticker}', file=sys.stderr)
+        return base_ticker
+    
+    return ticker
 
 
 def classify_role(title):

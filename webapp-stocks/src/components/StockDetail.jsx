@@ -71,7 +71,7 @@ const StockDetail = ({ trade, onClose }) => {
     setEdgarLoading(true);
     
     try {
-      const response = await fetch(`http://localhost:3001/api/edgar-trades/${ticker}?years=10`);
+      const response = await fetch(`http://localhost:3001/api/edgar-trades/${ticker}?years=5`);
       const data = await response.json();
       
       if (data.success) {
@@ -734,7 +734,24 @@ const StockDetail = ({ trade, onClose }) => {
             
             {error && (
               <div className="h-96 flex items-center justify-center">
-                <div className="text-red-400 text-xl">Error: {error}</div>
+                <div className="bg-yellow-900/30 border border-yellow-700 rounded-lg p-6 max-w-2xl">
+                  <div className="text-yellow-300 text-xl mb-2">⚠️ Price Data Unavailable</div>
+                  <div className="text-yellow-200 text-sm">
+                    {error.includes('delisted') || error.includes('No data found') ? (
+                      <>
+                        <p className="mb-2">This ticker may be a warrant, delisted, or have no trading data.</p>
+                        <p className="text-xs text-yellow-300/70 mt-1">
+                          Note: Warrants (symbols ending in 'W') often lack price history on Yahoo Finance.
+                        </p>
+                      </>
+                    ) : (
+                      <p>{error}</p>
+                    )}
+                  </div>
+                  <div className="text-yellow-300 text-xs mt-3">
+                    📊 Insider trade data is still available below
+                  </div>
+                </div>
               </div>
             )}
             
