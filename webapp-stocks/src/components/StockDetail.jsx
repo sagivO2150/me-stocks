@@ -27,27 +27,31 @@ const StockDetail = ({ trade, onClose }) => {
   useEffect(() => {
     // When focus date is set, always ensure we have MAX data to cover any historical date
     if (focusDate) {
-      // Always fetch MAX when a focus date is set to ensure we have enough historical data
-      if (stockHistory?.history) {
-        const firstAvailableDate = new Date(stockHistory.history[0].date.split('T')[0].split(' ')[0]);
-        const lastAvailableDate = new Date(stockHistory.history[stockHistory.history.length - 1].date.split('T')[0].split(' ')[0]);
-        const targetDate = new Date(focusDate + 'T00:00:00');
-        
-        console.log('Focus date:', targetDate.toISOString().split('T')[0]);
-        console.log('Available range:', firstAvailableDate.toISOString().split('T')[0], 'to', lastAvailableDate.toISOString().split('T')[0]);
-        
-        // If focus date is outside current range, fetch MAX to get all available data
-        if (targetDate < firstAvailableDate || targetDate > lastAvailableDate) {
-          console.log('Focus date outside current range, fetching MAX period');
-          fetchStockHistory('max');
-          return;
-        }
-      } else {
+      // Check if we need to fetch data
+      if (!stockHistory?.history) {
         // No data yet, fetch MAX
         console.log('No stock history yet, fetching MAX to cover focus date');
         fetchStockHistory('max');
         return;
       }
+      
+      const firstAvailableDate = new Date(stockHistory.history[0].date.split('T')[0].split(' ')[0]);
+      const lastAvailableDate = new Date(stockHistory.history[stockHistory.history.length - 1].date.split('T')[0].split(' ')[0]);
+      const targetDate = new Date(focusDate + 'T00:00:00');
+      
+      console.log('Focus date:', targetDate.toISOString().split('T')[0]);
+      console.log('Available range:', firstAvailableDate.toISOString().split('T')[0], 'to', lastAvailableDate.toISOString().split('T')[0]);
+      
+      // If focus date is outside current range, fetch MAX to get all available data
+      if (targetDate < firstAvailableDate || targetDate > lastAvailableDate) {
+        console.log('Focus date outside current range, fetching MAX period');
+        fetchStockHistory('max');
+        return;
+      }
+      
+      // Focus date is within range - don't fetch new data, just let the filter work
+      console.log('Focus date within range, using existing data with period filter');
+      return;
     }
     
     // Normal period fetch when no focus date
