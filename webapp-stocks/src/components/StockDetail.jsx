@@ -14,6 +14,8 @@ const StockDetail = ({ trade, onClose }) => {
   const [useEdgarData, setUseEdgarData] = useState(false);
   const [edgarLoading, setEdgarLoading] = useState(false);
   const [edgarTrades, setEdgarTrades] = useState(null);
+  const [edgarProgress, setEdgarProgress] = useState({ current: 0, total: 0, found: 0 });
+  const [edgarStatus, setEdgarStatus] = useState('');
 
   const ticker = trade.Ticker || trade.ticker;
   const isPoliticalTrade = trade.source === 'senate' || trade.source === 'house' || trade.politician;
@@ -69,23 +71,50 @@ const StockDetail = ({ trade, onClose }) => {
 
   const fetchEdgarTrades = async () => {
     setEdgarLoading(true);
+    setEdgarProgress({ current: 0, total: 0, found: 0 });
+    setEdgarStatus('Connecting to EDGAR...');
     
     try {
-      const response = await fetch(`http://localhost:3001/api/edgar-trades/${ticker}?years=5`);
-      const data = await response.json();
+      const eventSource = new EventSource(`http://localhost:3001/api/edgar-trades/${ticker}`);
       
-      if (data.success) {
-        setEdgarTrades(data);
-        setUseEdgarData(true);
-      } else {
-        console.error('Failed to fetch EDGAR data:', data.error);
-        alert(`Failed to load EDGAR data: ${data.error}`);
-      }
+      eventSource.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        
+        if (data.type === 'progress') {
+          setEdgarProgress({
+            current: data.current,
+            total: data.total,
+            found: data.found
+          });
+        } else if (data.type === 'status') {
+          setEdgarStatus(data.message);
+        } else if (data.type === 'complete') {
+          setEdgarTrades(data.data);
+          setUseEdgarData(true);
+          setEdgarLoading(false);
+          setEdgarStatus('Complete!');
+          eventSource.close();
+        } else if (data.type === 'error') {
+          console.error('Failed to fetch EDGAR data:', data.error);
+          alert(`Failed to load EDGAR data: ${data.error}`);
+          setEdgarLoading(false);
+          setEdgarStatus('');
+          eventSource.close();
+        }
+      };
+      
+      eventSource.onerror = (err) => {
+        console.error('EventSource error:', err);
+        alert('Failed to connect to server for EDGAR data');
+        setEdgarLoading(false);
+        setEdgarStatus('');
+        eventSource.close();
+      };
     } catch (err) {
       console.error('Failed to fetch EDGAR trades:', err);
       alert('Failed to connect to server for EDGAR data');
-    } finally {
       setEdgarLoading(false);
+      setEdgarStatus('');
     }
   };
 
@@ -596,26 +625,57 @@ const StockDetail = ({ trade, onClose }) => {
             {/* EDGAR Historical Data Button */}
             <div className="mt-3 flex items-center gap-3">
               {!useEdgarData ? (
-                <button
-                  onClick={fetchEdgarTrades}
-                  disabled={edgarLoading}
-                  className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                    edgarLoading
-                      ? 'bg-slate-700 text-slate-500 cursor-wait'
-                      : 'bg-green-600 text-white hover:bg-green-500'
-                  }`}
-                >
-                  {edgarLoading ? (
-                    <>
-                      <span className="inline-block animate-spin mr-2">⏳</span>
-                      Loading Historical Data (EDGAR)...
-                    </>
-                  ) : (
-                    <>
-                      📈 Load Extended History (EDGAR)
-                    </>
+                <div className="flex flex-col gap-2 w-full">
+                  <button
+                    onClick={fetchEdgarTrades}
+                    disabled={edgarLoading}
+                    className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                      edgarLoading
+                        ? 'bg-slate-700 text-slate-500 cursor-wait'
+                        : 'bg-green-600 text-white hover:bg-green-500'
+                    }`}
+                  >
+                    {edgarLoading ? (
+                      <>
+                        <span className="inline-block animate-spin mr-2">⏳</span>
+                        Loading Historical Data (EDGAR)...
+                      </>
+                    ) : (
+                      <>
+                        📈 Load Extended History (5 Years - EDGAR)
+                      </>
+                    )}
+                  </button>
+                  
+                  {/* Progress Indicator */}
+                  {edgarLoading && (
+                    <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-3">
+                      {edgarStatus && (
+                        <div className="text-slate-400 text-sm mb-2">
+                          {edgarStatus}
+                        </div>
+                      )}
+                      {edgarProgress.total > 0 && (
+                        <div className="space-y-2">
+                          <div className="flex justify-between items-center text-sm">
+                            <span className="text-emerald-400 font-mono font-bold">
+                              {edgarProgress.current}/{edgarProgress.total}
+                            </span>
+                            <span className="text-slate-400">
+                              Found {edgarProgress.found} transactions
+                            </span>
+                          </div>
+                          <div className="w-full bg-slate-700 rounded-full h-2 overflow-hidden">
+                            <div 
+                              className="bg-emerald-500 h-full transition-all duration-300 ease-out"
+                              style={{ width: `${(edgarProgress.current / edgarProgress.total) * 100}%` }}
+                            ></div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   )}
-                </button>
+                </div>
               ) : (
                 <div className="flex items-center gap-2">
                   <span className="px-3 py-1 bg-green-600/20 border border-green-600/50 rounded-lg text-green-400 text-sm font-medium">

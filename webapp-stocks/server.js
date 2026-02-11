@@ -209,12 +209,18 @@ app.get('/api/insider-trades/:ticker', (req, res) => {
   });
 });
 
-// EDGAR historical data endpoint (extended history beyond 2 years)
+// EDGAR historical data endpoint with Server-Sent Events for progress (extended history beyond 2 years)
 app.get('/api/edgar-trades/:ticker', (req, res) => {
   const ticker = req.params.ticker.toUpperCase();
-  const maxYears = req.query.years || 5; // Default to 5 years for faster response
+  const maxYears = 5; // ALWAYS fetch 5 years of data
   
   console.log(`Fetching EDGAR historical trades for ${ticker}, max years: ${maxYears}`);
+  
+  // Set up Server-Sent Events
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.flushHeaders();
   
   const pythonScript = path.join(__dirname, '../scripts/fetch_edgar_trades.py');
   const pythonPath = path.join(__dirname, '../.venv/bin/python');
@@ -228,30 +234,59 @@ app.get('/api/edgar-trades/:ticker', (req, res) => {
   });
   
   pythonProcess.stderr.on('data', (data) => {
-    errorOutput += data.toString();
+    const chunk = data.toString();
+    errorOutput += chunk;
+    
+    // Parse progress messages and send as SSE
+    const lines = chunk.split('\n');
+    for (const line of lines) {
+      // Match progress patterns like "Progress: 10/439, found 0 transactions so far"
+      const progressMatch = line.match(/Progress: (\d+)\/(\d+), found (\d+) transactions/);
+      if (progressMatch) {
+        const [, current, total, found] = progressMatch;
+        res.write(`data: ${JSON.stringify({
+          type: 'progress',
+          current: parseInt(current),
+          total: parseInt(total),
+          found: parseInt(found)
+        })}\n\n`);
+      }
+      
+      // Match other status messages
+      if (line.includes('Fetching Form 4 filings') || line.includes('Processing') || line.includes('Found')) {
+        res.write(`data: ${JSON.stringify({
+          type: 'status',
+          message: line.trim()
+        })}\n\n`);
+      }
+    }
   });
   
   pythonProcess.on('close', (code) => {
     if (code === 0) {
       try {
         const result = JSON.parse(output);
-        res.json(result);
+        res.write(`data: ${JSON.stringify({
+          type: 'complete',
+          data: result
+        })}\n\n`);
       } catch (e) {
         console.error('Failed to parse EDGAR data:', e);
-        res.status(500).json({
-          success: false,
+        res.write(`data: ${JSON.stringify({
+          type: 'error',
           error: 'Failed to parse EDGAR historical data',
           details: e.message
-        });
+        })}\n\n`);
       }
     } else {
       console.error(`EDGAR script exited with code ${code}`);
-      res.status(500).json({
-        success: false,
+      res.write(`data: ${JSON.stringify({
+        type: 'error',
         error: `Failed to fetch EDGAR data (exit code ${code})`,
         details: errorOutput
-      });
+      })}\n\n`);
     }
+    res.end();
   });
 });
 

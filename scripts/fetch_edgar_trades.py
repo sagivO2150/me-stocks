@@ -63,6 +63,7 @@ def ticker_to_cik(ticker):
         'NVDA': '0001045810',
         'GME': '0001326380',
         'TSLA': '0001318605',
+        'F': '0000037996',     # Ford Motor Company
     }
     
     ticker_upper = ticker.upper()
@@ -180,13 +181,23 @@ def fetch_form4_list(cik, max_years=5):
     all_filings = first_page
     print(f'  First page: {len(first_page)} filings', file=sys.stderr)
     
+    # Limit total filings to prevent runaway processing on huge companies like Ford
+    # Even 500 filings is generous (that's ~100 filings per year for 5 years)
+    MAX_TOTAL_FILINGS = 500
+    
+    # If first page is empty or very small, we might be past the date range
+    if len(first_page) < 10:
+        print(f'  Only {len(first_page)} filings found, stopping', file=sys.stderr)
+        return all_filings
+    
     # Fetch multiple pages in parallel to get ALL data within time window
-    max_pages_to_try = 10  # Try up to 10 pages (1000 filings)
+    # But limit to a reasonable number to avoid infinite processing
+    max_pages_to_try = min(5, (MAX_TOTAL_FILINGS // page_size))  # Try up to 5 pages (500 filings max)
     
     # Create page fetch jobs (start=100, 200, 300, etc.)
     page_starts = [page_size * i for i in range(1, max_pages_to_try)]
     
-    print(f'  Fetching up to {max_pages_to_try} pages in parallel...', file=sys.stderr)
+    print(f'  Fetching up to {max_pages_to_try} more pages in parallel (max {MAX_TOTAL_FILINGS} total filings)...', file=sys.stderr)
     
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         # Submit all page fetch jobs
@@ -202,8 +213,18 @@ def fetch_form4_list(cik, max_years=5):
                 if page_filings:
                     all_filings.extend(page_filings)
                     print(f'  Fetched {len(all_filings)} filings so far...', file=sys.stderr)
+                    
+                    # Stop if we've reached the max limit
+                    if len(all_filings) >= MAX_TOTAL_FILINGS:
+                        print(f'  Reached max filing limit ({MAX_TOTAL_FILINGS}), stopping', file=sys.stderr)
+                        break
             except Exception as e:
                 print(f'Error processing page: {e}', file=sys.stderr)
+    
+    # Trim to max limit if we went over
+    if len(all_filings) > MAX_TOTAL_FILINGS:
+        all_filings = all_filings[:MAX_TOTAL_FILINGS]
+        print(f'  Trimmed to {MAX_TOTAL_FILINGS} filings', file=sys.stderr)
     
     print(f'Found {len(all_filings)} Form 4 filings within date range', file=sys.stderr)
     return all_filings
@@ -237,13 +258,13 @@ def parse_form4_xml(filing_url):
         owner_title = 'Unknown'
         
         reporting_owner = root.find('.//reportingOwner')
-        if reporting_owner:
+        if reporting_owner is not None:
             name_elem = reporting_owner.find('.//rptOwnerName')
             if name_elem is not None:
                 owner_name = name_elem.text if name_elem.text else 'Unknown'
             
             relationship = reporting_owner.find('.//reportingOwnerRelationship')
-            if relationship:
+            if relationship is not None:
                 officer_title = relationship.find('officerTitle')
                 if officer_title is not None and officer_title.text:
                     owner_title = officer_title.text

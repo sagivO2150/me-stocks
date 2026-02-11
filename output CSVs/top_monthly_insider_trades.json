@@ -1,13 +1,13 @@
 {
-  "updated_at": "2026-02-04T22:53:39.668219",
-  "total_tickers": 93,
+  "updated_at": "2026-02-11T21:29:02.975005",
+  "total_tickers": 114,
   "total_trades": 200,
   "data": [
     {
       "ticker": "WRB",
       "company_name": "Berkley W R Corp",
-      "total_value": 364220292.0,
-      "total_value_formatted": "$364.2M",
+      "total_value": 308450309.0,
+      "total_value_formatted": "$308.5M",
       "total_purchases": 8,
       "unique_insiders": 1,
       "role_counts": {
@@ -29,14 +29,6 @@
           "trade_date": "2026-01-12",
           "value": "+$55,622,807",
           "qty": "+811,041"
-        },
-        {
-          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-05",
-          "value": "+$47,416,247",
-          "qty": "+681,218"
         },
         {
           "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
@@ -74,71 +66,17 @@
           "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
           "title": "10%",
           "role": "10% Owner",
-          "trade_date": "2026-01-08",
-          "value": "+$32,640,884",
-          "qty": "+470,000"
-        }
-      ]
-    },
-    {
-      "ticker": "AKTS",
-      "company_name": "Aktis Oncology, Inc.",
-      "total_value": 114311628.0,
-      "total_value_formatted": "$114.3M",
-      "total_purchases": 6,
-      "unique_insiders": 6,
-      "role_counts": {
-        "Other": 1,
-        "10% Owner": 5
-      },
-      "trades": [
-        {
-          "insider_name": "Ecor1 Capital, LLC",
-          "title": "Dir",
-          "role": "Other",
-          "trade_date": "2026-01-12",
-          "value": "+$39,999,996",
-          "qty": "+2,222,222"
+          "trade_date": "2026-02-02",
+          "value": "+$21,451,897",
+          "qty": "+315,221"
         },
         {
-          "insider_name": "Mpm Bioventures 2018, L.P.",
+          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
           "title": "10%",
           "role": "10% Owner",
-          "trade_date": "2026-01-12",
-          "value": "+$20,029,986",
-          "qty": "+1,112,777"
-        },
-        {
-          "insider_name": "Gadicke Ansbert",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-12",
-          "value": "+$20,029,986",
-          "qty": "+1,112,777"
-        },
-        {
-          "insider_name": "Kim Helen Susan",
-          "title": "Dir, 10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-12",
-          "value": "+$15,030,000",
-          "qty": "+835,000"
-        },
-        {
-          "insider_name": "Vida Ventures Ii, LLC",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-12",
-          "value": "+$15,030,000",
-          "qty": "+835,000"
-        },
-        {
-          "insider_name": "Foley Todd",
-          "title": "Dir, 10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-12",
-          "value": "+$4,191,660",
-          "qty": "+232,870"
+          "trade_date": "2026-02-05",
+          "value": "+$2,835,251",
+          "qty": "+40,000"
         }
       ]
     },
@@ -201,83 +139,6 @@
       ]
     },
     {
-      "ticker": "NAVN",
-      "company_name": "Navan, Inc.",
-      "total_value": 67112120.0,
-      "total_value_formatted": "$67.1M",
-      "total_purchases": 8,
-      "unique_insiders": 4,
-      "role_counts": {
-        "10% Owner": 8
-      },
-      "trades": [
-        {
-          "insider_name": "Andreessen Horowitz Lsv Fund I, L.P.",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-02",
-          "value": "+$15,938,867",
-          "qty": "+976,975"
-        },
-        {
-          "insider_name": "Andreessen Horowitz Lsv Fund Iii, L.P.",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-02",
-          "value": "+$15,938,867",
-          "qty": "+976,975"
-        },
-        {
-          "insider_name": "Andreessen Horowitz Fund V, L.P.",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-02",
-          "value": "+$15,938,867",
-          "qty": "+976,975"
-        },
-        {
-          "insider_name": "Horowitz Benjamin A",
-          "title": "Dir, 10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-02",
-          "value": "+$15,938,867",
-          "qty": "+976,975"
-        },
-        {
-          "insider_name": "Andreessen Horowitz Lsv Fund I, L.P.",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-07",
-          "value": "+$839,163",
-          "qty": "+46,337"
-        },
-        {
-          "insider_name": "Andreessen Horowitz Lsv Fund Iii, L.P.",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-07",
-          "value": "+$839,163",
-          "qty": "+46,337"
-        },
-        {
-          "insider_name": "Andreessen Horowitz Fund V, L.P.",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-07",
-          "value": "+$839,163",
-          "qty": "+46,337"
-        },
-        {
-          "insider_name": "Horowitz Benjamin A",
-          "title": "Dir, 10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-07",
-          "value": "+$839,163",
-          "qty": "+46,337"
-        }
-      ]
-    },
-    {
       "ticker": "UA",
       "company_name": "Under Armour, Inc.",
       "total_value": 66130240.0,
@@ -303,6 +164,196 @@
           "trade_date": "2026-01-27",
           "value": "+$16,445,714",
           "qty": "+2,641,105"
+        }
+      ]
+    },
+    {
+      "ticker": "MANE",
+      "company_name": "Veradermics, Inc",
+      "total_value": 54092449.0,
+      "total_value_formatted": "$54.1M",
+      "total_purchases": 5,
+      "unique_insiders": 5,
+      "role_counts": {
+        "10% Owner": 3,
+        "Other": 2
+      },
+      "trades": [
+        {
+          "insider_name": "Longitude Capital Partners V, LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-05",
+          "value": "+$18,275,000",
+          "qty": "+1,075,000"
+        },
+        {
+          "insider_name": "Enright Patrick G",
+          "title": "Dir, 10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-05",
+          "value": "+$18,275,000",
+          "qty": "+1,075,000"
+        },
+        {
+          "insider_name": "Suvretta Capital Management, LLC",
+          "title": "Dir, 10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-04",
+          "value": "+$10,542,478",
+          "qty": "+282,674"
+        },
+        {
+          "insider_name": "Childs John W",
+          "title": "Dir",
+          "role": "Other",
+          "trade_date": "2026-02-05",
+          "value": "+$4,999,989",
+          "qty": "+294,117"
+        },
+        {
+          "insider_name": "Coric Vlad",
+          "title": "Dir",
+          "role": "Other",
+          "trade_date": "2026-02-05",
+          "value": "+$1,999,982",
+          "qty": "+117,646"
+        }
+      ]
+    },
+    {
+      "ticker": "EIKN",
+      "company_name": "Eikon Therapeutics, Inc.",
+      "total_value": 50119614.0,
+      "total_value_formatted": "$50.1M",
+      "total_purchases": 4,
+      "unique_insiders": 4,
+      "role_counts": {
+        "10% Owner": 3,
+        "Other": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Column Group IV Gp, LP",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-06",
+          "value": "+$38,119,680",
+          "qty": "+2,117,760"
+        },
+        {
+          "insider_name": "Lux Venture Partners V, LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-04",
+          "value": "+$4,999,968",
+          "qty": "+277,776"
+        },
+        {
+          "insider_name": "Wolfe Josh",
+          "title": "Dir, 10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-04",
+          "value": "+$4,999,968",
+          "qty": "+277,776"
+        },
+        {
+          "insider_name": "Frazier Kenneth C",
+          "title": "Dir",
+          "role": "Other",
+          "trade_date": "2026-02-04",
+          "value": "+$1,999,998",
+          "qty": "+111,111"
+        }
+      ]
+    },
+    {
+      "ticker": "NFRX",
+      "company_name": "2023 Etf Series Trust",
+      "total_value": 49999928.0,
+      "total_value_formatted": "$50.0M",
+      "total_purchases": 5,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 5
+      },
+      "trades": [
+        {
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-05",
+          "value": "+$9,999,998",
+          "qty": "+390,320"
+        },
+        {
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-10",
+          "value": "+$9,999,989",
+          "qty": "+378,931"
+        },
+        {
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-02",
+          "value": "+$9,999,986",
+          "qty": "+399,520"
+        },
+        {
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$9,999,978",
+          "qty": "+383,729"
+        },
+        {
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-06",
+          "value": "+$9,999,977",
+          "qty": "+386,996"
+        }
+      ]
+    },
+    {
+      "ticker": "AKTS",
+      "company_name": "Aktis Oncology, Inc.",
+      "total_value": 44251632.0,
+      "total_value_formatted": "$44.3M",
+      "total_purchases": 3,
+      "unique_insiders": 3,
+      "role_counts": {
+        "10% Owner": 3
+      },
+      "trades": [
+        {
+          "insider_name": "Gadicke Ansbert",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-12",
+          "value": "+$20,029,986",
+          "qty": "+1,112,777"
+        },
+        {
+          "insider_name": "Mpm Bioventures 2018, L.P.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-12",
+          "value": "+$20,029,986",
+          "qty": "+1,112,777"
+        },
+        {
+          "insider_name": "Foley Todd",
+          "title": "Dir, 10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-12",
+          "value": "+$4,191,660",
+          "qty": "+232,870"
         }
       ]
     },
@@ -336,14 +387,69 @@
       ]
     },
     {
+      "ticker": "HCIC",
+      "company_name": "Hennessy Capital Investment Corp. VIII",
+      "total_value": 33550000.0,
+      "total_value_formatted": "$33.5M",
+      "total_purchases": 5,
+      "unique_insiders": 3,
+      "role_counts": {
+        "COB": 2,
+        "Pres": 2,
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Hennessy Daniel J",
+          "title": "COB, CEO, 10%",
+          "role": "COB",
+          "trade_date": "2026-02-06",
+          "value": "+$6,710,000",
+          "qty": "+671,000"
+        },
+        {
+          "insider_name": "Hennessy Thomas D",
+          "title": "Pres, 10%",
+          "role": "Pres",
+          "trade_date": "2026-02-06",
+          "value": "+$6,710,000",
+          "qty": "+671,000"
+        },
+        {
+          "insider_name": "Hc VIII Sponsor LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-06",
+          "value": "+$6,710,000",
+          "qty": "+671,000"
+        },
+        {
+          "insider_name": "Hennessy Daniel J",
+          "title": "COB, CEO, 10%",
+          "role": "COB",
+          "trade_date": "2026-02-06",
+          "value": "+$6,710,000",
+          "qty": "+671,000"
+        },
+        {
+          "insider_name": "Hennessy Thomas D",
+          "title": "Pres, 10%",
+          "role": "Pres",
+          "trade_date": "2026-02-06",
+          "value": "+$6,710,000",
+          "qty": "+671,000"
+        }
+      ]
+    },
+    {
       "ticker": "AVO",
       "company_name": "Mission Produce, Inc.",
-      "total_value": 31940451.0,
-      "total_value_formatted": "$31.9M",
-      "total_purchases": 5,
+      "total_value": 31170074.0,
+      "total_value_formatted": "$31.2M",
+      "total_purchases": 4,
       "unique_insiders": 1,
       "role_counts": {
-        "10% Owner": 5
+        "10% Owner": 4
       },
       "trades": [
         {
@@ -377,72 +483,60 @@
           "trade_date": "2026-01-21",
           "value": "+$4,055,678",
           "qty": "+309,020"
-        },
-        {
-          "insider_name": "Globalharvest Holdings Venture Ltd",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-05",
-          "value": "+$770,377",
-          "qty": "+66,569"
         }
       ]
     },
     {
-      "ticker": "ALMS",
-      "company_name": "Alumis Inc.",
-      "total_value": 30999959.0,
-      "total_value_formatted": "$31.0M",
-      "total_purchases": 4,
-      "unique_insiders": 4,
+      "ticker": "AVR",
+      "company_name": "Anteris Technologies Global Corp.",
+      "total_value": 28750000.0,
+      "total_value_formatted": "$28.8M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
       "role_counts": {
-        "Other": 1,
-        "10% Owner": 3
+        "10% Owner": 1
       },
       "trades": [
         {
-          "insider_name": "Akkaraju Srinivas",
-          "title": "Dir",
-          "role": "Other",
-          "trade_date": "2026-01-09",
-          "value": "+$9,999,995",
-          "qty": "+588,235"
-        },
-        {
-          "insider_name": "Tananbaum James B.",
-          "title": "Dir, 10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-08",
-          "value": "+$6,999,988",
-          "qty": "+411,764"
-        },
-        {
-          "insider_name": "Foresite Capital Management VI LLC",
+          "insider_name": "L1 Capital Pty Ltd",
           "title": "10%",
           "role": "10% Owner",
-          "trade_date": "2026-01-08",
-          "value": "+$6,999,988",
-          "qty": "+411,764"
-        },
+          "trade_date": "2026-01-22",
+          "value": "+$28,750,000",
+          "qty": "+5,000,000"
+        }
+      ]
+    },
+    {
+      "ticker": "YSS",
+      "company_name": "Yellowstone Midco Holdings Ii, LLC",
+      "total_value": 25585000.0,
+      "total_value_formatted": "$25.6M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 1
+      },
+      "trades": [
         {
-          "insider_name": "Foresite Labs, LLC",
+          "insider_name": "Blackrock Portfolio Management LLC",
           "title": "10%",
           "role": "10% Owner",
-          "trade_date": "2026-01-08",
-          "value": "+$6,999,988",
-          "qty": "+411,764"
+          "trade_date": "2026-01-30",
+          "value": "+$25,585,000",
+          "qty": "+752,500"
         }
       ]
     },
     {
       "ticker": "HYMC",
       "company_name": "Hycroft Mining Holding Corp",
-      "total_value": 24120250.0,
-      "total_value_formatted": "$24.1M",
-      "total_purchases": 4,
+      "total_value": 20836000.0,
+      "total_value_formatted": "$20.8M",
+      "total_purchases": 3,
       "unique_insiders": 1,
       "role_counts": {
-        "10% Owner": 4
+        "10% Owner": 3
       },
       "trades": [
         {
@@ -468,14 +562,67 @@
           "trade_date": "2026-01-26",
           "value": "+$4,996,000",
           "qty": "+100,000"
-        },
+        }
+      ]
+    },
+    {
+      "ticker": "ASA",
+      "company_name": "Asa Gold & Precious Metals Ltd",
+      "total_value": 19168606.0,
+      "total_value_formatted": "$19.2M",
+      "total_purchases": 6,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 6
+      },
+      "trades": [
         {
-          "insider_name": "Sprott Eric",
+          "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "role": "10% Owner",
-          "trade_date": "2026-01-08",
-          "value": "+$3,284,250",
-          "qty": "+125,000"
+          "trade_date": "2026-02-09",
+          "value": "+$6,237,962",
+          "qty": "+88,140"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-27",
+          "value": "+$4,578,517",
+          "qty": "+60,895"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-29",
+          "value": "+$2,696,801",
+          "qty": "+38,783"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-03",
+          "value": "+$2,325,007",
+          "qty": "+35,121"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-05",
+          "value": "+$2,032,967",
+          "qty": "+31,219"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-13",
+          "value": "+$1,297,352",
+          "qty": "+20,162"
         }
       ]
     },
@@ -530,6 +677,27 @@
       ]
     },
     {
+      "ticker": "SONO",
+      "company_name": "Sonos Inc",
+      "total_value": 11556296.0,
+      "total_value_formatted": "$11.6M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Coliseum Capital Management, LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-04",
+          "value": "+$11,556,296",
+          "qty": "+733,073"
+        }
+      ]
+    },
+    {
       "ticker": "MLAA",
       "company_name": "Mountain Lake Acquisition Corp. II",
       "total_value": 10200000.0,
@@ -559,6 +727,48 @@
       ]
     },
     {
+      "ticker": "ALMS",
+      "company_name": "Alumis Inc.",
+      "total_value": 9999995.0,
+      "total_value_formatted": "$10.0M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "Other": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Akkaraju Srinivas",
+          "title": "Dir",
+          "role": "Other",
+          "trade_date": "2026-01-09",
+          "value": "+$9,999,995",
+          "qty": "+588,235"
+        }
+      ]
+    },
+    {
+      "ticker": "TVA",
+      "company_name": "Texas Ventures Acquisition III Corp",
+      "total_value": 9958578.0,
+      "total_value_formatted": "$10.0M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Angelo Mark",
+          "title": "Dir, 10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-04",
+          "value": "+$9,958,578",
+          "qty": "+925,000"
+        }
+      ]
+    },
+    {
       "ticker": "LIFE",
       "company_name": "Ethos Technologies Inc.",
       "total_value": 9899950.0,
@@ -566,18 +776,10 @@
       "total_purchases": 2,
       "unique_insiders": 2,
       "role_counts": {
-        "10% Owner": 1,
-        "Other": 1
+        "Other": 1,
+        "10% Owner": 1
       },
       "trades": [
-        {
-          "insider_name": "Botha Roelof",
-          "title": "Dir, 10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-29",
-          "value": "+$4,949,975",
-          "qty": "+260,525"
-        },
         {
           "insider_name": "Wheeler William J",
           "title": "Dir",
@@ -585,88 +787,14 @@
           "trade_date": "2026-01-30",
           "value": "+$4,949,975",
           "qty": "+260,525"
-        }
-      ]
-    },
-    {
-      "ticker": "ASA",
-      "company_name": "Asa Gold & Precious Metals Ltd",
-      "total_value": 9766764.0,
-      "total_value_formatted": "$9.8M",
-      "total_purchases": 5,
-      "unique_insiders": 1,
-      "role_counts": {
-        "10% Owner": 5
-      },
-      "trades": [
-        {
-          "insider_name": "Saba Capital Management, L.P.",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-27",
-          "value": "+$4,578,517",
-          "qty": "+60,895"
         },
         {
-          "insider_name": "Saba Capital Management, L.P.",
-          "title": "10%",
+          "insider_name": "Botha Roelof",
+          "title": "Dir, 10%",
           "role": "10% Owner",
           "trade_date": "2026-01-29",
-          "value": "+$2,696,801",
-          "qty": "+38,783"
-        },
-        {
-          "insider_name": "Saba Capital Management, L.P.",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-13",
-          "value": "+$1,297,352",
-          "qty": "+20,162"
-        },
-        {
-          "insider_name": "Saba Capital Management, L.P.",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-12",
-          "value": "+$610,319",
-          "qty": "+9,508"
-        },
-        {
-          "insider_name": "Saba Capital Management, L.P.",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-15",
-          "value": "+$583,775",
-          "qty": "+9,195"
-        }
-      ]
-    },
-    {
-      "ticker": "STAA",
-      "company_name": "Staar Surgical Co",
-      "total_value": 9423802.0,
-      "total_value_formatted": "$9.4M",
-      "total_purchases": 2,
-      "unique_insiders": 1,
-      "role_counts": {
-        "10% Owner": 2
-      },
-      "trades": [
-        {
-          "insider_name": "Broadwood Partners, L.P.",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-06",
-          "value": "+$8,817,664",
-          "qty": "+406,653"
-        },
-        {
-          "insider_name": "Broadwood Partners, L.P.",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-09",
-          "value": "+$606,138",
-          "qty": "+27,485"
+          "value": "+$4,949,975",
+          "qty": "+260,525"
         }
       ]
     },
@@ -688,6 +816,69 @@
           "trade_date": "2026-01-23",
           "value": "+$8,999,984",
           "qty": "+131,425"
+        }
+      ]
+    },
+    {
+      "ticker": "PMN",
+      "company_name": "Promis Neurosciences Inc.",
+      "total_value": 8499988.0,
+      "total_value_formatted": "$8.5M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Abg Management Ltd.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-03",
+          "value": "+$8,499,988",
+          "qty": "+700,741"
+        }
+      ]
+    },
+    {
+      "ticker": "FEAM",
+      "company_name": "5E Advanced Materials, Inc.",
+      "total_value": 8000000.0,
+      "total_value_formatted": "$8.0M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Bep Special Situations IV LLC",
+          "title": "Dir, 10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-02",
+          "value": "+$8,000,000",
+          "qty": "+4,000,000"
+        }
+      ]
+    },
+    {
+      "ticker": "LEE",
+      "company_name": "Lee Enterprises, Inc",
+      "total_value": 7966875.0,
+      "total_value_formatted": "$8.0M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Quint Digital Ltd",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-05",
+          "value": "+$7,966,875",
+          "qty": "+2,451,346"
         }
       ]
     },
@@ -742,27 +933,6 @@
       ]
     },
     {
-      "ticker": "ZNTL",
-      "company_name": "Zentalis Pharmaceuticals, Inc.",
-      "total_value": 7751968.0,
-      "total_value_formatted": "$7.8M",
-      "total_purchases": 1,
-      "unique_insiders": 1,
-      "role_counts": {
-        "10% Owner": 1
-      },
-      "trades": [
-        {
-          "insider_name": "Walters Group",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2025-12-31",
-          "value": "+$7,751,968",
-          "qty": "+6,459,973"
-        }
-      ]
-    },
-    {
       "ticker": "YYAI",
       "company_name": "Airwa Inc.",
       "total_value": 7273763.0,
@@ -792,10 +962,107 @@
       ]
     },
     {
-      "ticker": "PAR",
-      "company_name": "Par Technology Corp",
-      "total_value": 7103702.0,
-      "total_value_formatted": "$7.1M",
+      "ticker": "EMPD",
+      "company_name": "Empery Digital Inc.",
+      "total_value": 5348207.0,
+      "total_value_formatted": "$5.3M",
+      "total_purchases": 2,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 2
+      },
+      "trades": [
+        {
+          "insider_name": "Atg Capital Opportunities Fund LP",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-02",
+          "value": "+$3,232,479",
+          "qty": "+691,145"
+        },
+        {
+          "insider_name": "Atg Capital Opportunities Fund LP",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-28",
+          "value": "+$2,115,728",
+          "qty": "+428,626"
+        }
+      ]
+    },
+    {
+      "ticker": "SGP",
+      "company_name": "Spyglass Pharma, Inc.",
+      "total_value": 5280000.0,
+      "total_value_formatted": "$5.3M",
+      "total_purchases": 2,
+      "unique_insiders": 2,
+      "role_counts": {
+        "Other": 1,
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Nielsen Kirk G.",
+          "title": "Dir",
+          "role": "Other",
+          "trade_date": "2026-02-09",
+          "value": "+$2,640,000",
+          "qty": "+165,000"
+        },
+        {
+          "insider_name": "Vensana Capital I Gp, LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$2,640,000",
+          "qty": "+165,000"
+        }
+      ]
+    },
+    {
+      "ticker": "ABT",
+      "company_name": "Abbott Laboratories",
+      "total_value": 5115265.0,
+      "total_value_formatted": "$5.1M",
+      "total_purchases": 3,
+      "unique_insiders": 2,
+      "role_counts": {
+        "COB": 2,
+        "Other": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Ford Robert B",
+          "title": "COB, CEO",
+          "role": "COB",
+          "trade_date": "2026-01-23",
+          "value": "+$2,013,967",
+          "qty": "+18,800"
+        },
+        {
+          "insider_name": "Ford Robert B",
+          "title": "COB, CEO",
+          "role": "COB",
+          "trade_date": "2026-01-23",
+          "value": "+$2,013,967",
+          "qty": "+18,800"
+        },
+        {
+          "insider_name": "Starks Daniel J",
+          "title": "Dir",
+          "role": "Other",
+          "trade_date": "2026-02-04",
+          "value": "+$1,087,331",
+          "qty": "+10,000"
+        }
+      ]
+    },
+    {
+      "ticker": "ALXO",
+      "company_name": "Alx Oncology Holdings Inc",
+      "total_value": 4999999.0,
+      "total_value_formatted": "$5.0M",
       "total_purchases": 1,
       "unique_insiders": 1,
       "role_counts": {
@@ -803,24 +1070,74 @@
       },
       "trades": [
         {
-          "insider_name": "Voss Capital, LP",
-          "title": "10%",
+          "insider_name": "Goodman Corey S",
+          "title": "Dir, 10%",
           "role": "10% Owner",
-          "trade_date": "2025-12-30",
-          "value": "+$7,103,702",
-          "qty": "+196,035"
+          "trade_date": "2026-02-02",
+          "value": "+$4,999,999",
+          "qty": "+3,184,713"
+        }
+      ]
+    },
+    {
+      "ticker": "CAQ",
+      "company_name": "Cambridge Acquisition Corp.",
+      "total_value": 4955000.0,
+      "total_value_formatted": "$5.0M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Cam-Phung Michael Tam",
+          "title": "Dir, 10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$4,955,000",
+          "qty": "+495,500"
+        }
+      ]
+    },
+    {
+      "ticker": "LW",
+      "company_name": "Lamb Weston Holdings, Inc.",
+      "total_value": 4864660.0,
+      "total_value_formatted": "$4.9M",
+      "total_purchases": 2,
+      "unique_insiders": 1,
+      "role_counts": {
+        "Other": 2
+      },
+      "trades": [
+        {
+          "insider_name": "Craps Jan Eli B",
+          "title": "Exec Chair",
+          "role": "Other",
+          "trade_date": "2026-02-06",
+          "value": "+$2,432,330",
+          "qty": "+50,000"
+        },
+        {
+          "insider_name": "Craps Jan Eli B",
+          "title": "Exec Chair",
+          "role": "Other",
+          "trade_date": "2026-02-06",
+          "value": "+$2,432,330",
+          "qty": "+50,000"
         }
       ]
     },
     {
       "ticker": "MIGI",
       "company_name": "Mawson Infrastructure Group Inc.",
-      "total_value": 6790993.0,
-      "total_value_formatted": "$6.8M",
-      "total_purchases": 4,
+      "total_value": 4388681.0,
+      "total_value_formatted": "$4.4M",
+      "total_purchases": 1,
       "unique_insiders": 1,
       "role_counts": {
-        "10% Owner": 4
+        "10% Owner": 1
       },
       "trades": [
         {
@@ -830,97 +1147,93 @@
           "trade_date": "2025-11-26",
           "value": "+$4,388,681",
           "qty": "+801,279"
-        },
+        }
+      ]
+    },
+    {
+      "ticker": "NFJ",
+      "company_name": "Virtus Dividend, Interest & Premium Strategy Fund",
+      "total_value": 4292142.0,
+      "total_value_formatted": "$4.3M",
+      "total_purchases": 3,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 3
+      },
+      "trades": [
         {
-          "insider_name": "Endeavor Blockchain, LLC",
+          "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "role": "10% Owner",
-          "trade_date": "2025-12-26",
-          "value": "+$917,550",
-          "qty": "+205,000"
+          "trade_date": "2026-02-03",
+          "value": "+$1,829,465",
+          "qty": "+135,407"
         },
         {
-          "insider_name": "Endeavor Blockchain, LLC",
+          "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "role": "10% Owner",
-          "trade_date": "2026-01-09",
-          "value": "+$829,562",
-          "qty": "+182,018"
+          "trade_date": "2026-01-27",
+          "value": "+$1,271,369",
+          "qty": "+94,290"
         },
         {
-          "insider_name": "Endeavor Blockchain, LLC",
+          "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "role": "10% Owner",
-          "trade_date": "2026-01-16",
-          "value": "+$655,200",
-          "qty": "+140,000"
+          "trade_date": "2026-01-29",
+          "value": "+$1,191,308",
+          "qty": "+88,639"
+        }
+      ]
+    },
+    {
+      "ticker": "RUM",
+      "company_name": "Rumble Inc.",
+      "total_value": 4220298.0,
+      "total_value_formatted": "$4.2M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Tether Global Investments Fund, S.I.C.A.F., S.A.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-03",
+          "value": "+$4,220,298",
+          "qty": "+777,012"
         }
       ]
     },
     {
       "ticker": "IP",
       "company_name": "International Paper Co /New/",
-      "total_value": 5007180.0,
-      "total_value_formatted": "$5.0M",
-      "total_purchases": 3,
-      "unique_insiders": 2,
-      "role_counts": {
-        "CEO": 2,
-        "Other": 1
-      },
-      "trades": [
-        {
-          "insider_name": "Silvernail Andrew K",
-          "title": "CEO",
-          "role": "CEO",
-          "trade_date": "2026-01-30",
-          "value": "+$1,998,965",
-          "qty": "+50,000"
-        },
-        {
-          "insider_name": "Silvernail Andrew K",
-          "title": "CEO",
-          "role": "CEO",
-          "trade_date": "2026-01-30",
-          "value": "+$1,998,965",
-          "qty": "+50,000"
-        },
-        {
-          "insider_name": "Connor Christopher M",
-          "title": "Dir",
-          "role": "Other",
-          "trade_date": "2026-01-30",
-          "value": "+$1,009,250",
-          "qty": "+25,000"
-        }
-      ]
-    },
-    {
-      "ticker": "ABT",
-      "company_name": "Abbott Laboratories",
-      "total_value": 4027934.0,
+      "total_value": 3997930.0,
       "total_value_formatted": "$4.0M",
       "total_purchases": 2,
       "unique_insiders": 1,
       "role_counts": {
-        "COB": 2
+        "CEO": 2
       },
       "trades": [
         {
-          "insider_name": "Ford Robert B",
-          "title": "COB, CEO",
-          "role": "COB",
-          "trade_date": "2026-01-23",
-          "value": "+$2,013,967",
-          "qty": "+18,800"
+          "insider_name": "Silvernail Andrew K",
+          "title": "CEO",
+          "role": "CEO",
+          "trade_date": "2026-01-30",
+          "value": "+$1,998,965",
+          "qty": "+50,000"
         },
         {
-          "insider_name": "Ford Robert B",
-          "title": "COB, CEO",
-          "role": "COB",
-          "trade_date": "2026-01-23",
-          "value": "+$2,013,967",
-          "qty": "+18,800"
+          "insider_name": "Silvernail Andrew K",
+          "title": "CEO",
+          "role": "CEO",
+          "trade_date": "2026-01-30",
+          "value": "+$1,998,965",
+          "qty": "+50,000"
         }
       ]
     },
@@ -954,77 +1267,56 @@
       ]
     },
     {
-      "ticker": "ADC",
-      "company_name": "Agree Realty Corp",
-      "total_value": 3427060.0,
+      "ticker": "GEF",
+      "company_name": "Greif, Inc",
+      "total_value": 3439938.0,
       "total_value_formatted": "$3.4M",
-      "total_purchases": 3,
+      "total_purchases": 4,
       "unique_insiders": 2,
       "role_counts": {
-        "COB": 2,
-        "CFO": 1
+        "CFO": 2,
+        "VP": 2
       },
       "trades": [
         {
-          "insider_name": "Agree Richard",
-          "title": "Exec COB",
-          "role": "COB",
-          "trade_date": "2026-01-09",
-          "value": "+$1,696,080",
-          "qty": "+24,000"
-        },
-        {
-          "insider_name": "Coughenour Peter",
-          "title": "CFO",
+          "insider_name": "Hilsheimer Lawrence A.",
+          "title": "EVP, CFO",
           "role": "CFO",
-          "trade_date": "2026-01-09",
-          "value": "+$34,900",
-          "qty": "+500"
+          "trade_date": "2026-02-03",
+          "value": "+$1,626,891",
+          "qty": "+18,322"
         },
         {
-          "insider_name": "Agree Richard",
-          "title": "Exec COB",
-          "role": "COB",
-          "trade_date": "2026-01-09",
-          "value": "+$1,696,080",
-          "qty": "+24,000"
+          "insider_name": "Sathyanarayanan Bala",
+          "title": "EVP, Chief HR Off",
+          "role": "VP",
+          "trade_date": "2026-02-05",
+          "value": "+$159,542",
+          "qty": "+1,811"
+        },
+        {
+          "insider_name": "Sathyanarayanan Bala",
+          "title": "EVP, Chief HR Off",
+          "role": "VP",
+          "trade_date": "2026-02-03",
+          "value": "+$26,614",
+          "qty": "+300"
+        },
+        {
+          "insider_name": "Hilsheimer Lawrence A.",
+          "title": "EVP, CFO",
+          "role": "CFO",
+          "trade_date": "2026-02-03",
+          "value": "+$1,626,891",
+          "qty": "+18,322"
         }
       ]
     },
     {
-      "ticker": "ZBIO",
-      "company_name": "Zenas Biopharma, Inc.",
-      "total_value": 3278000.0,
-      "total_value_formatted": "$3.3M",
-      "total_purchases": 2,
-      "unique_insiders": 1,
-      "role_counts": {
-        "CEO": 2
-      },
-      "trades": [
-        {
-          "insider_name": "Moulder Leon O Jr",
-          "title": "CEO",
-          "role": "CEO",
-          "trade_date": "2026-01-07",
-          "value": "+$1,639,000",
-          "qty": "+100,000"
-        },
-        {
-          "insider_name": "Moulder Leon O Jr",
-          "title": "CEO",
-          "role": "CEO",
-          "trade_date": "2026-01-07",
-          "value": "+$1,639,000",
-          "qty": "+100,000"
-        }
-      ]
-    },
-    {
-      "ticker": "FLYW",
-      "company_name": "Flywire Corp",
-      "total_value": 3203278.0,
-      "total_value_formatted": "$3.2M",
+      "ticker": "MUZE",
+      "company_name": "Muzero Acquisition Corp",
+      "total_value": 3359380.0,
+      "total_value_formatted": "$3.4M",
       "total_purchases": 1,
       "unique_insiders": 1,
       "role_counts": {
@@ -1032,12 +1324,12 @@
       },
       "trades": [
         {
-          "insider_name": "Voss Capital, LP",
+          "insider_name": "Muzero Acquisition Sponsors LLC",
           "title": "10%",
           "role": "10% Owner",
-          "trade_date": "2025-12-30",
-          "value": "+$3,203,278",
-          "qty": "+226,112"
+          "trade_date": "2026-02-02",
+          "value": "+$3,359,380",
+          "qty": "+335,938"
         }
       ]
     },
@@ -1072,94 +1364,10 @@
       ]
     },
     {
-      "ticker": "TCGSX",
-      "company_name": "Tcg Strategic Income Fund",
+      "ticker": "CLBRU",
+      "company_name": "Colombier Acquisition Corp. III",
       "total_value": 3000000.0,
       "total_value_formatted": "$3.0M",
-      "total_purchases": 4,
-      "unique_insiders": 2,
-      "role_counts": {
-        "Pres": 1,
-        "10% Owner": 3
-      },
-      "trades": [
-        {
-          "insider_name": "McNitt Peter Boyd Jr.",
-          "title": "PEO, Pres",
-          "role": "Pres",
-          "trade_date": "2026-01-16",
-          "value": "+$50,000",
-          "qty": "+4,931"
-        },
-        {
-          "insider_name": "Tannenbaum Leonard M",
-          "title": "Dir, 10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-21",
-          "value": "+$1,000,000",
-          "qty": "+98,912"
-        },
-        {
-          "insider_name": "Tannenbaum Leonard M",
-          "title": "Dir, 10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-16",
-          "value": "+$1,000,000",
-          "qty": "+98,619"
-        },
-        {
-          "insider_name": "Tannenbaum Leonard M",
-          "title": "Dir, 10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-09",
-          "value": "+$950,000",
-          "qty": "+93,688"
-        }
-      ]
-    },
-    {
-      "ticker": "ALLY",
-      "company_name": "Ally Financial Inc.",
-      "total_value": 2483041.0,
-      "total_value_formatted": "$2.5M",
-      "total_purchases": 3,
-      "unique_insiders": 2,
-      "role_counts": {
-        "CEO": 2,
-        "CFO": 1
-      },
-      "trades": [
-        {
-          "insider_name": "Rhodes Michael George",
-          "title": "CEO",
-          "role": "CEO",
-          "trade_date": "2026-01-23",
-          "value": "+$991,867",
-          "qty": "+23,800"
-        },
-        {
-          "insider_name": "Hutchinson Russell E.",
-          "title": "CFO",
-          "role": "CFO",
-          "trade_date": "2026-01-27",
-          "value": "+$499,307",
-          "qty": "+11,566"
-        },
-        {
-          "insider_name": "Rhodes Michael George",
-          "title": "CEO",
-          "role": "CEO",
-          "trade_date": "2026-01-23",
-          "value": "+$991,867",
-          "qty": "+23,800"
-        }
-      ]
-    },
-    {
-      "ticker": "NFJ",
-      "company_name": "Virtus Dividend, Interest & Premium Strategy Fund",
-      "total_value": 2462677.0,
-      "total_value_formatted": "$2.5M",
       "total_purchases": 2,
       "unique_insiders": 1,
       "role_counts": {
@@ -1167,20 +1375,70 @@
       },
       "trades": [
         {
-          "insider_name": "Saba Capital Management, L.P.",
-          "title": "10%",
+          "insider_name": "Malik Omeed",
+          "title": "See Remarks, 10%",
           "role": "10% Owner",
-          "trade_date": "2026-01-27",
-          "value": "+$1,271,369",
-          "qty": "+94,290"
+          "trade_date": "2026-02-05",
+          "value": "+$1,500,000",
+          "qty": "+150,000"
         },
         {
-          "insider_name": "Saba Capital Management, L.P.",
+          "insider_name": "Malik Omeed",
+          "title": "See Remarks, 10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-05",
+          "value": "+$1,500,000",
+          "qty": "+150,000"
+        }
+      ]
+    },
+    {
+      "ticker": "CEPS",
+      "company_name": "Cantor Equity Partners Vi, Inc.",
+      "total_value": 3000000.0,
+      "total_value_formatted": "$3.0M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Cantor Ep Holdings Vi, LLC",
           "title": "10%",
           "role": "10% Owner",
-          "trade_date": "2026-01-29",
-          "value": "+$1,191,308",
-          "qty": "+88,639"
+          "trade_date": "2026-02-06",
+          "value": "+$3,000,000",
+          "qty": "+300,000"
+        }
+      ]
+    },
+    {
+      "ticker": "TDG",
+      "company_name": "Transdigm Group Inc",
+      "total_value": 2440096.0,
+      "total_value_formatted": "$2.4M",
+      "total_purchases": 2,
+      "unique_insiders": 1,
+      "role_counts": {
+        "CEO": 2
+      },
+      "trades": [
+        {
+          "insider_name": "Lisman Michael",
+          "title": "Pres, CEO",
+          "role": "CEO",
+          "trade_date": "2026-02-06",
+          "value": "+$1,220,048",
+          "qty": "+950"
+        },
+        {
+          "insider_name": "Lisman Michael",
+          "title": "Pres, CEO",
+          "role": "CEO",
+          "trade_date": "2026-02-06",
+          "value": "+$1,220,048",
+          "qty": "+950"
         }
       ]
     },
@@ -1227,72 +1485,10 @@
       ]
     },
     {
-      "ticker": "TPVG",
-      "company_name": "Triplepoint Venture Growth Bdc Corp.",
-      "total_value": 2132156.0,
-      "total_value_formatted": "$2.1M",
-      "total_purchases": 6,
-      "unique_insiders": 2,
-      "role_counts": {
-        "CEO": 3,
-        "Pres": 3
-      },
-      "trades": [
-        {
-          "insider_name": "Labe James",
-          "title": "CEO",
-          "role": "CEO",
-          "trade_date": "2026-01-05",
-          "value": "+$492,874",
-          "qty": "+74,000"
-        },
-        {
-          "insider_name": "Srivastava Sajal",
-          "title": "Pres, CIO",
-          "role": "Pres",
-          "trade_date": "2026-01-05",
-          "value": "+$492,874",
-          "qty": "+74,000"
-        },
-        {
-          "insider_name": "Srivastava Sajal",
-          "title": "Pres, CIO",
-          "role": "Pres",
-          "trade_date": "2026-01-07",
-          "value": "+$309,772",
-          "qty": "+47,710"
-        },
-        {
-          "insider_name": "Labe James",
-          "title": "CEO",
-          "role": "CEO",
-          "trade_date": "2026-01-07",
-          "value": "+$309,772",
-          "qty": "+47,710"
-        },
-        {
-          "insider_name": "Srivastava Sajal",
-          "title": "Pres, CIO",
-          "role": "Pres",
-          "trade_date": "2026-01-09",
-          "value": "+$263,432",
-          "qty": "+39,799"
-        },
-        {
-          "insider_name": "Labe James",
-          "title": "CEO",
-          "role": "CEO",
-          "trade_date": "2026-01-09",
-          "value": "+$263,432",
-          "qty": "+39,799"
-        }
-      ]
-    },
-    {
-      "ticker": "EMPD",
-      "company_name": "Empery Digital Inc.",
-      "total_value": 2115728.0,
-      "total_value_formatted": "$2.1M",
+      "ticker": "LXRX",
+      "company_name": "Lexicon Pharmaceuticals, Inc.",
+      "total_value": 2000001.0,
+      "total_value_formatted": "$2.0M",
       "total_purchases": 1,
       "unique_insiders": 1,
       "role_counts": {
@@ -1300,361 +1496,42 @@
       },
       "trades": [
         {
-          "insider_name": "Atg Capital Opportunities Fund LP",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-28",
-          "value": "+$2,115,728",
-          "qty": "+428,626"
-        }
-      ]
-    },
-    {
-      "ticker": "BDSX",
-      "company_name": "Biodesix Inc",
-      "total_value": 2084297.0,
-      "total_value_formatted": "$2.1M",
-      "total_purchases": 2,
-      "unique_insiders": 1,
-      "role_counts": {
-        "Director": 2
-      },
-      "trades": [
-        {
-          "insider_name": "Schuler Jack W",
-          "title": "Emeritus Director, 10%",
-          "role": "Director",
-          "trade_date": "2026-01-23",
-          "value": "+$1,180,736",
-          "qty": "+100,000"
-        },
-        {
-          "insider_name": "Schuler Jack W",
-          "title": "Emeritus Director, 10%",
-          "role": "Director",
-          "trade_date": "2026-01-22",
-          "value": "+$903,561",
-          "qty": "+82,465"
-        }
-      ]
-    },
-    {
-      "ticker": "SPT",
-      "company_name": "Sprout Social, Inc.",
-      "total_value": 2005242.0,
-      "total_value_formatted": "$2.0M",
-      "total_purchases": 2,
-      "unique_insiders": 1,
-      "role_counts": {
-        "CEO": 2
-      },
-      "trades": [
-        {
-          "insider_name": "Barretto Ryan Paul",
-          "title": "CEO",
-          "role": "CEO",
-          "trade_date": "2026-01-09",
-          "value": "+$1,002,621",
-          "qty": "+93,984"
-        },
-        {
-          "insider_name": "Barretto Ryan Paul",
-          "title": "CEO",
-          "role": "CEO",
-          "trade_date": "2026-01-09",
-          "value": "+$1,002,621",
-          "qty": "+93,984"
-        }
-      ]
-    },
-    {
-      "ticker": "NTLA",
-      "company_name": "Intellia Therapeutics, Inc.",
-      "total_value": 1402500.0,
-      "total_value_formatted": "$1.4M",
-      "total_purchases": 1,
-      "unique_insiders": 1,
-      "role_counts": {
-        "Other": 1
-      },
-      "trades": [
-        {
-          "insider_name": "Cohen Fred E",
-          "title": "Dir",
-          "role": "Other",
-          "trade_date": "2026-01-05",
-          "value": "+$1,402,500",
-          "qty": "+150,000"
-        }
-      ]
-    },
-    {
-      "ticker": "SRZN",
-      "company_name": "Surrozen, Inc./De",
-      "total_value": 1283194.0,
-      "total_value_formatted": "$1.3M",
-      "total_purchases": 2,
-      "unique_insiders": 2,
-      "role_counts": {
-        "10% Owner": 2
-      },
-      "trades": [
-        {
-          "insider_name": "Kutzkey Tim",
+          "insider_name": "Invus Global Management, LLC",
           "title": "Dir, 10%",
           "role": "10% Owner",
-          "trade_date": "2026-01-15",
-          "value": "+$641,597",
-          "qty": "+32,507"
-        },
-        {
-          "insider_name": "Column Group III Gp, LP",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-15",
-          "value": "+$641,597",
-          "qty": "+32,507"
+          "trade_date": "2026-02-02",
+          "value": "+$2,000,001",
+          "qty": "+1,538,462"
         }
       ]
     },
     {
-      "ticker": "LUCY",
-      "company_name": "Innovative Eyewear Inc",
-      "total_value": 1164057.0,
-      "total_value_formatted": "$1.2M",
-      "total_purchases": 5,
-      "unique_insiders": 4,
-      "role_counts": {
-        "CEO": 2,
-        "Other": 1,
-        "CFO": 1,
-        "10% Owner": 1
-      },
-      "trades": [
-        {
-          "insider_name": "Gross Harrison R.",
-          "title": "CEO",
-          "role": "CEO",
-          "trade_date": "2026-01-08",
-          "value": "+$2,400",
-          "qty": "+1,500"
-        },
-        {
-          "insider_name": "Dabrowski Konrad",
-          "title": "Chief AI, Growth Officer",
-          "role": "Other",
-          "trade_date": "2026-01-08",
-          "value": "+$2,054",
-          "qty": "+1,300"
-        },
-        {
-          "insider_name": "Gross Harrison R.",
-          "title": "CEO",
-          "role": "CEO",
-          "trade_date": "2026-01-21",
-          "value": "+$1,980",
-          "qty": "+1,500"
-        },
-        {
-          "insider_name": "Gayle Oswald",
-          "title": "CFO",
-          "role": "CFO",
-          "trade_date": "2026-01-13",
-          "value": "+$1,669",
-          "qty": "+1,000"
-        },
-        {
-          "insider_name": "Galkin Vladimir",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-02",
-          "value": "+$1,155,954",
-          "qty": "+647,505"
-        }
-      ]
-    },
-    {
-      "ticker": "SCISX",
-      "company_name": "Ma Specialty Credit Income Fund",
-      "total_value": 1049476.0,
-      "total_value_formatted": "$1.0M",
-      "total_purchases": 3,
+      "ticker": "TCGSX",
+      "company_name": "Tcg Strategic Income Fund",
+      "total_value": 1850000.0,
+      "total_value_formatted": "$1.9M",
+      "total_purchases": 2,
       "unique_insiders": 2,
       "role_counts": {
-        "Pres": 2,
+        "Pres": 1,
         "10% Owner": 1
       },
       "trades": [
         {
-          "insider_name": "Marra Joseph P.",
-          "title": "Pres, Prin. Ex. Officer",
+          "insider_name": "McNitt Peter Boyd Jr.",
+          "title": "PEO, Pres",
           "role": "Pres",
-          "trade_date": "2026-01-27",
+          "trade_date": "2026-01-16",
           "value": "+$50,000",
-          "qty": "+2,004"
+          "qty": "+4,931"
         },
         {
-          "insider_name": "Marra Joseph P.",
-          "title": "Pres, Prin. Ex. Officer",
-          "role": "Pres",
-          "trade_date": "2026-01-05",
-          "value": "+$2,552",
-          "qty": "+103"
-        },
-        {
-          "insider_name": "Ma Eagle Holdings Fund",
-          "title": "10%",
+          "insider_name": "Tannenbaum Leonard M",
+          "title": "Dir, 10%",
           "role": "10% Owner",
-          "trade_date": "2026-01-06",
-          "value": "+$996,924",
-          "qty": "+40,166"
-        }
-      ]
-    },
-    {
-      "ticker": "MYNZ",
-      "company_name": "Mainz Biomed N.V.",
-      "total_value": 1034350.0,
-      "total_value_formatted": "$1.0M",
-      "total_purchases": 1,
-      "unique_insiders": 1,
-      "role_counts": {
-        "10% Owner": 1
-      },
-      "trades": [
-        {
-          "insider_name": "Donahue Kevin Michael",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2025-10-17",
-          "value": "+$1,034,350",
-          "qty": "+685,000"
-        }
-      ]
-    },
-    {
-      "ticker": "NBTB",
-      "company_name": "Nbt Bancorp Inc",
-      "total_value": 976708.0,
-      "total_value_formatted": "$977K",
-      "total_purchases": 1,
-      "unique_insiders": 1,
-      "role_counts": {
-        "Other": 1
-      },
-      "trades": [
-        {
-          "insider_name": "Delaney Timothy E",
-          "title": "Dir",
-          "role": "Other",
-          "trade_date": "2026-01-28",
-          "value": "+$976,708",
-          "qty": "+22,730"
-        }
-      ]
-    },
-    {
-      "ticker": "MSTR",
-      "company_name": "Strategy Inc",
-      "total_value": 779395.0,
-      "total_value_formatted": "$779K",
-      "total_purchases": 1,
-      "unique_insiders": 1,
-      "role_counts": {
-        "Other": 1
-      },
-      "trades": [
-        {
-          "insider_name": "Rickertsen Carl J",
-          "title": "Dir",
-          "role": "Other",
-          "trade_date": "2026-01-12",
-          "value": "+$779,395",
-          "qty": "+5,000"
-        }
-      ]
-    },
-    {
-      "ticker": "GTE",
-      "company_name": "Gran Tierra Energy Inc.",
-      "total_value": 724346.0,
-      "total_value_formatted": "$724K",
-      "total_purchases": 1,
-      "unique_insiders": 1,
-      "role_counts": {
-        "10% Owner": 1
-      },
-      "trades": [
-        {
-          "insider_name": "Lm Asset (Im) Inc.",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-05",
-          "value": "+$724,346",
-          "qty": "+180,000"
-        }
-      ]
-    },
-    {
-      "ticker": "ALTIX",
-      "company_name": "Align Alternative Access Fund",
-      "total_value": 700000.0,
-      "total_value_formatted": "$700K",
-      "total_purchases": 1,
-      "unique_insiders": 1,
-      "role_counts": {
-        "Other": 1
-      },
-      "trades": [
-        {
-          "insider_name": "Leinan Jeffrey",
-          "title": "Dir",
-          "role": "Other",
-          "trade_date": "2025-12-01",
-          "value": "+$700,000",
-          "qty": "+68,627"
-        }
-      ]
-    },
-    {
-      "ticker": "BST",
-      "company_name": "Blackrock Science & Technology Trust",
-      "total_value": 651200.0,
-      "total_value_formatted": "$651K",
-      "total_purchases": 1,
-      "unique_insiders": 1,
-      "role_counts": {
-        "Other": 1
-      },
-      "trades": [
-        {
-          "insider_name": "Kim Tony",
-          "title": "Portfolio Manager",
-          "role": "Other",
-          "trade_date": "2026-01-23",
-          "value": "+$651,200",
-          "qty": "+16,000"
-        }
-      ]
-    },
-    {
-      "ticker": "UNFI",
-      "company_name": "United Natural Foods Inc",
-      "total_value": 573000.0,
-      "total_value_formatted": "$573K",
-      "total_purchases": 1,
-      "unique_insiders": 1,
-      "role_counts": {
-        "Other": 1
-      },
-      "trades": [
-        {
-          "insider_name": "Pappas James C",
-          "title": "Dir",
-          "role": "Other",
-          "trade_date": "2026-01-02",
-          "value": "+$573,000",
-          "qty": "+17,000"
+          "trade_date": "2026-02-09",
+          "value": "+$1,800,000",
+          "qty": "+184,805"
         }
       ]
     }
