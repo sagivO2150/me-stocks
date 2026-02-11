@@ -1,0 +1,907 @@
+1a1ec721f304fa8cd4977ab888aff72aeedf8472
+Improved filter view functionality for better performance
+Enhanced the filter view logic in StockDetail component to ensure smoother operation and better handling of focus dates.
+
+- Refactored focus date handling to avoid unnecessary data fetches
+- Added checks to determine if existing data covers the focus date range
+- Improved logging for better debugging and clarity
+- Ensured efficient use of existing data when focus date is within range
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+1e2f4b4ef996901fe41bfa46750d251a08c6024e
+Added focus date functionality to filter stock view
+Enhanced the StockDetail component to allow filtering stock data by a specific focus date. This ensures the stock data displayed aligns with the selected date range.
+
+- Replaced zoomDate and zoomRange states with focusDate for clarity
+- Implemented logic to fetch MAX data if focus date is outside the available range
+- Updated useEffect dependencies to include focusDate for accurate data fetching
+- Adjusted logs to provide better debugging information for focus date handling
+- Updated PID files for node-server and vite processes
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+c62181779d85b129a1c2c511fdce860c36c2be06
+Added filter date functionality to charts view
+Enhanced the charts view by introducing a filter date feature, allowing users to refine displayed data based on specific date ranges. Updated relevant JSON files and components to support this functionality.
+
+- Modified `StockDetail.jsx` to integrate date filtering logic
+- Updated `top_monthly_insider_trades.json` with new data reflecting filtered results
+- Adjusted `live_edgar_purchases.json` for compatibility with date filtering
+- Added new insider trade data for ticker "SGP" in `top_monthly_insider_trades.json`
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+8508a51f155b57423e63e05a23f7c5ec58eec154
+Added status indicator for EDGAR fetches
+Enhanced the EDGAR fetch functionality by incorporating a status indicator to improve user experience and provide real-time feedback during data retrieval. Updated related scripts and components to support this feature.
+
+- Added status indicator in `StockDetail.jsx` for EDGAR fetches
+- Updated `fetch_edgar_trades.py` script to include status updates
+- Modified `server.js` to handle and relay status information
+- Refreshed `top_monthly_insider_trades.json` with updated trade data
+- Adjusted PID files for node-server and vite processes
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# EDGAR
+# web_app
+
+---COMMIT_SEPARATOR---
+40cb7d94c5f90f392b1a59d185d09483aabaf308
+Improved live purchases handling and ticker normalization
+Enhanced the live purchases functionality by refining ticker normalization and updating related components.
+
+- Added a `normalize_ticker` function to handle suffix removal (e.g., warrants, units, rights).
+- Updated `fetch_live_edgar_purchases.py` to use the new normalization logic.
+- Refreshed `live_edgar_purchases.json` with updated data and reduced total filings.
+- Adjusted `StockDetail.jsx` to reflect changes in live purchases data.
+- Updated server process IDs in `node-server.pid` and `vite.pid`.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+d35f9ab28b9bc6be4331984c3daafc8b5bdce3fb
+Added live EDGAR fetching and display functionality
+Implemented live fetching of EDGAR purchases and integrated the feature into the web app. This includes backend endpoints, a new Python script for scraping, and UI updates for displaying live data.
+
+- Added `/api/scrape-live-purchases` endpoint to trigger live EDGAR scraping
+- Added `/api/live-purchases` endpoint to serve cached live purchase data
+- Created `fetch_live_edgar_purchases.py` script for scraping EDGAR data
+- Added `LivePurchasesCard.jsx` to display live purchase data in the UI
+- Updated `FilterPanel.jsx` and `App.jsx` to integrate live fetching functionality
+- Added `live_edgar_purchases.json` for caching scraped data
+- Updated server logic to handle live purchase scraping and caching
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# EDGAR
+# web_app
+
+---COMMIT_SEPARATOR---
+5655aa347cc9b4a2bde6538da3d6f0fa09f7d157
+Optimized EDGAR fetch script for faster data retrieval
+Updated the EDGAR fetch script to improve performance and efficiency by adjusting rate limits and parallel worker settings. Minor updates were also made to PID files.
+
+- Increased `MAX_WORKERS` from 5 to 10 for parallel fetching
+- Reduced `RATE_LIMIT_DELAY` to allow up to 12 requests/sec
+- Simplified comments for page fetching logic
+- Updated PID files for node-server and vite processes
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# EDGAR
+
+---COMMIT_SEPARATOR---
+a39483861decd4eb6d96ce65783cc30e28781c53
+Removed transaction cap for extended trade data retrieval
+Updated the `fetch_edgar_trades.py` script to remove the limit on the number of transactions fetched, allowing for more comprehensive insider trade data collection. Adjusted related logic to streamline the process.
+
+Key changes:
+- Removed `max_transactions` parameter from `fetch_edgar_insider_trades` function.
+- Eliminated early exit logic based on transaction count.
+- Updated PID files for node-server and Vite.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# EDGAR
+
+---COMMIT_SEPARATOR---
+276117a11567035063075968f58622268b5ce2a4
+Enhanced EDGAR fetch script for more detailed data retrieval
+Updated the EDGAR trade fetching script to improve data retrieval capabilities and efficiency. Introduced multithreading and rate-limiting to handle larger volumes of data while adhering to SEC rate limits.
+
+- Added multithreading using ThreadPoolExecutor for parallel Form 4 fetching
+- Implemented a thread-safe rate limiter to comply with SEC request limits
+- Refactored `fetch_form4_list` into `fetch_form4_page` for paginated data fetching
+- Updated PID files for node-server and vite processes
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# EDGAR
+
+---COMMIT_SEPARATOR---
+0deabedc2c206b670966c8008dcbdc10cfb60975
+Added basic EDGAR integration for extended trade history
+Enhanced server and StockDetail to support EDGAR data:
+- Added `/api/edgar-trades/:ticker` endpoint for fetching EDGAR data
+- Integrated EDGAR data toggle and loading state in StockDetail component
+- Created scripts for EDGAR scraping and analysis
+- Documented EDGAR integration and comparison with OpenInsider
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# EDGAR
+
+---COMMIT_SEPARATOR---
+b0d4c93e1575758eed3bdfbecac556ccd8942843
+Added stock ticker search functionality to App.jsx
+Implemented a search feature allowing users to look up stock tickers directly within the application. This enhances user experience by providing a quick and intuitive way to locate specific trades.
+
+- Introduced `searchTicker` state to manage search input.
+- Created `handleSearch` function to process and validate ticker searches.
+- Added a search form with input and submit button to the UI.
+- Integrated search functionality to update `selectedTrade` based on user input.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+# yfinance
+# open_insider
+
+---COMMIT_SEPARATOR---
+56a32c7c1a183bed427ddebee7b7c0587eda1156
+Improved date display with smarter X-axis tick calculation
+Enhanced the date display on the StockDetail component by implementing a smarter X-axis tick calculation. This ensures a more intuitive and visually appealing representation of dates across different time periods.
+
+- Added a `getXAxisTicks` function to calculate X-axis ticks dynamically
+- Adjusted tick intervals based on selected time periods (e.g., 1d, 5d, 1y, max)
+- Improved handling of year boundaries and evenly spaced ticks for better readability
+- Enhanced user experience with cleaner and more meaningful date displays
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+9c0224f67484238764efa3cff9b7d45b18e94518
+Improved chart display for years and months sorting
+Enhanced the sorting and display logic in charts to better represent years and months, alongside updates to insider trade fetching and combined role calculations.
+
+- Updated `fetch_insider_trades.py` to use direct ticker page for more reliable data retrieval.
+- Added "Most Combined (C-Level + 10%ers)" sorting option in `App.jsx`.
+- Implemented combined role count logic for sorting in `App.jsx`.
+- Adjusted `StockDetail.jsx` for improved data handling.
+- Updated PID files for node-server and vite.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+e9286f69eef68a9a9e2fa95b5fda617c5986b03e
+Simplified trade fetch logic, extended result handling
+Updated insider trade fetch script to use a simpler and more reliable URL, improving data retrieval. Enhanced result handling to support cases with no trades found.
+
+- Replaced complex OpenInsider URL with a simpler search-based URL
+- Improved handling for scenarios with no data, ensuring success response
+- Adjusted result structure to include empty arrays for purchases and sales
+- Updated PID files for node-server and Vite processes
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# open_insider
+
+---COMMIT_SEPARATOR---
+624f48b03d8385bb58a8a63eecb020fc8594bb7e
+Improved clamping aggregation for better trade grouping
+Enhanced the logic for insider trade aggregation in StockDetail to improve clarity and maintain individual trade details.
+
+- Updated insider purchases and sales aggregation to include individual trades.
+- Replaced cumulative shares and roles with detailed trade objects.
+- Adjusted data structure to store trades with insider details, roles, shares, and values.
+- Updated process to calculate total trade values while preserving individual trade data.
+- Updated PID files for node-server and Vite.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+2100fed3bc9d25020b687974d186ad0a5d474d33
+Improved role classification for aggregated purchases display
+Enhanced the logic for insider role classification in StockDetail to better align with aggregated purchase displays. Adjustments ensure consistency with scraper classifications and improve grouping accuracy.
+
+- Updated `classifyInsiderRole` function to match scraper priority order.
+- Added detailed checks for roles like Chairman, President, General Counsel, and VP.
+- Improved handling of Director and 10% Owner classifications.
+- Introduced helper function for grouping and counting roles.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+526aa24609390b3a9d8549aa50c31cb7cd442f70
+Updated StockDetail to display C-level and 10% owner roles
+Enhanced the display of dots cards in the StockDetail component to include role classifications for insider trades, highlighting C-level executives and 10% owners.
+
+- Added `classifyInsiderRole` function to determine insider roles based on titles
+- Modified data aggregation logic to include roles in insider trades
+- Updated `insiderPurchasesByDate` and `insiderSalesByDate` objects to store role information
+- Adjusted PID files for node-server and vite
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+bbceef14febedabea292430177562fd1fb5f93f1
+Improved max data loading, insider trading points affected
+Enhanced data handling for better performance when loading large datasets, particularly for long periods. Adjustments may impact visibility of insider trading points.
+
+- Added downsampling logic in `fetch_stock_history.py` to limit data points sent to frontend
+- Removed redundant interval mapping for 5-day periods
+- Updated `StockDetail.jsx` to simplify period data fetching logic
+- Adjusted PID files for node-server and Vite processes
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+# yfinance
+
+---COMMIT_SEPARATOR---
+934fa38b46794d34c740c2e5da06b1736fa1974e
+Added a top purchases dashboard for insider trades
+Implemented a new dashboard to display top monthly insider trades. Added backend endpoints, frontend components, and a Python script for data scraping.
+
+- Created a Python script to fetch top monthly insider trades
+- Added API endpoints to fetch and update insider trade data
+- Integrated new data into the frontend with a TopMonthlyCard component
+- Updated server logic to handle JSON data for the dashboard
+- Stored scraped data in public and output directories for access
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# open_insider
+# web_app
+
+---COMMIT_SEPARATOR---
+71c8e6fb84f1f51b897a881661eb613ce9fcfb3f
+Removed combined section from the web app
+The "Combined View" section and related functionality were removed from the web app to simplify the user interface and focus on individual trade categories.
+
+Key changes:
+- Deleted the "Combined View" button and its associated logic.
+- Updated trade display logic to handle only "insider" and "political" views.
+- Removed combined trade count display from the summary section.
+- Simplified grid rendering logic for trade cards.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+63f1ba8f1cc389b537c2309f9ecc2cf6414ca57f
+Refined StockDetail interactions, hover issues persist
+Enhanced the StockDetail component with updated interaction handling to improve user experience. Adjusted server PID files for consistency.
+
+- Modified StockDetail chart container to prevent unwanted focus and selection
+- Added mouse interaction handlers to improve usability
+- Updated tooltip wrapper styles for better rendering
+- Changed node-server.pid and vite.pid values to reflect new process IDs
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+dcdfe3569a03c09969f472bfeb790cbeb1eb85e8
+Tooltip logic updated, hover issue persists, needs improvement
+Updated tooltip behavior in StockDetail to only display when insider or political activity is present. Adjusted styling and removed redundant elements for cleaner UI. Hover functionality remains problematic, requiring further investigation.
+
+- Modified tooltip logic to check for trade activity before rendering
+- Removed "No trade activity" message for inactive tooltips
+- Adjusted conditional styling for political activity section
+- Updated process IDs in logs for node-server and vite
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+5ca472f583527bd6747c407ce105e087c09b31f7
+Improved display of trade data with better hover details
+Enhanced the display of trade information in StockDetail by refining how purchase and sale amounts are presented, especially for larger values. This ensures better readability and clarity when hovering over data points.
+
+- Updated purchase and sale amount formatting to display in 'K' or 'M' based on value size.
+- Applied changes to both insider and political trade data sections.
+- Improved hover experience for better information visibility.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+b6d44391a59926ea5c11e22463ce1bd04ffe565e
+Dotted lines look good now in StockDetail charts
+Updated the StockDetail component to replace scatter plots with dotted line charts for insider trades, enhancing visual clarity and continuity.
+
+- Changed insider purchases and sales from scatter plots to dotted line charts.
+- Added custom dot rendering logic for better representation of data points.
+- Improved active dot styling for clearer highlighting of data points.
+- Updated PID files for node-server and vite.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+85a611d0e64cc0179aa987d125b886034585e7ae
+Improved chart visuals and data handling in StockDetail
+Enhanced the StockDetail component to improve chart visuals and data accuracy. Added functionality to better handle date ranges and data availability for different periods.
+
+- Updated recharts import to include Scatter for potential future use
+- Added logic to determine available date range from stock history
+- Implemented checks for sufficient data availability for various time periods
+- Adjusted PID files for node-server and Vite processes
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+83820cd950b3c274a4f689f249ed90af73befc17
+Filters operational, political trades now visible
+Enhanced functionality to ensure filters work correctly and political trades are displayed as expected.
+
+- Updated `FilterPanel.jsx` to refine filtering logic
+- Adjusted `App.jsx` to integrate updated filter functionality
+- Modified `server.js` to support new data handling for political trades
+- Updated `import_to_db.py` to process and import refined trade data
+- Refreshed `political_trades.db` with latest trade entries
+- Adjusted `quiver_trades_raw.js` for improved data structure
+- Updated PID files for server processes
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# political_trade
+
+---COMMIT_SEPARATOR---
+718487b0f01d60e51e35a29eb2578d9a1c09fd1d
+Extracted political stock trades, cleaned up data sources
+Updated scripts and database to refine political trading data extraction and integrate new sources. Added new scripts for fetching and debugging, ensuring comprehensive data coverage.
+
+- Updated `fetch_political_trades_enriched.py` to include new House data sources and headers for bypassing blocks.
+- Modified `update_political_trades.sh` for improved automation.
+- Adjusted `server.js` and `App.jsx` for better handling of political trades data.
+- Enhanced `FilterPanel.jsx` for filtering political stock trades.
+- Added new scripts for fetching current and Quiver stock trades.
+- Included debug and raw data logs for troubleshooting.
+- Updated database `political_trades.db` with refined data.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# political_trade
+
+---COMMIT_SEPARATOR---
+891b9a43f7360a680695fc827621422af2d9c38a
+Improved data fetching for politicians, added new scripts
+Enhanced the system to fetch more comprehensive data for politicians. While the process is not yet perfect, significant progress has been made. Added new scripts and database integration to support enriched data handling.
+
+Key changes:
+- Updated `server.js` and `App.jsx` to integrate new data handling logic.
+- Modified `package.json` and `package-lock.json` to include `better-sqlite3` dependency.
+- Added new scripts for fetching and importing enriched political trade data:
+  - `fetch_political_trades_enriched.py`
+  - `fetch_political_trades_github.py`
+  - `import_to_db.py`
+  - `update_political_trades.sh`
+- Introduced `political_trades.db` for storing enriched data.
+- Created `POLITICAL_DATA_STATUS.md` for tracking data status and updates.
+- Updated PID files for server processes.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# political_trade
+
+---COMMIT_SEPARATOR---
+9480a1b937d399faf8911fe74dc0255f30f9027e
+Filtering for political figures implemented successfully
+Enhanced political trade data handling and filtering functionality.
+
+- Updated server to parse and return political trade data as JSON.
+- Added logic to handle quoted fields with commas in CSV parsing.
+- Introduced state to store unfiltered political trade data in App.jsx.
+- Implemented filtering mechanism for political figures in FilterPanel.jsx.
+- Adjusted StockDetail component to display filtered political trade data.
+- Updated PID files for server and Vite.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# political_trade
+# web_app
+
+---COMMIT_SEPARATOR---
+df460f4edcc19e68a60700481fffe100b1402556
+Added political trading information to the app
+Enhanced the app by integrating political trading data, providing users with insights into political trades. Added new API endpoints, frontend components, and a script for data fetching.
+
+- Updated `.gitignore` to include new info directory
+- Added `fetch_political_trades.py` script for scraping political trade data
+- Created new API endpoints in `server.js` for political trades
+- Added `PoliticalTradeCard.jsx` component to display trade details
+- Updated `App.jsx` and `StockDetail.jsx` to integrate political trade data
+- Included sample data file `deep_search_3.txt` for reference
+- Updated PID files for server and Vite logs
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# political_trade
+# web_app
+
+---COMMIT_SEPARATOR---
+9a47101ecd22b51c50e99d38081deec4c4314cff
+Tweaked frontend for improved chart tooltips and date format
+Enhanced the StockDetail component to refine chart tooltips and adjust date formatting for better usability and clarity.
+
+- Updated chart tooltip to highlight insider activity more effectively.
+- Added fallback message for dates with no insider activity.
+- Changed date format to day/month for better regional alignment.
+- Improved tooltip trigger behavior and cursor styling in charts.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+09b709ba1e13da41893b724b8545266bb253f459
+Fixed insider trade data issues affecting web app display
+Updated the insider trade fetching script to resolve inaccuracies in the displayed information and ensure comprehensive transaction data is retrieved. Adjusted process IDs for server logs.
+
+Key changes:
+- Modified fetch_insider_trades.py to include all transaction types by removing restrictive parameters.
+- Updated column mapping to accurately parse insider trade data, including new fields like Owned and ΔOwn%.
+- Refreshed node-server.pid and vite.pid files with new process IDs.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+c8ad544eac1605cb9fe4a16e9c207ac99842748a
+Fixed the scraping to also show sells
+Updated the OpenInsider scraper to include sales data alongside purchases. Adjusted filtering logic and parameters to differentiate between trade types. Added tests to validate the new functionality.
+
+- Modified `scrape_ticker_details` to handle 'purchase' and 'sale' trade types
+- Updated `scrape_openinsider_simple` to support sales filtering with new parameters
+- Adjusted trade type logic to ensure accurate data extraction for sales
+- Added new test files: `test_both.py`, `test_sale_scrape.py`, and `test_xs.py`
+- Updated server PID files for node and Vite logs
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+# open_insider
+
+---COMMIT_SEPARATOR---
+f6716c8b007c8c0bc211686930d7d9461d716670
+Added overlay to stocks graph for purchases and sales
+Enhanced the stock detail component to include an overlay on the graph that displays insider purchase and sale data. Added a new API endpoint to fetch insider trades and integrated it with the frontend.
+
+- Updated `StockDetail.jsx` to fetch and display insider trades on the stock graph
+- Added a new API endpoint `/api/insider-trades/:ticker` in `server.js` to retrieve insider trade data
+- Created a new Python script `fetch_insider_trades.py` to fetch insider trade data
+- Updated process ID files for `node-server` and `vite` in the logs directory
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# open_insider
+# web_app
+
+---COMMIT_SEPARATOR---
+a0814e962f37ac14ef7b0f5266ea2c6a56087fbc
+Added support for displaying day trading data in charts
+Enhanced functionality to include intraday data for day trading. Updated scripts and components to handle finer intervals and display time-specific details.
+
+- Modified `fetch_stock_history.py` to fetch intraday data for short periods
+- Added interval mapping for 1-day and 5-day periods to use finer granularity
+- Updated `StockDetail.jsx` to format and display time for intraday data
+- Adjusted date formatting logic for both intraday and daily data
+- Updated PID files for server and Vite processes
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# open_insider
+
+---COMMIT_SEPARATOR---
+5a090929ed9d85e1e9ce70264a8488465cfb42b7
+Added clickable stock cards to display detailed information
+Enhanced the stock viewing experience by allowing users to click on stock cards to access detailed information. Introduced new components and updated existing ones to support this functionality.
+
+- Added `StockDetail.jsx` component to display detailed stock information
+- Updated `TradeCard.jsx` to include click functionality and routing
+- Modified `App.jsx` to handle new routes for stock details
+- Integrated `recharts` library for data visualization
+- Added `@reduxjs/toolkit` for state management
+- Created `fetch_stock_history.py` script to retrieve historical stock data
+- Updated `package.json` and `package-lock.json` with new dependencies
+- Adjusted server logic in `server.js` to support new API endpoints for stock details
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+# yfinance
+
+---COMMIT_SEPARATOR---
+1a61161f836c981e1587f18b98ee216d6da4e1ad
+Excluded funds from OpenInsider scraper search results
+Updated the OpenInsider scraper to exclude funds from search results by adjusting SIC code filters and ensuring relevant roles are included in the query parameters.
+
+- Modified SIC code range to exclude funds (SIC < 100).
+- Enabled filtering for specific insider roles such as officers, directors, and major shareholders.
+- Ensured compatibility with existing grouping and filtering logic.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# open_insider
+
+---COMMIT_SEPARATOR---
+5254e0d86c822f5741e6102fd7ee44e374165ea4
+Improved insider data fetching and role breakdown accuracy
+Enhanced the OpenInsider scraper to provide more detailed and accurate information about insiders and their roles. This update improves the clarity and reliability of insider data displayed in the application.
+
+- Added a new function `scrape_ticker_details` to fetch detailed insider trade data.
+- Implemented role breakdown for insider titles such as CEO, CFO, Director, etc.
+- Improved date filtering to ensure only relevant trades are processed.
+- Updated `FilterPanel.jsx` and `TradeCard.jsx` components to display enhanced insider information.
+- Adjusted server PID files for updated process management.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+# open_insider
+
+---COMMIT_SEPARATOR---
+0e37def58de8a24dbfd52a84d8a6b078fe56c740
+Fixed duplicate counting for insiders with multiple titles
+Enhanced the OpenInsider scraper to address an issue where insiders with multiple titles were being counted multiple times in role-based aggregations. Introduced logic to prioritize roles and deduplicate trades.
+
+- Added unique trade tracking to prevent double-counting identical trades.
+- Implemented role prioritization to assign insiders to their most important title.
+- Adjusted role counting to reflect primary assignments only.
+- Updated aggregation logic to ensure accurate insider role statistics.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# open_insider
+
+---COMMIT_SEPARATOR---
+d96f6844112e08c07cbbf63d627fb4dca4dc0917
+Added breakdown of insider roles in stock purchase data
+Enhanced the OpenInsider scraper to include specific insider roles for better data granularity. Updated relevant components and logs to support the changes.
+
+- Modified `openinsider_scraper.py` to filter data by specific insider roles (CEO, CFO, COO, Director).
+- Updated function parameters and role-specific logic in the scraper.
+- Adjusted `TradeCard.jsx` to display insider role information.
+- Updated `node-server.pid` and `vite.pid` logs to reflect recent process changes.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+# open_insider
+
+---COMMIT_SEPARATOR---
+dbdfbf433f10cb51ecbc62198f602890d6e4c0b6
+Updated API documentation and integrated new backup system
+Enhanced the API documentation with detailed usage examples and added a new backup system for improved data security. Minor updates were also made to scripts and server files.
+
+- Added comprehensive API usage details to `info/API-docs.txt`
+- Updated API key information in `info/API-key.txt`
+- Integrated new backup system (`NSX_Backup_System_for_Tal.zip`)
+- Modified `openinsider_scraper.py` for compatibility with updated API
+- Adjusted server handling in `server.js` and `FilterPanel.jsx`
+- Updated PID files for node-server and Vite logs
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# open_insider
+
+---COMMIT_SEPARATOR---
+e8fc165fcefbceb77ef147f8e6542517e250726d
+Fixed fetching mechanism in OpenInsider scraper
+Updated the OpenInsider scraper to improve data fetching logic and ensure compatibility with broader sector filtering options. Adjusted query parameters for better flexibility and accuracy.
+
+- Removed hardcoded SIC code bounds to allow fetching data across all sectors.
+- Modified 'nol' parameter to accept empty values for improved filtering.
+- Added comments for clarity on parameter usage and grouping options.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# open_insider
+
+---COMMIT_SEPARATOR---
+be4319d1bf367e7439c54f7036330aaeee36cfdf
+Optimized OpenInsider scraper for faster data processing
+Enhanced the OpenInsider scraper script to improve performance and reduce data processing time by implementing parallel processing for financial data enrichment.
+
+- Introduced ThreadPoolExecutor for concurrent API calls to yfinance.
+- Reduced API call delay from 1.0 seconds to 0.5 seconds.
+- Added thread-safe progress printing using a Lock.
+- Refactored data enrichment logic to support parallel processing of individual records.
+- Increased efficiency by utilizing up to 8 parallel threads for API calls.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# yfinance
+# open_insider
+
+---COMMIT_SEPARATOR---
+4f830a379d0ae459e12103e7726551c93cb5fb0d
+Fixed Node.js server handling in restart script
+Updated the restart script to properly manage the Node.js backend server alongside the Vite frontend. Added logic to stop and start the Node.js server, ensuring smoother restarts and better process management.
+
+- Added handling for Node.js server PID file (`logs/node-server.pid`)
+- Implemented logic to stop Node.js server gracefully using PID or port
+- Enhanced start sequence to launch Node.js server and verify successful startup
+- Updated log and process ID outputs to include Node.js server details
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+82d2725e64d26e127ce6020460876601bf30ee01
+Added tooltips to display detailed info on filter labels
+Enhanced the user interface by introducing tooltips to provide additional context for filter labels in the FilterPanel component.
+
+- Created a new `Tooltip` component for reusable tooltip functionality.
+- Updated `FilterPanel.jsx` to wrap filter labels with the `Tooltip` component.
+- Added detailed explanations for each filter label to improve user understanding:
+  - Minimum Stock Price
+  - Minimum Transaction Value
+  - Filing Within (days)
+  - Minimum Insiders
+- Improved accessibility and user experience with hoverable tooltips.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+d2953327630f77a920d87334cae346a116f1da88
+Added filter options for OpenInsider data customization
+Enhanced the OpenInsider scraper and web app to support customizable filters for more tailored data retrieval and display.
+
+- Added argparse to `openinsider_scraper.py` for dynamic filter input
+- Introduced new filter parameters: min_price, filing_days, min_insiders, min_value, and role-based inclusions
+- Updated web app with a new `FilterPanel` component for user-friendly filter configuration
+- Created `README_FILTERS.md` to document filter usage
+- Added `server.js` to handle backend filter processing
+- Updated `App.jsx` to integrate the filter panel and display filtered results
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+# open_insider
+
+---COMMIT_SEPARATOR---
+f9d48b17fac25b51295cbbb04027279db7875ab0
+Added a restart script for the web app
+Introduced a new script to streamline the process of restarting the web application. This helps in managing the app lifecycle more efficiently and ensures smoother operations.
+
+- Added `restart_webapp_stocks.sh` script for restarting the web app
+- Created `logs/vite.pid` to store the process ID for the Vite server
+- Enhanced operational workflow with automated restart functionality
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+ad5994a2c4a56cecb8eb8ac701f1c54c902a3b8b
+Fixed a couple more small errors in App.jsx
+Corrected minor issues in the App.jsx file related to CSS class names. These changes ensure proper styling and alignment with the intended design.
+
+- Replaced "bg-gradient-to-br" with "bg-linear-to-br" in multiple instances.
+- Updated loading and error state containers for consistent background styles.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+6a304189286bba1f6956b84f24489ddc09e0daa2
+Simplified Tailwind import in web app styles
+Replaced multiple Tailwind directives with a single import statement in the CSS file to streamline the stylesheet and resolve potential build issues.
+
+- Removed `@tailwind base`, `@tailwind components`, and `@tailwind utilities`
+- Added `@import "tailwindcss"` for a cleaner and more efficient import
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+7a57393b2d3206b7fc2620c129553c5bef152b75
+Website is live but needs design improvements
+Set up the initial structure for the web application. The website is functional but requires significant styling and design enhancements.
+
+- Added `.gitignore` to manage ignored files
+- Created `README.md` with project details
+- Configured ESLint and TailwindCSS for development
+- Added Vite setup files and initial React components
+- Created basic `index.html` and placeholder styles
+- Included a simple `TradeCard` component for stock display
+- Added assets like `react.svg` and `vite.svg` for branding
+- Established project dependencies in `package.json` and `package-lock.json`
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+1e2edf2a344b7ed6929c16191964b467a9242b42
+Enhance yfinance data retrieval with new metrics
+Expanded the yfinance data fetching function to include additional metrics and implemented a new scoring system for evaluating stocks.
+
+- Added institutional holdings and ownership percentage to yfinance data
+- Included current price in the data retrieval
+- Introduced a "Rainy Day Score" calculation for stock evaluation
+- Updated documentation for the get_yfinance_data function
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# yfinance
+
+---COMMIT_SEPARATOR---
+4061001f4156a99e33c0f8b09544c7dcec40396f
+Moved files to 'info' dir, added yfinance info to CSV
+Reorganized project structure and added new information to support yfinance integration. Updated file paths and included additional documentation.
+
+- Moved API-docs.txt, API-key-site-info.txt, API-key.txt, and deep_search.rtf to 'info' directory
+- Renamed openinsider_scraper.py and moved it to 'scripts' directory
+- Added new file 'info/yfinance info.txt' with relevant details
+- Included 'info/deep_search_2.txt' for extended search functionality
+- Removed outdated files from the root directory
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# yfinance
+
+---COMMIT_SEPARATOR---
+4f4ea966a5a95c18d03d35c253b7f5a886241cbc
+Pivoting to yfinance, keeping FMP API for potential use
+Enhanced OpenInsider scraper with financial health checks using FMP API, while noting its paywall limitations for future consideration. Added new files for API documentation and key storage.
+
+- Updated `openinsider_scraper.py` to integrate FMP API for financial ratios and key metrics
+- Added API key configuration and rate-limiting logic
+- Created new files: `API-docs.txt`, `API-key-site-info.txt`, `API-key.txt`, `deep_search.rtf` for documentation and key management
+- Noted limitations of FMP API due to paywalls, planning to pivot to yfinance in the future
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# FMP_API
+
+---COMMIT_SEPARATOR---
+8e89465f77a4ce4f11e483d7094b171be3b20b13
+Initial commit: OpenInsider scraper
+
+---COMMIT_SEPARATOR---
