@@ -625,6 +625,7 @@ const StockDetail = ({ trade, onClose }) => {
         return (
           <div className="bg-slate-800 border border-slate-600 rounded-lg p-3 shadow-xl">
             <p className="text-slate-300 text-sm font-semibold mb-2">{data.date}</p>
+            <p className="text-xs text-blue-300 mb-2">📊 Stock Price: ${data.close ? data.close.toFixed(2) : 'N/A'}</p>
             <div className="space-y-1">
               <p className={`text-xs font-semibold ${isPurchase ? 'text-emerald-400' : 'text-red-400'}`}>
                 {isPurchase ? '📈' : '📉'} {data.role} {isPurchase ? 'Purchase' : 'Sale'}
@@ -646,14 +647,10 @@ const StockDetail = ({ trade, onClose }) => {
       const hasInsiderActivity = data.purchaseCount > 0 || data.saleCount > 0;
       const hasPoliticalActivity = data.politicalPurchaseCount > 0 || data.politicalSaleCount > 0;
       
-      // Only show tooltip if there's actual trade activity
-      if (!hasInsiderActivity && !hasPoliticalActivity) {
-        return null;
-      }
-      
       return (
         <div className="bg-slate-800 border border-slate-600 rounded-lg p-3 shadow-xl max-h-96 overflow-y-auto">
-          <p className="text-slate-300 text-sm font-semibold mb-2 sticky top-0 bg-slate-800">{data.date}</p>
+          <p className="text-slate-300 text-sm font-semibold mb-1 sticky top-0 bg-slate-800">{data.date}</p>
+          <p className="text-xs text-blue-300 mb-2">📊 Stock Price: ${data.close ? data.close.toFixed(2) : 'N/A'}</p>
           
           {/* Insider Activity - Show EACH trade individually */}
           {hasInsiderActivity && (
