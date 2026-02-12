@@ -92,47 +92,19 @@ const TopMonthlyCard = ({ stock }) => {
         </div>
       </div>
 
-      {/* Badges Row */}
+      {/* Badges Row - Event Classification Only */}
       <div className="flex flex-wrap gap-2 mb-4">
-        {/* Insiders Count with Role Breakdown */}
-        <Tooltip text={`Number of unique insiders buying this stock in the past month. Breakdown: ${roleBreakdownText}. CEO/CFO/COO buys = C-suite conviction (strongest signal).`}>
-          <span className="px-3 py-2 bg-blue-500/20 text-blue-400 rounded-lg text-sm font-medium">
-            👥 {uniqueInsiders} Insider{uniqueInsiders > 1 ? 's' : ''}
-          </span>
-        </Tooltip>
-
-        {/* Total Purchases Count */}
-        <Tooltip text={`Total number of purchase transactions made by insiders. Multiple purchases can indicate sustained conviction.`}>
-          <span className="px-3 py-2 bg-purple-500/20 text-purple-400 rounded-lg text-sm font-medium">
-            📊 {totalPurchases} Purchase{totalPurchases > 1 ? 's' : ''}
-          </span>
-        </Tooltip>
-
-        {/* C-Suite Badge */}
-        {(cobCount + ceoCount + presCount + cfoCount + cooCount > 0) && (
-          <Tooltip text="C-Suite executives are buying. This is a strong signal of insider confidence in the company's future.">
-            <span className="px-3 py-2 bg-emerald-500/20 text-emerald-400 rounded-lg text-sm font-medium">
-              🎯 C-Suite Activity
-            </span>
-          </Tooltip>
-        )}
-
-        {/* 10% Owner Badge */}
-        {ownerCount > 0 && (
-          <Tooltip text="10%+ beneficial owners are buying. Large shareholders increasing positions often signals strong conviction or potential acquisition activity.">
-            <span className="px-3 py-2 bg-yellow-500/20 text-yellow-400 rounded-lg text-sm font-medium">
-              🏢 10%+ Owner
-            </span>
-          </Tooltip>
-        )}
-        
         {/* Event Classification Badge */}
-        {eventBadge && (
+        {eventBadge ? (
           <Tooltip text={eventBadge.tooltip}>
             <span className={`px-3 py-2 rounded-lg text-sm font-medium ${eventBadge.colorClass}`}>
               {eventBadge.icon} {eventBadge.label}
             </span>
           </Tooltip>
+        ) : (
+          <span className="px-3 py-2 bg-slate-700/30 text-slate-500 rounded-lg text-sm font-medium">
+            ⏳ Analyzing...
+          </span>
         )}
       </div>
 
