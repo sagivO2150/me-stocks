@@ -1019,13 +1019,21 @@ const StockDetail = ({ trade, onClose }) => {
                         <div className="absolute top-full left-0 mt-1 bg-slate-800 border border-slate-600 rounded-lg shadow-xl z-10 min-w-[150px]">
                           <div className="p-2 text-xs text-slate-300">
                             {event.dates.map((date, dateIdx) => (
-                              <div key={dateIdx} className="py-1 px-2 hover:bg-slate-700 rounded">
+                              <button
+                                key={dateIdx}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setFocusDate(date);
+                                  setExpandedBadge(null); // Close dropdown after selecting
+                                }}
+                                className="w-full text-left py-1 px-2 hover:bg-slate-700 rounded cursor-pointer transition-colors"
+                              >
                                 📅 {new Date(date).toLocaleDateString('en-US', { 
                                   month: 'short', 
                                   day: 'numeric', 
                                   year: 'numeric' 
                                 })}
-                              </div>
+                              </button>
                             ))}
                           </div>
                         </div>
