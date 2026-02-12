@@ -977,8 +977,8 @@ const StockDetail = ({ trade, onClose }) => {
   // State for tracking which badge dropdown is open
   const [expandedBadge, setExpandedBadge] = useState(null);
   
-  // State for tracking hovered date in dropdown (to highlight on chart)
-  const [hoveredEventDate, setHoveredEventDate] = useState(null);
+  // State for tracking hovered campaign dates in dropdown (to highlight on chart)
+  const [hoveredCampaignDates, setHoveredCampaignDates] = useState([]);
   
   // Debug: log events to see if dates are present
   console.log('Events for', ticker, ':', events);
@@ -1034,25 +1034,31 @@ const StockDetail = ({ trade, onClose }) => {
                       {isExpanded && hasDates && (
                         <div className="absolute top-full left-0 bg-slate-800 border border-slate-600 rounded-lg shadow-xl z-10 min-w-[150px]">
                           <div className="p-2 pt-3 text-xs text-slate-300">
-                            {event.dates.map((date, dateIdx) => (
-                              <button
-                                key={dateIdx}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setFocusDate(date);
-                                  setExpandedBadge(null); // Close dropdown after selecting
-                                }}
-                                onMouseEnter={() => setHoveredEventDate(date)}
-                                onMouseLeave={() => setHoveredEventDate(null)}
-                                className="w-full text-left py-1 px-2 hover:bg-slate-700 rounded cursor-pointer transition-colors"
-                              >
-                                📅 {new Date(date).toLocaleDateString('en-US', { 
-                                  month: 'short', 
-                                  day: 'numeric', 
-                                  year: 'numeric' 
-                                })}
-                              </button>
-                            ))}
+                            {event.dates.map((date, dateIdx) => {
+                              // Get all campaign dates for this date
+                              const campaignInfo = event.campaigns ? event.campaigns[dateIdx] : null;
+                              const allCampaignDates = campaignInfo?.allDates || [date];
+                              
+                              return (
+                                <button
+                                  key={dateIdx}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setFocusDate(date);
+                                    setExpandedBadge(null); // Close dropdown after selecting
+                                  }}
+                                  onMouseEnter={() => setHoveredCampaignDates(allCampaignDates)}
+                                  onMouseLeave={() => setHoveredCampaignDates([])}
+                                  className="w-full text-left py-1 px-2 hover:bg-slate-700 rounded cursor-pointer transition-colors"
+                                >
+                                  📅 {new Date(date).toLocaleDateString('en-US', { 
+                                    month: 'short', 
+                                    day: 'numeric', 
+                                    year: 'numeric' 
+                                  })} {allCampaignDates.length > 1 && `(${allCampaignDates.length} trades)`}
+                                </button>
+                              );
+                            })}
                           </div>
                         </div>
                       )}
@@ -1470,9 +1476,11 @@ const StockDetail = ({ trade, onClose }) => {
                           return <circle key={`purchase-empty-${cx}-${cy}`} cx={cx} cy={cy} r={0} fill="none" />;
                         }
                         
-                        // Check if this date matches the hovered event date
-                        const isHovered = hoveredEventDate && payload.date && 
-                          payload.date.split('T')[0] === hoveredEventDate.split('T')[0];
+                        // Check if this date matches any of the hovered campaign dates
+                        const payloadDate = payload.date ? payload.date.split('T')[0] : null;
+                        const isHovered = hoveredCampaignDates.some(campaignDate => 
+                          campaignDate && payloadDate && campaignDate.split('T')[0] === payloadDate
+                        );
                         
                         // Render multiple dots if there are multiple trades
                         const trades = payload.purchaseTrades;

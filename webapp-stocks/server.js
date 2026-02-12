@@ -1161,6 +1161,7 @@ function classifyAllEvents(insiderData, historyData) {
       type,
       count: 1,
       date: campaign.startDate,
+      campaignDates: campaign.dates, // All purchase dates in this campaign
       metadata: {
         startDate: campaign.startDate,
         endDate: campaign.endDate,
@@ -1173,21 +1174,26 @@ function classifyAllEvents(insiderData, historyData) {
     });
   });
   
-  // Aggregate by type and collect dates
+  // Aggregate by type and collect dates with campaign info
   const aggregated = {};
   events.forEach(e => {
     if (!aggregated[e.type]) {
-      aggregated[e.type] = { count: 0, dates: [] };
+      aggregated[e.type] = { count: 0, dates: [], campaigns: [] };
     }
     aggregated[e.type].count += 1;
     aggregated[e.type].dates.push(e.date);
+    aggregated[e.type].campaigns.push({
+      startDate: e.date,
+      allDates: e.campaignDates // All purchase dates in this campaign
+    });
   });
   
   // Convert to array
   return Object.keys(aggregated).map(type => ({
     type,
     count: aggregated[type].count,
-    dates: aggregated[type].dates
+    dates: aggregated[type].dates,
+    campaigns: aggregated[type].campaigns
   }));
 }
 
