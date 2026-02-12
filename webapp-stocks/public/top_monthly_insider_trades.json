@@ -1,17 +1,17 @@
 {
-  "updated_at": "2026-02-12T03:26:10.487899",
+  "updated_at": "2026-02-12T03:52:46.579482",
   "total_tickers": 108,
   "total_trades": 200,
   "data": [
     {
       "ticker": "WRB",
       "company_name": "Berkley W R Corp",
-      "total_value": 308450309,
-      "total_value_formatted": "$308.5M",
-      "total_purchases": 8,
+      "total_value": 315278461,
+      "total_value_formatted": "$315.3M",
+      "total_purchases": 9,
       "unique_insiders": 1,
       "role_counts": {
-        "10% Owner": 8
+        "10% Owner": 9
       },
       "trades": [
         {
@@ -74,17 +74,25 @@
           "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
           "title": "10%",
           "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$6,828,152",
+          "qty": "+97,996"
+        },
+        {
+          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
+          "title": "10%",
+          "role": "10% Owner",
           "trade_date": "2026-02-05",
           "value": "+$2,835,251",
           "qty": "+40,000"
         }
       ],
-      "eventClassification": {
-        "label": "Clamp Event",
-        "icon": "📊",
-        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
-        "tooltip": "Multiple days of insider buying - significant interest"
-      }
+      "eventClassification": [
+        {
+          "type": "clamp",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "SGP",
@@ -195,17 +203,17 @@
           "qty": "+312,500"
         },
         {
-          "insider_name": "Vensana Capital I Gp, LLC",
-          "title": "10%",
-          "role": "10% Owner",
+          "insider_name": "Nielsen Kirk G.",
+          "title": "Dir",
+          "role": "Other",
           "trade_date": "2026-02-09",
           "value": "+$2,640,000",
           "qty": "+165,000"
         },
         {
-          "insider_name": "Nielsen Kirk G.",
-          "title": "Dir",
-          "role": "Other",
+          "insider_name": "Vensana Capital I Gp, LLC",
+          "title": "10%",
+          "role": "10% Owner",
           "trade_date": "2026-02-09",
           "value": "+$2,640,000",
           "qty": "+165,000"
@@ -219,7 +227,7 @@
           "qty": "+135,000"
         }
       ],
-      "eventClassification": null
+      "eventClassification": []
     },
     {
       "ticker": "SHCO",
@@ -241,12 +249,12 @@
           "qty": "+11,111,111"
         }
       ],
-      "eventClassification": {
-        "label": "Disqualified",
-        "icon": "❌",
-        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
-        "tooltip": "Insider bought but stock didn't go up"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "THM",
@@ -284,12 +292,16 @@
           "qty": "+3,153,153"
         }
       ],
-      "eventClassification": {
-        "label": "Clamp Event",
-        "icon": "📊",
-        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
-        "tooltip": "Multiple days of insider buying - significant interest"
-      }
+      "eventClassification": [
+        {
+          "type": "holy-grail",
+          "count": 1
+        },
+        {
+          "type": "disqualified",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "UA",
@@ -319,12 +331,20 @@
           "qty": "+2,641,105"
         }
       ],
-      "eventClassification": {
-        "label": "Disqualified",
-        "icon": "❌",
-        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
-        "tooltip": "Insider bought but stock didn't go up"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 3
+        },
+        {
+          "type": "mid-rise",
+          "count": 1
+        },
+        {
+          "type": "restock",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "MANE",
@@ -379,12 +399,12 @@
           "qty": "+117,646"
         }
       ],
-      "eventClassification": {
-        "label": "Clamp Event",
-        "icon": "📊",
-        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
-        "tooltip": "Multiple days of insider buying - significant interest"
-      }
+      "eventClassification": [
+        {
+          "type": "clamp",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "EIKN",
@@ -407,16 +427,16 @@
           "qty": "+2,117,760"
         },
         {
-          "insider_name": "Wolfe Josh",
-          "title": "Dir, 10%",
+          "insider_name": "Lux Venture Partners V, LLC",
+          "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-04",
           "value": "+$4,999,968",
           "qty": "+277,776"
         },
         {
-          "insider_name": "Lux Venture Partners V, LLC",
-          "title": "10%",
+          "insider_name": "Wolfe Josh",
+          "title": "Dir, 10%",
           "role": "10% Owner",
           "trade_date": "2026-02-04",
           "value": "+$4,999,968",
@@ -431,12 +451,7 @@
           "qty": "+111,111"
         }
       ],
-      "eventClassification": {
-        "label": "Clamp Event",
-        "icon": "📊",
-        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
-        "tooltip": "Multiple days of insider buying - significant interest"
-      }
+      "eventClassification": []
     },
     {
       "ticker": "NFRX",
@@ -490,12 +505,12 @@
           "qty": "+386,996"
         }
       ],
-      "eventClassification": {
-        "label": "Clamp Event",
-        "icon": "📊",
-        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
-        "tooltip": "Multiple days of insider buying - significant interest"
-      }
+      "eventClassification": [
+        {
+          "type": "clamp",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "AKTS",
@@ -533,12 +548,12 @@
           "qty": "+232,870"
         }
       ],
-      "eventClassification": {
-        "label": "Disqualified",
-        "icon": "❌",
-        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
-        "tooltip": "Insider bought but stock didn't go up"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "GME",
@@ -568,12 +583,20 @@
           "qty": "+1,000,000"
         }
       ],
-      "eventClassification": {
-        "label": "Clamp Event",
-        "icon": "📊",
-        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
-        "tooltip": "Multiple days of insider buying - significant interest"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 2
+        },
+        {
+          "type": "slump-recovery",
+          "count": 1
+        },
+        {
+          "type": "holy-grail",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "HCIC",
@@ -629,7 +652,7 @@
           "qty": "+671,000"
         }
       ],
-      "eventClassification": null
+      "eventClassification": []
     },
     {
       "ticker": "AVO",
@@ -675,12 +698,16 @@
           "qty": "+309,020"
         }
       ],
-      "eventClassification": {
-        "label": "Clamp Event",
-        "icon": "📊",
-        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
-        "tooltip": "Multiple days of insider buying - significant interest"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 3
+        },
+        {
+          "type": "restock",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "AVR",
@@ -702,12 +729,12 @@
           "qty": "+5,000,000"
         }
       ],
-      "eventClassification": {
-        "label": "Disqualified",
-        "icon": "❌",
-        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
-        "tooltip": "Insider bought but stock didn't go up"
-      }
+      "eventClassification": [
+        {
+          "type": "mid-rise",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "YSS",
@@ -729,12 +756,12 @@
           "qty": "+752,500"
         }
       ],
-      "eventClassification": {
-        "label": "Disqualified",
-        "icon": "❌",
-        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
-        "tooltip": "Insider bought but stock didn't go up"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "HYMC",
@@ -772,12 +799,24 @@
           "qty": "+100,000"
         }
       ],
-      "eventClassification": {
-        "label": "Clamp Event",
-        "icon": "📊",
-        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
-        "tooltip": "Multiple days of insider buying - significant interest"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 2
+        },
+        {
+          "type": "mid-rise",
+          "count": 1
+        },
+        {
+          "type": "holy-grail",
+          "count": 3
+        },
+        {
+          "type": "restock",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "ASA",
@@ -831,12 +870,24 @@
           "qty": "+31,219"
         }
       ],
-      "eventClassification": {
-        "label": "Clamp Event",
-        "icon": "📊",
-        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
-        "tooltip": "Multiple days of insider buying - significant interest"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 2
+        },
+        {
+          "type": "holy-grail",
+          "count": 1
+        },
+        {
+          "type": "clamp",
+          "count": 1
+        },
+        {
+          "type": "restock",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "HLXC",
@@ -866,12 +917,12 @@
           "qty": "+800,000"
         }
       ],
-      "eventClassification": {
-        "label": "Disqualified",
-        "icon": "❌",
-        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
-        "tooltip": "Insider bought but stock didn't go up"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "UAA",
@@ -893,12 +944,20 @@
           "qty": "+2,335,350"
         }
       ],
-      "eventClassification": {
-        "label": "Disqualified",
-        "icon": "❌",
-        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
-        "tooltip": "Insider bought but stock didn't go up"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 2
+        },
+        {
+          "type": "mid-rise",
+          "count": 1
+        },
+        {
+          "type": "restock",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "SONO",
@@ -920,12 +979,16 @@
           "qty": "+733,073"
         }
       ],
-      "eventClassification": {
-        "label": "Clamp Event",
-        "icon": "📊",
-        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
-        "tooltip": "Multiple days of insider buying - significant interest"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 2
+        },
+        {
+          "type": "holy-grail",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "MLAA",
@@ -955,7 +1018,7 @@
           "qty": "+510,000"
         }
       ],
-      "eventClassification": null
+      "eventClassification": []
     },
     {
       "ticker": "ALMS",
@@ -977,12 +1040,16 @@
           "qty": "+588,235"
         }
       ],
-      "eventClassification": {
-        "label": "Clamp Event",
-        "icon": "📊",
-        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
-        "tooltip": "Multiple days of insider buying - significant interest"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 2
+        },
+        {
+          "type": "holy-grail",
+          "count": 2
+        }
+      ]
     },
     {
       "ticker": "TVA",
@@ -1004,12 +1071,12 @@
           "qty": "+925,000"
         }
       ],
-      "eventClassification": {
-        "label": "Disqualified",
-        "icon": "❌",
-        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
-        "tooltip": "Insider bought but stock didn't go up"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "LIFE",
@@ -1040,12 +1107,12 @@
           "qty": "+260,525"
         }
       ],
-      "eventClassification": {
-        "label": "Clamp Event",
-        "icon": "📊",
-        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
-        "tooltip": "Multiple days of insider buying - significant interest"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "MIRM",
@@ -1067,12 +1134,16 @@
           "qty": "+131,425"
         }
       ],
-      "eventClassification": {
-        "label": "Clamp Event",
-        "icon": "📊",
-        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
-        "tooltip": "Multiple days of insider buying - significant interest"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 5
+        },
+        {
+          "type": "mid-rise",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "PMN",
@@ -1094,12 +1165,12 @@
           "qty": "+700,741"
         }
       ],
-      "eventClassification": {
-        "label": "Disqualified",
-        "icon": "❌",
-        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
-        "tooltip": "Insider bought but stock didn't go up"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 6
+        }
+      ]
     },
     {
       "ticker": "FEAM",
@@ -1121,12 +1192,7 @@
           "qty": "+4,000,000"
         }
       ],
-      "eventClassification": {
-        "label": "Disqualified",
-        "icon": "❌",
-        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
-        "tooltip": "Insider bought but stock didn't go up"
-      }
+      "eventClassification": []
     },
     {
       "ticker": "LEE",
@@ -1148,12 +1214,16 @@
           "qty": "+2,451,346"
         }
       ],
-      "eventClassification": {
-        "label": "Clamp Event",
-        "icon": "📊",
-        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
-        "tooltip": "Multiple days of insider buying - significant interest"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 4
+        },
+        {
+          "type": "mid-rise",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "MU",
@@ -1175,12 +1245,7 @@
           "qty": "+23,200"
         }
       ],
-      "eventClassification": {
-        "label": "Disqualified",
-        "icon": "❌",
-        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
-        "tooltip": "Insider bought but stock didn't go up"
-      }
+      "eventClassification": []
     },
     {
       "ticker": "TCI",
@@ -1210,12 +1275,12 @@
           "qty": "+70,023"
         }
       ],
-      "eventClassification": {
-        "label": "Disqualified",
-        "icon": "❌",
-        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
-        "tooltip": "Insider bought but stock didn't go up"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "YYAI",
@@ -1237,12 +1302,24 @@
           "qty": "+4,215,000"
         }
       ],
-      "eventClassification": {
-        "label": "Slump Recovery",
-        "icon": "📈",
-        "colorClass": "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-        "tooltip": "Stock was in a slump, insiders bought heavily, and it recovered. Bottom-fishing signal!"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 2
+        },
+        {
+          "type": "holy-grail",
+          "count": 1
+        },
+        {
+          "type": "mid-rise",
+          "count": 1
+        },
+        {
+          "type": "restock",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "EMPD",
@@ -1272,12 +1349,12 @@
           "qty": "+428,626"
         }
       ],
-      "eventClassification": {
-        "label": "Clamp Event",
-        "icon": "📊",
-        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
-        "tooltip": "Multiple days of insider buying - significant interest"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 3
+        }
+      ]
     },
     {
       "ticker": "KKR",
@@ -1299,7 +1376,12 @@
           "qty": "+50,000"
         }
       ],
-      "eventClassification": null
+      "eventClassification": [
+        {
+          "type": "mid-rise",
+          "count": 2
+        }
+      ]
     },
     {
       "ticker": "ALXO",
@@ -1321,7 +1403,16 @@
           "qty": "+3,184,713"
         }
       ],
-      "eventClassification": null
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 1
+        },
+        {
+          "type": "mid-rise",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "CAQ",
@@ -1343,7 +1434,7 @@
           "qty": "+495,500"
         }
       ],
-      "eventClassification": null
+      "eventClassification": []
     },
     {
       "ticker": "LW",
@@ -1373,7 +1464,16 @@
           "qty": "+50,000"
         }
       ],
-      "eventClassification": null
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 3
+        },
+        {
+          "type": "mid-rise",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "MIGI",
@@ -1395,12 +1495,20 @@
           "qty": "+801,279"
         }
       ],
-      "eventClassification": {
-        "label": "Clamp Event",
-        "icon": "📊",
-        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
-        "tooltip": "Multiple days of insider buying - significant interest"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 3
+        },
+        {
+          "type": "slump-recovery",
+          "count": 1
+        },
+        {
+          "type": "restock",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "RUM",
@@ -1422,12 +1530,7 @@
           "qty": "+777,012"
         }
       ],
-      "eventClassification": {
-        "label": "Disqualified",
-        "icon": "❌",
-        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
-        "tooltip": "Insider bought but stock didn't go up"
-      }
+      "eventClassification": []
     },
     {
       "ticker": "ABT",
@@ -1457,12 +1560,12 @@
           "qty": "+18,800"
         }
       ],
-      "eventClassification": {
-        "label": "Disqualified",
-        "icon": "❌",
-        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
-        "tooltip": "Insider bought but stock didn't go up"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 2
+        }
+      ]
     },
     {
       "ticker": "IP",
@@ -1492,12 +1595,7 @@
           "qty": "+50,000"
         }
       ],
-      "eventClassification": {
-        "label": "Disqualified",
-        "icon": "❌",
-        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
-        "tooltip": "Insider bought but stock didn't go up"
-      }
+      "eventClassification": []
     },
     {
       "ticker": "VANI",
@@ -1527,12 +1625,20 @@
           "qty": "+1,737,765"
         }
       ],
-      "eventClassification": {
-        "label": "Clamp Event",
-        "icon": "📊",
-        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
-        "tooltip": "Multiple days of insider buying - significant interest"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 8
+        },
+        {
+          "type": "mid-rise",
+          "count": 2
+        },
+        {
+          "type": "restock",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "MUZE",
@@ -1554,7 +1660,7 @@
           "qty": "+335,938"
         }
       ],
-      "eventClassification": null
+      "eventClassification": []
     },
     {
       "ticker": "STEX",
@@ -1585,12 +1691,12 @@
           "qty": "+1,000,000"
         }
       ],
-      "eventClassification": {
-        "label": "Clamp Event",
-        "icon": "📊",
-        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
-        "tooltip": "Multiple days of insider buying - significant interest"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 2
+        }
+      ]
     },
     {
       "ticker": "CEPS",
@@ -1612,7 +1718,7 @@
           "qty": "+300,000"
         }
       ],
-      "eventClassification": null
+      "eventClassification": []
     },
     {
       "ticker": "NOMA",
@@ -1634,12 +1740,12 @@
           "qty": "+260,433"
         }
       ],
-      "eventClassification": {
-        "label": "Disqualified",
-        "icon": "❌",
-        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
-        "tooltip": "Insider bought but stock didn't go up"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "USAR",
@@ -1661,12 +1767,12 @@
           "qty": "+100,000"
         }
       ],
-      "eventClassification": {
-        "label": "Disqualified",
-        "icon": "❌",
-        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
-        "tooltip": "Insider bought but stock didn't go up"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "LXRX",
@@ -1688,12 +1794,12 @@
           "qty": "+1,538,462"
         }
       ],
-      "eventClassification": {
-        "label": "Disqualified",
-        "icon": "❌",
-        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
-        "tooltip": "Insider bought but stock didn't go up"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "GEF",
@@ -1740,43 +1846,20 @@
           "qty": "+300"
         }
       ],
-      "eventClassification": {
-        "label": "Clamp Event",
-        "icon": "📊",
-        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
-        "tooltip": "Multiple days of insider buying - significant interest"
-      }
-    },
-    {
-      "ticker": "TCGSX",
-      "company_name": "Tcg Strategic Income Fund",
-      "total_value": 1850000,
-      "total_value_formatted": "$1.9M",
-      "total_purchases": 2,
-      "unique_insiders": 2,
-      "role_counts": {
-        "Pres": 1,
-        "10% Owner": 1
-      },
-      "trades": [
+      "eventClassification": [
         {
-          "insider_name": "McNitt Peter Boyd Jr.",
-          "title": "PEO, Pres",
-          "role": "Pres",
-          "trade_date": "2026-01-16",
-          "value": "+$50,000",
-          "qty": "+4,931"
+          "type": "disqualified",
+          "count": 7
         },
         {
-          "insider_name": "Tannenbaum Leonard M",
-          "title": "Dir, 10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-09",
-          "value": "+$1,800,000",
-          "qty": "+184,805"
+          "type": "clamp",
+          "count": 1
+        },
+        {
+          "type": "restock",
+          "count": 1
         }
-      ],
-      "eventClassification": null
+      ]
     },
     {
       "ticker": "NFJ",
@@ -1798,12 +1881,16 @@
           "qty": "+135,407"
         }
       ],
-      "eventClassification": {
-        "label": "Clamp Event",
-        "icon": "📊",
-        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
-        "tooltip": "Multiple days of insider buying - significant interest"
-      }
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 1
+        },
+        {
+          "type": "clamp",
+          "count": 1
+        }
+      ]
     },
     {
       "ticker": "CLBRU",
@@ -1825,7 +1912,43 @@
           "qty": "+150,000"
         }
       ],
-      "eventClassification": null
+      "eventClassification": []
+    },
+    {
+      "ticker": "ALLY",
+      "company_name": "Ally Financial Inc.",
+      "total_value": 1491174,
+      "total_value_formatted": "$1.5M",
+      "total_purchases": 2,
+      "unique_insiders": 2,
+      "role_counts": {
+        "CEO": 1,
+        "CFO": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Rhodes Michael George",
+          "title": "CEO",
+          "role": "CEO",
+          "trade_date": "2026-01-23",
+          "value": "+$991,867",
+          "qty": "+23,800"
+        },
+        {
+          "insider_name": "Hutchinson Russell E.",
+          "title": "CFO",
+          "role": "CFO",
+          "trade_date": "2026-01-27",
+          "value": "+$499,307",
+          "qty": "+11,566"
+        }
+      ],
+      "eventClassification": [
+        {
+          "type": "disqualified",
+          "count": 3
+        }
+      ]
     }
   ]
 }

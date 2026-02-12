@@ -1,17 +1,17 @@
 {
-  "updated_at": "2026-02-12T03:26:10.487899",
+  "updated_at": "2026-02-12T03:52:46.579482",
   "total_tickers": 108,
   "total_trades": 200,
   "data": [
     {
       "ticker": "WRB",
       "company_name": "Berkley W R Corp",
-      "total_value": 308450309.0,
-      "total_value_formatted": "$308.5M",
-      "total_purchases": 8,
+      "total_value": 315278461.0,
+      "total_value_formatted": "$315.3M",
+      "total_purchases": 9,
       "unique_insiders": 1,
       "role_counts": {
-        "10% Owner": 8
+        "10% Owner": 9
       },
       "trades": [
         {
@@ -69,6 +69,14 @@
           "trade_date": "2026-02-02",
           "value": "+$21,451,897",
           "qty": "+315,221"
+        },
+        {
+          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$6,828,152",
+          "qty": "+97,996"
         },
         {
           "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
@@ -189,17 +197,17 @@
           "qty": "+312,500"
         },
         {
-          "insider_name": "Vensana Capital I Gp, LLC",
-          "title": "10%",
-          "role": "10% Owner",
+          "insider_name": "Nielsen Kirk G.",
+          "title": "Dir",
+          "role": "Other",
           "trade_date": "2026-02-09",
           "value": "+$2,640,000",
           "qty": "+165,000"
         },
         {
-          "insider_name": "Nielsen Kirk G.",
-          "title": "Dir",
-          "role": "Other",
+          "insider_name": "Vensana Capital I Gp, LLC",
+          "title": "10%",
+          "role": "10% Owner",
           "trade_date": "2026-02-09",
           "value": "+$2,640,000",
           "qty": "+165,000"
@@ -376,16 +384,16 @@
           "qty": "+2,117,760"
         },
         {
-          "insider_name": "Wolfe Josh",
-          "title": "Dir, 10%",
+          "insider_name": "Lux Venture Partners V, LLC",
+          "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-04",
           "value": "+$4,999,968",
           "qty": "+277,776"
         },
         {
-          "insider_name": "Lux Venture Partners V, LLC",
-          "title": "10%",
+          "insider_name": "Wolfe Josh",
+          "title": "Dir, 10%",
           "role": "10% Owner",
           "trade_date": "2026-02-04",
           "value": "+$4,999,968",
@@ -1511,36 +1519,6 @@
       ]
     },
     {
-      "ticker": "TCGSX",
-      "company_name": "Tcg Strategic Income Fund",
-      "total_value": 1850000.0,
-      "total_value_formatted": "$1.9M",
-      "total_purchases": 2,
-      "unique_insiders": 2,
-      "role_counts": {
-        "Pres": 1,
-        "10% Owner": 1
-      },
-      "trades": [
-        {
-          "insider_name": "McNitt Peter Boyd Jr.",
-          "title": "PEO, Pres",
-          "role": "Pres",
-          "trade_date": "2026-01-16",
-          "value": "+$50,000",
-          "qty": "+4,931"
-        },
-        {
-          "insider_name": "Tannenbaum Leonard M",
-          "title": "Dir, 10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-09",
-          "value": "+$1,800,000",
-          "qty": "+184,805"
-        }
-      ]
-    },
-    {
       "ticker": "NFJ",
       "company_name": "Virtus Dividend, Interest & Premium Strategy Fund",
       "total_value": 1829465.0,
@@ -1579,6 +1557,36 @@
           "trade_date": "2026-02-05",
           "value": "+$1,500,000",
           "qty": "+150,000"
+        }
+      ]
+    },
+    {
+      "ticker": "ALLY",
+      "company_name": "Ally Financial Inc.",
+      "total_value": 1491174.0,
+      "total_value_formatted": "$1.5M",
+      "total_purchases": 2,
+      "unique_insiders": 2,
+      "role_counts": {
+        "CEO": 1,
+        "CFO": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Rhodes Michael George",
+          "title": "CEO",
+          "role": "CEO",
+          "trade_date": "2026-01-23",
+          "value": "+$991,867",
+          "qty": "+23,800"
+        },
+        {
+          "insider_name": "Hutchinson Russell E.",
+          "title": "CFO",
+          "role": "CFO",
+          "trade_date": "2026-01-27",
+          "value": "+$499,307",
+          "qty": "+11,566"
         }
       ]
     }

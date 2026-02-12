@@ -9,7 +9,25 @@ const TopMonthlyCard = ({ stock }) => {
   const totalPurchases = stock.total_purchases;
   const uniqueInsiders = stock.unique_insiders;
   const roleCounts = stock.role_counts || {};
-  const eventBadge = stock.eventClassification; // Event is pre-calculated and stored
+  
+  // Handle both old (object) and new (array) eventClassification formats
+  let events = [];
+  if (Array.isArray(stock.eventClassification)) {
+    events = stock.eventClassification;
+  } else if (stock.eventClassification && typeof stock.eventClassification === 'object') {
+    // Old format - convert single event to array
+    events = [{ type: 'clamp', count: 1 }]; // Fallback
+  }
+  
+  // Event badge config
+  const eventLabels = {
+    'holy-grail': { label: 'Holy Grail', icon: '🔥', colorClass: 'bg-purple-500/20 text-purple-400 border-purple-500/30', tooltip: 'Clamp + price up!' },
+    'slump-recovery': { label: 'Slump Recovery', icon: '📈', colorClass: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30', tooltip: 'Bottom-fishing success!' },
+    'clamp': { label: 'Clamp', icon: '📊', colorClass: 'bg-blue-500/20 text-blue-400 border-blue-500/30', tooltip: 'Purchases within 7 days' },
+    'restock': { label: 'Restock', icon: '🔄', colorClass: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30', tooltip: '3+ purchases in 30 days' },
+    'mid-rise': { label: 'Mid-Rise', icon: '⚠️', colorClass: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30', tooltip: 'Buying during uptrend' },
+    'disqualified': { label: 'Disqualified', icon: '❌', colorClass: 'bg-red-500/20 text-red-400 border-red-500/30', tooltip: "Didn't work out" }
+  };
   
   // Extract role counts
   const cobCount = roleCounts['COB'] || 0;
@@ -61,16 +79,22 @@ const TopMonthlyCard = ({ stock }) => {
         </div>
       </div>
 
-      {/* Badges Row - Event Classification Only */}
+      {/* Badges Row - All Event Classifications */}
       <div className="flex flex-wrap gap-2 mb-4">
-        {/* Event Classification Badge */}
-        {eventBadge && (
-          <Tooltip text={eventBadge.tooltip}>
-            <span className={`px-3 py-2 rounded-lg text-sm font-medium ${eventBadge.colorClass}`}>
-              {eventBadge.icon} {eventBadge.label}
-            </span>
-          </Tooltip>
-        )}
+        {events.map((event, idx) => {
+          const config = eventLabels[event.type];
+          if (!config) return null;
+          
+          const displayLabel = event.count > 1 ? `${event.count} ${config.label}` : config.label;
+          
+          return (
+            <Tooltip key={`${event.type}-${idx}`} text={config.tooltip}>
+              <span className={`px-3 py-2 rounded-lg text-sm font-medium border ${config.colorClass}`}>
+                {config.icon} {displayLabel}
+              </span>
+            </Tooltip>
+          );
+        })}
       </div>
 
       {/* Role Breakdown Section */}
