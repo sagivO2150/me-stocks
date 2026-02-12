@@ -1043,7 +1043,7 @@ app.get('/api/event-classification/:ticker', async (req, res) => {
 function classifyAllEvents(insiderData, historyData) {
   const purchases = insiderData.purchases;
   const history = historyData.history;
-  const events = [];
+  const events = []; // Now each event will have: { type, count, dates: [] }
   
   // Group purchases by date
   const purchasesByDate = {};
@@ -1119,19 +1119,19 @@ function classifyAllEvents(insiderData, historyData) {
         
         if (pctChange >= 10) {
           if (wasInSlump) {
-            events.push({ type: 'slump-recovery', count: 1 });
+            events.push({ type: 'slump-recovery', count: 1, date: lastClampDate });
           } else {
-            events.push({ type: 'holy-grail', count: 1 });
+            events.push({ type: 'holy-grail', count: 1, date: lastClampDate });
           }
         } else if (daysSince < 7) {
           // Too early to tell
-          events.push({ type: 'clamp', count: 1 });
+          events.push({ type: 'clamp', count: 1, date: lastClampDate });
         } else {
           // Didn't work out
-          events.push({ type: 'disqualified', count: 1 });
+          events.push({ type: 'disqualified', count: 1, date: lastClampDate });
         }
       } else {
-        events.push({ type: 'clamp', count: 1 });
+        events.push({ type: 'clamp', count: 1, date: lastClampDate });
       }
       
       // Mark all clamp dates as analyzed
@@ -1147,7 +1147,7 @@ function classifyAllEvents(insiderData, historyData) {
     if (price30Before && priceAtPurchase) {
       const priceRise = ((priceAtPurchase - price30Before) / price30Before) * 100;
       if (priceRise >= 10 && priceRise < 30) {
-        events.push({ type: 'mid-rise', count: 1 });
+        events.push({ type: 'mid-rise', count: 1, date: currentDate });
         analyzed.add(i);
         continue;
       }
@@ -1157,7 +1157,7 @@ function classifyAllEvents(insiderData, historyData) {
     if (price7After && priceAtPurchase && daysSince > 7) {
       const pctChange = ((price7After - priceAtPurchase) / priceAtPurchase) * 100;
       if (pctChange < 5) {
-        events.push({ type: 'disqualified', count: 1 });
+        events.push({ type: 'disqualified', count: 1, date: currentDate });
       }
     }
     
@@ -1178,23 +1178,27 @@ function classifyAllEvents(insiderData, historyData) {
         }
       }
       if (!isClamp) {
-        events.push({ type: 'restock', count: 1 });
+        events.push({ type: 'restock', count: 1, date: sortedDates[i] });
         break; // Only count once
       }
     }
   }
   
-  // Aggregate by type
+  // Aggregate by type and collect dates
   const aggregated = {};
   events.forEach(e => {
-    if (!aggregated[e.type]) aggregated[e.type] = 0;
-    aggregated[e.type] += e.count;
+    if (!aggregated[e.type]) {
+      aggregated[e.type] = { count: 0, dates: [] };
+    }
+    aggregated[e.type].count += 1;
+    aggregated[e.type].dates.push(e.date);
   });
   
   // Convert to array
   return Object.keys(aggregated).map(type => ({
     type,
-    count: aggregated[type]
+    count: aggregated[type].count,
+    dates: aggregated[type].dates
   }));
 }
 

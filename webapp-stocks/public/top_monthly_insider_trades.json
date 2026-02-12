@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-02-12T18:16:14.479996",
+  "updated_at": "2026-02-12T18:48:06.400537",
   "total_tickers": 106,
   "total_trades": 200,
   "data": [
@@ -90,7 +90,10 @@
       "eventClassification": [
         {
           "type": "clamp",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2026-02-09"
+          ]
         }
       ]
     },
@@ -115,63 +118,7 @@
           "qty": "+3,690,000"
         },
         {
-          "insider_name": "Behbahani Ali",
-          "title": "Dir, 10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-09",
-          "value": "+$15,000,000",
-          "qty": "+937,500"
-        },
-        {
-          "insider_name": "Baskett Forest",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-09",
-          "value": "+$15,000,000",
-          "qty": "+937,500"
-        },
-        {
-          "insider_name": "New Enterprise Associates 17, L.P.",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-09",
-          "value": "+$15,000,000",
-          "qty": "+937,500"
-        },
-        {
-          "insider_name": "Yang Rick",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-09",
-          "value": "+$15,000,000",
-          "qty": "+937,500"
-        },
-        {
-          "insider_name": "Makhzoumi Mohamad",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-09",
-          "value": "+$15,000,000",
-          "qty": "+937,500"
-        },
-        {
-          "insider_name": "Sandell Scott D",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-09",
-          "value": "+$15,000,000",
-          "qty": "+937,500"
-        },
-        {
-          "insider_name": "Chang Carmen",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-09",
-          "value": "+$15,000,000",
-          "qty": "+937,500"
-        },
-        {
-          "insider_name": "Mathers Edward T",
+          "insider_name": "Florence Anthony A. Jr.",
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
@@ -187,8 +134,64 @@
           "qty": "+937,500"
         },
         {
-          "insider_name": "Florence Anthony A. Jr.",
+          "insider_name": "Mathers Edward T",
           "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Chang Carmen",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Sandell Scott D",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Makhzoumi Mohamad",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Yang Rick",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "New Enterprise Associates 17, L.P.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Baskett Forest",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Behbahani Ali",
+          "title": "Dir, 10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
           "value": "+$15,000,000",
@@ -203,17 +206,17 @@
           "qty": "+312,500"
         },
         {
-          "insider_name": "Nielsen Kirk G.",
-          "title": "Dir",
-          "role": "Other",
+          "insider_name": "Vensana Capital I Gp, LLC",
+          "title": "10%",
+          "role": "10% Owner",
           "trade_date": "2026-02-09",
           "value": "+$2,640,000",
           "qty": "+165,000"
         },
         {
-          "insider_name": "Vensana Capital I Gp, LLC",
-          "title": "10%",
-          "role": "10% Owner",
+          "insider_name": "Nielsen Kirk G.",
+          "title": "Dir",
+          "role": "Other",
           "trade_date": "2026-02-09",
           "value": "+$2,640,000",
           "qty": "+165,000"
@@ -252,7 +255,10 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2024-06-20"
+          ]
         }
       ]
     },
@@ -295,11 +301,17 @@
       "eventClassification": [
         {
           "type": "holy-grail",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2025-03-03"
+          ]
         },
         {
           "type": "disqualified",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2026-01-28"
+          ]
         }
       ]
     },
@@ -334,15 +346,26 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 3
+          "count": 3,
+          "dates": [
+            "2025-08-21",
+            "2025-12-22",
+            "2026-01-27"
+          ]
         },
         {
           "type": "mid-rise",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2025-12-30"
+          ]
         },
         {
           "type": "restock",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2025-12-22"
+          ]
         }
       ]
     },
@@ -402,7 +425,10 @@
       "eventClassification": [
         {
           "type": "holy-grail",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2026-02-05"
+          ]
         }
       ]
     },
@@ -508,7 +534,10 @@
       "eventClassification": [
         {
           "type": "clamp",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2026-02-10"
+          ]
         }
       ]
     },
@@ -551,7 +580,10 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2026-01-12"
+          ]
         }
       ]
     },
@@ -586,15 +618,25 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 2
+          "count": 2,
+          "dates": [
+            "2024-04-08",
+            "2025-06-30"
+          ]
         },
         {
           "type": "slump-recovery",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2025-04-10"
+          ]
         },
         {
           "type": "holy-grail",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2026-01-23"
+          ]
         }
       ]
     },
@@ -628,6 +670,14 @@
           "qty": "+671,000"
         },
         {
+          "insider_name": "Hc VIII Sponsor LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-06",
+          "value": "+$6,710,000",
+          "qty": "+671,000"
+        },
+        {
           "insider_name": "Hennessy Daniel J",
           "title": "COB, CEO, 10%",
           "role": "COB",
@@ -639,14 +689,6 @@
           "insider_name": "Hennessy Thomas D",
           "title": "Pres, 10%",
           "role": "Pres",
-          "trade_date": "2026-02-06",
-          "value": "+$6,710,000",
-          "qty": "+671,000"
-        },
-        {
-          "insider_name": "Hc VIII Sponsor LLC",
-          "title": "10%",
-          "role": "10% Owner",
           "trade_date": "2026-02-06",
           "value": "+$6,710,000",
           "qty": "+671,000"
@@ -701,11 +743,19 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 3
+          "count": 3,
+          "dates": [
+            "2025-11-11",
+            "2026-01-07",
+            "2026-01-21"
+          ]
         },
         {
           "type": "restock",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2026-01-05"
+          ]
         }
       ]
     },
@@ -732,7 +782,10 @@
       "eventClassification": [
         {
           "type": "mid-rise",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2026-01-22"
+          ]
         }
       ]
     },
@@ -759,7 +812,10 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2026-01-30"
+          ]
         }
       ]
     },
@@ -802,19 +858,34 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 2
+          "count": 2,
+          "dates": [
+            "2025-09-10",
+            "2026-01-29"
+          ]
         },
         {
           "type": "mid-rise",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2025-10-14"
+          ]
         },
         {
           "type": "holy-grail",
-          "count": 3
+          "count": 3,
+          "dates": [
+            "2025-11-17",
+            "2025-12-24",
+            "2026-01-14"
+          ]
         },
         {
           "type": "restock",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2025-11-11"
+          ]
         }
       ]
     },
@@ -881,19 +952,32 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 2
+          "count": 2,
+          "dates": [
+            "2024-11-14",
+            "2025-01-16"
+          ]
         },
         {
           "type": "holy-grail",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2025-09-19"
+          ]
         },
         {
           "type": "clamp",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2026-02-11"
+          ]
         },
         {
           "type": "restock",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2025-09-17"
+          ]
         }
       ]
     },
@@ -928,7 +1012,10 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2026-01-26"
+          ]
         }
       ]
     },
@@ -955,15 +1042,25 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 2
+          "count": 2,
+          "dates": [
+            "2025-08-21",
+            "2026-01-27"
+          ]
         },
         {
           "type": "mid-rise",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2025-12-30"
+          ]
         },
         {
           "type": "restock",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2025-12-22"
+          ]
         }
       ]
     },
@@ -990,11 +1087,18 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 2
+          "count": 2,
+          "dates": [
+            "2025-04-03",
+            "2025-06-12"
+          ]
         },
         {
           "type": "holy-grail",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2025-08-08"
+          ]
         }
       ]
     },
@@ -1051,7 +1155,10 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2026-02-04"
+          ]
         }
       ]
     },
@@ -1063,18 +1170,10 @@
       "total_purchases": 2,
       "unique_insiders": 2,
       "role_counts": {
-        "10% Owner": 1,
-        "Other": 1
+        "Other": 1,
+        "10% Owner": 1
       },
       "trades": [
-        {
-          "insider_name": "Botha Roelof",
-          "title": "Dir, 10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-29",
-          "value": "+$4,949,975",
-          "qty": "+260,525"
-        },
         {
           "insider_name": "Wheeler William J",
           "title": "Dir",
@@ -1082,12 +1181,23 @@
           "trade_date": "2026-01-30",
           "value": "+$4,949,975",
           "qty": "+260,525"
+        },
+        {
+          "insider_name": "Botha Roelof",
+          "title": "Dir, 10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-29",
+          "value": "+$4,949,975",
+          "qty": "+260,525"
         }
       ],
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2026-01-30"
+          ]
         }
       ]
     },
@@ -1114,11 +1224,21 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 5
+          "count": 5,
+          "dates": [
+            "2024-03-18",
+            "2024-03-27",
+            "2024-09-06",
+            "2024-09-18",
+            "2025-03-14"
+          ]
         },
         {
           "type": "mid-rise",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2026-01-23"
+          ]
         }
       ]
     },
@@ -1145,7 +1265,15 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 6
+          "count": 6,
+          "dates": [
+            "2024-07-31",
+            "2024-08-14",
+            "2024-09-20",
+            "2025-02-10",
+            "2025-10-03",
+            "2026-02-03"
+          ]
         }
       ]
     },
@@ -1212,11 +1340,20 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 4
+          "count": 4,
+          "dates": [
+            "2024-03-26",
+            "2024-05-07",
+            "2024-08-07",
+            "2025-02-19"
+          ]
         },
         {
           "type": "mid-rise",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2026-02-05"
+          ]
         }
       ]
     },
@@ -1273,7 +1410,10 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2026-01-12"
+          ]
         }
       ]
     },
@@ -1300,19 +1440,32 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 2
+          "count": 2,
+          "dates": [
+            "2025-10-08",
+            "2025-10-27"
+          ]
         },
         {
           "type": "holy-grail",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2026-01-11"
+          ]
         },
         {
           "type": "mid-rise",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2026-01-21"
+          ]
         },
         {
           "type": "restock",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2026-01-07"
+          ]
         }
       ]
     },
@@ -1347,7 +1500,12 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 3
+          "count": 3,
+          "dates": [
+            "2024-07-05",
+            "2024-08-30",
+            "2026-02-02"
+          ]
         }
       ]
     },
@@ -1374,7 +1532,11 @@
       "eventClassification": [
         {
           "type": "mid-rise",
-          "count": 2
+          "count": 2,
+          "dates": [
+            "2025-05-06",
+            "2025-05-22"
+          ]
         }
       ]
     },
@@ -1401,11 +1563,17 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2024-06-13"
+          ]
         },
         {
           "type": "mid-rise",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2024-12-02"
+          ]
         }
       ]
     },
@@ -1462,11 +1630,19 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 3
+          "count": 3,
+          "dates": [
+            "2024-07-26",
+            "2024-12-23",
+            "2025-01-13"
+          ]
         },
         {
           "type": "mid-rise",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2026-02-06"
+          ]
         }
       ]
     },
@@ -1493,15 +1669,26 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 3
+          "count": 3,
+          "dates": [
+            "2025-11-26",
+            "2025-12-26",
+            "2026-01-28"
+          ]
         },
         {
           "type": "slump-recovery",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2026-01-16"
+          ]
         },
         {
           "type": "restock",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2025-12-26"
+          ]
         }
       ]
     },
@@ -1558,7 +1745,11 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 2
+          "count": 2,
+          "dates": [
+            "2026-01-23",
+            "2026-02-04"
+          ]
         }
       ]
     },
@@ -1623,15 +1814,32 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 8
+          "count": 8,
+          "dates": [
+            "2024-02-15",
+            "2024-07-30",
+            "2024-10-01",
+            "2025-02-28",
+            "2025-04-09",
+            "2025-04-24",
+            "2025-12-29",
+            "2026-01-27"
+          ]
         },
         {
           "type": "mid-rise",
-          "count": 2
+          "count": 2,
+          "dates": [
+            "2024-11-08",
+            "2025-10-27"
+          ]
         },
         {
           "type": "restock",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2025-04-04"
+          ]
         }
       ]
     },
@@ -1689,7 +1897,11 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 2
+          "count": 2,
+          "dates": [
+            "2025-07-25",
+            "2026-02-04"
+          ]
         }
       ]
     },
@@ -1738,7 +1950,10 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2025-11-20"
+          ]
         }
       ]
     },
@@ -1765,7 +1980,10 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2026-01-29"
+          ]
         }
       ]
     },
@@ -1792,7 +2010,10 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2026-02-02"
+          ]
         }
       ]
     },
@@ -1844,15 +2065,30 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 7
+          "count": 7,
+          "dates": [
+            "2024-03-08",
+            "2024-04-04",
+            "2024-12-26",
+            "2025-01-07",
+            "2025-03-11",
+            "2025-07-10",
+            "2025-11-19"
+          ]
         },
         {
           "type": "clamp",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2026-02-09"
+          ]
         },
         {
           "type": "restock",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2024-03-07"
+          ]
         }
       ]
     },
@@ -1879,11 +2115,17 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2025-06-17"
+          ]
         },
         {
           "type": "clamp",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2026-02-09"
+          ]
         }
       ]
     },
@@ -1941,7 +2183,12 @@
       "eventClassification": [
         {
           "type": "disqualified",
-          "count": 3
+          "count": 3,
+          "dates": [
+            "2025-01-27",
+            "2025-04-22",
+            "2026-01-27"
+          ]
         }
       ]
     },
@@ -1985,7 +2232,10 @@
       "eventClassification": [
         {
           "type": "clamp",
-          "count": 1
+          "count": 1,
+          "dates": [
+            "2026-02-10"
+          ]
         }
       ]
     }

@@ -964,6 +964,12 @@ const StockDetail = ({ trade, onClose }) => {
 
   // Get event classification from trade if available
   const events = Array.isArray(trade.eventClassification) ? trade.eventClassification : [];
+  
+  // State for tracking which badge dropdown is open
+  const [expandedBadge, setExpandedBadge] = useState(null);
+  
+  // Debug: log events to see if dates are present
+  console.log('Events for', ticker, ':', events);
 
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -995,13 +1001,36 @@ const StockDetail = ({ trade, onClose }) => {
                   if (!config) return null;
                   
                   const displayLabel = event.count > 1 ? `${event.count} ${config.label}` : config.label;
+                  const isExpanded = expandedBadge === `${event.type}-${idx}`;
+                  const hasDates = event.dates && event.dates.length > 0;
                   
                   return (
-                    <Tooltip key={`${event.type}-${idx}`} text={config.tooltip}>
-                      <span className={`px-2 py-1 rounded-lg text-xs font-medium border ${config.colorClass}`}>
-                        {config.icon} {displayLabel}
-                      </span>
-                    </Tooltip>
+                    <div key={`${event.type}-${idx}`} className="relative">
+                      <button
+                        onClick={() => setExpandedBadge(isExpanded ? null : `${event.type}-${idx}`)}
+                        className={`px-2 py-1 rounded-lg text-xs font-medium border ${config.colorClass} cursor-pointer hover:opacity-80 transition-opacity`}
+                        title={config.tooltip}
+                      >
+                        {config.icon} {displayLabel} {hasDates && (isExpanded ? '▲' : '▼')}
+                      </button>
+                      
+                      {/* Dropdown with dates */}
+                      {isExpanded && hasDates && (
+                        <div className="absolute top-full left-0 mt-1 bg-slate-800 border border-slate-600 rounded-lg shadow-xl z-10 min-w-[150px]">
+                          <div className="p-2 text-xs text-slate-300">
+                            {event.dates.map((date, dateIdx) => (
+                              <div key={dateIdx} className="py-1 px-2 hover:bg-slate-700 rounded">
+                                📅 {new Date(date).toLocaleDateString('en-US', { 
+                                  month: 'short', 
+                                  day: 'numeric', 
+                                  year: 'numeric' 
+                                })}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   );
                 })}
               </div>
