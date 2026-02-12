@@ -1058,6 +1058,24 @@ function classifyAllEvents(insiderData, historyData) {
   
   const sortedDates = Object.keys(purchasesByDate).sort();
   
+  // Helper to check if date is within 7 business days
+  const isWithin7BusinessDays = (date1, date2) => {
+    const d1 = new Date(date1);
+    const d2 = new Date(date2);
+    let businessDays = 0;
+    let current = new Date(d1);
+    
+    while (current <= d2 && businessDays <= 7) {
+      const dayOfWeek = current.getDay();
+      if (dayOfWeek !== 0 && dayOfWeek !== 6) { // Not weekend
+        businessDays++;
+      }
+      current.setDate(current.getDate() + 1);
+    }
+    
+    return businessDays <= 7;
+  };
+  
   // Price lookup
   const priceByDate = {};
   history.forEach(point => {
@@ -1090,82 +1108,143 @@ function classifyAllEvents(insiderData, historyData) {
     const priceAtPurchase = getPriceAt(currentDate);
     if (!priceAtPurchase) continue;
     
-    // Check for clamp starting at this position
-    let clampEndIdx = i;
+    // Check if this purchase is part of a clamp (multiple purchases within 7 days)
+    // We'll classify each purchase individually, but note if it's part of a clamp pattern
+    let isPartOfClamp = false;
+    let clampDates = [currentDate];
+    
+    // Look ahead to see if there are more purchases within 7 days
     for (let j = i + 1; j < sortedDates.length; j++) {
-      const daysDiff = (new Date(sortedDates[j]) - new Date(sortedDates[clampEndIdx])) / (1000 * 60 * 60 * 24);
+      const daysDiff = (new Date(sortedDates[j]) - new Date(currentDate)) / (1000 * 60 * 60 * 24);
       if (daysDiff <= 7) {
-        clampEndIdx = j;
+        isPartOfClamp = true;
+        clampDates.push(sortedDates[j]);
       } else {
         break;
       }
     }
     
-    // If we found a clamp (multiple purchases within 7 days)
-    if (clampEndIdx > i) {
-      const clampDates = sortedDates.slice(i, clampEndIdx + 1);
-      const lastClampDate = clampDates[clampDates.length - 1];
-      
-      // Check price movement after clamp
-      const priceAfter = getPriceOffset(lastClampDate, 7);
-      const daysSince = (new Date() - new Date(lastClampDate)) / (1000 * 60 * 60 * 24);
-      
-      if (priceAfter && priceAtPurchase) {
-        const pctChange = ((priceAfter - priceAtPurchase) / priceAtPurchase) * 100;
-        
-        // Check if it was in a slump before
-        const price30Before = getPriceOffset(currentDate, -30);
-        const wasInSlump = price30Before && (price30Before > priceAtPurchase * 1.15);
-        
-        if (pctChange >= 10) {
-          if (wasInSlump) {
-            events.push({ type: 'slump-recovery', count: 1, date: lastClampDate });
-          } else {
-            events.push({ type: 'holy-grail', count: 1, date: lastClampDate });
-          }
-        } else if (daysSince < 7) {
-          // Too early to tell
-          events.push({ type: 'clamp', count: 1, date: lastClampDate });
-        } else {
-          // Didn't work out
-          events.push({ type: 'disqualified', count: 1, date: lastClampDate });
-        }
-      } else {
-        events.push({ type: 'clamp', count: 1, date: lastClampDate });
+    // Also check if previous purchase was within 7 days (this purchase is part of ongoing clamp)
+    if (i > 0 && !analyzed.has(i - 1)) {
+      const daysSincePrev = (new Date(currentDate) - new Date(sortedDates[i - 1])) / (1000 * 60 * 60 * 24);
+      if (daysSincePrev <= 7) {
+        isPartOfClamp = true;
       }
+    }
+    
+    // Now classify THIS INDIVIDUAL PURCHASE
+    const daysSince = (new Date() - new Date(currentDate)) / (1000 * 60 * 60 * 24);
+    const price3After = getPriceOffset(currentDate, 7); // Check 7 days after for clamp events
+    const price30Before = getPriceOffset(currentDate, -30);
+    const price5Before = getPriceOffset(currentDate, -5);
+    
+    // If part of a clamp, check if it worked out
+    if (isPartOfClamp && price3After && daysSince > 7) {
+      const pctChange = ((price3After - priceAtPurchase) / priceAtPurchase) * 100;
+      const price30BeforeClamp = getPriceOffset(currentDate, -30);
+      const wasInSlump = price30BeforeClamp && (price30BeforeClamp > priceAtPurchase * 1.15);
       
-      // Mark all clamp dates as analyzed
-      for (let k = i; k <= clampEndIdx; k++) analyzed.add(k);
+      if (pctChange >= 10) {
+        events.push({ 
+          type: wasInSlump ? 'slump-recovery' : 'holy-grail', 
+          count: 1, 
+          date: currentDate 
+        });
+      } else if (daysSince < 7) {
+        events.push({ type: 'clamp', count: 1, date: currentDate });
+      } else {
+        events.push({ type: 'disqualified', count: 1, date: currentDate });
+      }
+      analyzed.add(i);
       continue;
     }
     
-    // Single purchase - check if it's a mid-rise
-    const price30Before = getPriceOffset(currentDate, -30);
-    const price7After = getPriceOffset(currentDate, 7);
-    const daysSince = (new Date() - new Date(currentDate)) / (1000 * 60 * 60 * 24);
+    // If part of clamp but too recent
+    if (isPartOfClamp && daysSince <= 7) {
+      events.push({ type: 'clamp', count: 1, date: currentDate });
+      analyzed.add(i);
+      continue;
+    }
     
+    // Single purchase (not part of clamp) - check event type
+    const price1Before = getPriceOffset(currentDate, -1);
+    const price3AfterSingle = getPriceOffset(currentDate, 3);
+    
+    // Check for plateau: stable 5 days before (<5% change) + price up after 3 days
+    if (price5Before && price1Before && priceAtPurchase && price3AfterSingle && daysSince > 3) {
+      const priceChangeBefore = Math.abs((priceAtPurchase - price5Before) / price5Before) * 100;
+      const priceChangeAfter3Days = ((price3AfterSingle - priceAtPurchase) / priceAtPurchase) * 100;
+      
+      // Plateau: stable period before (<5% change) and went up after 3 days
+      if (priceChangeBefore < 5 && priceChangeAfter3Days > 0) {
+        // Check if there's a follow-up event within 7 business days
+        let hasFollowUpEvent = false;
+        for (let j = i + 1; j < sortedDates.length; j++) {
+          if (isWithin7BusinessDays(currentDate, sortedDates[j])) {
+            hasFollowUpEvent = true;
+            break;
+          }
+        }
+        
+        if (hasFollowUpEvent) {
+          // Plateau with follow-up = valid plateau
+          events.push({ type: 'plateau', count: 1, date: currentDate });
+          analyzed.add(i);
+          continue;
+        } else {
+          // Plateau without follow-up = disqualified
+          events.push({ type: 'disqualified', count: 1, date: currentDate });
+          analyzed.add(i);
+          continue;
+        }
+      }
+    }
+    
+    // Check for mid-rise (10-30% uptrend in 30 days before)
     if (price30Before && priceAtPurchase) {
       const priceRise = ((priceAtPurchase - price30Before) / price30Before) * 100;
       if (priceRise >= 10 && priceRise < 30) {
         events.push({ type: 'mid-rise', count: 1, date: currentDate });
         analyzed.add(i);
+        continue; // Skip to next purchase
+      }
+    }
+    
+    // Check if single purchase is disqualified (price down after 3 days)
+    if (price3AfterSingle && priceAtPurchase && daysSince > 3) {
+      const pctChange = ((price3AfterSingle - priceAtPurchase) / priceAtPurchase) * 100;
+      if (pctChange < 0) {
+        events.push({ type: 'disqualified', count: 1, date: currentDate });
+        analyzed.add(i);
+        continue;
+      }
+      
+      // If price stayed flat or went up slightly (but not plateau criteria), classify as plateau
+      if (pctChange >= 0) {
+        events.push({ type: 'plateau', count: 1, date: currentDate });
+        analyzed.add(i);
         continue;
       }
     }
     
-    // Check if single purchase worked
-    if (price7After && priceAtPurchase && daysSince > 7) {
-      const pctChange = ((price7After - priceAtPurchase) / priceAtPurchase) * 100;
-      if (pctChange < 5) {
-        events.push({ type: 'disqualified', count: 1, date: currentDate });
-      }
+    // If too recent (< 3 days), classify as clamp (single purchase, waiting to see outcome)
+    if (daysSince <= 3) {
+      events.push({ type: 'clamp', count: 1, date: currentDate });
+      analyzed.add(i);
+      continue;
     }
     
+    // Default: if we have no price data or can't classify, mark as plateau (neutral)
+    events.push({ type: 'plateau', count: 1, date: currentDate });
     analyzed.add(i);
   }
   
   // Check for restock pattern (3+ purchases within 30 days that aren't clamps)
+  // Only count dates that haven't been analyzed yet
   for (let i = 0; i <= sortedDates.length - 3; i++) {
+    // Skip if this date was already analyzed
+    if (analyzed.has(i)) continue;
+    
     const span = (new Date(sortedDates[i + 2]) - new Date(sortedDates[i])) / (1000 * 60 * 60 * 24);
     if (span <= 30) {
       // Make sure it's not a clamp
