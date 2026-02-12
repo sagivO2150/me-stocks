@@ -1,3 +1,215 @@
+d02198f61ece90d8c31e5231ce5dca8d25408d42
+Improved classification logic for insider trade events
+Refined the logic behind event classifications to address inaccuracies and inconsistencies. Updated related data files and components to reflect these changes.
+
+- Adjusted classification types and counts in JSON data files
+- Updated event classification logic in `StockDetail` and `TopMonthlyCard` components
+- Refreshed insider trade data with corrected classifications
+- Modified server-side handling of classification data
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# classification_events
+
+---COMMIT_SEPARATOR---
+755a8374887f2781d4a4f68c06d20cead250a485
+Highlight chart points when hovering over badge dates
+Added functionality to visually highlight chart points when hovering over dates in the badge dropdown. This improves the user experience by providing a clear connection between the badge dates and their corresponding data points on the chart.
+
+- Introduced `hoveredEventDate` state to track hovered dates in the badge dropdown.
+- Updated badge dropdown items to set `hoveredEventDate` on hover.
+- Modified chart rendering logic to enlarge and highlight points matching the hovered date.
+- Applied animations and styling to emphasize the highlighted chart points.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# classification_events
+
+---COMMIT_SEPARATOR---
+9c86b9ff703003c081abf53363fd5c884ea834e6
+Event date click now filters results in StockDetail
+Enhanced the StockDetail component to allow users to filter data by clicking on event dates. This improves usability and provides a more intuitive way to interact with event information.
+
+- Replaced static date display with clickable buttons for event dates.
+- Added `setFocusDate` functionality to update the filter based on the selected date.
+- Implemented dropdown auto-close behavior after date selection for better user experience.
+- Updated styling for clickable date elements to ensure visual consistency.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# classification_events
+
+---COMMIT_SEPARATOR---
+bff077eeabfac3bee178b2b5ab5eb1fee4039e45
+Added dropdown to badges for event date selection
+Enhanced the badges in the StockDetail component by adding a dropdown menu to display and select event dates. Updated related data files and server configurations to support the new functionality.
+
+- Added dropdown functionality to badges in StockDetail.jsx
+- Updated insider trade data in top_monthly_insider_trades.json
+- Modified server.js to handle dropdown-related data updates
+- Adjusted PID files for node-server and vite processes
+- Refined insider trade data with corrected names and roles in JSON files
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# classification_events
+
+---COMMIT_SEPARATOR---
+821a4714bd9797c3e46909542b613975946d8f80
+Moved badges inside chart view for better context
+Enhanced the StockDetail component to display event badges directly within the chart view, providing clearer context for users. Updated related components to pass event classification data.
+
+- Added event badge configuration for various classifications in StockDetail.jsx
+- Displayed event badges inside the chart view based on trade classifications
+- Updated App.jsx to pass eventClassification data to StockDetail component
+- Improved user experience by integrating badges with relevant chart data
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# classification_events
+
+---COMMIT_SEPARATOR---
+11db1ae079574fea49d9b2c9c972caa89528492d
+Updating insider trade data and adding IB info file
+Updated insider trade records and server PID files to reflect latest changes. Added a new IB info file for reference.
+
+- Modified `node-server.pid` and `vite.pid` with updated process IDs
+- Updated `top_monthly_insider_trades.json` with new insider trade data
+- Adjusted insider names and details in trade records
+- Added new file `info/IB info.txt` for additional information
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+# classification_events
+
+---COMMIT_SEPARATOR---
+5ff5dbe6899d8f42eab6ed196cd6249771d589e3
+Fixed badge display issue in TopMonthlyCard component
+Updated the application to ensure badges are displayed correctly in the TopMonthlyCard component. Adjustments were made to the data and logic to reflect accurate badge representation.
+
+- Updated `TopMonthlyCard.jsx` to fix badge rendering logic
+- Modified `top_monthly_insider_trades.json` to include updated trade data
+- Adjusted server logic in `server.js` to handle badge-related data
+- Updated PID files for node-server and vite
+- Refreshed insider trade data with corrected values and roles
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# classification_events
+
+---COMMIT_SEPARATOR---
+d58eefdbeb67e29a91200847261d12f124e2baaa
+Improved classification loading speed for insider trades
+Enhanced the classification system to load faster and added new event classifications for insider trades. Updated relevant files to reflect these changes.
+
+- Optimized classification loading logic in `server.js`
+- Added `eventClassification` data to insider trade entries
+- Updated JSON files with new classification details
+- Adjusted `TopMonthlyCard.jsx` to display classification data
+- Refreshed process IDs in `node-server.pid` and `vite.pid` files
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# classification_events
+
+---COMMIT_SEPARATOR---
+3aa9c7cf50fbb09ce2772a352f037b0cdf6a8627
+Removed the old badges from TopMonthlyCard component
+Updated the TopMonthlyCard component to simplify the badges section.
+
+- Removed insider count, purchase count, C-suite activity, and 10% owner badges
+- Retained only the event classification badge
+- Added a fallback "Analyzing..." badge when no event classification is available
+- Simplified tooltip logic for the remaining badge
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# classification_events
+
+---COMMIT_SEPARATOR---
+9618895c55373a568e83bb82fe779f403327d575
+Added classification events to insider trade data
+Updated insider trade data with new classification events and adjusted related components in the web application. Enhanced data accuracy and display for top monthly insider trades.
+
+- Updated `top_monthly_insider_trades.json` with new classification events and trade details
+- Adjusted insider roles and trade values for accuracy
+- Modified `StockDetail.jsx`, `TopMonthlyCard.jsx`, and `TradeCard.jsx` to reflect updated data structure
+- Updated server logic in `server.js` to handle new classifications
+- Refreshed PID files for node and Vite processes
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# classification_events
+# web_app
+
+---COMMIT_SEPARATOR---
+be8f99e2be50567c4bc8b2c3fc3d562add86efee
+Normalized the dates displayed in the chart
+Updated the StockDetail component to ensure consistent date formatting in the chart tooltips and headers. Dates are now displayed in the DD-MM-YYYY format for better readability.
+
+- Added a `formatDate` function to convert dates to DD-MM-YYYY format.
+- Updated the tooltip and header to use the `formatDate` function for displaying dates.
+- Ensured consistent date formatting across all relevant chart elements.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+0072c75ce6162c6f8c189cdd7bcc7a73742ef544
+Added stock date and price display in chart hover tooltips
+Enhanced the stock detail component to display the date and closing price of the stock when hovering over charts. This provides users with more contextual information directly within the tooltip.
+
+- Added a new line to display the stock's closing price in the tooltip.
+- Adjusted styling for better readability and alignment.
+- Removed redundant checks for trade activity to simplify tooltip rendering logic.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+91ada7747f6a1bd90f00f54ee68387c3987c7128
+Added a script to retrieve git commit history
+Created a new script to fetch and store the git commit history for better tracking and analysis. Updated process ID files as part of the changes.
+
+- Added `get_commit_history.py` to retrieve commit history
+- Created `commit history.txt` to store the fetched commit data
+- Updated `logs/node-server.pid` with new process ID
+- Updated `logs/vite.pid` with new process ID
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# general_commit
+
+---COMMIT_SEPARATOR---
 1a1ec721f304fa8cd4977ab888aff72aeedf8472
 Improved filter view functionality for better performance
 Enhanced the filter view logic in StockDetail component to ensure smoother operation and better handling of focus dates.

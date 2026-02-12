@@ -21,13 +21,21 @@ const TopMonthlyCard = ({ stock }) => {
   
   // Event badge config
   const eventLabels = {
-    'holy-grail': { label: 'Holy Grail', icon: '🔥', colorClass: 'bg-purple-500/20 text-purple-400 border-purple-500/30', tooltip: 'Clamp + price up!' },
-    'slump-recovery': { label: 'Slump Recovery', icon: '📈', colorClass: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30', tooltip: 'Bottom-fishing success!' },
-    'clamp': { label: 'Clamp', icon: '📊', colorClass: 'bg-blue-500/20 text-blue-400 border-blue-500/30', tooltip: 'Purchases within 7 days' },
-    'restock': { label: 'Restock', icon: '🔄', colorClass: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30', tooltip: '3+ purchases in 30 days' },
-    'plateau': { label: 'Plateau', icon: '📊', colorClass: 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30', tooltip: 'Stable buy with follow-up' },
-    'mid-rise': { label: 'Mid-Rise', icon: '⚠️', colorClass: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30', tooltip: 'Buying during uptrend' },
-    'disqualified': { label: 'Disqualified', icon: '❌', colorClass: 'bg-red-500/20 text-red-400 border-red-500/30', tooltip: "Didn't work out" }
+    'bottom-fishing-win': { label: 'Bottom Catch', icon: '🎯', colorClass: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30', tooltip: 'Bought after heavy drawdown and rebounded.' },
+    'breakout-accumulation': { label: 'Breakout Build', icon: '🚀', colorClass: 'bg-purple-500/20 text-purple-400 border-purple-500/30', tooltip: 'Accumulation cluster followed by a breakout.' },
+    'slow-burn-accumulation': { label: 'Slow Burn', icon: '🟢', colorClass: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30', tooltip: 'Improved more gradually over ~20 days.' },
+    'stabilizing-accumulation': { label: 'Stabilizing', icon: '🧱', colorClass: 'bg-blue-500/20 text-blue-400 border-blue-500/30', tooltip: 'Insider buying likely provided support.' },
+    'needs-follow-through': { label: 'Pending', icon: '⏳', colorClass: 'bg-slate-500/20 text-slate-300 border-slate-500/30', tooltip: 'Too recent to score confidently.' },
+    'late-chase': { label: 'Late Chase', icon: '⚠️', colorClass: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30', tooltip: 'Bought into an uptrend, then momentum weakened.' },
+    'failed-support': { label: 'Failed Support', icon: '❌', colorClass: 'bg-red-500/20 text-red-400 border-red-500/30', tooltip: 'Buying failed to hold the line.' },
+    // Legacy aliases for existing JSON files
+    'holy-grail': { label: 'Breakout Build', icon: '🚀', colorClass: 'bg-purple-500/20 text-purple-400 border-purple-500/30', tooltip: 'Legacy: strong post-buy breakout.' },
+    'slump-recovery': { label: 'Bottom Catch', icon: '🎯', colorClass: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30', tooltip: 'Legacy: rebound from slump.' },
+    'clamp': { label: 'Pending', icon: '⏳', colorClass: 'bg-slate-500/20 text-slate-300 border-slate-500/30', tooltip: 'Legacy: clustered buys pending outcome.' },
+    'restock': { label: 'Slow Burn', icon: '🟢', colorClass: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30', tooltip: 'Legacy: repeated accumulation.' },
+    'plateau': { label: 'Stabilizing', icon: '🧱', colorClass: 'bg-blue-500/20 text-blue-400 border-blue-500/30', tooltip: 'Legacy: neutral accumulation.' },
+    'mid-rise': { label: 'Late Chase', icon: '⚠️', colorClass: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30', tooltip: 'Legacy: bought during run-up.' },
+    'disqualified': { label: 'Failed Support', icon: '❌', colorClass: 'bg-red-500/20 text-red-400 border-red-500/30', tooltip: 'Legacy: trade had poor follow-through.' }
   };
   
   // Extract role counts

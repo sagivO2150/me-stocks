@@ -1,0 +1,403 @@
+webapp-stocks/server.js
+
+diff --git a/webapp-stocks/server.js b/webapp-stocks/server.js
+index 9ad5db4bba99afe6a58163350af6b26f8742571c..8fe1220b769e3a865165ddddb30ad2ca4156a125 100644
+--- a/webapp-stocks/server.js
++++ b/webapp-stocks/server.js
+@@ -1021,291 +1021,209 @@ app.get('/api/event-classification/:ticker', async (req, res) => {
+     // Fetch stock history
+     const historyResponse = await fetch(`http://localhost:${PORT}/api/stock-history/${ticker}?period=1y`);
+     const historyData = await historyResponse.json();
+     
+     // If no stock history, we can't classify events properly
+     if (!historyResponse.ok || !historyData.success || !historyData.history || historyData.history.length === 0) {
+       return res.json({ success: false, message: 'No stock history available' });
+     }
+     
+     // Classify events (simplified version for card display)
+     const event = classifyPrimaryEvent(insiderData, historyData);
+     
+     res.json({
+       success: true,
+       primaryEvent: event
+     });
+   } catch (error) {
+     console.error('Event classification error:', error);
+     res.json({ success: false, message: error.message });
+   }
+ });
+ 
+ function classifyAllEvents(insiderData, historyData) {
+   const purchases = insiderData.purchases;
+   const history = historyData.history;
+-  const events = []; // Now each event will have: { type, count, dates: [] }
++  const events = [];
++  if (!Array.isArray(purchases) || purchases.length === 0 || !Array.isArray(history) || history.length === 0) {
++    return events;
++  }
+   
+   // Group purchases by date
+   const purchasesByDate = {};
+   purchases.forEach(trade => {
+     const dateKey = trade.date.split('T')[0];
+     if (!purchasesByDate[dateKey]) {
+       purchasesByDate[dateKey] = { trades: [], totalValue: 0 };
+     }
+     purchasesByDate[dateKey].trades.push(trade);
+     purchasesByDate[dateKey].totalValue += trade.value;
+   });
+   
+   const sortedDates = Object.keys(purchasesByDate).sort();
+   
+-  // Helper to check if date is within 7 business days
+-  const isWithin7BusinessDays = (date1, date2) => {
+-    const d1 = new Date(date1);
+-    const d2 = new Date(date2);
+-    let businessDays = 0;
+-    let current = new Date(d1);
+-    
+-    while (current <= d2 && businessDays <= 7) {
+-      const dayOfWeek = current.getDay();
+-      if (dayOfWeek !== 0 && dayOfWeek !== 6) { // Not weekend
+-        businessDays++;
+-      }
+-      current.setDate(current.getDate() + 1);
+-    }
+-    
+-    return businessDays <= 7;
+-  };
+-  
+   // Price lookup
+   const priceByDate = {};
+   history.forEach(point => {
+     const dateKey = point.date.split('T')[0].split(' ')[0];
+     if (!priceByDate[dateKey]) {
+       priceByDate[dateKey] = parseFloat(point.close);
+     }
+   });
+   
+   const getPriceAt = (dateStr) => priceByDate[dateStr];
+   const getPriceOffset = (dateStr, dayOffset) => {
+     const date = new Date(dateStr);
+     date.setDate(date.getDate() + dayOffset);
+     let checkDate = date.toISOString().split('T')[0];
+     for (let i = 0; i < 5; i++) {
+       if (priceByDate[checkDate]) return priceByDate[checkDate];
+       date.setDate(date.getDate() + (dayOffset > 0 ? 1 : -1));
+       checkDate = date.toISOString().split('T')[0];
+     }
+     return null;
+   };
+-  
+-  // Analyze each purchase or cluster of purchases
+-  const analyzed = new Set(); // Track which dates we've already analyzed
+-  
+-  for (let i = 0; i < sortedDates.length; i++) {
+-    if (analyzed.has(i)) continue;
+-    
+-    const currentDate = sortedDates[i];
+-    const priceAtPurchase = getPriceAt(currentDate);
+-    if (!priceAtPurchase) continue;
+-    
+-    // Check if this purchase is part of a clamp (multiple purchases within 7 days)
+-    // We'll classify each purchase individually, but note if it's part of a clamp pattern
+-    let isPartOfClamp = false;
+-    let clampDates = [currentDate];
+-    
+-    // Look ahead to see if there are more purchases within 7 days
+-    for (let j = i + 1; j < sortedDates.length; j++) {
+-      const daysDiff = (new Date(sortedDates[j]) - new Date(currentDate)) / (1000 * 60 * 60 * 24);
+-      if (daysDiff <= 7) {
+-        isPartOfClamp = true;
+-        clampDates.push(sortedDates[j]);
+-      } else {
+-        break;
+-      }
+-    }
+-    
+-    // Also check if previous purchase was within 7 days (this purchase is part of ongoing clamp)
+-    if (i > 0 && !analyzed.has(i - 1)) {
+-      const daysSincePrev = (new Date(currentDate) - new Date(sortedDates[i - 1])) / (1000 * 60 * 60 * 24);
+-      if (daysSincePrev <= 7) {
+-        isPartOfClamp = true;
+-      }
+-    }
+-    
+-    // Now classify THIS INDIVIDUAL PURCHASE
+-    const daysSince = (new Date() - new Date(currentDate)) / (1000 * 60 * 60 * 24);
+-    const price3After = getPriceOffset(currentDate, 7); // Check 7 days after for clamp events
+-    const price30Before = getPriceOffset(currentDate, -30);
+-    const price5Before = getPriceOffset(currentDate, -5);
+-    
+-    // If part of a clamp, check if it worked out
+-    if (isPartOfClamp && price3After && daysSince > 7) {
+-      const pctChange = ((price3After - priceAtPurchase) / priceAtPurchase) * 100;
+-      const price30BeforeClamp = getPriceOffset(currentDate, -30);
+-      const wasInSlump = price30BeforeClamp && (price30BeforeClamp > priceAtPurchase * 1.15);
+-      
+-      if (pctChange >= 10) {
+-        events.push({ 
+-          type: wasInSlump ? 'slump-recovery' : 'holy-grail', 
+-          count: 1, 
+-          date: currentDate 
+-        });
+-      } else if (daysSince < 7) {
+-        events.push({ type: 'clamp', count: 1, date: currentDate });
+-      } else {
+-        events.push({ type: 'disqualified', count: 1, date: currentDate });
+-      }
+-      analyzed.add(i);
+-      continue;
+-    }
+-    
+-    // If part of clamp but too recent
+-    if (isPartOfClamp && daysSince <= 7) {
+-      events.push({ type: 'clamp', count: 1, date: currentDate });
+-      analyzed.add(i);
+-      continue;
+-    }
+-    
+-    // Single purchase (not part of clamp) - check event type
+-    const price1Before = getPriceOffset(currentDate, -1);
+-    const price3AfterSingle = getPriceOffset(currentDate, 3);
+-    
+-    // Check for plateau: stable 5 days before (<5% change) + price up after 3 days
+-    if (price5Before && price1Before && priceAtPurchase && price3AfterSingle && daysSince > 3) {
+-      const priceChangeBefore = Math.abs((priceAtPurchase - price5Before) / price5Before) * 100;
+-      const priceChangeAfter3Days = ((price3AfterSingle - priceAtPurchase) / priceAtPurchase) * 100;
+-      
+-      // Plateau: stable period before (<5% change) and went up after 3 days
+-      if (priceChangeBefore < 5 && priceChangeAfter3Days > 0) {
+-        // Check if there's a follow-up event within 7 business days
+-        let hasFollowUpEvent = false;
+-        for (let j = i + 1; j < sortedDates.length; j++) {
+-          if (isWithin7BusinessDays(currentDate, sortedDates[j])) {
+-            hasFollowUpEvent = true;
+-            break;
+-          }
+-        }
+-        
+-        if (hasFollowUpEvent) {
+-          // Plateau with follow-up = valid plateau
+-          events.push({ type: 'plateau', count: 1, date: currentDate });
+-          analyzed.add(i);
+-          continue;
+-        } else {
+-          // Plateau without follow-up = disqualified
+-          events.push({ type: 'disqualified', count: 1, date: currentDate });
+-          analyzed.add(i);
+-          continue;
+-        }
+-      }
+-    }
+-    
+-    // Check for mid-rise (10-30% uptrend in 30 days before)
+-    if (price30Before && priceAtPurchase) {
+-      const priceRise = ((priceAtPurchase - price30Before) / price30Before) * 100;
+-      if (priceRise >= 10 && priceRise < 30) {
+-        events.push({ type: 'mid-rise', count: 1, date: currentDate });
+-        analyzed.add(i);
+-        continue; // Skip to next purchase
+-      }
+-    }
+-    
+-    // Check if single purchase is disqualified (price down after 3 days)
+-    if (price3AfterSingle && priceAtPurchase && daysSince > 3) {
+-      const pctChange = ((price3AfterSingle - priceAtPurchase) / priceAtPurchase) * 100;
+-      if (pctChange < 0) {
+-        events.push({ type: 'disqualified', count: 1, date: currentDate });
+-        analyzed.add(i);
+-        continue;
+-      }
+-      
+-      // If price stayed flat or went up slightly (but not plateau criteria), classify as plateau
+-      if (pctChange >= 0) {
+-        events.push({ type: 'plateau', count: 1, date: currentDate });
+-        analyzed.add(i);
+-        continue;
+-      }
++  const campaignGapDays = 7;
++  const campaigns = [];
++  let currentCampaign = null;
++
++  sortedDates.forEach((dateStr) => {
++    if (!currentCampaign) {
++      currentCampaign = {
++        startDate: dateStr,
++        endDate: dateStr,
++        dates: [dateStr],
++        totalValue: purchasesByDate[dateStr].totalValue,
++        tradeCount: purchasesByDate[dateStr].trades.length
++      };
++      return;
+     }
+-    
+-    // If too recent (< 3 days), classify as clamp (single purchase, waiting to see outcome)
+-    if (daysSince <= 3) {
+-      events.push({ type: 'clamp', count: 1, date: currentDate });
+-      analyzed.add(i);
+-      continue;
++
++    const gapDays = (new Date(dateStr) - new Date(currentCampaign.endDate)) / (1000 * 60 * 60 * 24);
++    if (gapDays <= campaignGapDays) {
++      currentCampaign.endDate = dateStr;
++      currentCampaign.dates.push(dateStr);
++      currentCampaign.totalValue += purchasesByDate[dateStr].totalValue;
++      currentCampaign.tradeCount += purchasesByDate[dateStr].trades.length;
++    } else {
++      campaigns.push(currentCampaign);
++      currentCampaign = {
++        startDate: dateStr,
++        endDate: dateStr,
++        dates: [dateStr],
++        totalValue: purchasesByDate[dateStr].totalValue,
++        tradeCount: purchasesByDate[dateStr].trades.length
++      };
+     }
+-    
+-    // Default: if we have no price data or can't classify, mark as plateau (neutral)
+-    events.push({ type: 'plateau', count: 1, date: currentDate });
+-    analyzed.add(i);
++  });
++
++  if (currentCampaign) {
++    campaigns.push(currentCampaign);
+   }
+-  
+-  // Check for restock pattern (3+ purchases within 30 days that aren't clamps)
+-  // Only count dates that haven't been analyzed yet
+-  for (let i = 0; i <= sortedDates.length - 3; i++) {
+-    // Skip if this date was already analyzed
+-    if (analyzed.has(i)) continue;
+-    
+-    const span = (new Date(sortedDates[i + 2]) - new Date(sortedDates[i])) / (1000 * 60 * 60 * 24);
+-    if (span <= 30) {
+-      // Make sure it's not a clamp
+-      let isClamp = true;
+-      for (let j = i; j < i + 2; j++) {
+-        const gap = (new Date(sortedDates[j + 1]) - new Date(sortedDates[j])) / (1000 * 60 * 60 * 24);
+-        if (gap > 7) {
+-          isClamp = false;
+-          break;
+-        }
+-      }
+-      if (!isClamp) {
+-        events.push({ type: 'restock', count: 1, date: sortedDates[i] });
+-        break; // Only count once
+-      }
++
++  const lastHistoryDate = history.length > 0 ? history[history.length - 1].date.split('T')[0].split(' ')[0] : null;
++  const latestPriceDate = lastHistoryDate ? new Date(lastHistoryDate) : null;
++
++  campaigns.forEach((campaign) => {
++    const startPrice = getPriceAt(campaign.startDate);
++    const endPrice = getPriceAt(campaign.endDate) || startPrice;
++    const price30Before = getPriceOffset(campaign.startDate, -30);
++    const price10After = getPriceOffset(campaign.endDate, 10);
++    const price20After = getPriceOffset(campaign.endDate, 20);
++    const price5After = getPriceOffset(campaign.endDate, 5);
++
++    const preTrendPct = startPrice && price30Before ? ((startPrice - price30Before) / price30Before) * 100 : null;
++    const postTrend10Pct = endPrice && price10After ? ((price10After - endPrice) / endPrice) * 100 : null;
++    const postTrend20Pct = endPrice && price20After ? ((price20After - endPrice) / endPrice) * 100 : null;
++    const postTrend5Pct = endPrice && price5After ? ((price5After - endPrice) / endPrice) * 100 : null;
++
++    const daysSinceCampaign = latestPriceDate
++      ? (latestPriceDate - new Date(campaign.endDate)) / (1000 * 60 * 60 * 24)
++      : 0;
++
++    let type = 'stabilizing-accumulation';
++
++    if (!startPrice || !endPrice || daysSinceCampaign < 6 || postTrend5Pct === null) {
++      type = 'needs-follow-through';
++    } else if (preTrendPct !== null && preTrendPct <= -15 && postTrend10Pct !== null && postTrend10Pct >= 8) {
++      type = 'bottom-fishing-win';
++    } else if (postTrend10Pct !== null && postTrend10Pct >= 8) {
++      type = 'breakout-accumulation';
++    } else if (postTrend10Pct !== null && postTrend10Pct <= -8) {
++      type = 'failed-support';
++    } else if (preTrendPct !== null && preTrendPct >= 10 && postTrend10Pct !== null && postTrend10Pct < 0) {
++      type = 'late-chase';
++    } else if (postTrend20Pct !== null && postTrend20Pct > 5) {
++      type = 'slow-burn-accumulation';
+     }
+-  }
++
++    events.push({
++      type,
++      count: 1,
++      date: campaign.startDate,
++      metadata: {
++        startDate: campaign.startDate,
++        endDate: campaign.endDate,
++        totalValue: campaign.totalValue,
++        tradeCount: campaign.tradeCount,
++        preTrendPct,
++        postTrend10Pct,
++        postTrend20Pct
++      }
++    });
++  });
+   
+   // Aggregate by type and collect dates
+   const aggregated = {};
+   events.forEach(e => {
+     if (!aggregated[e.type]) {
+       aggregated[e.type] = { count: 0, dates: [] };
+     }
+     aggregated[e.type].count += 1;
+     aggregated[e.type].dates.push(e.date);
+   });
+   
+   // Convert to array
+   return Object.keys(aggregated).map(type => ({
+     type,
+     count: aggregated[type].count,
+     dates: aggregated[type].dates
+   }));
+ }
+ 
+ // Keep old function for backward compatibility
+ function classifyPrimaryEvent(insiderData, historyData) {
+   const allEvents = classifyAllEvents(insiderData, historyData);
+   if (allEvents.length === 0) return null;
+   
+   // Return the "best" event as primary
+-  const priority = ['holy-grail', 'slump-recovery', 'clamp', 'restock', 'mid-rise', 'disqualified'];
++  const priority = [
++    'bottom-fishing-win',
++    'breakout-accumulation',
++    'slow-burn-accumulation',
++    'stabilizing-accumulation',
++    'needs-follow-through',
++    'late-chase',
++    'failed-support'
++  ];
+   for (const eventType of priority) {
+     const found = allEvents.find(e => e.type === eventType);
+     if (found) {
+       const labels = {
+-        'holy-grail': { label: 'Holy Grail', icon: '🔥', colorClass: 'bg-purple-500/20 text-purple-400 border-purple-500/30', tooltip: 'Insider clamp + price up!' },
+-        'slump-recovery': { label: 'Slump Recovery', icon: '📈', colorClass: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30', tooltip: 'Bottom-fishing success!' },
+-        'clamp': { label: 'Clamp Event', icon: '📊', colorClass: 'bg-blue-500/20 text-blue-400 border-blue-500/30', tooltip: 'Purchases within 7 days' },
+-        'restock': { label: 'Restock', icon: '🔄', colorClass: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30', tooltip: '3+ purchases in 30 days' },
+-        'mid-rise': { label: 'Mid-Rise', icon: '⚠️', colorClass: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30', tooltip: 'Buying during uptrend' },
+-        'disqualified': { label: 'Disqualified', icon: '❌', colorClass: 'bg-red-500/20 text-red-400 border-red-500/30', tooltip: "Didn't work out" }
++        'bottom-fishing-win': { label: 'Bottom Catch', icon: '🎯', colorClass: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30', tooltip: 'Bought deep drawdown and got a fast rebound.' },
++        'breakout-accumulation': { label: 'Breakout Build', icon: '🚀', colorClass: 'bg-purple-500/20 text-purple-400 border-purple-500/30', tooltip: 'Insiders accumulated ahead of a breakout.' },
++        'slow-burn-accumulation': { label: 'Slow Burn', icon: '🟢', colorClass: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30', tooltip: 'Not instant, but trended up over ~20 days.' },
++        'stabilizing-accumulation': { label: 'Stabilizing', icon: '🧱', colorClass: 'bg-blue-500/20 text-blue-400 border-blue-500/30', tooltip: 'Buying likely supported price without clear breakout.' },
++        'needs-follow-through': { label: 'Pending', icon: '⏳', colorClass: 'bg-slate-500/20 text-slate-300 border-slate-500/30', tooltip: 'Too recent or too little data to score yet.' },
++        'late-chase': { label: 'Late Chase', icon: '⚠️', colorClass: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30', tooltip: 'Insiders bought after run-up and momentum faded.' },
++        'failed-support': { label: 'Failed Support', icon: '❌', colorClass: 'bg-red-500/20 text-red-400 border-red-500/30', tooltip: 'Buying did not prevent a post-trade drop.' }
+       };
+       return labels[eventType];
+     }
+   }
+   
+   return null;
+ }
+ 
+ app.listen(PORT, () => {
+   console.log(`Backend server running on http://localhost:${PORT}`);
+ });

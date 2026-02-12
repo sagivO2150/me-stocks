@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-02-12T19:39:11.555935",
-  "total_tickers": 106,
+  "updated_at": "2026-02-13T01:22:23.050700",
+  "total_tickers": 107,
   "total_trades": 200,
   "data": [
     {
@@ -109,31 +109,15 @@
           "qty": "+3,690,000"
         },
         {
-          "insider_name": "Florence Anthony A. Jr.",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-09",
-          "value": "+$15,000,000",
-          "qty": "+937,500"
-        },
-        {
-          "insider_name": "Walker Paul Edward",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-09",
-          "value": "+$15,000,000",
-          "qty": "+937,500"
-        },
-        {
-          "insider_name": "Mathers Edward T",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-09",
-          "value": "+$15,000,000",
-          "qty": "+937,500"
-        },
-        {
           "insider_name": "Chang Carmen",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Baskett Forest",
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
@@ -157,6 +141,14 @@
           "qty": "+937,500"
         },
         {
+          "insider_name": "Mathers Edward T",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
           "insider_name": "Yang Rick",
           "title": "10%",
           "role": "10% Owner",
@@ -173,7 +165,7 @@
           "qty": "+937,500"
         },
         {
-          "insider_name": "Baskett Forest",
+          "insider_name": "Florence Anthony A. Jr.",
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
@@ -189,6 +181,14 @@
           "qty": "+937,500"
         },
         {
+          "insider_name": "Walker Paul Edward",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
           "insider_name": "Pardo Geoffrey B",
           "title": "Dir",
           "role": "Other",
@@ -197,17 +197,17 @@
           "qty": "+312,500"
         },
         {
-          "insider_name": "Vensana Capital I Gp, LLC",
-          "title": "10%",
-          "role": "10% Owner",
+          "insider_name": "Nielsen Kirk G.",
+          "title": "Dir",
+          "role": "Other",
           "trade_date": "2026-02-09",
           "value": "+$2,640,000",
           "qty": "+165,000"
         },
         {
-          "insider_name": "Nielsen Kirk G.",
-          "title": "Dir",
-          "role": "Other",
+          "insider_name": "Vensana Capital I Gp, LLC",
+          "title": "10%",
+          "role": "10% Owner",
           "trade_date": "2026-02-09",
           "value": "+$2,640,000",
           "qty": "+165,000"
@@ -322,16 +322,16 @@
       },
       "trades": [
         {
-          "insider_name": "Longitude Capital Partners V, LLC",
-          "title": "10%",
+          "insider_name": "Enright Patrick G",
+          "title": "Dir, 10%",
           "role": "10% Owner",
           "trade_date": "2026-02-05",
           "value": "+$18,275,000",
           "qty": "+1,075,000"
         },
         {
-          "insider_name": "Enright Patrick G",
-          "title": "Dir, 10%",
+          "insider_name": "Longitude Capital Partners V, LLC",
+          "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-05",
           "value": "+$18,275,000",
@@ -384,16 +384,16 @@
           "qty": "+2,117,760"
         },
         {
-          "insider_name": "Lux Venture Partners V, LLC",
-          "title": "10%",
+          "insider_name": "Wolfe Josh",
+          "title": "Dir, 10%",
           "role": "10% Owner",
           "trade_date": "2026-02-04",
           "value": "+$4,999,968",
           "qty": "+277,776"
         },
         {
-          "insider_name": "Wolfe Josh",
-          "title": "Dir, 10%",
+          "insider_name": "Lux Venture Partners V, LLC",
+          "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-04",
           "value": "+$4,999,968",
@@ -558,6 +558,14 @@
           "qty": "+671,000"
         },
         {
+          "insider_name": "Hennessy Thomas D",
+          "title": "Pres, 10%",
+          "role": "Pres",
+          "trade_date": "2026-02-06",
+          "value": "+$6,710,000",
+          "qty": "+671,000"
+        },
+        {
           "insider_name": "Hc VIII Sponsor LLC",
           "title": "10%",
           "role": "10% Owner",
@@ -569,14 +577,6 @@
           "insider_name": "Hennessy Daniel J",
           "title": "COB, CEO, 10%",
           "role": "COB",
-          "trade_date": "2026-02-06",
-          "value": "+$6,710,000",
-          "qty": "+671,000"
-        },
-        {
-          "insider_name": "Hennessy Thomas D",
-          "title": "Pres, 10%",
-          "role": "Pres",
           "trade_date": "2026-02-06",
           "value": "+$6,710,000",
           "qty": "+671,000"
@@ -964,32 +964,14 @@
     {
       "ticker": "FEAM",
       "company_name": "5E Advanced Materials, Inc.",
-      "total_value": 8015000.0,
+      "total_value": 8000000.0,
       "total_value_formatted": "$8.0M",
-      "total_purchases": 3,
-      "unique_insiders": 3,
+      "total_purchases": 1,
+      "unique_insiders": 1,
       "role_counts": {
-        "CEO": 1,
-        "CFO": 1,
         "10% Owner": 1
       },
       "trades": [
-        {
-          "insider_name": "Weibel Paul Wesley III",
-          "title": "CEO",
-          "role": "CEO",
-          "trade_date": "2026-02-02",
-          "value": "+$7,500",
-          "qty": "+3,750"
-        },
-        {
-          "insider_name": "Malm Joshua",
-          "title": "CFO",
-          "role": "CFO",
-          "trade_date": "2026-02-02",
-          "value": "+$7,500",
-          "qty": "+3,750"
-        },
         {
           "insider_name": "Bep Special Situations IV LLC",
           "title": "Dir, 10%",
@@ -1415,6 +1397,27 @@
       ]
     },
     {
+      "ticker": "FIEE",
+      "company_name": "Fiee, Inc.",
+      "total_value": 2758253.0,
+      "total_value_formatted": "$2.8M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Elements Corporate Services Ltd",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-10",
+          "value": "+$2,758,253",
+          "qty": "+2,138,181"
+        }
+      ]
+    },
+    {
       "ticker": "NOMA",
       "company_name": "Nomadar Corp.",
       "total_value": 2260558.0,
@@ -1520,27 +1523,6 @@
           "trade_date": "2026-02-03",
           "value": "+$26,614",
           "qty": "+300"
-        }
-      ]
-    },
-    {
-      "ticker": "NFJ",
-      "company_name": "Virtus Dividend, Interest & Premium Strategy Fund",
-      "total_value": 1829465.0,
-      "total_value_formatted": "$1.8M",
-      "total_purchases": 1,
-      "unique_insiders": 1,
-      "role_counts": {
-        "10% Owner": 1
-      },
-      "trades": [
-        {
-          "insider_name": "Saba Capital Management, L.P.",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-03",
-          "value": "+$1,829,465",
-          "qty": "+135,407"
         }
       ]
     },

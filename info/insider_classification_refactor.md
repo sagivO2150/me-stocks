@@ -1,0 +1,40 @@
+# Insider Event Classification Refactor (Campaign-Based)
+
+## Why this changed
+The old system mixed per-trade and per-cluster logic, which caused:
+- some dates to get skipped,
+- too many `disqualified` events,
+- labels that were hard to compare stock-to-stock.
+
+## New mental model
+We now classify **campaigns** instead of individual filings:
+1. Group buy dates into one campaign when each next buy date is within 7 calendar days.
+2. Compute trend context before campaign start (30d) and outcome after campaign end (5d/10d/20d).
+3. Assign exactly one category per campaign.
+
+This guarantees each campaign is classified once.
+
+## Categories
+- `bottom-fishing-win`: Bought after a drawdown (`preTrend <= -15%`) and price rebounded strongly (`post10 >= +8%`).
+- `breakout-accumulation`: Price moved up quickly after campaign (`post10 >= +8%`) without drawdown precondition.
+- `slow-burn-accumulation`: No fast breakout, but meaningful medium follow-through (`post20 > +5%`).
+- `stabilizing-accumulation`: Neutral/small moves; buying looked supportive but not explosive.
+- `late-chase`: Campaign happened after a prior run (`preTrend >= +10%`) and then slipped (`post10 < 0`).
+- `failed-support`: Price dropped materially after buying (`post10 <= -8%`).
+- `needs-follow-through`: Too recent or not enough forward data to evaluate.
+
+## Practical usage for ranking/filtering
+- High-quality signal bucket: `bottom-fishing-win`, `breakout-accumulation`, `slow-burn-accumulation`.
+- Neutral/watchlist bucket: `stabilizing-accumulation`, `needs-follow-through`.
+- Caution bucket: `late-chase`, `failed-support`.
+
+You can build a stock-level score by weighting category counts:
+- +3: bottom-fishing-win
+- +2: breakout-accumulation
+- +1: slow-burn-accumulation
+- 0: stabilizing-accumulation
+- 0: needs-follow-through
+- -1: late-chase
+- -2: failed-support
+
+Then normalize by number of campaigns to compare across tickers.

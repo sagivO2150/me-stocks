@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-02-12T19:39:11.555935",
-  "total_tickers": 106,
+  "updated_at": "2026-02-13T01:22:23.050700",
+  "total_tickers": 107,
   "total_trades": 200,
   "data": [
     {
@@ -89,23 +89,10 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
-          "count": 14,
+          "type": "needs-follow-through",
+          "count": 1,
           "dates": [
-            "2025-12-18",
-            "2025-12-23",
-            "2025-12-30",
-            "2026-01-05",
-            "2026-01-08",
-            "2026-01-12",
-            "2026-01-15",
-            "2026-01-20",
-            "2026-01-22",
-            "2026-01-26",
-            "2026-01-29",
-            "2026-02-02",
-            "2026-02-05",
-            "2026-02-09"
+            "2025-12-18"
           ]
         }
       ]
@@ -131,31 +118,15 @@
           "qty": "+3,690,000"
         },
         {
-          "insider_name": "Florence Anthony A. Jr.",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-09",
-          "value": "+$15,000,000",
-          "qty": "+937,500"
-        },
-        {
-          "insider_name": "Walker Paul Edward",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-09",
-          "value": "+$15,000,000",
-          "qty": "+937,500"
-        },
-        {
-          "insider_name": "Mathers Edward T",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-09",
-          "value": "+$15,000,000",
-          "qty": "+937,500"
-        },
-        {
           "insider_name": "Chang Carmen",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Baskett Forest",
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
@@ -179,6 +150,14 @@
           "qty": "+937,500"
         },
         {
+          "insider_name": "Mathers Edward T",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
           "insider_name": "Yang Rick",
           "title": "10%",
           "role": "10% Owner",
@@ -195,7 +174,7 @@
           "qty": "+937,500"
         },
         {
-          "insider_name": "Baskett Forest",
+          "insider_name": "Florence Anthony A. Jr.",
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
@@ -211,6 +190,14 @@
           "qty": "+937,500"
         },
         {
+          "insider_name": "Walker Paul Edward",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
           "insider_name": "Pardo Geoffrey B",
           "title": "Dir",
           "role": "Other",
@@ -219,17 +206,17 @@
           "qty": "+312,500"
         },
         {
-          "insider_name": "Vensana Capital I Gp, LLC",
-          "title": "10%",
-          "role": "10% Owner",
+          "insider_name": "Nielsen Kirk G.",
+          "title": "Dir",
+          "role": "Other",
           "trade_date": "2026-02-09",
           "value": "+$2,640,000",
           "qty": "+165,000"
         },
         {
-          "insider_name": "Nielsen Kirk G.",
-          "title": "Dir",
-          "role": "Other",
+          "insider_name": "Vensana Capital I Gp, LLC",
+          "title": "10%",
+          "role": "10% Owner",
           "trade_date": "2026-02-09",
           "value": "+$2,640,000",
           "qty": "+165,000"
@@ -245,7 +232,7 @@
       ],
       "eventClassification": [
         {
-          "type": "plateau",
+          "type": "needs-follow-through",
           "count": 1,
           "dates": [
             "2026-02-09"
@@ -275,10 +262,17 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
+          "type": "slow-burn-accumulation",
           "count": 1,
           "dates": [
             "2024-06-20"
+          ]
+        },
+        {
+          "type": "needs-follow-through",
+          "count": 1,
+          "dates": [
+            "2026-01-29"
           ]
         }
       ]
@@ -321,19 +315,17 @@
       ],
       "eventClassification": [
         {
-          "type": "holy-grail",
+          "type": "breakout-accumulation",
           "count": 1,
           "dates": [
             "2025-02-27"
           ]
         },
         {
-          "type": "disqualified",
-          "count": 3,
+          "type": "failed-support",
+          "count": 1,
           "dates": [
-            "2025-03-03",
-            "2026-01-27",
-            "2026-01-28"
+            "2026-01-27"
           ]
         }
       ]
@@ -368,29 +360,19 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
-          "count": 6,
+          "type": "stabilizing-accumulation",
+          "count": 1,
           "dates": [
-            "2025-08-13",
-            "2025-08-18",
-            "2025-08-21",
-            "2026-01-16",
-            "2026-01-22",
-            "2026-01-27"
+            "2025-08-13"
           ]
         },
         {
-          "type": "plateau",
-          "count": 1,
+          "type": "breakout-accumulation",
+          "count": 3,
           "dates": [
-            "2025-12-22"
-          ]
-        },
-        {
-          "type": "mid-rise",
-          "count": 1,
-          "dates": [
-            "2025-12-30"
+            "2025-12-22",
+            "2025-12-30",
+            "2026-01-16"
           ]
         }
       ]
@@ -408,16 +390,16 @@
       },
       "trades": [
         {
-          "insider_name": "Longitude Capital Partners V, LLC",
-          "title": "10%",
+          "insider_name": "Enright Patrick G",
+          "title": "Dir, 10%",
           "role": "10% Owner",
           "trade_date": "2026-02-05",
           "value": "+$18,275,000",
           "qty": "+1,075,000"
         },
         {
-          "insider_name": "Enright Patrick G",
-          "title": "Dir, 10%",
+          "insider_name": "Longitude Capital Partners V, LLC",
+          "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-05",
           "value": "+$18,275,000",
@@ -450,17 +432,10 @@
       ],
       "eventClassification": [
         {
-          "type": "holy-grail",
+          "type": "stabilizing-accumulation",
           "count": 1,
           "dates": [
             "2026-02-04"
-          ]
-        },
-        {
-          "type": "disqualified",
-          "count": 1,
-          "dates": [
-            "2026-02-05"
           ]
         }
       ]
@@ -486,16 +461,16 @@
           "qty": "+2,117,760"
         },
         {
-          "insider_name": "Lux Venture Partners V, LLC",
-          "title": "10%",
+          "insider_name": "Wolfe Josh",
+          "title": "Dir, 10%",
           "role": "10% Owner",
           "trade_date": "2026-02-04",
           "value": "+$4,999,968",
           "qty": "+277,776"
         },
         {
-          "insider_name": "Wolfe Josh",
-          "title": "Dir, 10%",
+          "insider_name": "Lux Venture Partners V, LLC",
+          "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-04",
           "value": "+$4,999,968",
@@ -512,10 +487,10 @@
       ],
       "eventClassification": [
         {
-          "type": "clamp",
+          "type": "needs-follow-through",
           "count": 1,
           "dates": [
-            "2026-02-06"
+            "2026-02-04"
           ]
         }
       ]
@@ -574,20 +549,10 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
-          "count": 2,
+          "type": "needs-follow-through",
+          "count": 1,
           "dates": [
-            "2026-02-02",
-            "2026-02-05"
-          ]
-        },
-        {
-          "type": "clamp",
-          "count": 3,
-          "dates": [
-            "2026-02-06",
-            "2026-02-09",
-            "2026-02-10"
+            "2026-02-02"
           ]
         }
       ]
@@ -630,7 +595,7 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
+          "type": "stabilizing-accumulation",
           "count": 1,
           "dates": [
             "2026-01-12"
@@ -668,41 +633,26 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
-          "count": 4,
+          "type": "stabilizing-accumulation",
+          "count": 3,
           "dates": [
             "2024-04-08",
             "2024-07-08",
-            "2025-06-30",
-            "2026-01-21"
+            "2025-06-30"
           ]
         },
         {
-          "type": "slump-recovery",
+          "type": "slow-burn-accumulation",
           "count": 1,
           "dates": [
             "2025-04-03"
           ]
         },
         {
-          "type": "mid-rise",
-          "count": 1,
-          "dates": [
-            "2025-04-10"
-          ]
-        },
-        {
-          "type": "holy-grail",
+          "type": "breakout-accumulation",
           "count": 1,
           "dates": [
             "2026-01-20"
-          ]
-        },
-        {
-          "type": "plateau",
-          "count": 1,
-          "dates": [
-            "2026-01-23"
           ]
         }
       ]
@@ -737,6 +687,14 @@
           "qty": "+671,000"
         },
         {
+          "insider_name": "Hennessy Thomas D",
+          "title": "Pres, 10%",
+          "role": "Pres",
+          "trade_date": "2026-02-06",
+          "value": "+$6,710,000",
+          "qty": "+671,000"
+        },
+        {
           "insider_name": "Hc VIII Sponsor LLC",
           "title": "10%",
           "role": "10% Owner",
@@ -748,14 +706,6 @@
           "insider_name": "Hennessy Daniel J",
           "title": "COB, CEO, 10%",
           "role": "COB",
-          "trade_date": "2026-02-06",
-          "value": "+$6,710,000",
-          "qty": "+671,000"
-        },
-        {
-          "insider_name": "Hennessy Thomas D",
-          "title": "Pres, 10%",
-          "role": "Pres",
           "trade_date": "2026-02-06",
           "value": "+$6,710,000",
           "qty": "+671,000"
@@ -809,32 +759,24 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
-          "count": 9,
+          "type": "failed-support",
+          "count": 1,
           "dates": [
-            "2025-11-04",
-            "2025-11-06",
-            "2025-11-10",
-            "2025-11-11",
-            "2025-12-23",
-            "2025-12-30",
-            "2026-01-05",
-            "2026-01-15",
-            "2026-01-16"
+            "2025-11-04"
           ]
         },
         {
-          "type": "plateau",
+          "type": "slow-burn-accumulation",
           "count": 1,
           "dates": [
-            "2026-01-07"
+            "2025-12-23"
           ]
         },
         {
-          "type": "mid-rise",
+          "type": "stabilizing-accumulation",
           "count": 1,
           "dates": [
-            "2026-01-21"
+            "2026-01-15"
           ]
         }
       ]
@@ -861,7 +803,7 @@
       ],
       "eventClassification": [
         {
-          "type": "mid-rise",
+          "type": "late-chase",
           "count": 1,
           "dates": [
             "2026-01-22"
@@ -891,7 +833,7 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
+          "type": "failed-support",
           "count": 1,
           "dates": [
             "2026-01-30"
@@ -937,42 +879,28 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
-          "count": 6,
-          "dates": [
-            "2025-06-13",
-            "2025-11-17",
-            "2025-12-03",
-            "2025-12-24",
-            "2026-01-26",
-            "2026-01-29"
-          ]
-        },
-        {
-          "type": "plateau",
-          "count": 2,
-          "dates": [
-            "2025-09-10",
-            "2026-01-14"
-          ]
-        },
-        {
-          "type": "mid-rise",
+          "type": "stabilizing-accumulation",
           "count": 1,
           "dates": [
-            "2025-10-14"
+            "2025-06-13"
           ]
         },
         {
-          "type": "holy-grail",
-          "count": 6,
+          "type": "breakout-accumulation",
+          "count": 4,
           "dates": [
+            "2025-09-10",
             "2025-11-11",
-            "2025-12-09",
-            "2025-12-12",
-            "2025-12-17",
-            "2025-12-19",
+            "2025-12-03",
             "2026-01-08"
+          ]
+        },
+        {
+          "type": "failed-support",
+          "count": 2,
+          "dates": [
+            "2025-10-14",
+            "2026-01-26"
           ]
         }
       ]
@@ -1039,106 +967,25 @@
       ],
       "eventClassification": [
         {
-          "type": "plateau",
+          "type": "stabilizing-accumulation",
           "count": 1,
           "dates": [
             "2024-11-14"
           ]
         },
         {
-          "type": "disqualified",
-          "count": 65,
+          "type": "slow-burn-accumulation",
+          "count": 2,
           "dates": [
             "2024-12-26",
-            "2024-12-31",
-            "2025-01-03",
-            "2025-01-06",
-            "2025-01-08",
-            "2025-01-10",
-            "2025-01-14",
-            "2025-01-16",
-            "2025-08-07",
-            "2025-08-11",
-            "2025-08-12",
-            "2025-08-14",
-            "2025-08-18",
-            "2025-08-19",
-            "2025-08-21",
-            "2025-08-25",
-            "2025-08-27",
-            "2025-09-02",
-            "2025-09-04",
-            "2025-09-08",
-            "2025-09-09",
-            "2025-09-11",
-            "2025-09-15",
-            "2025-09-17",
-            "2025-09-19",
-            "2025-10-07",
-            "2025-10-08",
-            "2025-10-14",
-            "2025-10-16",
-            "2025-10-20",
-            "2025-10-21",
-            "2025-10-23",
-            "2025-10-27",
-            "2025-10-28",
-            "2025-10-30",
-            "2025-11-03",
-            "2025-11-04",
-            "2025-11-10",
-            "2025-11-13",
-            "2025-11-17",
-            "2025-11-18",
-            "2025-11-25",
-            "2025-12-01",
-            "2025-12-02",
-            "2025-12-04",
-            "2025-12-08",
-            "2025-12-10",
-            "2025-12-12",
-            "2025-12-15",
-            "2025-12-16",
-            "2025-12-18",
-            "2025-12-22",
-            "2025-12-24",
-            "2025-12-30",
-            "2026-01-02",
-            "2026-01-05",
-            "2026-01-06",
-            "2026-01-08",
-            "2026-01-12",
-            "2026-01-13",
-            "2026-01-26",
-            "2026-01-27",
-            "2026-01-29",
-            "2026-02-03",
-            "2026-02-05"
+            "2025-08-07"
           ]
         },
         {
-          "type": "holy-grail",
-          "count": 5,
-          "dates": [
-            "2025-10-09",
-            "2025-11-20",
-            "2026-01-15",
-            "2026-01-20",
-            "2026-02-02"
-          ]
-        },
-        {
-          "type": "clamp",
+          "type": "needs-follow-through",
           "count": 1,
           "dates": [
-            "2026-02-09"
-          ]
-        },
-        {
-          "type": "mid-rise",
-          "count": 1,
-          "dates": [
-            "2026-02-11"
+            "2025-10-07"
           ]
         }
       ]
@@ -1173,7 +1020,7 @@
       ],
       "eventClassification": [
         {
-          "type": "plateau",
+          "type": "stabilizing-accumulation",
           "count": 1,
           "dates": [
             "2026-01-26"
@@ -1203,29 +1050,19 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
-          "count": 6,
+          "type": "stabilizing-accumulation",
+          "count": 1,
           "dates": [
-            "2025-08-13",
-            "2025-08-18",
-            "2025-08-21",
-            "2026-01-16",
-            "2026-01-22",
-            "2026-01-27"
+            "2025-08-13"
           ]
         },
         {
-          "type": "plateau",
-          "count": 1,
+          "type": "breakout-accumulation",
+          "count": 3,
           "dates": [
-            "2025-12-22"
-          ]
-        },
-        {
-          "type": "mid-rise",
-          "count": 1,
-          "dates": [
-            "2025-12-30"
+            "2025-12-22",
+            "2025-12-30",
+            "2026-01-16"
           ]
         }
       ]
@@ -1252,30 +1089,33 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
-          "count": 5,
-          "dates": [
-            "2025-04-03",
-            "2025-06-20",
-            "2025-07-25",
-            "2025-08-01",
-            "2025-08-08"
-          ]
-        },
-        {
-          "type": "plateau",
-          "count": 3,
-          "dates": [
-            "2025-06-12",
-            "2025-11-17",
-            "2026-02-04"
-          ]
-        },
-        {
-          "type": "holy-grail",
+          "type": "failed-support",
           "count": 1,
           "dates": [
-            "2025-08-07"
+            "2025-04-03"
+          ]
+        },
+        {
+          "type": "slow-burn-accumulation",
+          "count": 1,
+          "dates": [
+            "2025-06-12"
+          ]
+        },
+        {
+          "type": "breakout-accumulation",
+          "count": 3,
+          "dates": [
+            "2025-06-20",
+            "2025-07-25",
+            "2025-11-17"
+          ]
+        },
+        {
+          "type": "stabilizing-accumulation",
+          "count": 1,
+          "dates": [
+            "2026-02-04"
           ]
         }
       ]
@@ -1332,7 +1172,7 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
+          "type": "stabilizing-accumulation",
           "count": 1,
           "dates": [
             "2026-02-04"
@@ -1371,11 +1211,10 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
-          "count": 2,
+          "type": "failed-support",
+          "count": 1,
           "dates": [
-            "2026-01-29",
-            "2026-01-30"
+            "2026-01-29"
           ]
         }
       ]
@@ -1402,23 +1241,27 @@
       ],
       "eventClassification": [
         {
-          "type": "plateau",
-          "count": 2,
+          "type": "needs-follow-through",
+          "count": 1,
           "dates": [
-            "2024-03-18",
-            "2024-09-18"
+            "2019-09-10"
           ]
         },
         {
-          "type": "disqualified",
-          "count": 7,
+          "type": "stabilizing-accumulation",
+          "count": 5,
           "dates": [
+            "2024-03-18",
             "2024-03-27",
             "2024-09-06",
-            "2025-03-04",
-            "2025-03-06",
-            "2025-03-10",
-            "2025-03-14",
+            "2024-09-18",
+            "2025-03-04"
+          ]
+        },
+        {
+          "type": "breakout-accumulation",
+          "count": 1,
+          "dates": [
             "2026-01-23"
           ]
         }
@@ -1446,22 +1289,27 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
-          "count": 5,
+          "type": "failed-support",
+          "count": 1,
           "dates": [
-            "2024-07-31",
-            "2024-08-14",
-            "2024-09-16",
-            "2025-02-10",
-            "2026-02-03"
+            "2024-07-31"
           ]
         },
         {
-          "type": "plateau",
-          "count": 2,
+          "type": "slow-burn-accumulation",
+          "count": 1,
           "dates": [
-            "2024-09-20",
-            "2025-10-03"
+            "2024-08-14"
+          ]
+        },
+        {
+          "type": "stabilizing-accumulation",
+          "count": 4,
+          "dates": [
+            "2024-09-16",
+            "2025-02-10",
+            "2025-10-03",
+            "2026-02-03"
           ]
         }
       ]
@@ -1469,32 +1317,14 @@
     {
       "ticker": "FEAM",
       "company_name": "5E Advanced Materials, Inc.",
-      "total_value": 8015000,
+      "total_value": 8000000,
       "total_value_formatted": "$8.0M",
-      "total_purchases": 3,
-      "unique_insiders": 3,
+      "total_purchases": 1,
+      "unique_insiders": 1,
       "role_counts": {
-        "CEO": 1,
-        "CFO": 1,
         "10% Owner": 1
       },
       "trades": [
-        {
-          "insider_name": "Weibel Paul Wesley III",
-          "title": "CEO",
-          "role": "CEO",
-          "trade_date": "2026-02-02",
-          "value": "+$7,500",
-          "qty": "+3,750"
-        },
-        {
-          "insider_name": "Malm Joshua",
-          "title": "CFO",
-          "role": "CFO",
-          "trade_date": "2026-02-02",
-          "value": "+$7,500",
-          "qty": "+3,750"
-        },
         {
           "insider_name": "Bep Special Situations IV LLC",
           "title": "Dir, 10%",
@@ -1506,14 +1336,14 @@
       ],
       "eventClassification": [
         {
-          "type": "plateau",
+          "type": "slow-burn-accumulation",
           "count": 1,
           "dates": [
             "2025-08-25"
           ]
         },
         {
-          "type": "disqualified",
+          "type": "stabilizing-accumulation",
           "count": 1,
           "dates": [
             "2026-02-02"
@@ -1543,28 +1373,25 @@
       ],
       "eventClassification": [
         {
-          "type": "holy-grail",
-          "count": 1,
+          "type": "failed-support",
+          "count": 2,
           "dates": [
-            "2024-03-18"
-          ]
-        },
-        {
-          "type": "disqualified",
-          "count": 6,
-          "dates": [
-            "2024-03-22",
-            "2024-03-25",
-            "2024-03-26",
-            "2024-05-07",
-            "2024-08-07",
+            "2024-03-18",
             "2025-02-19"
           ]
         },
         {
-          "type": "mid-rise",
+          "type": "slow-burn-accumulation",
           "count": 1,
           "dates": [
+            "2024-05-07"
+          ]
+        },
+        {
+          "type": "stabilizing-accumulation",
+          "count": 2,
+          "dates": [
+            "2024-08-07",
             "2026-02-05"
           ]
         }
@@ -1592,7 +1419,7 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
+          "type": "breakout-accumulation",
           "count": 1,
           "dates": [
             "2026-01-13"
@@ -1630,7 +1457,7 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
+          "type": "stabilizing-accumulation",
           "count": 1,
           "dates": [
             "2026-01-12"
@@ -1660,7 +1487,7 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
+          "type": "failed-support",
           "count": 2,
           "dates": [
             "2025-10-08",
@@ -1668,21 +1495,14 @@
           ]
         },
         {
-          "type": "holy-grail",
+          "type": "breakout-accumulation",
           "count": 1,
           "dates": [
             "2026-01-05"
           ]
         },
         {
-          "type": "slump-recovery",
-          "count": 1,
-          "dates": [
-            "2026-01-07"
-          ]
-        },
-        {
-          "type": "mid-rise",
+          "type": "stabilizing-accumulation",
           "count": 1,
           "dates": [
             "2026-01-21"
@@ -1720,23 +1540,12 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
-          "count": 14,
+          "type": "failed-support",
+          "count": 3,
           "dates": [
             "2024-07-05",
             "2024-08-02",
-            "2024-08-06",
-            "2024-08-08",
-            "2024-08-12",
-            "2024-08-14",
-            "2024-08-16",
-            "2024-08-20",
-            "2024-08-22",
-            "2024-08-26",
-            "2024-08-28",
-            "2024-08-30",
-            "2026-01-28",
-            "2026-02-02"
+            "2026-01-28"
           ]
         }
       ]
@@ -1763,18 +1572,24 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
-          "count": 2,
+          "type": "breakout-accumulation",
+          "count": 1,
           "dates": [
-            "2025-05-06",
-            "2026-02-09"
+            "2025-05-06"
           ]
         },
         {
-          "type": "mid-rise",
+          "type": "slow-burn-accumulation",
           "count": 1,
           "dates": [
             "2025-05-22"
+          ]
+        },
+        {
+          "type": "needs-follow-through",
+          "count": 1,
+          "dates": [
+            "2026-02-09"
           ]
         }
       ]
@@ -1801,22 +1616,22 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
-          "count": 2,
+          "type": "stabilizing-accumulation",
+          "count": 1,
           "dates": [
-            "2024-03-14",
-            "2024-06-13"
+            "2024-03-14"
           ]
         },
         {
-          "type": "mid-rise",
-          "count": 1,
+          "type": "failed-support",
+          "count": 2,
           "dates": [
+            "2024-06-13",
             "2024-12-02"
           ]
         },
         {
-          "type": "plateau",
+          "type": "breakout-accumulation",
           "count": 3,
           "dates": [
             "2025-08-18",
@@ -1878,24 +1693,18 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
-          "count": 2,
+          "type": "slow-burn-accumulation",
+          "count": 1,
           "dates": [
-            "2024-07-26",
-            "2025-01-13"
+            "2024-07-26"
           ]
         },
         {
-          "type": "plateau",
-          "count": 1,
+          "type": "stabilizing-accumulation",
+          "count": 3,
           "dates": [
-            "2024-12-23"
-          ]
-        },
-        {
-          "type": "mid-rise",
-          "count": 1,
-          "dates": [
+            "2024-12-23",
+            "2025-01-13",
             "2026-02-06"
           ]
         }
@@ -1923,15 +1732,19 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
-          "count": 6,
+          "type": "failed-support",
+          "count": 2,
           "dates": [
             "2025-11-26",
+            "2026-01-26"
+          ]
+        },
+        {
+          "type": "stabilizing-accumulation",
+          "count": 2,
+          "dates": [
             "2025-12-26",
-            "2026-01-09",
-            "2026-01-16",
-            "2026-01-26",
-            "2026-01-28"
+            "2026-01-09"
           ]
         }
       ]
@@ -1958,14 +1771,14 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
+          "type": "bottom-fishing-win",
           "count": 1,
           "dates": [
             "2025-11-19"
           ]
         },
         {
-          "type": "plateau",
+          "type": "stabilizing-accumulation",
           "count": 1,
           "dates": [
             "2026-02-03"
@@ -2003,16 +1816,10 @@
       ],
       "eventClassification": [
         {
-          "type": "plateau",
-          "count": 1,
+          "type": "stabilizing-accumulation",
+          "count": 2,
           "dates": [
-            "2026-01-23"
-          ]
-        },
-        {
-          "type": "disqualified",
-          "count": 1,
-          "dates": [
+            "2026-01-23",
             "2026-02-04"
           ]
         }
@@ -2048,7 +1855,7 @@
       ],
       "eventClassification": [
         {
-          "type": "plateau",
+          "type": "breakout-accumulation",
           "count": 1,
           "dates": [
             "2026-01-30"
@@ -2086,40 +1893,50 @@
       ],
       "eventClassification": [
         {
-          "type": "plateau",
+          "type": "needs-follow-through",
+          "count": 2,
+          "dates": [
+            "2023-11-22",
+            "2025-11-15"
+          ]
+        },
+        {
+          "type": "slow-burn-accumulation",
           "count": 5,
           "dates": [
             "2024-02-15",
-            "2025-12-15",
-            "2025-12-29",
-            "2026-01-15",
-            "2026-01-27"
+            "2024-07-30",
+            "2024-10-01",
+            "2024-11-08",
+            "2025-12-29"
           ]
         },
         {
-          "type": "disqualified",
-          "count": 13,
+          "type": "stabilizing-accumulation",
+          "count": 4,
           "dates": [
-            "2024-07-30",
-            "2024-10-01",
             "2025-02-28",
             "2025-04-01",
-            "2025-04-02",
-            "2025-04-04",
-            "2025-04-09",
             "2025-04-21",
-            "2025-04-24",
+            "2025-12-15"
+          ]
+        },
+        {
+          "type": "breakout-accumulation",
+          "count": 4,
+          "dates": [
             "2025-05-14",
             "2025-09-15",
             "2025-10-15",
-            "2025-10-27"
+            "2026-01-15"
           ]
         },
         {
-          "type": "mid-rise",
-          "count": 1,
+          "type": "failed-support",
+          "count": 2,
           "dates": [
-            "2024-11-08"
+            "2025-10-27",
+            "2026-01-27"
           ]
         }
       ]
@@ -2177,20 +1994,21 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
-          "count": 7,
+          "type": "slow-burn-accumulation",
+          "count": 1,
           "dates": [
-            "2025-07-25",
-            "2025-11-21",
-            "2026-01-26",
-            "2026-01-27",
-            "2026-01-29",
-            "2026-02-03",
-            "2026-02-04"
+            "2025-07-25"
           ]
         },
         {
-          "type": "holy-grail",
+          "type": "bottom-fishing-win",
+          "count": 1,
+          "dates": [
+            "2025-11-21"
+          ]
+        },
+        {
+          "type": "stabilizing-accumulation",
           "count": 1,
           "dates": [
             "2026-01-23"
@@ -2220,10 +2038,54 @@
       ],
       "eventClassification": [
         {
-          "type": "plateau",
+          "type": "stabilizing-accumulation",
           "count": 1,
           "dates": [
             "2026-02-06"
+          ]
+        }
+      ]
+    },
+    {
+      "ticker": "FIEE",
+      "company_name": "Fiee, Inc.",
+      "total_value": 2758253,
+      "total_value_formatted": "$2.8M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Elements Corporate Services Ltd",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-10",
+          "value": "+$2,758,253",
+          "qty": "+2,138,181"
+        }
+      ],
+      "eventClassification": [
+        {
+          "type": "bottom-fishing-win",
+          "count": 1,
+          "dates": [
+            "2024-12-26"
+          ]
+        },
+        {
+          "type": "breakout-accumulation",
+          "count": 1,
+          "dates": [
+            "2025-05-09"
+          ]
+        },
+        {
+          "type": "needs-follow-through",
+          "count": 1,
+          "dates": [
+            "2026-02-10"
           ]
         }
       ]
@@ -2250,7 +2112,7 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
+          "type": "stabilizing-accumulation",
           "count": 1,
           "dates": [
             "2025-11-20"
@@ -2280,7 +2142,7 @@
       ],
       "eventClassification": [
         {
-          "type": "plateau",
+          "type": "stabilizing-accumulation",
           "count": 1,
           "dates": [
             "2026-01-29"
@@ -2310,7 +2172,7 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
+          "type": "stabilizing-accumulation",
           "count": 1,
           "dates": [
             "2026-02-02"
@@ -2365,69 +2227,35 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
-          "count": 24,
+          "type": "slow-burn-accumulation",
+          "count": 1,
           "dates": [
-            "2024-03-05",
-            "2024-03-06",
-            "2024-03-07",
-            "2024-03-08",
+            "2024-03-05"
+          ]
+        },
+        {
+          "type": "stabilizing-accumulation",
+          "count": 5,
+          "dates": [
             "2024-04-02",
-            "2024-04-04",
             "2024-12-20",
-            "2024-12-23",
-            "2024-12-24",
-            "2024-12-26",
             "2025-01-07",
             "2025-03-05",
-            "2025-03-06",
-            "2025-03-11",
-            "2025-07-08",
-            "2025-07-10",
-            "2025-11-11",
-            "2025-11-12",
-            "2025-11-13",
-            "2025-11-18",
-            "2025-11-19",
-            "2026-02-03",
-            "2026-02-05",
-            "2026-02-09"
+            "2025-07-08"
           ]
-        }
-      ]
-    },
-    {
-      "ticker": "NFJ",
-      "company_name": "Virtus Dividend, Interest & Premium Strategy Fund",
-      "total_value": 1829465,
-      "total_value_formatted": "$1.8M",
-      "total_purchases": 1,
-      "unique_insiders": 1,
-      "role_counts": {
-        "10% Owner": 1
-      },
-      "trades": [
+        },
         {
-          "insider_name": "Saba Capital Management, L.P.",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-03",
-          "value": "+$1,829,465",
-          "qty": "+135,407"
-        }
-      ],
-      "eventClassification": [
-        {
-          "type": "disqualified",
-          "count": 7,
+          "type": "breakout-accumulation",
+          "count": 1,
           "dates": [
-            "2025-06-17",
-            "2026-01-27",
-            "2026-01-29",
-            "2026-02-02",
-            "2026-02-03",
-            "2026-02-05",
-            "2026-02-09"
+            "2025-11-11"
+          ]
+        },
+        {
+          "type": "needs-follow-through",
+          "count": 1,
+          "dates": [
+            "2026-02-03"
           ]
         }
       ]
@@ -2485,14 +2313,18 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
-          "count": 5,
+          "type": "stabilizing-accumulation",
+          "count": 2,
           "dates": [
             "2025-01-24",
-            "2025-01-27",
-            "2025-04-22",
-            "2026-01-23",
-            "2026-01-27"
+            "2026-01-23"
+          ]
+        },
+        {
+          "type": "slow-burn-accumulation",
+          "count": 1,
+          "dates": [
+            "2025-04-22"
           ]
         }
       ]
@@ -2536,18 +2368,10 @@
       ],
       "eventClassification": [
         {
-          "type": "disqualified",
+          "type": "needs-follow-through",
           "count": 1,
           "dates": [
             "2026-02-05"
-          ]
-        },
-        {
-          "type": "clamp",
-          "count": 2,
-          "dates": [
-            "2026-02-09",
-            "2026-02-10"
           ]
         }
       ]
