@@ -614,6 +614,14 @@ const StockDetail = ({ trade, onClose }) => {
     });
   };
 
+  // Format date to DD-MM-YYYY format
+  const formatDate = (dateString) => {
+    // Extract date part (YYYY-MM-DD) from dateString which might include time
+    const datePart = dateString.split('T')[0].split(' ')[0];
+    const [year, month, day] = datePart.split('-');
+    return `${day}-${month}-${year}`;
+  };
+
   // Custom tooltip for chart - show individual trade when hovering a dot, or all trades for a date
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
@@ -624,7 +632,7 @@ const StockDetail = ({ trade, onClose }) => {
         const isPurchase = data.type !== 'Sale';
         return (
           <div className="bg-slate-800 border border-slate-600 rounded-lg p-3 shadow-xl">
-            <p className="text-slate-300 text-sm font-semibold mb-2">{data.date}</p>
+            <p className="text-slate-300 text-sm font-semibold mb-2">{formatDate(data.date)}</p>
             <p className="text-xs text-blue-300 mb-2">📊 Stock Price: ${data.close ? data.close.toFixed(2) : 'N/A'}</p>
             <div className="space-y-1">
               <p className={`text-xs font-semibold ${isPurchase ? 'text-emerald-400' : 'text-red-400'}`}>
@@ -649,7 +657,7 @@ const StockDetail = ({ trade, onClose }) => {
       
       return (
         <div className="bg-slate-800 border border-slate-600 rounded-lg p-3 shadow-xl max-h-96 overflow-y-auto">
-          <p className="text-slate-300 text-sm font-semibold mb-1 sticky top-0 bg-slate-800">{data.date}</p>
+          <p className="text-slate-300 text-sm font-semibold mb-1 sticky top-0 bg-slate-800">{formatDate(data.date)}</p>
           <p className="text-xs text-blue-300 mb-2">📊 Stock Price: ${data.close ? data.close.toFixed(2) : 'N/A'}</p>
           
           {/* Insider Activity - Show EACH trade individually */}
