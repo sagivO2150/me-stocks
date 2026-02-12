@@ -968,6 +968,9 @@ const StockDetail = ({ trade, onClose }) => {
   // State for tracking which badge dropdown is open
   const [expandedBadge, setExpandedBadge] = useState(null);
   
+  // State for tracking hovered date in dropdown (to highlight on chart)
+  const [hoveredEventDate, setHoveredEventDate] = useState(null);
+  
   // Debug: log events to see if dates are present
   console.log('Events for', ticker, ':', events);
 
@@ -1026,6 +1029,8 @@ const StockDetail = ({ trade, onClose }) => {
                                   setFocusDate(date);
                                   setExpandedBadge(null); // Close dropdown after selecting
                                 }}
+                                onMouseEnter={() => setHoveredEventDate(date)}
+                                onMouseLeave={() => setHoveredEventDate(null)}
                                 className="w-full text-left py-1 px-2 hover:bg-slate-700 rounded cursor-pointer transition-colors"
                               >
                                 📅 {new Date(date).toLocaleDateString('en-US', { 
@@ -1452,13 +1457,28 @@ const StockDetail = ({ trade, onClose }) => {
                           return <circle key={`purchase-empty-${cx}-${cy}`} cx={cx} cy={cy} r={0} fill="none" />;
                         }
                         
+                        // Check if this date matches the hovered event date
+                        const isHovered = hoveredEventDate && payload.date && 
+                          payload.date.split('T')[0] === hoveredEventDate.split('T')[0];
+                        
                         // Render multiple dots if there are multiple trades
                         const trades = payload.purchaseTrades;
                         const numTrades = trades.length;
                         
                         if (numTrades === 1) {
-                          // Single trade - one dot
-                          return <circle key={`purchase-${cx}-${cy}`} cx={cx} cy={cy} r={8} fill="#10b981" stroke="#fff" strokeWidth={2} />;
+                          // Single trade - one dot (enlarged if hovered)
+                          return (
+                            <circle 
+                              key={`purchase-${cx}-${cy}`} 
+                              cx={cx} 
+                              cy={cy} 
+                              r={isHovered ? 14 : 8} 
+                              fill="#10b981" 
+                              stroke={isHovered ? "#fbbf24" : "#fff"} 
+                              strokeWidth={isHovered ? 4 : 2}
+                              className={isHovered ? "animate-pulse" : ""}
+                            />
+                          );
                         } else {
                           // Multiple trades - render multiple dots with x-offset
                           const spacing = 4;
@@ -1470,10 +1490,11 @@ const StockDetail = ({ trade, onClose }) => {
                                   key={`purchase-${cx}-${cy}-${idx}`}
                                   cx={startX + (idx * spacing)}
                                   cy={cy}
-                                  r={7}
+                                  r={isHovered ? 10 : 7}
                                   fill="#10b981"
-                                  stroke="#fff"
-                                  strokeWidth={2}
+                                  stroke={isHovered ? "#fbbf24" : "#fff"}
+                                  strokeWidth={isHovered ? 3 : 2}
+                                  className={isHovered ? "animate-pulse" : ""}
                                 />
                               ))}
                             </g>
