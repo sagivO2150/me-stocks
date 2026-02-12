@@ -1017,9 +1017,13 @@ const StockDetail = ({ trade, onClose }) => {
                   const hasDates = event.dates && event.dates.length > 0;
                   
                   return (
-                    <div key={`${event.type}-${idx}`} className="relative">
+                    <div 
+                      key={`${event.type}-${idx}`} 
+                      className="relative"
+                      onMouseEnter={() => hasDates && setExpandedBadge(`${event.type}-${idx}`)}
+                      onMouseLeave={() => setExpandedBadge(null)}
+                    >
                       <button
-                        onClick={() => setExpandedBadge(isExpanded ? null : `${event.type}-${idx}`)}
                         className={`px-2 py-1 rounded-lg text-xs font-medium border ${config.colorClass} cursor-pointer hover:opacity-80 transition-opacity`}
                         title={config.tooltip}
                       >
@@ -1028,8 +1032,8 @@ const StockDetail = ({ trade, onClose }) => {
                       
                       {/* Dropdown with dates */}
                       {isExpanded && hasDates && (
-                        <div className="absolute top-full left-0 mt-1 bg-slate-800 border border-slate-600 rounded-lg shadow-xl z-10 min-w-[150px]">
-                          <div className="p-2 text-xs text-slate-300">
+                        <div className="absolute top-full left-0 bg-slate-800 border border-slate-600 rounded-lg shadow-xl z-10 min-w-[150px]">
+                          <div className="p-2 pt-3 text-xs text-slate-300">
                             {event.dates.map((date, dateIdx) => (
                               <button
                                 key={dateIdx}
