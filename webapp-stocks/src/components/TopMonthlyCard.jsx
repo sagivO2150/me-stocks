@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Tooltip from './Tooltip';
 
 const TopMonthlyCard = ({ stock }) => {
-  const [eventBadge, setEventBadge] = useState(null);
-  
   // Parse values
   const ticker = stock.ticker;
   const companyName = stock.company_name;
@@ -11,6 +9,7 @@ const TopMonthlyCard = ({ stock }) => {
   const totalPurchases = stock.total_purchases;
   const uniqueInsiders = stock.unique_insiders;
   const roleCounts = stock.role_counts || {};
+  const eventBadge = stock.eventClassification; // Event is pre-calculated and stored
   
   // Extract role counts
   const cobCount = roleCounts['COB'] || 0;
@@ -37,36 +36,6 @@ const TopMonthlyCard = ({ stock }) => {
   if (ownerCount > 0) roleBreakdown.push(`${ownerCount} Owner${ownerCount > 1 ? 's' : ''}`);
   if (otherCount > 0) roleBreakdown.push(`${otherCount} Other`);
   const roleBreakdownText = roleBreakdown.join(', ');
-
-  // Fetch event classification
-  useEffect(() => {
-    const fetchEventClassification = async () => {
-      try {
-        console.log(`🔍 [MONTHLY] Fetching event classification for ${ticker}`);
-        const response = await fetch(`http://localhost:3001/api/event-classification/${ticker}`);
-        console.log(`📡 [MONTHLY] Response status for ${ticker}:`, response.status);
-        if (response.ok) {
-          const data = await response.json();
-          console.log(`📊 [MONTHLY] Event data for ${ticker}:`, data);
-          if (data.success && data.primaryEvent) {
-            console.log(`✅ [MONTHLY] Setting event badge for ${ticker}:`, data.primaryEvent);
-            setEventBadge(data.primaryEvent);
-          } else {
-            console.log(`❌ [MONTHLY] No primary event for ${ticker}`);
-          }
-        } else {
-          console.log(`⚠️ [MONTHLY] Failed to fetch events for ${ticker}:`, response.status);
-        }
-      } catch (err) {
-        console.log(`❌ [MONTHLY] Error fetching events for ${ticker}:`, err);
-      }
-    };
-    
-    if (ticker) {
-      console.log(`🎯 [MONTHLY] TopMonthlyCard for ${ticker} - will fetch events`);
-      fetchEventClassification();
-    }
-  }, [ticker]);
 
   // Determine card intensity based on value and activity
   const getCardIntensity = () => {
@@ -95,16 +64,12 @@ const TopMonthlyCard = ({ stock }) => {
       {/* Badges Row - Event Classification Only */}
       <div className="flex flex-wrap gap-2 mb-4">
         {/* Event Classification Badge */}
-        {eventBadge ? (
+        {eventBadge && (
           <Tooltip text={eventBadge.tooltip}>
             <span className={`px-3 py-2 rounded-lg text-sm font-medium ${eventBadge.colorClass}`}>
               {eventBadge.icon} {eventBadge.label}
             </span>
           </Tooltip>
-        ) : (
-          <span className="px-3 py-2 bg-slate-700/30 text-slate-500 rounded-lg text-sm font-medium">
-            ⏳ Analyzing...
-          </span>
         )}
       </div>
 

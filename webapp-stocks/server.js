@@ -720,7 +720,8 @@ app.get('/api/politician-stats', (req, res) => {
 // Endpoint to get top monthly insider trading stocks
 app.get('/api/top-monthly-trades', (req, res) => {
   try {
-    const jsonPath = path.join(__dirname, '../output CSVs/top_monthly_insider_trades.json');
+    // Read from public folder which has the enriched data with eventClassification
+    const jsonPath = path.join(__dirname, 'public/top_monthly_insider_trades.json');
     
     if (!fs.existsSync(jsonPath)) {
       return res.json({
@@ -864,7 +865,7 @@ app.post('/api/scrape-top-monthly', (req, res) => {
       const sourceJSON = path.join(__dirname, '../output CSVs/top_monthly_insider_trades.json');
       const destJSON = path.join(__dirname, 'public/top_monthly_insider_trades.json');
       
-      fs.copyFile(sourceJSON, destJSON, (err) => {
+      fs.copyFile(sourceJSON, destJSON, async (err) => {
         if (err) {
           console.error('Error copying JSON:', err);
           res.status(500).json({
@@ -874,11 +875,67 @@ app.post('/api/scrape-top-monthly', (req, res) => {
           });
         } else {
           console.log('JSON copied to public folder');
-          res.json({
-            success: true,
-            message: 'Top monthly trades data updated successfully!',
-            output: output
-          });
+          
+          // Now enrich with event classification
+          try {
+            console.log('Adding event classification to monthly data...');
+            const jsonData = JSON.parse(fs.readFileSync(destJSON, 'utf8'));
+            
+            // The JSON has a "data" array containing the stocks
+            if (!jsonData.data || !Array.isArray(jsonData.data)) {
+              throw new Error('Invalid JSON structure - expected data array');
+            }
+            
+            // Process stocks in parallel batches of 10 for speed
+            const BATCH_SIZE = 10;
+            const stocks = jsonData.data;
+            console.log(`Processing ${stocks.length} stocks in batches of ${BATCH_SIZE}...`);
+            
+            for (let i = 0; i < stocks.length; i += BATCH_SIZE) {
+              const batch = stocks.slice(i, i + BATCH_SIZE);
+              const batchNum = Math.floor(i / BATCH_SIZE) + 1;
+              const totalBatches = Math.ceil(stocks.length / BATCH_SIZE);
+              
+              console.log(`\nBatch ${batchNum}/${totalBatches}: Processing ${batch.map(s => s.ticker).join(', ')}`);
+              
+              // Process this batch in parallel
+              await Promise.all(batch.map(async (stock) => {
+                try {
+                  const event = await classifyEventForStock(stock.ticker);
+                  stock.eventClassification = event;
+                  if (event) {
+                    console.log(`✓ ${stock.ticker}: ${event.label}`);
+                  } else {
+                    console.log(`- ${stock.ticker}: No event`);
+                  }
+                } catch (e) {
+                  console.log(`✗ ${stock.ticker}: Error - ${e.message}`);
+                  stock.eventClassification = null;
+                }
+              }));
+            }
+            
+            // Save enriched data
+            console.log('About to save enriched data...');
+            console.log('Sample stock before save:', JSON.stringify(jsonData.data[0], null, 2));
+            fs.writeFileSync(destJSON, JSON.stringify(jsonData, null, 2));
+            console.log('✅ Successfully saved enriched data to:', destJSON);
+            console.log('Event classification complete!');
+            
+            res.json({
+              success: true,
+              message: 'Top monthly trades data updated successfully with event classification!',
+              output: output
+            });
+          } catch (enrichErr) {
+            console.error('Error enriching with events:', enrichErr);
+            // Still return success since scraper worked
+            res.json({
+              success: true,
+              message: 'Top monthly trades data updated (event classification failed)',
+              output: output
+            });
+          }
         }
       });
     } else {
@@ -892,7 +949,59 @@ app.post('/api/scrape-top-monthly', (req, res) => {
   });
 });
 
-// Event classification endpoint
+// Helper function to classify events for a stock with timeout
+async function classifyEventForStock(ticker) {
+  const TIMEOUT_MS = 10000; // 10 second timeout per stock
+  
+  const fetchWithTimeout = async (url, timeoutMs) => {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), timeoutMs);
+    
+    try {
+      const response = await fetch(url, { signal: controller.signal });
+      clearTimeout(timeout);
+      return response;
+    } catch (error) {
+      clearTimeout(timeout);
+      throw error;
+    }
+  };
+  
+  try {
+    // Fetch both insider trades and stock history in parallel
+    const [insiderResponse, historyResponse] = await Promise.all([
+      fetchWithTimeout(`http://localhost:${PORT}/api/insider-trades/${ticker}`, TIMEOUT_MS),
+      fetchWithTimeout(`http://localhost:${PORT}/api/stock-history/${ticker}?period=2y`, TIMEOUT_MS)
+    ]);
+    
+    if (!insiderResponse.ok) {
+      return null;
+    }
+    
+    const insiderData = await insiderResponse.json();
+    if (!insiderData.success || !insiderData.purchases || insiderData.purchases.length === 0) {
+      return null;
+    }
+    
+    const historyData = await historyResponse.json();
+    
+    if (!historyResponse.ok || !historyData.success || !historyData.history || historyData.history.length === 0) {
+      return null;
+    }
+    
+    // Classify events
+    return classifyPrimaryEvent(insiderData, historyData);
+  } catch (error) {
+    if (error.name === 'AbortError') {
+      console.log(`✗ ${ticker}: Timeout (>10s)`);
+    } else {
+      console.log(`✗ ${ticker}: ${error.message}`);
+    }
+    return null;
+  }
+}
+
+// Event classification endpoint - now just reads from stored data
 app.get('/api/event-classification/:ticker', async (req, res) => {
   const { ticker } = req.params;
   
@@ -904,15 +1013,17 @@ app.get('/api/event-classification/:ticker', async (req, res) => {
     }
     const insiderData = await insiderResponse.json();
     
+    if (!insiderData.success || !insiderData.purchases || insiderData.purchases.length === 0) {
+      return res.json({ success: false, message: 'No insider purchases' });
+    }
+    
     // Fetch stock history
     const historyResponse = await fetch(`http://localhost:${PORT}/api/stock-history/${ticker}?period=1y`);
-    if (!historyResponse.ok) {
-      return res.json({ success: false, message: 'No stock history' });
-    }
     const historyData = await historyResponse.json();
     
-    if (!insiderData.success || !historyData.success || !insiderData.purchases || insiderData.purchases.length === 0) {
-      return res.json({ success: false, message: 'Insufficient data' });
+    // If no stock history, we can't classify events properly
+    if (!historyResponse.ok || !historyData.success || !historyData.history || historyData.history.length === 0) {
+      return res.json({ success: false, message: 'No stock history available' });
     }
     
     // Classify events (simplified version for card display)
@@ -979,13 +1090,9 @@ function classifyPrimaryEvent(insiderData, historyData) {
     }
   }
   
-  // Check if recent (within 30 days)
+  // Calculate days since trade (for context, not filtering)
   const mostRecentDate = sortedDates[sortedDates.length - 1];
   const daysSinceTrade = (new Date() - new Date(mostRecentDate)) / (1000 * 60 * 60 * 24);
-  
-  if (daysSinceTrade > 90) {
-    return null; // Too old, don't show badge
-  }
   
   // Check price movement after most recent trade
   const priceAtTrade = getPriceAt(mostRecentDate);

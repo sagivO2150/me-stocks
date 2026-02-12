@@ -1,12 +1,12 @@
 {
-  "updated_at": "2026-02-12T02:53:12.986597",
+  "updated_at": "2026-02-12T03:26:10.487899",
   "total_tickers": 108,
   "total_trades": 200,
   "data": [
     {
       "ticker": "WRB",
       "company_name": "Berkley W R Corp",
-      "total_value": 308450309.0,
+      "total_value": 308450309,
       "total_value_formatted": "$308.5M",
       "total_purchases": 8,
       "unique_insiders": 1,
@@ -78,12 +78,18 @@
           "value": "+$2,835,251",
           "qty": "+40,000"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Clamp Event",
+        "icon": "📊",
+        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
+        "tooltip": "Multiple days of insider buying - significant interest"
+      }
     },
     {
       "ticker": "SGP",
       "company_name": "Spyglass Pharma, Inc.",
-      "total_value": 221480000.0,
+      "total_value": 221480000,
       "total_value_formatted": "$221.5M",
       "total_purchases": 15,
       "unique_insiders": 15,
@@ -212,12 +218,13 @@
           "value": "+$2,160,000",
           "qty": "+135,000"
         }
-      ]
+      ],
+      "eventClassification": null
     },
     {
       "ticker": "SHCO",
       "company_name": "Soho House & Co Inc.",
-      "total_value": 99999999.0,
+      "total_value": 99999999,
       "total_value_formatted": "$100.0M",
       "total_purchases": 1,
       "unique_insiders": 1,
@@ -233,12 +240,18 @@
           "value": "+$99,999,999",
           "qty": "+11,111,111"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Disqualified",
+        "icon": "❌",
+        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
+        "tooltip": "Insider bought but stock didn't go up"
+      }
     },
     {
       "ticker": "THM",
       "company_name": "International Tower Hill Mines Ltd",
-      "total_value": 72120703.0,
+      "total_value": 72120703,
       "total_value_formatted": "$72.1M",
       "total_purchases": 3,
       "unique_insiders": 2,
@@ -270,12 +283,18 @@
           "value": "+$7,000,000",
           "qty": "+3,153,153"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Clamp Event",
+        "icon": "📊",
+        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
+        "tooltip": "Multiple days of insider buying - significant interest"
+      }
     },
     {
       "ticker": "UA",
       "company_name": "Under Armour, Inc.",
-      "total_value": 66130240.0,
+      "total_value": 66130240,
       "total_value_formatted": "$66.1M",
       "total_purchases": 2,
       "unique_insiders": 1,
@@ -299,12 +318,18 @@
           "value": "+$16,445,714",
           "qty": "+2,641,105"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Disqualified",
+        "icon": "❌",
+        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
+        "tooltip": "Insider bought but stock didn't go up"
+      }
     },
     {
       "ticker": "MANE",
       "company_name": "Veradermics, Inc",
-      "total_value": 54092449.0,
+      "total_value": 54092449,
       "total_value_formatted": "$54.1M",
       "total_purchases": 5,
       "unique_insiders": 5,
@@ -353,12 +378,18 @@
           "value": "+$1,999,982",
           "qty": "+117,646"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Clamp Event",
+        "icon": "📊",
+        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
+        "tooltip": "Multiple days of insider buying - significant interest"
+      }
     },
     {
       "ticker": "EIKN",
       "company_name": "Eikon Therapeutics, Inc.",
-      "total_value": 50119614.0,
+      "total_value": 50119614,
       "total_value_formatted": "$50.1M",
       "total_purchases": 4,
       "unique_insiders": 4,
@@ -399,12 +430,18 @@
           "value": "+$1,999,998",
           "qty": "+111,111"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Clamp Event",
+        "icon": "📊",
+        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
+        "tooltip": "Multiple days of insider buying - significant interest"
+      }
     },
     {
       "ticker": "NFRX",
       "company_name": "2023 Etf Series Trust",
-      "total_value": 49999928.0,
+      "total_value": 49999928,
       "total_value_formatted": "$50.0M",
       "total_purchases": 5,
       "unique_insiders": 1,
@@ -452,12 +489,18 @@
           "value": "+$9,999,977",
           "qty": "+386,996"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Clamp Event",
+        "icon": "📊",
+        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
+        "tooltip": "Multiple days of insider buying - significant interest"
+      }
     },
     {
       "ticker": "AKTS",
       "company_name": "Aktis Oncology, Inc.",
-      "total_value": 44251632.0,
+      "total_value": 44251632,
       "total_value_formatted": "$44.3M",
       "total_purchases": 3,
       "unique_insiders": 3,
@@ -489,12 +532,18 @@
           "value": "+$4,191,660",
           "qty": "+232,870"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Disqualified",
+        "icon": "❌",
+        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
+        "tooltip": "Insider bought but stock didn't go up"
+      }
     },
     {
       "ticker": "GME",
       "company_name": "Gamestop Corp.",
-      "total_value": 42718400.0,
+      "total_value": 42718400,
       "total_value_formatted": "$42.7M",
       "total_purchases": 2,
       "unique_insiders": 1,
@@ -518,12 +567,18 @@
           "value": "+$21,359,200",
           "qty": "+1,000,000"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Clamp Event",
+        "icon": "📊",
+        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
+        "tooltip": "Multiple days of insider buying - significant interest"
+      }
     },
     {
       "ticker": "HCIC",
       "company_name": "Hennessy Capital Investment Corp. VIII",
-      "total_value": 33550000.0,
+      "total_value": 33550000,
       "total_value_formatted": "$33.5M",
       "total_purchases": 5,
       "unique_insiders": 3,
@@ -573,12 +628,13 @@
           "value": "+$6,710,000",
           "qty": "+671,000"
         }
-      ]
+      ],
+      "eventClassification": null
     },
     {
       "ticker": "AVO",
       "company_name": "Mission Produce, Inc.",
-      "total_value": 31170074.0,
+      "total_value": 31170074,
       "total_value_formatted": "$31.2M",
       "total_purchases": 4,
       "unique_insiders": 1,
@@ -618,12 +674,18 @@
           "value": "+$4,055,678",
           "qty": "+309,020"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Clamp Event",
+        "icon": "📊",
+        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
+        "tooltip": "Multiple days of insider buying - significant interest"
+      }
     },
     {
       "ticker": "AVR",
       "company_name": "Anteris Technologies Global Corp.",
-      "total_value": 28750000.0,
+      "total_value": 28750000,
       "total_value_formatted": "$28.8M",
       "total_purchases": 1,
       "unique_insiders": 1,
@@ -639,12 +701,18 @@
           "value": "+$28,750,000",
           "qty": "+5,000,000"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Disqualified",
+        "icon": "❌",
+        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
+        "tooltip": "Insider bought but stock didn't go up"
+      }
     },
     {
       "ticker": "YSS",
       "company_name": "Yellowstone Midco Holdings Ii, LLC",
-      "total_value": 25585000.0,
+      "total_value": 25585000,
       "total_value_formatted": "$25.6M",
       "total_purchases": 1,
       "unique_insiders": 1,
@@ -660,12 +728,18 @@
           "value": "+$25,585,000",
           "qty": "+752,500"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Disqualified",
+        "icon": "❌",
+        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
+        "tooltip": "Insider bought but stock didn't go up"
+      }
     },
     {
       "ticker": "HYMC",
       "company_name": "Hycroft Mining Holding Corp",
-      "total_value": 20836000.0,
+      "total_value": 20836000,
       "total_value_formatted": "$20.8M",
       "total_purchases": 3,
       "unique_insiders": 1,
@@ -697,12 +771,18 @@
           "value": "+$4,996,000",
           "qty": "+100,000"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Clamp Event",
+        "icon": "📊",
+        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
+        "tooltip": "Multiple days of insider buying - significant interest"
+      }
     },
     {
       "ticker": "ASA",
       "company_name": "Asa Gold & Precious Metals Ltd",
-      "total_value": 17871254.0,
+      "total_value": 17871254,
       "total_value_formatted": "$17.9M",
       "total_purchases": 5,
       "unique_insiders": 1,
@@ -750,12 +830,18 @@
           "value": "+$2,032,967",
           "qty": "+31,219"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Clamp Event",
+        "icon": "📊",
+        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
+        "tooltip": "Multiple days of insider buying - significant interest"
+      }
     },
     {
       "ticker": "HLXC",
       "company_name": "Helix Acquisition Corp. III",
-      "total_value": 16000000.0,
+      "total_value": 16000000,
       "total_value_formatted": "$16.0M",
       "total_purchases": 2,
       "unique_insiders": 1,
@@ -779,12 +865,18 @@
           "value": "+$8,000,000",
           "qty": "+800,000"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Disqualified",
+        "icon": "❌",
+        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
+        "tooltip": "Insider bought but stock didn't go up"
+      }
     },
     {
       "ticker": "UAA",
       "company_name": "Under Armour, Inc.",
-      "total_value": 14420222.0,
+      "total_value": 14420222,
       "total_value_formatted": "$14.4M",
       "total_purchases": 1,
       "unique_insiders": 1,
@@ -800,12 +892,18 @@
           "value": "+$14,420,222",
           "qty": "+2,335,350"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Disqualified",
+        "icon": "❌",
+        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
+        "tooltip": "Insider bought but stock didn't go up"
+      }
     },
     {
       "ticker": "SONO",
       "company_name": "Sonos Inc",
-      "total_value": 11556296.0,
+      "total_value": 11556296,
       "total_value_formatted": "$11.6M",
       "total_purchases": 1,
       "unique_insiders": 1,
@@ -821,12 +919,18 @@
           "value": "+$11,556,296",
           "qty": "+733,073"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Clamp Event",
+        "icon": "📊",
+        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
+        "tooltip": "Multiple days of insider buying - significant interest"
+      }
     },
     {
       "ticker": "MLAA",
       "company_name": "Mountain Lake Acquisition Corp. II",
-      "total_value": 10200000.0,
+      "total_value": 10200000,
       "total_value_formatted": "$10.2M",
       "total_purchases": 2,
       "unique_insiders": 1,
@@ -850,12 +954,13 @@
           "value": "+$5,100,000",
           "qty": "+510,000"
         }
-      ]
+      ],
+      "eventClassification": null
     },
     {
       "ticker": "ALMS",
       "company_name": "Alumis Inc.",
-      "total_value": 9999995.0,
+      "total_value": 9999995,
       "total_value_formatted": "$10.0M",
       "total_purchases": 1,
       "unique_insiders": 1,
@@ -871,12 +976,18 @@
           "value": "+$9,999,995",
           "qty": "+588,235"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Clamp Event",
+        "icon": "📊",
+        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
+        "tooltip": "Multiple days of insider buying - significant interest"
+      }
     },
     {
       "ticker": "TVA",
       "company_name": "Texas Ventures Acquisition III Corp",
-      "total_value": 9958578.0,
+      "total_value": 9958578,
       "total_value_formatted": "$10.0M",
       "total_purchases": 1,
       "unique_insiders": 1,
@@ -892,12 +1003,18 @@
           "value": "+$9,958,578",
           "qty": "+925,000"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Disqualified",
+        "icon": "❌",
+        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
+        "tooltip": "Insider bought but stock didn't go up"
+      }
     },
     {
       "ticker": "LIFE",
       "company_name": "Ethos Technologies Inc.",
-      "total_value": 9899950.0,
+      "total_value": 9899950,
       "total_value_formatted": "$9.9M",
       "total_purchases": 2,
       "unique_insiders": 2,
@@ -922,12 +1039,18 @@
           "value": "+$4,949,975",
           "qty": "+260,525"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Clamp Event",
+        "icon": "📊",
+        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
+        "tooltip": "Multiple days of insider buying - significant interest"
+      }
     },
     {
       "ticker": "MIRM",
       "company_name": "Mirum Pharmaceuticals, Inc.",
-      "total_value": 8999984.0,
+      "total_value": 8999984,
       "total_value_formatted": "$9.0M",
       "total_purchases": 1,
       "unique_insiders": 1,
@@ -943,12 +1066,18 @@
           "value": "+$8,999,984",
           "qty": "+131,425"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Clamp Event",
+        "icon": "📊",
+        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
+        "tooltip": "Multiple days of insider buying - significant interest"
+      }
     },
     {
       "ticker": "PMN",
       "company_name": "Promis Neurosciences Inc.",
-      "total_value": 8499988.0,
+      "total_value": 8499988,
       "total_value_formatted": "$8.5M",
       "total_purchases": 1,
       "unique_insiders": 1,
@@ -964,12 +1093,18 @@
           "value": "+$8,499,988",
           "qty": "+700,741"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Disqualified",
+        "icon": "❌",
+        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
+        "tooltip": "Insider bought but stock didn't go up"
+      }
     },
     {
       "ticker": "FEAM",
       "company_name": "5E Advanced Materials, Inc.",
-      "total_value": 8000000.0,
+      "total_value": 8000000,
       "total_value_formatted": "$8.0M",
       "total_purchases": 1,
       "unique_insiders": 1,
@@ -985,12 +1120,18 @@
           "value": "+$8,000,000",
           "qty": "+4,000,000"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Disqualified",
+        "icon": "❌",
+        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
+        "tooltip": "Insider bought but stock didn't go up"
+      }
     },
     {
       "ticker": "LEE",
       "company_name": "Lee Enterprises, Inc",
-      "total_value": 7966875.0,
+      "total_value": 7966875,
       "total_value_formatted": "$8.0M",
       "total_purchases": 1,
       "unique_insiders": 1,
@@ -1006,12 +1147,18 @@
           "value": "+$7,966,875",
           "qty": "+2,451,346"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Clamp Event",
+        "icon": "📊",
+        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
+        "tooltip": "Multiple days of insider buying - significant interest"
+      }
     },
     {
       "ticker": "MU",
       "company_name": "Micron Technology Inc",
-      "total_value": 7821723.0,
+      "total_value": 7821723,
       "total_value_formatted": "$7.8M",
       "total_purchases": 1,
       "unique_insiders": 1,
@@ -1027,12 +1174,18 @@
           "value": "+$7,821,723",
           "qty": "+23,200"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Disqualified",
+        "icon": "❌",
+        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
+        "tooltip": "Insider bought but stock didn't go up"
+      }
     },
     {
       "ticker": "TCI",
       "company_name": "Transcontinental Realty Investors Inc",
-      "total_value": 7772554.0,
+      "total_value": 7772554,
       "total_value_formatted": "$7.8M",
       "total_purchases": 2,
       "unique_insiders": 1,
@@ -1056,12 +1209,18 @@
           "value": "+$3,886,277",
           "qty": "+70,023"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Disqualified",
+        "icon": "❌",
+        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
+        "tooltip": "Insider bought but stock didn't go up"
+      }
     },
     {
       "ticker": "YYAI",
       "company_name": "Airwa Inc.",
-      "total_value": 5774550.0,
+      "total_value": 5774550,
       "total_value_formatted": "$5.8M",
       "total_purchases": 1,
       "unique_insiders": 1,
@@ -1077,12 +1236,18 @@
           "value": "+$5,774,550",
           "qty": "+4,215,000"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Slump Recovery",
+        "icon": "📈",
+        "colorClass": "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
+        "tooltip": "Stock was in a slump, insiders bought heavily, and it recovered. Bottom-fishing signal!"
+      }
     },
     {
       "ticker": "EMPD",
       "company_name": "Empery Digital Inc.",
-      "total_value": 5348207.0,
+      "total_value": 5348207,
       "total_value_formatted": "$5.3M",
       "total_purchases": 2,
       "unique_insiders": 1,
@@ -1106,12 +1271,18 @@
           "value": "+$2,115,728",
           "qty": "+428,626"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Clamp Event",
+        "icon": "📊",
+        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
+        "tooltip": "Multiple days of insider buying - significant interest"
+      }
     },
     {
       "ticker": "KKR",
       "company_name": "Kkr & Co. Inc.",
-      "total_value": 5246500.0,
+      "total_value": 5246500,
       "total_value_formatted": "$5.2M",
       "total_purchases": 1,
       "unique_insiders": 1,
@@ -1127,12 +1298,13 @@
           "value": "+$5,246,500",
           "qty": "+50,000"
         }
-      ]
+      ],
+      "eventClassification": null
     },
     {
       "ticker": "ALXO",
       "company_name": "Alx Oncology Holdings Inc",
-      "total_value": 4999999.0,
+      "total_value": 4999999,
       "total_value_formatted": "$5.0M",
       "total_purchases": 1,
       "unique_insiders": 1,
@@ -1148,12 +1320,13 @@
           "value": "+$4,999,999",
           "qty": "+3,184,713"
         }
-      ]
+      ],
+      "eventClassification": null
     },
     {
       "ticker": "CAQ",
       "company_name": "Cambridge Acquisition Corp.",
-      "total_value": 4955000.0,
+      "total_value": 4955000,
       "total_value_formatted": "$5.0M",
       "total_purchases": 1,
       "unique_insiders": 1,
@@ -1169,12 +1342,13 @@
           "value": "+$4,955,000",
           "qty": "+495,500"
         }
-      ]
+      ],
+      "eventClassification": null
     },
     {
       "ticker": "LW",
       "company_name": "Lamb Weston Holdings, Inc.",
-      "total_value": 4864660.0,
+      "total_value": 4864660,
       "total_value_formatted": "$4.9M",
       "total_purchases": 2,
       "unique_insiders": 1,
@@ -1198,12 +1372,13 @@
           "value": "+$2,432,330",
           "qty": "+50,000"
         }
-      ]
+      ],
+      "eventClassification": null
     },
     {
       "ticker": "MIGI",
       "company_name": "Mawson Infrastructure Group Inc.",
-      "total_value": 4388681.0,
+      "total_value": 4388681,
       "total_value_formatted": "$4.4M",
       "total_purchases": 1,
       "unique_insiders": 1,
@@ -1219,12 +1394,18 @@
           "value": "+$4,388,681",
           "qty": "+801,279"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Clamp Event",
+        "icon": "📊",
+        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
+        "tooltip": "Multiple days of insider buying - significant interest"
+      }
     },
     {
       "ticker": "RUM",
       "company_name": "Rumble Inc.",
-      "total_value": 4220298.0,
+      "total_value": 4220298,
       "total_value_formatted": "$4.2M",
       "total_purchases": 1,
       "unique_insiders": 1,
@@ -1240,12 +1421,18 @@
           "value": "+$4,220,298",
           "qty": "+777,012"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Disqualified",
+        "icon": "❌",
+        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
+        "tooltip": "Insider bought but stock didn't go up"
+      }
     },
     {
       "ticker": "ABT",
       "company_name": "Abbott Laboratories",
-      "total_value": 4027934.0,
+      "total_value": 4027934,
       "total_value_formatted": "$4.0M",
       "total_purchases": 2,
       "unique_insiders": 1,
@@ -1269,12 +1456,18 @@
           "value": "+$2,013,967",
           "qty": "+18,800"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Disqualified",
+        "icon": "❌",
+        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
+        "tooltip": "Insider bought but stock didn't go up"
+      }
     },
     {
       "ticker": "IP",
       "company_name": "International Paper Co /New/",
-      "total_value": 3997930.0,
+      "total_value": 3997930,
       "total_value_formatted": "$4.0M",
       "total_purchases": 2,
       "unique_insiders": 1,
@@ -1298,12 +1491,18 @@
           "value": "+$1,998,965",
           "qty": "+50,000"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Disqualified",
+        "icon": "❌",
+        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
+        "tooltip": "Insider bought but stock didn't go up"
+      }
     },
     {
       "ticker": "VANI",
       "company_name": "Vivani Medical, Inc.",
-      "total_value": 3983333.0,
+      "total_value": 3983333,
       "total_value_formatted": "$4.0M",
       "total_purchases": 2,
       "unique_insiders": 1,
@@ -1327,12 +1526,18 @@
           "value": "+$1,983,334",
           "qty": "+1,737,765"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Clamp Event",
+        "icon": "📊",
+        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
+        "tooltip": "Multiple days of insider buying - significant interest"
+      }
     },
     {
       "ticker": "MUZE",
       "company_name": "Muzero Acquisition Corp",
-      "total_value": 3359380.0,
+      "total_value": 3359380,
       "total_value_formatted": "$3.4M",
       "total_purchases": 1,
       "unique_insiders": 1,
@@ -1348,12 +1553,13 @@
           "value": "+$3,359,380",
           "qty": "+335,938"
         }
-      ]
+      ],
+      "eventClassification": null
     },
     {
       "ticker": "STEX",
       "company_name": "Streamex Corp.",
-      "total_value": 3155852.0,
+      "total_value": 3155852,
       "total_value_formatted": "$3.2M",
       "total_purchases": 2,
       "unique_insiders": 2,
@@ -1378,12 +1584,18 @@
           "value": "+$3,000,000",
           "qty": "+1,000,000"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Clamp Event",
+        "icon": "📊",
+        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
+        "tooltip": "Multiple days of insider buying - significant interest"
+      }
     },
     {
       "ticker": "CEPS",
       "company_name": "Cantor Equity Partners Vi, Inc.",
-      "total_value": 3000000.0,
+      "total_value": 3000000,
       "total_value_formatted": "$3.0M",
       "total_purchases": 1,
       "unique_insiders": 1,
@@ -1399,12 +1611,13 @@
           "value": "+$3,000,000",
           "qty": "+300,000"
         }
-      ]
+      ],
+      "eventClassification": null
     },
     {
       "ticker": "NOMA",
       "company_name": "Nomadar Corp.",
-      "total_value": 2260558.0,
+      "total_value": 2260558,
       "total_value_formatted": "$2.3M",
       "total_purchases": 1,
       "unique_insiders": 1,
@@ -1420,12 +1633,18 @@
           "value": "+$2,260,558",
           "qty": "+260,433"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Disqualified",
+        "icon": "❌",
+        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
+        "tooltip": "Insider bought but stock didn't go up"
+      }
     },
     {
       "ticker": "USAR",
       "company_name": "USA Rare Earth, Inc.",
-      "total_value": 2143860.0,
+      "total_value": 2143860,
       "total_value_formatted": "$2.1M",
       "total_purchases": 1,
       "unique_insiders": 1,
@@ -1441,12 +1660,18 @@
           "value": "+$2,143,860",
           "qty": "+100,000"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Disqualified",
+        "icon": "❌",
+        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
+        "tooltip": "Insider bought but stock didn't go up"
+      }
     },
     {
       "ticker": "LXRX",
       "company_name": "Lexicon Pharmaceuticals, Inc.",
-      "total_value": 2000001.0,
+      "total_value": 2000001,
       "total_value_formatted": "$2.0M",
       "total_purchases": 1,
       "unique_insiders": 1,
@@ -1462,12 +1687,18 @@
           "value": "+$2,000,001",
           "qty": "+1,538,462"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Disqualified",
+        "icon": "❌",
+        "colorClass": "bg-red-500/20 text-red-400 border-red-500/30",
+        "tooltip": "Insider bought but stock didn't go up"
+      }
     },
     {
       "ticker": "GEF",
       "company_name": "Greif, Inc",
-      "total_value": 1971692.0,
+      "total_value": 1971692,
       "total_value_formatted": "$2.0M",
       "total_purchases": 4,
       "unique_insiders": 2,
@@ -1508,12 +1739,18 @@
           "value": "+$26,614",
           "qty": "+300"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Clamp Event",
+        "icon": "📊",
+        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
+        "tooltip": "Multiple days of insider buying - significant interest"
+      }
     },
     {
       "ticker": "TCGSX",
       "company_name": "Tcg Strategic Income Fund",
-      "total_value": 1850000.0,
+      "total_value": 1850000,
       "total_value_formatted": "$1.9M",
       "total_purchases": 2,
       "unique_insiders": 2,
@@ -1538,12 +1775,13 @@
           "value": "+$1,800,000",
           "qty": "+184,805"
         }
-      ]
+      ],
+      "eventClassification": null
     },
     {
       "ticker": "NFJ",
       "company_name": "Virtus Dividend, Interest & Premium Strategy Fund",
-      "total_value": 1829465.0,
+      "total_value": 1829465,
       "total_value_formatted": "$1.8M",
       "total_purchases": 1,
       "unique_insiders": 1,
@@ -1559,12 +1797,18 @@
           "value": "+$1,829,465",
           "qty": "+135,407"
         }
-      ]
+      ],
+      "eventClassification": {
+        "label": "Clamp Event",
+        "icon": "📊",
+        "colorClass": "bg-blue-500/20 text-blue-400 border-blue-500/30",
+        "tooltip": "Multiple days of insider buying - significant interest"
+      }
     },
     {
       "ticker": "CLBRU",
       "company_name": "Colombier Acquisition Corp. III",
-      "total_value": 1500000.0,
+      "total_value": 1500000,
       "total_value_formatted": "$1.5M",
       "total_purchases": 1,
       "unique_insiders": 1,
@@ -1580,7 +1824,8 @@
           "value": "+$1,500,000",
           "qty": "+150,000"
         }
-      ]
+      ],
+      "eventClassification": null
     }
   ]
 }
