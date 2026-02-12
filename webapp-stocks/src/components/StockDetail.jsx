@@ -286,6 +286,229 @@ const StockDetail = ({ trade, onClose }) => {
     return 'Other';
   };
 
+  // Classify insider trading events into strategic categories
+  const classifyInsiderEvents = () => {
+    console.log('🔍 classifyInsiderEvents called');
+    console.log('stockHistory:', stockHistory);
+    console.log('insiderTrades:', insiderTrades);
+    
+    if (!stockHistory || !stockHistory.history || !insiderTrades || !insiderTrades.purchases) {
+      console.log('❌ Missing data:', {
+        hasStockHistory: !!stockHistory,
+        hasHistory: !!(stockHistory?.history),
+        hasInsiderTrades: !!insiderTrades,
+        hasPurchases: !!(insiderTrades?.purchases)
+      });
+      return { events: [], disqualifiedCount: 0 };
+    }
+
+    console.log('✅ Has all required data, processing...');
+    const events = [];
+    const disqualifiedEvents = [];
+    const purchases = insiderTrades.purchases;
+    console.log(`Processing ${purchases.length} purchases`);
+    
+    // Group purchases by date
+    const purchasesByDate = {};
+    purchases.forEach(trade => {
+      const dateKey = trade.date.split('T')[0];
+      if (!purchasesByDate[dateKey]) {
+        purchasesByDate[dateKey] = [];
+      }
+      purchasesByDate[dateKey].push(trade);
+    });
+
+    // Get sorted dates
+    const sortedDates = Object.keys(purchasesByDate).sort();
+    
+    // Identify clamps (2+ consecutive days of purchases, ends with 7+ days gap)
+    const clamps = [];
+    let currentClamp = null;
+    
+    for (let i = 0; i < sortedDates.length; i++) {
+      const currentDate = new Date(sortedDates[i]);
+      const nextDate = i < sortedDates.length - 1 ? new Date(sortedDates[i + 1]) : null;
+      
+      if (!currentClamp) {
+        currentClamp = {
+          startDate: sortedDates[i],
+          endDate: sortedDates[i],
+          dates: [sortedDates[i]],
+          totalValue: 0,
+          purchaseCount: 0
+        };
+      } else {
+        currentClamp.endDate = sortedDates[i];
+        currentClamp.dates.push(sortedDates[i]);
+      }
+      
+      // Add purchase data
+      purchasesByDate[sortedDates[i]].forEach(trade => {
+        currentClamp.totalValue += trade.value;
+        currentClamp.purchaseCount++;
+      });
+      
+      // Check if next date breaks the clamp (7+ days gap)
+      if (nextDate) {
+        const daysDiff = (nextDate - currentDate) / (1000 * 60 * 60 * 24);
+        if (daysDiff > 7) {
+          // Save clamp if it has 2+ days
+          if (currentClamp.dates.length >= 2) {
+            clamps.push(currentClamp);
+          }
+          currentClamp = null;
+        }
+      } else {
+        // Last date - save clamp if it has 2+ days
+        if (currentClamp && currentClamp.dates.length >= 2) {
+          clamps.push(currentClamp);
+        }
+      }
+    }
+
+    // Create a map of dates that are part of clamps
+    const clampDates = new Set();
+    clamps.forEach(clamp => {
+      clamp.dates.forEach(date => clampDates.add(date));
+    });
+
+    // Get stock price data indexed by date
+    const priceByDate = {};
+    stockHistory.history.forEach(point => {
+      const dateKey = point.date.split('T')[0].split(' ')[0];
+      if (!priceByDate[dateKey]) {
+        priceByDate[dateKey] = parseFloat(point.close);
+      }
+    });
+
+    // Helper: Get price at date
+    const getPriceAt = (dateStr) => {
+      return priceByDate[dateStr];
+    };
+
+    // Helper: Get price N days before/after
+    const getPriceOffset = (dateStr, dayOffset) => {
+      const date = new Date(dateStr);
+      date.setDate(date.getDate() + dayOffset);
+      let checkDate = date.toISOString().split('T')[0];
+      
+      // Try to find nearest price within 3 days
+      for (let i = 0; i < 3; i++) {
+        if (priceByDate[checkDate]) return priceByDate[checkDate];
+        date.setDate(date.getDate() + (dayOffset > 0 ? 1 : -1));
+        checkDate = date.toISOString().split('T')[0];
+      }
+      return null;
+    };
+
+    // Helper: Check if stock was in slump (trending down for ~30 days before)
+    const wasInSlump = (dateStr) => {
+      const price = getPriceAt(dateStr);
+      const price30DaysBefore = getPriceOffset(dateStr, -30);
+      if (!price || !price30DaysBefore) return false;
+      return price30DaysBefore > price * 1.15; // Stock was 15%+ higher 30 days ago
+    };
+
+    // Helper: Check if stock went up after trade
+    const wentUpAfterTrade = (dateStr, minPercent = 10) => {
+      const priceAtTrade = getPriceAt(dateStr);
+      const price3DaysAfter = getPriceOffset(dateStr, 3);
+      if (!priceAtTrade || !price3DaysAfter) return false;
+      const percentChange = ((price3DaysAfter - priceAtTrade) / priceAtTrade) * 100;
+      return percentChange >= minPercent;
+    };
+
+    // Helper: Check if stock was rising before trade
+    const wasRising = (dateStr) => {
+      const price = getPriceAt(dateStr);
+      const price7DaysBefore = getPriceOffset(dateStr, -7);
+      if (!price || !price7DaysBefore) return false;
+      return price > price7DaysBefore * 1.05; // Stock was up 5%+ in past week
+    };
+
+    // Classify each clamp
+    clamps.forEach(clamp => {
+      const inSlump = wasInSlump(clamp.startDate);
+      const wentUp = wentUpAfterTrade(clamp.endDate, 10);
+      
+      // Check if this is a restock (within 1 month of previous clamp)
+      const isRestock = clamps.some(prevClamp => {
+        if (prevClamp === clamp) return false;
+        const prevEnd = new Date(prevClamp.endDate);
+        const currentStart = new Date(clamp.startDate);
+        const daysDiff = (currentStart - prevEnd) / (1000 * 60 * 60 * 24);
+        return daysDiff > 0 && daysDiff <= 30;
+      });
+
+      if (isRestock) {
+        events.push({
+          type: 'restock',
+          date: clamp.startDate,
+          endDate: clamp.endDate,
+          description: `Restock Event - Continued buying (${clamp.dates.length} days)`,
+          value: clamp.totalValue,
+          purchaseCount: clamp.purchaseCount
+        });
+      } else if (inSlump && wentUp) {
+        events.push({
+          type: 'slump',
+          date: clamp.startDate,
+          endDate: clamp.endDate,
+          description: `Slump Recovery - Bottom fishing (${clamp.dates.length} days)`,
+          value: clamp.totalValue,
+          purchaseCount: clamp.purchaseCount
+        });
+      } else if (wentUp) {
+        events.push({
+          type: 'clamp',
+          date: clamp.startDate,
+          endDate: clamp.endDate,
+          description: `Holy Grail Clamp - Shopping spree (${clamp.dates.length} days)`,
+          value: clamp.totalValue,
+          purchaseCount: clamp.purchaseCount
+        });
+      }
+    });
+
+    // Process singular trades (not part of clamps)
+    sortedDates.forEach(date => {
+      if (clampDates.has(date)) return; // Skip clamp dates
+
+      const trades = purchasesByDate[date];
+      const totalValue = trades.reduce((sum, t) => sum + t.value, 0);
+      const rising = wasRising(date);
+      const wentUp = wentUpAfterTrade(date, 10);
+
+      if (rising && !wentUp) {
+        // Mid-rise event (stock was rising, insider bought, then crashed)
+        events.push({
+          type: 'mid-rise',
+          date: date,
+          description: 'Mid-Rise - Bought on the way up (crashed after)',
+          value: totalValue,
+          purchaseCount: trades.length
+        });
+      } else if (!wentUp) {
+        // Disqualified - stock didn't go up after singular purchase
+        disqualifiedEvents.push({
+          date: date,
+          value: totalValue,
+          purchaseCount: trades.length
+        });
+      }
+    });
+
+    const result = { 
+      events: events.sort((a, b) => new Date(b.date) - new Date(a.date)),
+      disqualifiedCount: disqualifiedEvents.length 
+    };
+    
+    console.log('📊 Event classification result:', result);
+    console.log(`Found ${result.events.length} events, ${result.disqualifiedCount} disqualified`);
+    
+    return result;
+  };
+
   // Calculate smart X-axis ticks based on period (like Google Finance)
   const getXAxisTicks = () => {
     const chartData = mergedChartData();
@@ -1405,6 +1628,97 @@ const StockDetail = ({ trade, onClose }) => {
                   </Tooltip>
                 )}
               </div>
+
+              {/* Insider Trading Events Section */}
+              {(() => {
+                // Calculate insider events inline
+                console.log('🎨 Rendering events section...');
+                const insiderEventData = classifyInsiderEvents();
+                console.log('🎨 Got event data:', insiderEventData);
+                
+                if (!insiderEventData || (insiderEventData.events.length === 0 && insiderEventData.disqualifiedCount === 0)) {
+                  console.log('🎨 Not rendering - no events');
+                  return null;
+                }
+                
+                console.log('🎨 Rendering events section with data');
+                return (
+                  <div className="bg-slate-800/50 rounded-xl p-4">
+                    <div className="text-sm text-slate-400 mb-3 font-semibold">📊 Insider Trading Events</div>
+                    
+                    {/* Event Badges */}
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {insiderEventData.events.map((event, idx) => {
+                        let badgeColor, badgeIcon, badgeText, tooltipText;
+                        
+                        switch(event.type) {
+                          case 'clamp':
+                            badgeColor = 'bg-purple-500/20 text-purple-400 border-purple-500/30';
+                            badgeIcon = '🔥';
+                            badgeText = 'Holy Grail Clamp';
+                            tooltipText = `${event.description} - Insiders on a sustained shopping spree. The stock went up as a result. Best signal!`;
+                            break;
+                          case 'slump':
+                            badgeColor = 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30';
+                            badgeIcon = '📈';
+                            badgeText = 'Slump Recovery';
+                            tooltipText = `${event.description} - Stock was in a slump, then massive insider purchases drove it back up.`;
+                            break;
+                          case 'restock':
+                            badgeColor = 'bg-blue-500/20 text-blue-400 border-blue-500/30';
+                            badgeIcon = '🔄';
+                            badgeText = 'Restock';
+                            tooltipText = `${event.description} - Insiders bought more after a recent clamp event (within 1 month).`;
+                            break;
+                          case 'mid-rise':
+                            badgeColor = 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
+                            badgeIcon = '⚠️';
+                            badgeText = 'Mid-Rise';
+                            tooltipText = `${event.description} - Lowest quality signal. Stock was already rising, insider bought, then it crashed.`;
+                            break;
+                          default:
+                            return null;
+                        }
+
+                        return (
+                          <Tooltip key={idx} text={tooltipText}>
+                            <div className={`px-3 py-2 rounded-lg text-sm font-medium border ${badgeColor} flex items-center gap-2`}>
+                              <span>{badgeIcon}</span>
+                              <div>
+                                <div className="font-semibold">{badgeText}</div>
+                                <div className="text-xs opacity-80">
+                                  {new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                  {event.endDate && event.endDate !== event.date && 
+                                    ` - ${new Date(event.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
+                                  }
+                                </div>
+                                <div className="text-xs opacity-70">
+                                  ${(event.value / 1000000).toFixed(2)}M • {event.purchaseCount} trades
+                                </div>
+                              </div>
+                            </div>
+                          </Tooltip>
+                        );
+                      })}
+                      
+                      {/* Disqualified Events Badge */}
+                      {insiderEventData.disqualifiedCount > 0 && (
+                        <Tooltip text="Singular insider purchases where the stock didn't go up 10-15% in the following 3 days. These events are not meaningful signals.">
+                          <div className="px-3 py-2 bg-red-500/20 text-red-400 rounded-lg text-sm font-medium border border-red-500/30">
+                            ❌ {insiderEventData.disqualifiedCount} Disqualified Event{insiderEventData.disqualifiedCount > 1 ? 's' : ''}
+                          </div>
+                        </Tooltip>
+                      )}
+                    </div>
+
+                    {insiderEventData.events.length === 0 && insiderEventData.disqualifiedCount > 0 && (
+                      <div className="text-xs text-slate-500 italic">
+                        No significant trading events detected. All insider purchases were singular events that didn't result in stock price increases.
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
 
               {/* Trade Stats */}
               <div className="bg-slate-800/50 rounded-xl p-4 space-y-3">

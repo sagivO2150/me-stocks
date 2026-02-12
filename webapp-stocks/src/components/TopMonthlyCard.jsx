@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Tooltip from './Tooltip';
 
 const TopMonthlyCard = ({ stock }) => {
+  const [eventBadge, setEventBadge] = useState(null);
+  
   // Parse values
   const ticker = stock.ticker;
   const companyName = stock.company_name;
@@ -35,6 +37,36 @@ const TopMonthlyCard = ({ stock }) => {
   if (ownerCount > 0) roleBreakdown.push(`${ownerCount} Owner${ownerCount > 1 ? 's' : ''}`);
   if (otherCount > 0) roleBreakdown.push(`${otherCount} Other`);
   const roleBreakdownText = roleBreakdown.join(', ');
+
+  // Fetch event classification
+  useEffect(() => {
+    const fetchEventClassification = async () => {
+      try {
+        console.log(`🔍 [MONTHLY] Fetching event classification for ${ticker}`);
+        const response = await fetch(`http://localhost:3001/api/event-classification/${ticker}`);
+        console.log(`📡 [MONTHLY] Response status for ${ticker}:`, response.status);
+        if (response.ok) {
+          const data = await response.json();
+          console.log(`📊 [MONTHLY] Event data for ${ticker}:`, data);
+          if (data.success && data.primaryEvent) {
+            console.log(`✅ [MONTHLY] Setting event badge for ${ticker}:`, data.primaryEvent);
+            setEventBadge(data.primaryEvent);
+          } else {
+            console.log(`❌ [MONTHLY] No primary event for ${ticker}`);
+          }
+        } else {
+          console.log(`⚠️ [MONTHLY] Failed to fetch events for ${ticker}:`, response.status);
+        }
+      } catch (err) {
+        console.log(`❌ [MONTHLY] Error fetching events for ${ticker}:`, err);
+      }
+    };
+    
+    if (ticker) {
+      console.log(`🎯 [MONTHLY] TopMonthlyCard for ${ticker} - will fetch events`);
+      fetchEventClassification();
+    }
+  }, [ticker]);
 
   // Determine card intensity based on value and activity
   const getCardIntensity = () => {
@@ -90,6 +122,15 @@ const TopMonthlyCard = ({ stock }) => {
           <Tooltip text="10%+ beneficial owners are buying. Large shareholders increasing positions often signals strong conviction or potential acquisition activity.">
             <span className="px-3 py-2 bg-yellow-500/20 text-yellow-400 rounded-lg text-sm font-medium">
               🏢 10%+ Owner
+            </span>
+          </Tooltip>
+        )}
+        
+        {/* Event Classification Badge */}
+        {eventBadge && (
+          <Tooltip text={eventBadge.tooltip}>
+            <span className={`px-3 py-2 rounded-lg text-sm font-medium ${eventBadge.colorClass}`}>
+              {eventBadge.icon} {eventBadge.label}
             </span>
           </Tooltip>
         )}

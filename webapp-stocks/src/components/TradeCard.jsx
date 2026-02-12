@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Tooltip from './Tooltip';
 
 const TradeCard = ({ trade }) => {
+  const [eventBadge, setEventBadge] = useState(null);
+  
   // Parse values
   const ticker = trade.Ticker;
   const insidersCount = parseInt(trade.Insiders) || 0;
@@ -50,6 +52,39 @@ const TradeCard = ({ trade }) => {
   if (ownerCount > 0) roleBreakdown.push(`${ownerCount} Owner${ownerCount > 1 ? 's' : ''}`);
   if (otherCount > 0) roleBreakdown.push(`${otherCount} Other`);
   const roleBreakdownText = roleBreakdown.join(', ');
+
+  // Fetch event classification
+  useEffect(() => {
+    const fetchEventClassification = async () => {
+      try {
+        console.log(`🔍 Fetching event classification for ${ticker}`);
+        const response = await fetch(`http://localhost:3001/api/event-classification/${ticker}`);
+        console.log(`📡 Response status for ${ticker}:`, response.status);
+        if (response.ok) {
+          const data = await response.json();
+          console.log(`📊 Event data for ${ticker}:`, data);
+          if (data.success && data.primaryEvent) {
+            console.log(`✅ Setting event badge for ${ticker}:`, data.primaryEvent);
+            setEventBadge(data.primaryEvent);
+          } else {
+            console.log(`❌ No primary event for ${ticker}`);
+          }
+        } else {
+          console.log(`⚠️ Failed to fetch events for ${ticker}:`, response.status);
+        }
+      } catch (err) {
+        // Silently fail - events are optional enhancement
+        console.log(`❌ Error fetching events for ${ticker}:`, err);
+      }
+    };
+    
+    if (ticker && !isSale) { // Only for purchases
+      console.log(`🎯 TradeCard for ${ticker} - will fetch events (isSale: ${isSale})`);
+      fetchEventClassification();
+    } else {
+      console.log(`⏭️ Skipping events for ${ticker} (isSale: ${isSale})`);
+    }
+  }, [ticker, isSale]);
 
   // Calculate discount/upside
   let upside = 'N/A';
@@ -115,6 +150,15 @@ const TradeCard = ({ trade }) => {
           <Tooltip text="Low conviction = small ownership increase or modest dollar amount. Could be routine buying or portfolio rebalancing rather than strong belief in upside.">
             <span className="px-3 py-1 bg-slate-700/50 text-slate-400 rounded-full text-sm font-medium border border-slate-600">
               Low Conviction
+            </span>
+          </Tooltip>
+        )}
+        
+        {/* Event Classification Badge */}
+        {eventBadge && (
+          <Tooltip text={eventBadge.tooltip}>
+            <span className={`px-3 py-1 rounded-full text-sm font-medium border ${eventBadge.colorClass}`}>
+              {eventBadge.icon} {eventBadge.label}
             </span>
           </Tooltip>
         )}

@@ -892,6 +892,158 @@ app.post('/api/scrape-top-monthly', (req, res) => {
   });
 });
 
+// Event classification endpoint
+app.get('/api/event-classification/:ticker', async (req, res) => {
+  const { ticker } = req.params;
+  
+  try {
+    // Fetch insider trades
+    const insiderResponse = await fetch(`http://localhost:${PORT}/api/insider-trades/${ticker}`);
+    if (!insiderResponse.ok) {
+      return res.json({ success: false, message: 'No insider data' });
+    }
+    const insiderData = await insiderResponse.json();
+    
+    // Fetch stock history
+    const historyResponse = await fetch(`http://localhost:${PORT}/api/stock-history/${ticker}?period=1y`);
+    if (!historyResponse.ok) {
+      return res.json({ success: false, message: 'No stock history' });
+    }
+    const historyData = await historyResponse.json();
+    
+    if (!insiderData.success || !historyData.success || !insiderData.purchases || insiderData.purchases.length === 0) {
+      return res.json({ success: false, message: 'Insufficient data' });
+    }
+    
+    // Classify events (simplified version for card display)
+    const event = classifyPrimaryEvent(insiderData, historyData);
+    
+    res.json({
+      success: true,
+      primaryEvent: event
+    });
+  } catch (error) {
+    console.error('Event classification error:', error);
+    res.json({ success: false, message: error.message });
+  }
+});
+
+function classifyPrimaryEvent(insiderData, historyData) {
+  const purchases = insiderData.purchases;
+  const history = historyData.history;
+  
+  // Group purchases by date
+  const purchasesByDate = {};
+  purchases.forEach(trade => {
+    const dateKey = trade.date.split('T')[0];
+    if (!purchasesByDate[dateKey]) {
+      purchasesByDate[dateKey] = { trades: [], totalValue: 0 };
+    }
+    purchasesByDate[dateKey].trades.push(trade);
+    purchasesByDate[dateKey].totalValue += trade.value;
+  });
+  
+  const sortedDates = Object.keys(purchasesByDate).sort();
+  
+  // Price lookup
+  const priceByDate = {};
+  history.forEach(point => {
+    const dateKey = point.date.split('T')[0].split(' ')[0];
+    if (!priceByDate[dateKey]) {
+      priceByDate[dateKey] = parseFloat(point.close);
+    }
+  });
+  
+  const getPriceAt = (dateStr) => priceByDate[dateStr];
+  const getPriceOffset = (dateStr, dayOffset) => {
+    const date = new Date(dateStr);
+    date.setDate(date.getDate() + dayOffset);
+    let checkDate = date.toISOString().split('T')[0];
+    for (let i = 0; i < 5; i++) {
+      if (priceByDate[checkDate]) return priceByDate[checkDate];
+      date.setDate(date.getDate() + (dayOffset > 0 ? 1 : -1));
+      checkDate = date.toISOString().split('T')[0];
+    }
+    return null;
+  };
+  
+  // Detect clamps (2+ consecutive days)
+  let hasClamp = false;
+  for (let i = 0; i < sortedDates.length - 1; i++) {
+    const current = new Date(sortedDates[i]);
+    const next = new Date(sortedDates[i + 1]);
+    const daysDiff = (next - current) / (1000 * 60 * 60 * 24);
+    if (daysDiff <= 2) {
+      hasClamp = true;
+      break;
+    }
+  }
+  
+  // Check if recent (within 30 days)
+  const mostRecentDate = sortedDates[sortedDates.length - 1];
+  const daysSinceTrade = (new Date() - new Date(mostRecentDate)) / (1000 * 60 * 60 * 24);
+  
+  if (daysSinceTrade > 90) {
+    return null; // Too old, don't show badge
+  }
+  
+  // Check price movement after most recent trade
+  const priceAtTrade = getPriceAt(mostRecentDate);
+  const price3DaysAfter = getPriceOffset(mostRecentDate, 3);
+  const priceNow = getPriceAt(history[history.length - 1].date.split('T')[0].split(' ')[0]);
+  
+  let wentUp = false;
+  if (priceAtTrade && price3DaysAfter) {
+    const pct = ((price3DaysAfter - priceAtTrade) / priceAtTrade) * 100;
+    wentUp = pct >= 10;
+  }
+  
+  // Check if was in slump
+  const price30DaysBefore = getPriceOffset(sortedDates[0], -30);
+  const priceAtFirstTrade = getPriceAt(sortedDates[0]);
+  const wasInSlump = price30DaysBefore && priceAtFirstTrade && (price30DaysBefore > priceAtFirstTrade * 1.15);
+  
+  // Classify
+  if (hasClamp && wentUp) {
+    if (wasInSlump) {
+      return {
+        label: 'Slump Recovery',
+        icon: '📈',
+        colorClass: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+        tooltip: 'Stock was in a slump, insiders bought heavily, and it recovered. Bottom-fishing signal!'
+      };
+    } else {
+      return {
+        label: 'Holy Grail',
+        icon: '🔥',
+        colorClass: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
+        tooltip: 'Sustained insider buying spree + stock went up. Best signal!'
+      };
+    }
+  }
+  
+  if (hasClamp) {
+    return {
+      label: 'Clamp Event',
+      icon: '📊',
+      colorClass: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+      tooltip: 'Multiple days of insider buying - significant interest'
+    };
+  }
+  
+  // Single purchase - check if it worked
+  if (!wentUp && daysSinceTrade > 7) {
+    return {
+      label: 'Disqualified',
+      icon: '❌',
+      colorClass: 'bg-red-500/20 text-red-400 border-red-500/30',
+      tooltip: 'Insider bought but stock didn\'t go up'
+    };
+  }
+  
+  return null; // No notable pattern
+}
+
 app.listen(PORT, () => {
   console.log(`Backend server running on http://localhost:${PORT}`);
 });

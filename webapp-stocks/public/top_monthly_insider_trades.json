@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-02-12T00:07:42.785903",
+  "updated_at": "2026-02-12T02:53:12.986597",
   "total_tickers": 108,
   "total_trades": 200,
   "data": [
@@ -83,15 +83,23 @@
     {
       "ticker": "SGP",
       "company_name": "Spyglass Pharma, Inc.",
-      "total_value": 162440000.0,
-      "total_value_formatted": "$162.4M",
-      "total_purchases": 14,
-      "unique_insiders": 14,
+      "total_value": 221480000.0,
+      "total_value_formatted": "$221.5M",
+      "total_purchases": 15,
+      "unique_insiders": 15,
       "role_counts": {
-        "10% Owner": 11,
+        "10% Owner": 12,
         "Other": 3
       },
       "trades": [
+        {
+          "insider_name": "Ra Capital Management, L.P.",
+          "title": "Dir, 10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$59,040,000",
+          "qty": "+3,690,000"
+        },
         {
           "insider_name": "Florence Anthony A. Jr.",
           "title": "10%",
@@ -181,17 +189,17 @@
           "qty": "+312,500"
         },
         {
-          "insider_name": "Nielsen Kirk G.",
-          "title": "Dir",
-          "role": "Other",
+          "insider_name": "Vensana Capital I Gp, LLC",
+          "title": "10%",
+          "role": "10% Owner",
           "trade_date": "2026-02-09",
           "value": "+$2,640,000",
           "qty": "+165,000"
         },
         {
-          "insider_name": "Vensana Capital I Gp, LLC",
-          "title": "10%",
-          "role": "10% Owner",
+          "insider_name": "Nielsen Kirk G.",
+          "title": "Dir",
+          "role": "Other",
           "trade_date": "2026-02-09",
           "value": "+$2,640,000",
           "qty": "+165,000"
@@ -368,16 +376,16 @@
           "qty": "+2,117,760"
         },
         {
-          "insider_name": "Lux Venture Partners V, LLC",
-          "title": "10%",
+          "insider_name": "Wolfe Josh",
+          "title": "Dir, 10%",
           "role": "10% Owner",
           "trade_date": "2026-02-04",
           "value": "+$4,999,968",
           "qty": "+277,776"
         },
         {
-          "insider_name": "Wolfe Josh",
-          "title": "Dir, 10%",
+          "insider_name": "Lux Venture Partners V, LLC",
+          "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-04",
           "value": "+$4,999,968",
@@ -542,9 +550,9 @@
           "qty": "+671,000"
         },
         {
-          "insider_name": "Hennessy Thomas D",
-          "title": "Pres, 10%",
-          "role": "Pres",
+          "insider_name": "Hc VIII Sponsor LLC",
+          "title": "10%",
+          "role": "10% Owner",
           "trade_date": "2026-02-06",
           "value": "+$6,710,000",
           "qty": "+671,000"
@@ -558,9 +566,9 @@
           "qty": "+671,000"
         },
         {
-          "insider_name": "Hc VIII Sponsor LLC",
-          "title": "10%",
-          "role": "10% Owner",
+          "insider_name": "Hennessy Thomas D",
+          "title": "Pres, 10%",
+          "role": "Pres",
           "trade_date": "2026-02-06",
           "value": "+$6,710,000",
           "qty": "+671,000"
@@ -1101,6 +1109,27 @@
       ]
     },
     {
+      "ticker": "KKR",
+      "company_name": "Kkr & Co. Inc.",
+      "total_value": 5246500.0,
+      "total_value_formatted": "$5.2M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "Other": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Barakett Timothy R",
+          "title": "Dir",
+          "role": "Other",
+          "trade_date": "2026-02-09",
+          "value": "+$5,246,500",
+          "qty": "+50,000"
+        }
+      ]
+    },
+    {
       "ticker": "ALXO",
       "company_name": "Alx Oncology Holdings Inc",
       "total_value": 4999999.0,
@@ -1301,52 +1330,6 @@
       ]
     },
     {
-      "ticker": "GEF",
-      "company_name": "Greif, Inc",
-      "total_value": 3439938.0,
-      "total_value_formatted": "$3.4M",
-      "total_purchases": 4,
-      "unique_insiders": 2,
-      "role_counts": {
-        "CFO": 2,
-        "VP": 2
-      },
-      "trades": [
-        {
-          "insider_name": "Hilsheimer Lawrence A.",
-          "title": "EVP, CFO",
-          "role": "CFO",
-          "trade_date": "2026-02-03",
-          "value": "+$1,626,891",
-          "qty": "+18,322"
-        },
-        {
-          "insider_name": "Sathyanarayanan Bala",
-          "title": "EVP, Chief HR Off",
-          "role": "VP",
-          "trade_date": "2026-02-05",
-          "value": "+$159,542",
-          "qty": "+1,811"
-        },
-        {
-          "insider_name": "Sathyanarayanan Bala",
-          "title": "EVP, Chief HR Off",
-          "role": "VP",
-          "trade_date": "2026-02-03",
-          "value": "+$26,614",
-          "qty": "+300"
-        },
-        {
-          "insider_name": "Hilsheimer Lawrence A.",
-          "title": "EVP, CFO",
-          "role": "CFO",
-          "trade_date": "2026-02-03",
-          "value": "+$1,626,891",
-          "qty": "+18,322"
-        }
-      ]
-    },
-    {
       "ticker": "MUZE",
       "company_name": "Muzero Acquisition Corp",
       "total_value": 3359380.0,
@@ -1482,6 +1465,52 @@
       ]
     },
     {
+      "ticker": "GEF",
+      "company_name": "Greif, Inc",
+      "total_value": 1971692.0,
+      "total_value_formatted": "$2.0M",
+      "total_purchases": 4,
+      "unique_insiders": 2,
+      "role_counts": {
+        "CFO": 1,
+        "VP": 3
+      },
+      "trades": [
+        {
+          "insider_name": "Hilsheimer Lawrence A.",
+          "title": "EVP, CFO",
+          "role": "CFO",
+          "trade_date": "2026-02-03",
+          "value": "+$1,626,891",
+          "qty": "+18,322"
+        },
+        {
+          "insider_name": "Sathyanarayanan Bala",
+          "title": "EVP, Chief HR Off",
+          "role": "VP",
+          "trade_date": "2026-02-05",
+          "value": "+$159,542",
+          "qty": "+1,811"
+        },
+        {
+          "insider_name": "Sathyanarayanan Bala",
+          "title": "EVP, Chief HR Off",
+          "role": "VP",
+          "trade_date": "2026-02-09",
+          "value": "+$158,645",
+          "qty": "+1,819"
+        },
+        {
+          "insider_name": "Sathyanarayanan Bala",
+          "title": "EVP, Chief HR Off",
+          "role": "VP",
+          "trade_date": "2026-02-03",
+          "value": "+$26,614",
+          "qty": "+300"
+        }
+      ]
+    },
+    {
       "ticker": "TCGSX",
       "company_name": "Tcg Strategic Income Fund",
       "total_value": 1850000.0,
@@ -1529,27 +1558,6 @@
           "trade_date": "2026-02-03",
           "value": "+$1,829,465",
           "qty": "+135,407"
-        }
-      ]
-    },
-    {
-      "ticker": "BATRA",
-      "company_name": "Atlanta Braves Holdings, Inc.",
-      "total_value": 1724786.0,
-      "total_value_formatted": "$1.7M",
-      "total_purchases": 1,
-      "unique_insiders": 1,
-      "role_counts": {
-        "10% Owner": 1
-      },
-      "trades": [
-        {
-          "insider_name": "Malone John C",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-05",
-          "value": "+$1,724,786",
-          "qty": "+38,669"
         }
       ]
     },
