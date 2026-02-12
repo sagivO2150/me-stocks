@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-02-12T03:52:46.579482",
-  "total_tickers": 108,
+  "updated_at": "2026-02-12T18:16:14.479996",
+  "total_tickers": 106,
   "total_trades": 200,
   "data": [
     {
@@ -109,55 +109,15 @@
           "qty": "+3,690,000"
         },
         {
-          "insider_name": "Florence Anthony A. Jr.",
-          "title": "10%",
+          "insider_name": "Behbahani Ali",
+          "title": "Dir, 10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
           "value": "+$15,000,000",
           "qty": "+937,500"
         },
         {
-          "insider_name": "Walker Paul Edward",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-09",
-          "value": "+$15,000,000",
-          "qty": "+937,500"
-        },
-        {
-          "insider_name": "Mathers Edward T",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-09",
-          "value": "+$15,000,000",
-          "qty": "+937,500"
-        },
-        {
-          "insider_name": "Chang Carmen",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-09",
-          "value": "+$15,000,000",
-          "qty": "+937,500"
-        },
-        {
-          "insider_name": "Sandell Scott D",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-09",
-          "value": "+$15,000,000",
-          "qty": "+937,500"
-        },
-        {
-          "insider_name": "Makhzoumi Mohamad",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-09",
-          "value": "+$15,000,000",
-          "qty": "+937,500"
-        },
-        {
-          "insider_name": "Yang Rick",
+          "insider_name": "Baskett Forest",
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
@@ -173,7 +133,7 @@
           "qty": "+937,500"
         },
         {
-          "insider_name": "Baskett Forest",
+          "insider_name": "Yang Rick",
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
@@ -181,8 +141,48 @@
           "qty": "+937,500"
         },
         {
-          "insider_name": "Behbahani Ali",
-          "title": "Dir, 10%",
+          "insider_name": "Makhzoumi Mohamad",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Sandell Scott D",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Chang Carmen",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Mathers Edward T",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Walker Paul Edward",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Florence Anthony A. Jr.",
+          "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
           "value": "+$15,000,000",
@@ -322,16 +322,16 @@
       },
       "trades": [
         {
-          "insider_name": "Enright Patrick G",
-          "title": "Dir, 10%",
+          "insider_name": "Longitude Capital Partners V, LLC",
+          "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-05",
           "value": "+$18,275,000",
           "qty": "+1,075,000"
         },
         {
-          "insider_name": "Longitude Capital Partners V, LLC",
-          "title": "10%",
+          "insider_name": "Enright Patrick G",
+          "title": "Dir, 10%",
           "role": "10% Owner",
           "trade_date": "2026-02-05",
           "value": "+$18,275,000",
@@ -558,14 +558,6 @@
           "qty": "+671,000"
         },
         {
-          "insider_name": "Hc VIII Sponsor LLC",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-06",
-          "value": "+$6,710,000",
-          "qty": "+671,000"
-        },
-        {
           "insider_name": "Hennessy Daniel J",
           "title": "COB, CEO, 10%",
           "role": "COB",
@@ -577,6 +569,14 @@
           "insider_name": "Hennessy Thomas D",
           "title": "Pres, 10%",
           "role": "Pres",
+          "trade_date": "2026-02-06",
+          "value": "+$6,710,000",
+          "qty": "+671,000"
+        },
+        {
+          "insider_name": "Hc VIII Sponsor LLC",
+          "title": "10%",
+          "role": "10% Owner",
           "trade_date": "2026-02-06",
           "value": "+$6,710,000",
           "qty": "+671,000"
@@ -710,12 +710,12 @@
     {
       "ticker": "ASA",
       "company_name": "Asa Gold & Precious Metals Ltd",
-      "total_value": 17871254.0,
-      "total_value_formatted": "$17.9M",
-      "total_purchases": 5,
+      "total_value": 20770858.0,
+      "total_value_formatted": "$20.8M",
+      "total_purchases": 6,
       "unique_insiders": 1,
       "role_counts": {
-        "10% Owner": 5
+        "10% Owner": 6
       },
       "trades": [
         {
@@ -733,6 +733,14 @@
           "trade_date": "2026-01-27",
           "value": "+$4,578,517",
           "qty": "+60,895"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-11",
+          "value": "+$2,899,604",
+          "qty": "+40,222"
         },
         {
           "insider_name": "Saba Capital Management, L.P.",
@@ -861,27 +869,6 @@
       ]
     },
     {
-      "ticker": "ALMS",
-      "company_name": "Alumis Inc.",
-      "total_value": 9999995.0,
-      "total_value_formatted": "$10.0M",
-      "total_purchases": 1,
-      "unique_insiders": 1,
-      "role_counts": {
-        "Other": 1
-      },
-      "trades": [
-        {
-          "insider_name": "Akkaraju Srinivas",
-          "title": "Dir",
-          "role": "Other",
-          "trade_date": "2026-01-09",
-          "value": "+$9,999,995",
-          "qty": "+588,235"
-        }
-      ]
-    },
-    {
       "ticker": "TVA",
       "company_name": "Texas Ventures Acquisition III Corp",
       "total_value": 9958578.0,
@@ -910,23 +897,23 @@
       "total_purchases": 2,
       "unique_insiders": 2,
       "role_counts": {
-        "Other": 1,
-        "10% Owner": 1
+        "10% Owner": 1,
+        "Other": 1
       },
       "trades": [
-        {
-          "insider_name": "Wheeler William J",
-          "title": "Dir",
-          "role": "Other",
-          "trade_date": "2026-01-30",
-          "value": "+$4,949,975",
-          "qty": "+260,525"
-        },
         {
           "insider_name": "Botha Roelof",
           "title": "Dir, 10%",
           "role": "10% Owner",
           "trade_date": "2026-01-29",
+          "value": "+$4,949,975",
+          "qty": "+260,525"
+        },
+        {
+          "insider_name": "Wheeler William J",
+          "title": "Dir",
+          "role": "Other",
+          "trade_date": "2026-01-30",
           "value": "+$4,949,975",
           "qty": "+260,525"
         }
@@ -977,14 +964,32 @@
     {
       "ticker": "FEAM",
       "company_name": "5E Advanced Materials, Inc.",
-      "total_value": 8000000.0,
+      "total_value": 8015000.0,
       "total_value_formatted": "$8.0M",
-      "total_purchases": 1,
-      "unique_insiders": 1,
+      "total_purchases": 3,
+      "unique_insiders": 3,
       "role_counts": {
+        "CEO": 1,
+        "CFO": 1,
         "10% Owner": 1
       },
       "trades": [
+        {
+          "insider_name": "Weibel Paul Wesley III",
+          "title": "CEO",
+          "role": "CEO",
+          "trade_date": "2026-02-02",
+          "value": "+$7,500",
+          "qty": "+3,750"
+        },
+        {
+          "insider_name": "Malm Joshua",
+          "title": "CFO",
+          "role": "CFO",
+          "trade_date": "2026-02-02",
+          "value": "+$7,500",
+          "qty": "+3,750"
+        },
         {
           "insider_name": "Bep Special Situations IV LLC",
           "title": "Dir, 10%",
@@ -1587,6 +1592,44 @@
           "trade_date": "2026-01-27",
           "value": "+$499,307",
           "qty": "+11,566"
+        }
+      ]
+    },
+    {
+      "ticker": "BMI",
+      "company_name": "Badger Meter Inc",
+      "total_value": 1255517.0,
+      "total_value_formatted": "$1.3M",
+      "total_purchases": 3,
+      "unique_insiders": 3,
+      "role_counts": {
+        "COB": 1,
+        "VP": 2
+      },
+      "trades": [
+        {
+          "insider_name": "Bockhorst Kenneth",
+          "title": "COB, Pres, CEO",
+          "role": "COB",
+          "trade_date": "2026-02-10",
+          "value": "+$502,986",
+          "qty": "+3,300"
+        },
+        {
+          "insider_name": "Htwe Richard",
+          "title": "VP-Global Operations",
+          "role": "VP",
+          "trade_date": "2026-02-05",
+          "value": "+$501,153",
+          "qty": "+3,370"
+        },
+        {
+          "insider_name": "Wrocklage Robert",
+          "title": "EVP-N.A. Muncipal Utility",
+          "role": "VP",
+          "trade_date": "2026-02-09",
+          "value": "+$251,378",
+          "qty": "+1,650"
         }
       ]
     }
