@@ -480,7 +480,7 @@ function App() {
             });
             
             return sortedTrades.map((stock, index) => (
-              <div key={`monthly-${stock.ticker}-${index}`} onClick={() => setSelectedTrade({ Ticker: stock.ticker, ticker: stock.ticker })} className="cursor-pointer">
+              <div key={`monthly-${stock.ticker}-${index}`} onClick={() => setSelectedTrade({ Ticker: stock.ticker, ticker: stock.ticker, eventClassification: stock.eventClassification })} className="cursor-pointer">
                 <TopMonthlyCard stock={stock} />
               </div>
             ));
@@ -513,7 +513,7 @@ function App() {
                   <div key={`live-${stock.ticker}-${index}`}>
                     <LivePurchasesCard 
                       stock={stock} 
-                      onClick={() => setSelectedTrade({ Ticker: stock.ticker, ticker: stock.ticker })}
+                      onClick={() => setSelectedTrade({ Ticker: stock.ticker, ticker: stock.ticker, eventClassification: stock.eventClassification })}
                     />
                   </div>
                 ))

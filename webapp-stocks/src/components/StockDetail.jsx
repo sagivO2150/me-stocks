@@ -952,11 +952,24 @@ const StockDetail = ({ trade, onClose }) => {
   const isPriceUp = stockHistory && stockHistory.change_24h_pct > 0;
   const chartColor = isPriceUp ? '#34d399' : '#f87171';
 
+  // Event badge config for display
+  const eventLabels = {
+    'holy-grail': { label: 'Holy Grail', icon: '🔥', colorClass: 'bg-purple-500/20 text-purple-400 border-purple-500/30', tooltip: 'Clamp + price up!' },
+    'slump-recovery': { label: 'Slump Recovery', icon: '📈', colorClass: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30', tooltip: 'Bottom-fishing success!' },
+    'clamp': { label: 'Clamp', icon: '📊', colorClass: 'bg-blue-500/20 text-blue-400 border-blue-500/30', tooltip: 'Purchases within 7 days' },
+    'restock': { label: 'Restock', icon: '🔄', colorClass: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30', tooltip: '3+ purchases in 30 days' },
+    'mid-rise': { label: 'Mid-Rise', icon: '⚠️', colorClass: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30', tooltip: 'Buying during uptrend' },
+    'disqualified': { label: 'Disqualified', icon: '❌', colorClass: 'bg-red-500/20 text-red-400 border-red-500/30', tooltip: "Didn't work out" }
+  };
+
+  // Get event classification from trade if available
+  const events = Array.isArray(trade.eventClassification) ? trade.eventClassification : [];
+
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto shadow-2xl focus:outline-none focus:border-slate-700 active:outline-none active:border-slate-700" style={{outline: 'none'}}>
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-6xl w-full h-[90vh] flex flex-col shadow-2xl" style={{outline: 'none'}}>
         {/* Header */}
-        <div className="sticky top-0 bg-slate-900 border-b border-slate-700 p-6 flex justify-between items-start z-10">
+        <div className="bg-slate-900 border-b border-slate-700 p-6 flex justify-between items-start flex-shrink-0">
           <div className="flex-1">
             <div className="flex items-center gap-4">
               <h2 className="text-4xl font-bold text-white">{ticker}</h2>
@@ -972,6 +985,26 @@ const StockDetail = ({ trade, onClose }) => {
             <p className="text-slate-400 text-lg mt-2">{sector || 'Unknown Sector'}</p>
             {stockHistory && stockHistory.company_name && (
               <p className="text-slate-500 text-sm mt-1">{stockHistory.company_name}</p>
+            )}
+            
+            {/* Event Classification Badges */}
+            {events.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-3">
+                {events.map((event, idx) => {
+                  const config = eventLabels[event.type];
+                  if (!config) return null;
+                  
+                  const displayLabel = event.count > 1 ? `${event.count} ${config.label}` : config.label;
+                  
+                  return (
+                    <Tooltip key={`${event.type}-${idx}`} text={config.tooltip}>
+                      <span className={`px-2 py-1 rounded-lg text-xs font-medium border ${config.colorClass}`}>
+                        {config.icon} {displayLabel}
+                      </span>
+                    </Tooltip>
+                  );
+                })}
+              </div>
             )}
           </div>
           
@@ -995,8 +1028,8 @@ const StockDetail = ({ trade, onClose }) => {
           </div>
         </div>
 
-        {/* Content */}
-        <div className="p-6">
+        {/* Content - scrollable area */}
+        <div className="p-6 overflow-y-auto flex-1">
           {/* Period Selector with Date Picker */}
           <div className="mb-6">
             <div className="flex gap-2 flex-wrap items-center">
@@ -1069,7 +1102,7 @@ const StockDetail = ({ trade, onClose }) => {
                   <button
                     onClick={fetchEdgarTrades}
                     disabled={edgarLoading}
-                    className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
                       edgarLoading
                         ? 'bg-slate-700 text-slate-500 cursor-wait'
                         : 'bg-green-600 text-white hover:bg-green-500'
@@ -1077,12 +1110,12 @@ const StockDetail = ({ trade, onClose }) => {
                   >
                     {edgarLoading ? (
                       <>
-                        <span className="inline-block animate-spin mr-2">⏳</span>
-                        Loading Historical Data (EDGAR)...
+                        <span className="inline-block animate-spin mr-1.5 text-sm">⏳</span>
+                        <span className="text-sm">Loading EDGAR...</span>
                       </>
                     ) : (
                       <>
-                        📈 Load Extended History (5 Years - EDGAR)
+                        📈 5yr EDGAR History
                       </>
                     )}
                   </button>
@@ -1513,344 +1546,6 @@ const StockDetail = ({ trade, onClose }) => {
                 </ComposedChart>
               </ResponsiveContainer>
             )}
-          </div>
-
-          {/* Two Column Layout for Details */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Left Column: Trade Info */}
-            <div className="space-y-4">
-              <h3 className="text-xl font-bold text-white mb-4">
-                {isPoliticalTrade ? '🏛️ Political Trade Details' : 'Insider Trade Details'}
-              </h3>
-              
-              {isPoliticalTrade ? (
-                /* Political Trade Details */
-                <>
-                  {/* Political Trade Badges */}
-                  <div className="flex flex-wrap gap-2">
-                    <span className="px-3 py-2 bg-blue-500/20 text-blue-400 rounded-lg text-sm font-medium border border-blue-500/30">
-                      🏛️ {trade.politician}
-                    </span>
-                    <span className={`px-3 py-2 rounded-lg text-sm font-medium border ${
-                      trade.party === 'Democrat' ? 'bg-blue-500/20 text-blue-400 border-blue-500/30' :
-                      trade.party === 'Republican' ? 'bg-red-500/20 text-red-400 border-red-500/30' :
-                      'bg-gray-500/20 text-gray-400 border-gray-500/30'
-                    }`}>
-                      {trade.party} • {trade.state || trade.district}
-                    </span>
-                    {trade.committee && (
-                      <span className="px-3 py-2 bg-purple-500/20 text-purple-400 rounded-lg text-sm font-medium border border-purple-500/30">
-                        ⚖️ {trade.committee}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Political Trade Stats */}
-                  <div className="bg-slate-800/50 rounded-xl p-4 space-y-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-400">Transaction Type</span>
-                      <span className={`font-semibold text-lg ${
-                        trade.trade_type === 'Purchase' ? 'text-emerald-400' : 'text-red-400'
-                      }`}>
-                        {trade.trade_type}
-                      </span>
-                    </div>
-                    
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-400">Amount Range</span>
-                      <span className="text-white font-semibold">{trade.amount_range}</span>
-                    </div>
-
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-400">Estimated Value</span>
-                      <span className="text-white font-semibold text-lg">
-                        ${(parseFloat(trade.amount_value) / 1000000).toFixed(1)}M
-                      </span>
-                    </div>
-
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-400">Trade Date</span>
-                      <span className="text-white font-semibold">{trade.trade_date}</span>
-                    </div>
-                  </div>
-
-                  {/* Other Politicians Trading This Stock */}
-                  {politicalTrades && (politicalTrades.purchases?.length > 0 || politicalTrades.sales?.length > 0) && (
-                    <div className="bg-slate-800/50 rounded-xl p-4">
-                      <div className="text-sm text-slate-400 mb-3 font-semibold">Other Political Activity on {ticker}</div>
-                      
-                      {politicalTrades.purchases?.length > 0 && (
-                        <div className="mb-3">
-                          <div className="text-xs text-emerald-400 mb-2">📈 Purchases ({politicalTrades.purchases.length})</div>
-                          {politicalTrades.purchases.slice(0, 5).map((pt, idx) => (
-                            <div key={idx} className="text-sm text-slate-300 mb-1">
-                              • {pt.politician} ({pt.party}) - {pt.trade_date} - {pt.amount_range}
-                            </div>
-                          ))}
-                          {politicalTrades.purchases.length > 5 && (
-                            <div className="text-xs text-slate-500 italic">+{politicalTrades.purchases.length - 5} more purchases</div>
-                          )}
-                        </div>
-                      )}
-                      
-                      {politicalTrades.sales?.length > 0 && (
-                        <div>
-                          <div className="text-xs text-red-400 mb-2">📉 Sales ({politicalTrades.sales.length})</div>
-                          {politicalTrades.sales.slice(0, 5).map((pt, idx) => (
-                            <div key={idx} className="text-sm text-slate-300 mb-1">
-                              • {pt.politician} ({pt.party}) - {pt.trade_date} - {pt.amount_range}
-                            </div>
-                          ))}
-                          {politicalTrades.sales.length > 5 && (
-                            <div className="text-xs text-slate-500 italic">+{politicalTrades.sales.length - 5} more sales</div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </>
-              ) : (
-                /* Insider Trade Details */
-                <>
-              {/* Badges */}
-              <div className="flex flex-wrap gap-2">
-                <Tooltip text={`Number of insiders buying this stock. Breakdown: ${roleBreakdownText}. CEO/CFO/COO buys = C-suite conviction (strongest signal).`}>
-                  <span className="px-3 py-2 bg-blue-500/20 text-blue-400 rounded-lg text-sm font-medium border border-blue-500/30">
-                    👥 {insidersCount} Insiders ({roleBreakdownText})
-                  </span>
-                </Tooltip>
-
-                {skinInGame === 'YES' && (
-                  <Tooltip text="HIGH CONVICTION = Insiders increased their ownership by 10%+ OR bought $500k+.">
-                    <span className="px-3 py-2 bg-emerald-500/20 text-emerald-400 rounded-lg text-sm font-medium border border-emerald-500/30">
-                      💎 HIGH CONVICTION
-                    </span>
-                  </Tooltip>
-                )}
-              </div>
-
-              {/* Insider Trading Events Section */}
-              {(() => {
-                // Calculate insider events inline
-                console.log('🎨 Rendering events section...');
-                const insiderEventData = classifyInsiderEvents();
-                console.log('🎨 Got event data:', insiderEventData);
-                
-                if (!insiderEventData || (insiderEventData.events.length === 0 && insiderEventData.disqualifiedCount === 0)) {
-                  console.log('🎨 Not rendering - no events');
-                  return null;
-                }
-                
-                console.log('🎨 Rendering events section with data');
-                return (
-                  <div className="bg-slate-800/50 rounded-xl p-4">
-                    <div className="text-sm text-slate-400 mb-3 font-semibold">📊 Insider Trading Events</div>
-                    
-                    {/* Event Badges */}
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {insiderEventData.events.map((event, idx) => {
-                        let badgeColor, badgeIcon, badgeText, tooltipText;
-                        
-                        switch(event.type) {
-                          case 'clamp':
-                            badgeColor = 'bg-purple-500/20 text-purple-400 border-purple-500/30';
-                            badgeIcon = '🔥';
-                            badgeText = 'Holy Grail Clamp';
-                            tooltipText = `${event.description} - Insiders on a sustained shopping spree. The stock went up as a result. Best signal!`;
-                            break;
-                          case 'slump':
-                            badgeColor = 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30';
-                            badgeIcon = '📈';
-                            badgeText = 'Slump Recovery';
-                            tooltipText = `${event.description} - Stock was in a slump, then massive insider purchases drove it back up.`;
-                            break;
-                          case 'restock':
-                            badgeColor = 'bg-blue-500/20 text-blue-400 border-blue-500/30';
-                            badgeIcon = '🔄';
-                            badgeText = 'Restock';
-                            tooltipText = `${event.description} - Insiders bought more after a recent clamp event (within 1 month).`;
-                            break;
-                          case 'mid-rise':
-                            badgeColor = 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
-                            badgeIcon = '⚠️';
-                            badgeText = 'Mid-Rise';
-                            tooltipText = `${event.description} - Lowest quality signal. Stock was already rising, insider bought, then it crashed.`;
-                            break;
-                          default:
-                            return null;
-                        }
-
-                        return (
-                          <Tooltip key={idx} text={tooltipText}>
-                            <div className={`px-3 py-2 rounded-lg text-sm font-medium border ${badgeColor} flex items-center gap-2`}>
-                              <span>{badgeIcon}</span>
-                              <div>
-                                <div className="font-semibold">{badgeText}</div>
-                                <div className="text-xs opacity-80">
-                                  {new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                                  {event.endDate && event.endDate !== event.date && 
-                                    ` - ${new Date(event.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
-                                  }
-                                </div>
-                                <div className="text-xs opacity-70">
-                                  ${(event.value / 1000000).toFixed(2)}M • {event.purchaseCount} trades
-                                </div>
-                              </div>
-                            </div>
-                          </Tooltip>
-                        );
-                      })}
-                      
-                      {/* Disqualified Events Badge */}
-                      {insiderEventData.disqualifiedCount > 0 && (
-                        <Tooltip text="Singular insider purchases where the stock didn't go up 10-15% in the following 3 days. These events are not meaningful signals.">
-                          <div className="px-3 py-2 bg-red-500/20 text-red-400 rounded-lg text-sm font-medium border border-red-500/30">
-                            ❌ {insiderEventData.disqualifiedCount} Disqualified Event{insiderEventData.disqualifiedCount > 1 ? 's' : ''}
-                          </div>
-                        </Tooltip>
-                      )}
-                    </div>
-
-                    {insiderEventData.events.length === 0 && insiderEventData.disqualifiedCount > 0 && (
-                      <div className="text-xs text-slate-500 italic">
-                        No significant trading events detected. All insider purchases were singular events that didn't result in stock price increases.
-                      </div>
-                    )}
-                  </div>
-                );
-              })()}
-
-              {/* Trade Stats */}
-              <div className="bg-slate-800/50 rounded-xl p-4 space-y-3">
-                <div className="flex justify-between items-center">
-                  <Tooltip text="Total dollar amount insiders spent buying shares. Higher = more serious.">
-                    <span className="text-slate-400 border-b border-dotted border-slate-600 cursor-help">Trade Value</span>
-                  </Tooltip>
-                  <span className="text-white font-semibold text-lg">{value}</span>
-                </div>
-                
-                <div className="flex justify-between items-center">
-                  <Tooltip text="How much their personal stake increased. +10% = significant commitment.">
-                    <span className="text-slate-400 border-b border-dotted border-slate-600 cursor-help">Ownership Change</span>
-                  </Tooltip>
-                  <span className="text-emerald-400 font-semibold text-lg">{deltaOwn}</span>
-                </div>
-
-                <div className="flex justify-between items-center">
-                  <span className="text-slate-400">Trade Date</span>
-                  <span className="text-white font-semibold">{tradeDate}</span>
-                </div>
-
-                {upside !== 'N/A' && (
-                  <div className="flex justify-between items-center pt-3 border-t border-slate-700">
-                    <Tooltip text="Gap between current price and Wall Street analyst average target.">
-                      <span className="text-slate-400 border-b border-dotted border-slate-600 cursor-help">Upside to Target</span>
-                    </Tooltip>
-                    <span className={`font-bold text-2xl ${upside.startsWith('+') ? 'text-emerald-400' : 'text-red-400'}`}>
-                      {upside}
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              {/* Health Flags */}
-              {healthFlags && healthFlags !== 'N/A' && (
-                <div className="bg-slate-800/50 rounded-xl p-4">
-                  <Tooltip text="Financial health indicators from company fundamentals.">
-                    <div className="text-sm text-slate-400 mb-2 border-b border-dotted border-slate-600 inline-block cursor-help">Financial Health</div>
-                  </Tooltip>
-                  <div className="text-slate-200">{healthFlags}</div>
-                </div>
-              )}
-
-              {/* Sector Type */}
-              {sectorType && (
-                <div>
-                  {sectorType.includes('DEFENSIVE') && (
-                    <Tooltip text="DEFENSIVE sectors = Safe havens during market downturns.">
-                      <div className="bg-green-500/10 border border-green-500/30 rounded-lg px-4 py-3">
-                        <div className="text-green-400 font-semibold">🛡️ {sectorType}</div>
-                      </div>
-                    </Tooltip>
-                  )}
-                  {sectorType.includes('AGGRESSIVE') && (
-                    <Tooltip text="AGGRESSIVE sectors = High risk/high reward.">
-                      <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-3">
-                        <div className="text-red-400 font-semibold">⚠️ {sectorType}</div>
-                      </div>
-                    </Tooltip>
-                  )}
-                  {sectorType.includes('NEUTRAL') && (
-                    <Tooltip text="NEUTRAL sectors = Balanced risk/reward.">
-                      <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg px-4 py-3">
-                        <div className="text-blue-400 font-semibold">⚖️ {sectorType}</div>
-                      </div>
-                    </Tooltip>
-                  )}
-                </div>
-              )}
-                </>
-              )}
-            </div>
-
-            {/* Right Column: Stock Fundamentals */}
-            <div className="space-y-4">
-              <h3 className="text-xl font-bold text-white mb-4">Stock Fundamentals</h3>
-              
-              {stockHistory && (
-                <div className="bg-slate-800/50 rounded-xl p-4 space-y-3">
-                  {stockHistory.market_cap && stockHistory.market_cap !== 'N/A' && (
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-400">Market Cap</span>
-                      <span className="text-white font-semibold">
-                        ${(stockHistory.market_cap / 1000000000).toFixed(2)}B
-                      </span>
-                    </div>
-                  )}
-                  
-                  {stockHistory.pe_ratio && stockHistory.pe_ratio !== 'N/A' && (
-                    <div className="flex justify-between items-center">
-                      <Tooltip text="Price-to-Earnings ratio. Lower values may indicate undervaluation.">
-                        <span className="text-slate-400 border-b border-dotted border-slate-600 cursor-help">P/E Ratio</span>
-                      </Tooltip>
-                      <span className="text-white font-semibold">
-                        {typeof stockHistory.pe_ratio === 'number' ? stockHistory.pe_ratio.toFixed(2) : stockHistory.pe_ratio}
-                      </span>
-                    </div>
-                  )}
-
-                  <div className="flex justify-between items-center">
-                    <span className="text-slate-400">24h Change</span>
-                    <span className={`font-semibold ${isPriceUp ? 'text-emerald-400' : 'text-red-400'}`}>
-                      {isPriceUp ? '+' : ''}{stockHistory.change_24h_pct.toFixed(2)}% (${stockHistory.change_24h.toFixed(2)})
-                    </span>
-                  </div>
-                </div>
-              )}
-
-              {/* Score Reasons */}
-              {scoreReasons && scoreReasons !== 'N/A' && (
-                <div className="bg-slate-800/50 rounded-xl p-4">
-                  <Tooltip text="Breakdown of why this stock got its Rainy Day Score.">
-                    <div className="text-sm text-slate-400 mb-2 border-b border-dotted border-slate-600 inline-block cursor-help">Score Breakdown</div>
-                  </Tooltip>
-                  <div className="text-slate-200 text-sm leading-relaxed">{scoreReasons}</div>
-                </div>
-              )}
-
-              {/* Analyst Targets */}
-              {targetMeanPrice && !isNaN(targetMeanPrice) && (
-                <div className="bg-linear-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/30 rounded-xl p-4">
-                  <div className="text-slate-400 text-sm mb-2">Analyst Price Target</div>
-                  <div className="text-white font-bold text-3xl">${targetMeanPrice.toFixed(2)}</div>
-                  {currentPrice && (
-                    <div className="text-slate-400 text-sm mt-1">
-                      Current: ${currentPrice.toFixed(2)} • Potential: {upside}
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
           </div>
         </div>
       </div>
