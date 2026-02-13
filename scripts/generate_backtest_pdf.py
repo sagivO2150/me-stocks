@@ -17,6 +17,7 @@ from datetime import datetime, timedelta
 import json
 from pathlib import Path
 import sys
+import requests
 
 # Color scheme matching the webapp
 COLORS = {
@@ -88,8 +89,22 @@ def get_stock_data(ticker, period='1y'):
         return None, ticker
 
 
+def get_insider_trades(ticker):
+    """Fetch insider trades from the webapp API"""
+    try:
+        import requests
+        response = requests.get(f'http://localhost:3001/api/insider-trades/{ticker}', timeout=5)
+        data = response.json()
+        if data['success']:
+            return data.get('purchases', []), data.get('sales', [])
+        return [], []
+    except Exception as e:
+        print(f"  ⚠️  Could not fetch insider trades for {ticker}: {e}")
+        return [], []
+
+
 def create_chart_with_trades(ax, ticker, stock_data, backtest_trades, company_name):
-    """Create a single stock chart with colored trade lines (green=profit, red=loss)"""
+    """Create a single stock chart with colored trade lines (green=profit, red=loss) and insider events"""
     
     # Plot price line
     dates = stock_data.index
@@ -108,7 +123,54 @@ def create_chart_with_trades(ax, ticker, stock_data, backtest_trades, company_na
     stock_dates = pd.to_datetime(stock_data.index).date
     stock_dates_map = {d: stock_data.index[i] for i, d in enumerate(stock_dates)}
     
-    # Track if we've added labels
+    # Get insider trades
+    insider_purchases, insider_sales = get_insider_trades(ticker)
+    
+    # Plot insider purchase events with separate y-axis for transaction values
+    if insider_purchases:
+        # Create secondary y-axis for insider trade values
+        ax2 = ax.twinx()
+        
+        # Collect all purchase values to set appropriate scale
+        purchase_values = [p['value'] for p in insider_purchases]
+        max_purchase_value = max(purchase_values) if purchase_values else 0
+        
+        if max_purchase_value > 0:
+            # Set y-axis for insider values
+            ax2.set_ylim(0, max_purchase_value * 1.2)  # Add 20% padding
+            ax2.set_ylabel('Insider Purchase Value ($)', color=COLORS['text_secondary'], fontsize=10)
+            ax2.tick_params(axis='y', labelcolor=COLORS['text_secondary'])
+            
+            insider_label_added = False
+            for purchase in insider_purchases:
+                try:
+                    purchase_date = pd.to_datetime(purchase['date']).date()
+                    purchase_value = purchase['value']
+                    
+                    # Find matching date in stock data
+                    if purchase_date in stock_dates_map:
+                        stock_date = stock_dates_map[purchase_date]
+                        
+                        # Draw dotted vertical line from 0 to the purchase value on ax2
+                        ax2.plot([stock_date, stock_date], [0, purchase_value], 
+                               color='#10b981', linestyle=':', linewidth=2, alpha=0.6, zorder=5)
+                        
+                        # Draw circle at the top (on ax2 scale)
+                        label = 'Insider Purchase' if not insider_label_added else None
+                        ax2.scatter(stock_date, purchase_value, color='#10b981', 
+                                  s=80, marker='o', edgecolors='white', linewidths=1.5, 
+                                  zorder=6, alpha=0.9, label=label)
+                        insider_label_added = True
+                except Exception as e:
+                    continue
+            
+            # Format the secondary y-axis labels
+            ax2.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: 
+                f'${x/1e6:.0f}M' if x >= 1e6 else f'${x/1e3:.0f}K' if x >= 1e3 else f'${x:.0f}'))
+        else:
+            ax2.set_visible(False)
+    
+    # Track if we've added labels for trade lines
     profit_label_added = False
     loss_label_added = False
     
