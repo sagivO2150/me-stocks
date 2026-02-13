@@ -23,10 +23,10 @@ COLORS = {
     'background': '#1e293b',  # slate-800
     'chart_bg': '#0f172a',    # slate-900
     'grid': '#334155',        # slate-700
-    'price_up': '#10b981',    # emerald-500
-    'price_down': '#ef4444',  # red-500
-    'purchase': '#10b981',    # green
-    'sale': '#ef4444',        # red
+    'price_line': '#8b5cf6',  # purple-500 (neutral for price)
+    'price_fill': '#6366f1',  # indigo-500 (neutral for price fill)
+    'purchase': '#22c55e',    # bright green for profitable trades
+    'sale': '#ef4444',        # bright red for losing trades
     'text': '#ffffff',
     'text_secondary': '#94a3b8'  # slate-400
 }
@@ -95,15 +95,14 @@ def create_chart_with_trades(ax, ticker, stock_data, backtest_trades, company_na
     dates = stock_data.index
     prices = stock_data['Close']
     
-    # Determine if stock is up or down
+    # Determine if stock is up or down (for stats, not color)
     first_price = prices.iloc[0]
     last_price = prices.iloc[-1]
     price_change_pct = ((last_price - first_price) / first_price) * 100
-    color = COLORS['price_up'] if price_change_pct >= 0 else COLORS['price_down']
     
-    # Plot price area
-    ax.fill_between(dates, prices, alpha=0.3, color=color)
-    ax.plot(dates, prices, color=color, linewidth=2, label='Price')
+    # Use neutral purple/indigo colors for price to avoid conflict with trade lines
+    ax.fill_between(dates, prices, alpha=0.2, color=COLORS['price_fill'])
+    ax.plot(dates, prices, color=COLORS['price_line'], linewidth=1.5, alpha=0.8, label='Price')
     
     # Convert stock_data index to date-only strings for comparison
     stock_dates = pd.to_datetime(stock_data.index).date
@@ -154,7 +153,7 @@ def create_chart_with_trades(ax, ticker, stock_data, backtest_trades, company_na
                     is_profit = trade['return_pct'] > 0
                     line_color = COLORS['purchase'] if is_profit else COLORS['sale']
                     
-                    # Draw thick line from entry to exit
+                    # Draw trade line from entry to exit
                     label = None
                     if is_profit and not profit_label_added:
                         label = f'Profitable Trade'
@@ -166,9 +165,8 @@ def create_chart_with_trades(ax, ticker, stock_data, backtest_trades, company_na
                     ax.plot([entry_stock_date, exit_stock_date], 
                            [entry_price, exit_price], 
                            color=line_color, 
-                           linewidth=4, 
-                           alpha=0.8, 
-                           zorder=10,
+                           linewidth=2.5, 
+                           alpha=1.0,
                            label=label,
                            solid_capstyle='round')
         
@@ -265,7 +263,7 @@ def create_summary_page(pdf, all_trades):
         if label.startswith("📊") or label.startswith("🏆") or label.startswith("💀"):
             # Section header
             ax.text(0.5, y_pos, label, ha='center', va='top', 
-                   fontsize=16, fontweight='bold', color=COLORS['price_up'])
+                   fontsize=16, fontweight='bold', color=COLORS['purchase'])
             y_pos -= 0.045
         else:
             # Data row
@@ -275,7 +273,7 @@ def create_summary_page(pdf, all_trades):
             # Color code positive/negative values
             value_color = COLORS['text']
             if value and ('+' in value or '-' in value):
-                value_color = COLORS['price_up'] if '+' in value else COLORS['price_down']
+                value_color = COLORS['purchase'] if '+' in value else COLORS['sale']
             
             ax.text(0.35, y_pos, value, ha='left', va='top', 
                    fontsize=12, fontweight='bold', color=value_color)
