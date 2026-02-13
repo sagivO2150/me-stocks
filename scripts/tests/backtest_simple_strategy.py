@@ -6,6 +6,9 @@ Rules:
 1. Buy on every insider purchase event with 5% TRAILING stop loss
 2. If already holding the stock, DON'T re-buy on new insider events
 3. Close all positions at end of period
+
+ENTRY TIMING: Uses actual filing date from insider data (when info becomes public).
+This mimics real-world bot behavior - we only know about trades when they're filed.
 """
 
 import json
@@ -198,6 +201,7 @@ def backtest_simple_strategy(json_file, position_size=1000, stop_loss_pct=5.0):
                 'ticker': ticker,
                 'company': company,
                 'date': trade['trade_date'],
+                'filing_date': trade.get('filing_date'),  # Include filing_date if available
                 'insider_name': trade['insider_name'],
                 'value': parse_value(trade.get('value', '')),
                 'shares': trade.get('qty', trade.get('shares', ''))
@@ -219,6 +223,7 @@ def backtest_simple_strategy(json_file, position_size=1000, stop_loss_pct=5.0):
     print("  - Trailing stop follows highest price reached")
     print("  - DON'T re-buy if already holding the stock")
     print(f"  - Position size: ${position_size:,.0f}")
+    print("  - Entry timing: Filing date (when data becomes public)")
     print("=" * 80)
     print()
     
@@ -234,8 +239,11 @@ def backtest_simple_strategy(json_file, position_size=1000, stop_loss_pct=5.0):
         ticker = event['ticker']
         trade_date = event['date']
 
-        # Get entry price (2 business days after insider trade)
-        entry_date = get_business_days_later(trade_date, 2)
+        # Get entry date - use filing_date if available (more realistic), otherwise 2 business days delay
+        if 'filing_date' in event and event['filing_date']:
+            entry_date = event['filing_date']
+        else:
+            entry_date = get_business_days_later(trade_date, 2)
 
         # Update trailing stop for all open positions up to this event date
         positions_to_close = []

@@ -209,8 +209,11 @@ def backtest_strategy(json_file, threshold_percentile=75, stop_loss_pct=0.05, ho
             insider = trade['insider_name']
             value = trade['value']
             
-            # Simulate filing delay (2 business days after transaction)
-            entry_date = get_business_days_later(trade_date, 2) if use_filing_delay else trade_date
+            # Use filing_date if available (more realistic), otherwise apply delay if enabled
+            if 'filing_date' in trade and trade['filing_date']:
+                entry_date = trade['filing_date']
+            else:
+                entry_date = get_business_days_later(trade_date, 2) if use_filing_delay else trade_date
             
             print(f"\n  Peak Purchase: {insider} on {trade_date} ({value})")
             print(f"    Entry Date: {entry_date} (filing date)")

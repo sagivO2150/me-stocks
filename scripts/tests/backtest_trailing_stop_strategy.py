@@ -245,7 +245,11 @@ def backtest_trailing_stop_strategy(json_file, threshold_percentile=75, base_sto
             insider = trade['insider_name']
             value = trade['value']
             
-            entry_date = get_business_days_later(trade_date, 2) if use_filing_delay else trade_date
+            # Use filing_date if available (more realistic), otherwise apply delay if enabled
+            if 'filing_date' in trade and trade['filing_date']:
+                entry_date = trade['filing_date']
+            else:
+                entry_date = get_business_days_later(trade_date, 2) if use_filing_delay else trade_date
             
             print(f"\n  Peak Purchase: {insider} on {trade_date} ({value})")
             print(f"    Entry Date: {entry_date}")

@@ -334,7 +334,13 @@ def backtest_smart_strategy(json_file, min_conviction_score=5, use_technical_fil
         stock_had_signals = False
         
         for trade_date, same_day_trades in trades_by_date.items():
-            entry_date = get_business_days_later(trade_date, 2)
+            # Use filing_date if available (more realistic), otherwise 2 business days delay
+            # Get filing_date from any trade (they're all same day trades)
+            filing_date = same_day_trades[0].get('filing_date') if same_day_trades else None
+            if filing_date:
+                entry_date = filing_date
+            else:
+                entry_date = get_business_days_later(trade_date, 2)
             
             # For each trade on this date, calculate conviction
             for trade in same_day_trades:

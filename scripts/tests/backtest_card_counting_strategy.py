@@ -14,6 +14,9 @@ TRAILING STOP LOSS: Stop loss follows the highest price reached.
 - Stock rises to $20 → stop moves to $19 (5% below peak)
 - Stock drops to $19 → SELL (preserve gains, limit downside)
 
+ENTRY TIMING: Uses actual filing date from insider data (when info becomes public).
+This mimics real-world bot behavior - we only know about trades when they're filed.
+
 This tests if momentum/clustering of insider buying creates exploitable patterns.
 """
 
@@ -241,7 +244,11 @@ def backtest_card_counting_strategy(json_file, initial_position_size=1000, base_
         for trade in stock_data['trades']:
             if trade.get('value', '').startswith('+'):  # Only purchases
                 trade_date = trade['trade_date']
-                entry_date = get_business_days_later(trade_date, 2)
+                # Use filing_date if available (more realistic), otherwise fall back to 2-day delay
+                if 'filing_date' in trade and trade['filing_date']:
+                    entry_date = trade['filing_date']
+                else:
+                    entry_date = get_business_days_later(trade_date, 2)
                 
                 all_trades.append({
                     'ticker': ticker,
@@ -272,6 +279,7 @@ def backtest_card_counting_strategy(json_file, initial_position_size=1000, base_
     print(f"  - Double down if another insider buys while holding and profitable")
     print(f"  - Increase position size 10% after wins, decrease 10% after losses")
     print(f"  - Starting position size: ${initial_position_size:,.0f}")
+    print(f"  - Entry timing: Filing date (when data becomes public)")
     print(f"\n{'='*80}\n")
     
     for i, trade in enumerate(all_trades):

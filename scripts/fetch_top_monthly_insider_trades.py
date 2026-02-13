@@ -159,6 +159,7 @@ def aggregate_by_ticker(all_trades):
             'title': trade['title'],
             'role': role,
             'trade_date': trade['trade_date'],
+            'filing_date': trade['filing_date'],
             'value': trade['value'],
             'qty': trade['qty']
         })

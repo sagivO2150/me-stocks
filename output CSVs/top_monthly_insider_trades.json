@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-02-13T15:56:44.809752",
-  "total_tickers": 111,
+  "updated_at": "2026-02-14T00:35:50.010585",
+  "total_tickers": 115,
   "total_trades": 200,
   "data": [
     {
@@ -19,6 +19,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-01-26",
+          "filing_date": "2026-01-28 20:30:13",
           "value": "+$69,297,690",
           "qty": "+1,028,931"
         },
@@ -27,6 +28,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-01-22",
+          "filing_date": "2026-01-23 19:30:03",
           "value": "+$46,898,492",
           "qty": "+698,000"
         },
@@ -35,6 +37,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-01-20",
+          "filing_date": "2026-01-21 19:30:03",
           "value": "+$42,612,018",
           "qty": "+630,000"
         },
@@ -43,6 +46,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-01-15",
+          "filing_date": "2026-01-16 19:00:49",
           "value": "+$36,644,801",
           "qty": "+535,000"
         },
@@ -51,6 +55,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-01-29",
+          "filing_date": "2026-01-30 19:30:03",
           "value": "+$33,087,353",
           "qty": "+485,000"
         },
@@ -59,6 +64,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-02",
+          "filing_date": "2026-02-04 19:45:14",
           "value": "+$21,451,897",
           "qty": "+315,221"
         },
@@ -67,6 +73,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11 20:30:04",
           "value": "+$6,828,152",
           "qty": "+97,996"
         },
@@ -75,6 +82,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-05",
+          "filing_date": "2026-02-06 20:46:48",
           "value": "+$2,835,251",
           "qty": "+40,000"
         }
@@ -97,6 +105,7 @@
           "title": "Dir, 10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11 17:15:24",
           "value": "+$59,040,000",
           "qty": "+3,690,000"
         },
@@ -105,6 +114,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11 16:30:04",
           "value": "+$15,000,000",
           "qty": "+937,500"
         },
@@ -113,6 +123,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11 16:30:14",
           "value": "+$15,000,000",
           "qty": "+937,500"
         },
@@ -121,6 +132,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11 16:30:04",
           "value": "+$15,000,000",
           "qty": "+937,500"
         },
@@ -129,6 +141,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11 16:30:10",
           "value": "+$15,000,000",
           "qty": "+937,500"
         },
@@ -137,6 +150,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11 16:30:06",
           "value": "+$15,000,000",
           "qty": "+937,500"
         },
@@ -145,6 +159,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11 16:30:17",
           "value": "+$15,000,000",
           "qty": "+937,500"
         },
@@ -153,6 +168,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11 16:30:08",
           "value": "+$15,000,000",
           "qty": "+937,500"
         },
@@ -161,6 +177,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11 16:30:19",
           "value": "+$15,000,000",
           "qty": "+937,500"
         },
@@ -169,6 +186,7 @@
           "title": "Dir, 10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11 16:30:25",
           "value": "+$15,000,000",
           "qty": "+937,500"
         },
@@ -177,6 +195,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11 16:30:21",
           "value": "+$15,000,000",
           "qty": "+937,500"
         },
@@ -185,6 +204,7 @@
           "title": "Dir",
           "role": "Other",
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11 16:09:36",
           "value": "+$5,000,000",
           "qty": "+312,500"
         },
@@ -193,6 +213,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-10 18:08:58",
           "value": "+$2,640,000",
           "qty": "+165,000"
         },
@@ -201,6 +222,7 @@
           "title": "Dir",
           "role": "Other",
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-10 18:09:42",
           "value": "+$2,640,000",
           "qty": "+165,000"
         },
@@ -209,6 +231,7 @@
           "title": "Dir",
           "role": "Other",
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11 16:07:19",
           "value": "+$2,160,000",
           "qty": "+135,000"
         }
@@ -230,8 +253,76 @@
           "title": "Dir",
           "role": "Other",
           "trade_date": "2026-01-29",
+          "filing_date": "2026-02-02 18:59:52",
           "value": "+$99,999,999",
           "qty": "+11,111,111"
+        }
+      ]
+    },
+    {
+      "ticker": "NFRX",
+      "company_name": "2023 Etf Series Trust",
+      "total_value": 89999919.0,
+      "total_value_formatted": "$90.0M",
+      "total_purchases": 6,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 6
+      },
+      "trades": [
+        {
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-12",
+          "filing_date": "2026-02-13 11:09:52",
+          "value": "+$39,999,991",
+          "qty": "+1,485,332"
+        },
+        {
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-05",
+          "filing_date": "2026-02-06 14:21:46",
+          "value": "+$9,999,998",
+          "qty": "+390,320"
+        },
+        {
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-10",
+          "filing_date": "2026-02-11 12:02:50",
+          "value": "+$9,999,989",
+          "qty": "+378,931"
+        },
+        {
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-02",
+          "filing_date": "2026-02-03 13:35:09",
+          "value": "+$9,999,986",
+          "qty": "+399,520"
+        },
+        {
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "filing_date": "2026-02-10 12:48:44",
+          "value": "+$9,999,978",
+          "qty": "+383,729"
+        },
+        {
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-06",
+          "filing_date": "2026-02-09 12:45:02",
+          "value": "+$9,999,977",
+          "qty": "+386,996"
         }
       ]
     },
@@ -251,6 +342,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-01-27",
+          "filing_date": "2026-01-27 18:23:26",
           "value": "+$40,000,000",
           "qty": "+18,018,018"
         },
@@ -259,6 +351,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-01-28",
+          "filing_date": "2026-01-30 17:03:47",
           "value": "+$25,120,703",
           "qty": "+11,315,632"
         },
@@ -267,6 +360,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-01-27",
+          "filing_date": "2026-01-29 16:35:03",
           "value": "+$7,000,000",
           "qty": "+3,153,153"
         }
@@ -288,6 +382,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-01-16",
+          "filing_date": "2026-01-21 20:02:10",
           "value": "+$49,684,526",
           "qty": "+8,607,267"
         },
@@ -296,6 +391,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-01-27",
+          "filing_date": "2026-01-29 18:18:29",
           "value": "+$16,445,714",
           "qty": "+2,641,105"
         }
@@ -318,6 +414,7 @@
           "title": "Dir, 10%",
           "role": "10% Owner",
           "trade_date": "2026-02-05",
+          "filing_date": "2026-02-05 19:03:06",
           "value": "+$18,275,000",
           "qty": "+1,075,000"
         },
@@ -326,6 +423,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-05",
+          "filing_date": "2026-02-05 19:03:36",
           "value": "+$18,275,000",
           "qty": "+1,075,000"
         },
@@ -334,6 +432,7 @@
           "title": "Dir, 10%",
           "role": "10% Owner",
           "trade_date": "2026-02-04",
+          "filing_date": "2026-02-09 18:28:51",
           "value": "+$10,542,478",
           "qty": "+282,674"
         },
@@ -342,6 +441,7 @@
           "title": "Dir",
           "role": "Other",
           "trade_date": "2026-02-05",
+          "filing_date": "2026-02-05 19:04:00",
           "value": "+$4,999,989",
           "qty": "+294,117"
         },
@@ -350,6 +450,7 @@
           "title": "Dir",
           "role": "Other",
           "trade_date": "2026-02-05",
+          "filing_date": "2026-02-05 19:04:25",
           "value": "+$1,999,982",
           "qty": "+117,646"
         }
@@ -372,6 +473,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-06",
+          "filing_date": "2026-02-09 21:19:00",
           "value": "+$38,119,680",
           "qty": "+2,117,760"
         },
@@ -380,6 +482,7 @@
           "title": "Dir, 10%",
           "role": "10% Owner",
           "trade_date": "2026-02-04",
+          "filing_date": "2026-02-06 18:27:59",
           "value": "+$4,999,968",
           "qty": "+277,776"
         },
@@ -388,6 +491,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-04",
+          "filing_date": "2026-02-06 18:25:01",
           "value": "+$4,999,968",
           "qty": "+277,776"
         },
@@ -396,61 +500,9 @@
           "title": "Dir",
           "role": "Other",
           "trade_date": "2026-02-04",
+          "filing_date": "2026-02-06 18:33:01",
           "value": "+$1,999,998",
           "qty": "+111,111"
-        }
-      ]
-    },
-    {
-      "ticker": "NFRX",
-      "company_name": "2023 Etf Series Trust",
-      "total_value": 49999928.0,
-      "total_value_formatted": "$50.0M",
-      "total_purchases": 5,
-      "unique_insiders": 1,
-      "role_counts": {
-        "10% Owner": 5
-      },
-      "trades": [
-        {
-          "insider_name": "Harrison Street Real Assets Fund LLC",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-05",
-          "value": "+$9,999,998",
-          "qty": "+390,320"
-        },
-        {
-          "insider_name": "Harrison Street Real Assets Fund LLC",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-10",
-          "value": "+$9,999,989",
-          "qty": "+378,931"
-        },
-        {
-          "insider_name": "Harrison Street Real Assets Fund LLC",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-02",
-          "value": "+$9,999,986",
-          "qty": "+399,520"
-        },
-        {
-          "insider_name": "Harrison Street Real Assets Fund LLC",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-09",
-          "value": "+$9,999,978",
-          "qty": "+383,729"
-        },
-        {
-          "insider_name": "Harrison Street Real Assets Fund LLC",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-06",
-          "value": "+$9,999,977",
-          "qty": "+386,996"
         }
       ]
     },
@@ -470,6 +522,7 @@
           "title": "Pres, CEO, COB",
           "role": "COB",
           "trade_date": "2026-01-20",
+          "filing_date": "2026-01-22 16:02:03",
           "value": "+$21,359,200",
           "qty": "+1,000,000"
         },
@@ -478,6 +531,7 @@
           "title": "Pres, CEO, COB",
           "role": "COB",
           "trade_date": "2026-01-20",
+          "filing_date": "2026-01-22 16:02:03",
           "value": "+$21,359,200",
           "qty": "+1,000,000"
         }
@@ -501,6 +555,7 @@
           "title": "COB, CEO, 10%",
           "role": "COB",
           "trade_date": "2026-02-06",
+          "filing_date": "2026-02-09 16:46:50",
           "value": "+$6,710,000",
           "qty": "+671,000"
         },
@@ -509,6 +564,7 @@
           "title": "Pres, 10%",
           "role": "Pres",
           "trade_date": "2026-02-06",
+          "filing_date": "2026-02-09 16:50:04",
           "value": "+$6,710,000",
           "qty": "+671,000"
         },
@@ -517,6 +573,7 @@
           "title": "COB, CEO, 10%",
           "role": "COB",
           "trade_date": "2026-02-06",
+          "filing_date": "2026-02-09 16:46:50",
           "value": "+$6,710,000",
           "qty": "+671,000"
         },
@@ -525,6 +582,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-06",
+          "filing_date": "2026-02-09 16:43:50",
           "value": "+$6,710,000",
           "qty": "+671,000"
         },
@@ -533,6 +591,7 @@
           "title": "Pres, 10%",
           "role": "Pres",
           "trade_date": "2026-02-06",
+          "filing_date": "2026-02-09 16:50:04",
           "value": "+$6,710,000",
           "qty": "+671,000"
         }
@@ -554,6 +613,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-01-15",
+          "filing_date": "2026-01-20 21:02:25",
           "value": "+$11,591,251",
           "qty": "+985,704"
         },
@@ -562,6 +622,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-01-16",
+          "filing_date": "2026-01-26 09:17:56",
           "value": "+$7,761,616",
           "qty": "+624,302"
         },
@@ -570,6 +631,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-01-16",
+          "filing_date": "2026-01-21 18:30:25",
           "value": "+$7,761,529",
           "qty": "+624,295"
         },
@@ -578,6 +640,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-01-21",
+          "filing_date": "2026-01-26 09:16:45",
           "value": "+$4,055,678",
           "qty": "+309,020"
         }
@@ -599,6 +662,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-01-22",
+          "filing_date": "2026-02-09 20:49:36",
           "value": "+$28,750,000",
           "qty": "+5,000,000"
         }
@@ -620,6 +684,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-01-30",
+          "filing_date": "2026-02-03 17:22:32",
           "value": "+$25,585,000",
           "qty": "+752,500"
         }
@@ -641,6 +706,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-01-29",
+          "filing_date": "2026-01-30 20:35:50",
           "value": "+$9,198,000",
           "qty": "+200,000"
         },
@@ -649,6 +715,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-01-14",
+          "filing_date": "2026-01-15 20:04:28",
           "value": "+$6,642,000",
           "qty": "+200,000"
         },
@@ -657,6 +724,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-01-26",
+          "filing_date": "2026-01-27 21:16:28",
           "value": "+$4,996,000",
           "qty": "+100,000"
         }
@@ -678,6 +746,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11 13:14:48",
           "value": "+$6,237,962",
           "qty": "+88,140"
         },
@@ -686,6 +755,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-01-27",
+          "filing_date": "2026-01-29 10:34:25",
           "value": "+$4,578,517",
           "qty": "+60,895"
         },
@@ -694,6 +764,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-11",
+          "filing_date": "2026-02-12 10:06:19",
           "value": "+$2,899,604",
           "qty": "+40,222"
         },
@@ -702,6 +773,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-01-29",
+          "filing_date": "2026-02-02 11:08:36",
           "value": "+$2,696,801",
           "qty": "+38,783"
         },
@@ -710,6 +782,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-03",
+          "filing_date": "2026-02-05 11:53:11",
           "value": "+$2,325,007",
           "qty": "+35,121"
         },
@@ -718,6 +791,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-05",
+          "filing_date": "2026-02-09 15:13:05",
           "value": "+$2,032,967",
           "qty": "+31,219"
         }
@@ -739,6 +813,7 @@
           "title": "Chairperson, CEO, 10%",
           "role": "CEO",
           "trade_date": "2026-01-26",
+          "filing_date": "2026-01-28 20:36:50",
           "value": "+$8,000,000",
           "qty": "+800,000"
         },
@@ -747,8 +822,31 @@
           "title": "Chairperson, CEO, 10%",
           "role": "CEO",
           "trade_date": "2026-01-26",
+          "filing_date": "2026-01-28 20:36:50",
           "value": "+$8,000,000",
           "qty": "+800,000"
+        }
+      ]
+    },
+    {
+      "ticker": "NDAQ",
+      "company_name": "Nasdaq, Inc.",
+      "total_value": 15835040.0,
+      "total_value_formatted": "$15.8M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Investor Ab",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-13",
+          "filing_date": "2026-02-13 15:56:39",
+          "value": "+$15,835,040",
+          "qty": "+200,000"
         }
       ]
     },
@@ -768,6 +866,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-01-22",
+          "filing_date": "2026-01-26 18:48:12",
           "value": "+$14,420,222",
           "qty": "+2,335,350"
         }
@@ -789,6 +888,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-04",
+          "filing_date": "2026-02-06 19:05:20",
           "value": "+$11,556,296",
           "qty": "+733,073"
         }
@@ -810,6 +910,7 @@
           "title": "CEO, 10%",
           "role": "CEO",
           "trade_date": "2026-01-28",
+          "filing_date": "2026-01-30 18:30:35",
           "value": "+$5,100,000",
           "qty": "+510,000"
         },
@@ -818,6 +919,7 @@
           "title": "CEO, 10%",
           "role": "CEO",
           "trade_date": "2026-01-28",
+          "filing_date": "2026-01-30 18:30:35",
           "value": "+$5,100,000",
           "qty": "+510,000"
         }
@@ -839,6 +941,7 @@
           "title": "Dir, 10%",
           "role": "10% Owner",
           "trade_date": "2026-02-04",
+          "filing_date": "2026-02-06 20:35:51",
           "value": "+$9,958,578",
           "qty": "+925,000"
         }
@@ -861,6 +964,7 @@
           "title": "Dir, 10%",
           "role": "10% Owner",
           "trade_date": "2026-01-29",
+          "filing_date": "2026-02-02 18:36:37",
           "value": "+$4,949,975",
           "qty": "+260,525"
         },
@@ -869,6 +973,7 @@
           "title": "Dir",
           "role": "Other",
           "trade_date": "2026-01-30",
+          "filing_date": "2026-01-30 20:49:26",
           "value": "+$4,949,975",
           "qty": "+260,525"
         }
@@ -890,6 +995,7 @@
           "title": "Dir",
           "role": "Other",
           "trade_date": "2026-01-23",
+          "filing_date": "2026-01-27 16:14:26",
           "value": "+$8,999,984",
           "qty": "+131,425"
         }
@@ -911,6 +1017,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-10",
+          "filing_date": "2026-02-12 20:35:21",
           "value": "+$8,783,283",
           "qty": "+357,917"
         }
@@ -932,6 +1039,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-03",
+          "filing_date": "2026-02-05 19:00:01",
           "value": "+$8,499,988",
           "qty": "+700,741"
         }
@@ -953,6 +1061,7 @@
           "title": "Dir, 10%",
           "role": "10% Owner",
           "trade_date": "2026-02-02",
+          "filing_date": "2026-02-04 16:30:07",
           "value": "+$8,000,000",
           "qty": "+4,000,000"
         }
@@ -974,6 +1083,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-05",
+          "filing_date": "2026-02-11 06:08:54",
           "value": "+$7,966,875",
           "qty": "+2,451,346"
         }
@@ -995,6 +1105,7 @@
           "title": "Dir",
           "role": "Other",
           "trade_date": "2026-01-13",
+          "filing_date": "2026-01-15 19:07:13",
           "value": "+$7,821,723",
           "qty": "+23,200"
         }
@@ -1016,6 +1127,7 @@
           "title": "Dir",
           "role": "Other",
           "trade_date": "2026-02-10",
+          "filing_date": "2026-02-12 19:52:22",
           "value": "+$7,482,139",
           "qty": "+50,500"
         }
@@ -1037,6 +1149,7 @@
           "title": "Dir",
           "role": "Other",
           "trade_date": "2026-01-21",
+          "filing_date": "2026-01-22 16:10:23",
           "value": "+$5,774,550",
           "qty": "+4,215,000"
         }
@@ -1058,6 +1171,7 @@
           "title": "COO",
           "role": "COO",
           "trade_date": "2026-02-11",
+          "filing_date": "2026-02-13 07:00:33",
           "value": "+$2,749,770",
           "qty": "+942,800"
         },
@@ -1066,6 +1180,7 @@
           "title": "COO",
           "role": "COO",
           "trade_date": "2026-02-11",
+          "filing_date": "2026-02-13 07:00:33",
           "value": "+$2,749,770",
           "qty": "+942,800"
         }
@@ -1087,6 +1202,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-02",
+          "filing_date": "2026-02-04 20:08:31",
           "value": "+$3,232,479",
           "qty": "+691,145"
         },
@@ -1095,6 +1211,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-01-28",
+          "filing_date": "2026-01-30 20:19:46",
           "value": "+$2,115,728",
           "qty": "+428,626"
         }
@@ -1116,6 +1233,7 @@
           "title": "Dir",
           "role": "Other",
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11 18:00:19",
           "value": "+$5,246,500",
           "qty": "+50,000"
         }
@@ -1137,6 +1255,7 @@
           "title": "Dir, 10%",
           "role": "10% Owner",
           "trade_date": "2026-02-02",
+          "filing_date": "2026-02-04 16:15:59",
           "value": "+$4,999,999",
           "qty": "+3,184,713"
         }
@@ -1158,6 +1277,7 @@
           "title": "Dir, 10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-10 17:39:14",
           "value": "+$4,955,000",
           "qty": "+495,500"
         }
@@ -1179,6 +1299,7 @@
           "title": "Exec Chair",
           "role": "Other",
           "trade_date": "2026-02-06",
+          "filing_date": "2026-02-06 17:10:07",
           "value": "+$2,432,330",
           "qty": "+50,000"
         },
@@ -1187,6 +1308,7 @@
           "title": "Exec Chair",
           "role": "Other",
           "trade_date": "2026-02-06",
+          "filing_date": "2026-02-06 17:10:07",
           "value": "+$2,432,330",
           "qty": "+50,000"
         }
@@ -1208,6 +1330,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2025-11-26",
+          "filing_date": "2026-01-22 17:47:16",
           "value": "+$4,388,681",
           "qty": "+801,279"
         }
@@ -1229,6 +1352,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-03",
+          "filing_date": "2026-02-06 20:42:27",
           "value": "+$4,220,298",
           "qty": "+777,012"
         }
@@ -1250,6 +1374,7 @@
           "title": "COB, CEO",
           "role": "COB",
           "trade_date": "2026-01-23",
+          "filing_date": "2026-01-26 08:02:24",
           "value": "+$2,013,967",
           "qty": "+18,800"
         },
@@ -1258,66 +1383,9 @@
           "title": "COB, CEO",
           "role": "COB",
           "trade_date": "2026-01-23",
+          "filing_date": "2026-01-26 08:02:24",
           "value": "+$2,013,967",
           "qty": "+18,800"
-        }
-      ]
-    },
-    {
-      "ticker": "IP",
-      "company_name": "International Paper Co /New/",
-      "total_value": 3997930.0,
-      "total_value_formatted": "$4.0M",
-      "total_purchases": 2,
-      "unique_insiders": 1,
-      "role_counts": {
-        "CEO": 2
-      },
-      "trades": [
-        {
-          "insider_name": "Silvernail Andrew K",
-          "title": "CEO",
-          "role": "CEO",
-          "trade_date": "2026-01-30",
-          "value": "+$1,998,965",
-          "qty": "+50,000"
-        },
-        {
-          "insider_name": "Silvernail Andrew K",
-          "title": "CEO",
-          "role": "CEO",
-          "trade_date": "2026-01-30",
-          "value": "+$1,998,965",
-          "qty": "+50,000"
-        }
-      ]
-    },
-    {
-      "ticker": "VANI",
-      "company_name": "Vivani Medical, Inc.",
-      "total_value": 3983333.0,
-      "total_value_formatted": "$4.0M",
-      "total_purchases": 2,
-      "unique_insiders": 1,
-      "role_counts": {
-        "10% Owner": 2
-      },
-      "trades": [
-        {
-          "insider_name": "Williams Gregg",
-          "title": "Dir, 10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-27",
-          "value": "+$1,999,999",
-          "qty": "+1,351,351"
-        },
-        {
-          "insider_name": "Williams Gregg",
-          "title": "Dir, 10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-15",
-          "value": "+$1,983,334",
-          "qty": "+1,737,765"
         }
       ]
     },
@@ -1337,6 +1405,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-01-12",
+          "filing_date": "2026-01-21 14:30:56",
           "value": "+$3,886,277",
           "qty": "+70,023"
         }
@@ -1358,6 +1427,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-02",
+          "filing_date": "2026-02-04 17:00:02",
           "value": "+$3,359,380",
           "qty": "+335,938"
         }
@@ -1380,6 +1450,7 @@
           "title": "Chief Investment Officer",
           "role": "Other",
           "trade_date": "2026-01-23",
+          "filing_date": "2026-01-26 13:10:40",
           "value": "+$155,852",
           "qty": "+51,511"
         },
@@ -1388,6 +1459,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-01-23",
+          "filing_date": "2026-01-27 16:59:24",
           "value": "+$3,000,000",
           "qty": "+1,000,000"
         }
@@ -1409,6 +1481,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-06",
+          "filing_date": "2026-02-09 21:48:28",
           "value": "+$3,000,000",
           "qty": "+300,000"
         }
@@ -1430,6 +1503,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-10",
+          "filing_date": "2026-02-12 19:49:56",
           "value": "+$2,999,999",
           "qty": "+521,739"
         }
@@ -1451,8 +1525,31 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-10",
+          "filing_date": "2026-02-12 16:12:10",
           "value": "+$2,758,253",
           "qty": "+2,138,181"
+        }
+      ]
+    },
+    {
+      "ticker": "PSNL",
+      "company_name": "Personalis, Inc.",
+      "total_value": 2739181.0,
+      "total_value_formatted": "$2.7M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Tempus Ai, Inc.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2025-11-18",
+          "filing_date": "2026-02-13 17:24:46",
+          "value": "+$2,739,181",
+          "qty": "+320,267"
         }
       ]
     },
@@ -1472,6 +1569,7 @@
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2025-11-20",
+          "filing_date": "2026-01-30 16:51:52",
           "value": "+$2,260,558",
           "qty": "+260,433"
         }
@@ -1493,6 +1591,7 @@
           "title": "Dir",
           "role": "Other",
           "trade_date": "2026-01-29",
+          "filing_date": "2026-01-29 16:02:09",
           "value": "+$2,143,860",
           "qty": "+100,000"
         }
@@ -1514,54 +1613,31 @@
           "title": "Dir, 10%",
           "role": "10% Owner",
           "trade_date": "2026-02-02",
+          "filing_date": "2026-02-04 16:25:05",
           "value": "+$2,000,001",
           "qty": "+1,538,462"
         }
       ]
     },
     {
-      "ticker": "GEF",
-      "company_name": "Greif, Inc",
-      "total_value": 1971692.0,
+      "ticker": "VANI",
+      "company_name": "Vivani Medical, Inc.",
+      "total_value": 1999999.0,
       "total_value_formatted": "$2.0M",
-      "total_purchases": 4,
-      "unique_insiders": 2,
+      "total_purchases": 1,
+      "unique_insiders": 1,
       "role_counts": {
-        "CFO": 1,
-        "VP": 3
+        "10% Owner": 1
       },
       "trades": [
         {
-          "insider_name": "Hilsheimer Lawrence A.",
-          "title": "EVP, CFO",
-          "role": "CFO",
-          "trade_date": "2026-02-03",
-          "value": "+$1,626,891",
-          "qty": "+18,322"
-        },
-        {
-          "insider_name": "Sathyanarayanan Bala",
-          "title": "EVP, Chief HR Off",
-          "role": "VP",
-          "trade_date": "2026-02-05",
-          "value": "+$159,542",
-          "qty": "+1,811"
-        },
-        {
-          "insider_name": "Sathyanarayanan Bala",
-          "title": "EVP, Chief HR Off",
-          "role": "VP",
-          "trade_date": "2026-02-09",
-          "value": "+$158,645",
-          "qty": "+1,819"
-        },
-        {
-          "insider_name": "Sathyanarayanan Bala",
-          "title": "EVP, Chief HR Off",
-          "role": "VP",
-          "trade_date": "2026-02-03",
-          "value": "+$26,614",
-          "qty": "+300"
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-27",
+          "filing_date": "2026-01-28 10:01:22",
+          "value": "+$1,999,999",
+          "qty": "+1,351,351"
         }
       ]
     }
