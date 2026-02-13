@@ -36,9 +36,9 @@ def fetch_insider_trades(ticker_symbol, days_back=1461):
         params = {
             's': ticker_symbol.upper(),
             'fd': str(days_back),  # Filing days back (~4 years default)
-            'xp': '1',             # Exclude certain transaction types
             'cnt': '1000',         # Max results per page
             'page': '1'
+            # Note: Removed 'xp': '1' to allow both purchases AND sales
         }
         
         headers = {
