@@ -1,0 +1,848 @@
+{
+  "updated_at": "2026-02-13T15:56:44.809752",
+  "total_tickers": 20,
+  "total_trades": 72,
+  "data": [
+    {
+      "ticker": "WRB",
+      "company_name": "Berkley W R Corp",
+      "total_value": 259655654.0,
+      "total_value_formatted": "$259.7M",
+      "total_purchases": 8,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 8
+      },
+      "trades": [
+        {
+          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-26",
+          "value": "+$69,297,690",
+          "qty": "+1,028,931"
+        },
+        {
+          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-22",
+          "value": "+$46,898,492",
+          "qty": "+698,000"
+        },
+        {
+          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-20",
+          "value": "+$42,612,018",
+          "qty": "+630,000"
+        },
+        {
+          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-15",
+          "value": "+$36,644,801",
+          "qty": "+535,000"
+        },
+        {
+          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-29",
+          "value": "+$33,087,353",
+          "qty": "+485,000"
+        },
+        {
+          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-02",
+          "value": "+$21,451,897",
+          "qty": "+315,221"
+        },
+        {
+          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$6,828,152",
+          "qty": "+97,996"
+        },
+        {
+          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-05",
+          "value": "+$2,835,251",
+          "qty": "+40,000"
+        }
+      ]
+    },
+    {
+      "ticker": "SGP",
+      "company_name": "Spyglass Pharma, Inc.",
+      "total_value": 221480000.0,
+      "total_value_formatted": "$221.5M",
+      "total_purchases": 15,
+      "unique_insiders": 15,
+      "role_counts": {
+        "10% Owner": 12,
+        "Other": 3
+      },
+      "trades": [
+        {
+          "insider_name": "Ra Capital Management, L.P.",
+          "title": "Dir, 10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$59,040,000",
+          "qty": "+3,690,000"
+        },
+        {
+          "insider_name": "Walker Paul Edward",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Yang Rick",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Mathers Edward T",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Makhzoumi Mohamad",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Chang Carmen",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "New Enterprise Associates 17, L.P.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Sandell Scott D",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Baskett Forest",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Behbahani Ali",
+          "title": "Dir, 10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Florence Anthony A. Jr.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Pardo Geoffrey B",
+          "title": "Dir",
+          "role": "Other",
+          "trade_date": "2026-02-09",
+          "value": "+$5,000,000",
+          "qty": "+312,500"
+        },
+        {
+          "insider_name": "Vensana Capital I Gp, LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$2,640,000",
+          "qty": "+165,000"
+        },
+        {
+          "insider_name": "Nielsen Kirk G.",
+          "title": "Dir",
+          "role": "Other",
+          "trade_date": "2026-02-09",
+          "value": "+$2,640,000",
+          "qty": "+165,000"
+        },
+        {
+          "insider_name": "Khan Bilal Arshad",
+          "title": "Dir",
+          "role": "Other",
+          "trade_date": "2026-02-09",
+          "value": "+$2,160,000",
+          "qty": "+135,000"
+        }
+      ]
+    },
+    {
+      "ticker": "SHCO",
+      "company_name": "Soho House & Co Inc.",
+      "total_value": 99999999.0,
+      "total_value_formatted": "$100.0M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "Other": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Popstefanov Gjorgi",
+          "title": "Dir",
+          "role": "Other",
+          "trade_date": "2026-01-29",
+          "value": "+$99,999,999",
+          "qty": "+11,111,111"
+        }
+      ]
+    },
+    {
+      "ticker": "THM",
+      "company_name": "International Tower Hill Mines Ltd",
+      "total_value": 72120703.0,
+      "total_value_formatted": "$72.1M",
+      "total_purchases": 3,
+      "unique_insiders": 2,
+      "role_counts": {
+        "10% Owner": 3
+      },
+      "trades": [
+        {
+          "insider_name": "Paulson & Co. Inc.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-27",
+          "value": "+$40,000,000",
+          "qty": "+18,018,018"
+        },
+        {
+          "insider_name": "Paulson & Co. Inc.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-28",
+          "value": "+$25,120,703",
+          "qty": "+11,315,632"
+        },
+        {
+          "insider_name": "Electrum Global Holdings L.P.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-27",
+          "value": "+$7,000,000",
+          "qty": "+3,153,153"
+        }
+      ]
+    },
+    {
+      "ticker": "UA",
+      "company_name": "Under Armour, Inc.",
+      "total_value": 66130240.0,
+      "total_value_formatted": "$66.1M",
+      "total_purchases": 2,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 2
+      },
+      "trades": [
+        {
+          "insider_name": "Watsa V Prem Et Al",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-16",
+          "value": "+$49,684,526",
+          "qty": "+8,607,267"
+        },
+        {
+          "insider_name": "Watsa V Prem Et Al",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-27",
+          "value": "+$16,445,714",
+          "qty": "+2,641,105"
+        }
+      ]
+    },
+    {
+      "ticker": "MANE",
+      "company_name": "Veradermics, Inc",
+      "total_value": 54092449.0,
+      "total_value_formatted": "$54.1M",
+      "total_purchases": 5,
+      "unique_insiders": 5,
+      "role_counts": {
+        "10% Owner": 3,
+        "Other": 2
+      },
+      "trades": [
+        {
+          "insider_name": "Enright Patrick G",
+          "title": "Dir, 10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-05",
+          "value": "+$18,275,000",
+          "qty": "+1,075,000"
+        },
+        {
+          "insider_name": "Longitude Capital Partners V, LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-05",
+          "value": "+$18,275,000",
+          "qty": "+1,075,000"
+        },
+        {
+          "insider_name": "Suvretta Capital Management, LLC",
+          "title": "Dir, 10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-04",
+          "value": "+$10,542,478",
+          "qty": "+282,674"
+        },
+        {
+          "insider_name": "Childs John W",
+          "title": "Dir",
+          "role": "Other",
+          "trade_date": "2026-02-05",
+          "value": "+$4,999,989",
+          "qty": "+294,117"
+        },
+        {
+          "insider_name": "Coric Vlad",
+          "title": "Dir",
+          "role": "Other",
+          "trade_date": "2026-02-05",
+          "value": "+$1,999,982",
+          "qty": "+117,646"
+        }
+      ]
+    },
+    {
+      "ticker": "EIKN",
+      "company_name": "Eikon Therapeutics, Inc.",
+      "total_value": 50119614.0,
+      "total_value_formatted": "$50.1M",
+      "total_purchases": 4,
+      "unique_insiders": 4,
+      "role_counts": {
+        "10% Owner": 3,
+        "Other": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Column Group IV Gp, LP",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-06",
+          "value": "+$38,119,680",
+          "qty": "+2,117,760"
+        },
+        {
+          "insider_name": "Wolfe Josh",
+          "title": "Dir, 10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-04",
+          "value": "+$4,999,968",
+          "qty": "+277,776"
+        },
+        {
+          "insider_name": "Lux Venture Partners V, LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-04",
+          "value": "+$4,999,968",
+          "qty": "+277,776"
+        },
+        {
+          "insider_name": "Frazier Kenneth C",
+          "title": "Dir",
+          "role": "Other",
+          "trade_date": "2026-02-04",
+          "value": "+$1,999,998",
+          "qty": "+111,111"
+        }
+      ]
+    },
+    {
+      "ticker": "NFRX",
+      "company_name": "2023 Etf Series Trust",
+      "total_value": 49999928.0,
+      "total_value_formatted": "$50.0M",
+      "total_purchases": 5,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 5
+      },
+      "trades": [
+        {
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-05",
+          "value": "+$9,999,998",
+          "qty": "+390,320"
+        },
+        {
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-10",
+          "value": "+$9,999,989",
+          "qty": "+378,931"
+        },
+        {
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-02",
+          "value": "+$9,999,986",
+          "qty": "+399,520"
+        },
+        {
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$9,999,978",
+          "qty": "+383,729"
+        },
+        {
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-06",
+          "value": "+$9,999,977",
+          "qty": "+386,996"
+        }
+      ]
+    },
+    {
+      "ticker": "GME",
+      "company_name": "Gamestop Corp.",
+      "total_value": 42718400.0,
+      "total_value_formatted": "$42.7M",
+      "total_purchases": 2,
+      "unique_insiders": 1,
+      "role_counts": {
+        "COB": 2
+      },
+      "trades": [
+        {
+          "insider_name": "Cohen Ryan",
+          "title": "Pres, CEO, COB",
+          "role": "COB",
+          "trade_date": "2026-01-20",
+          "value": "+$21,359,200",
+          "qty": "+1,000,000"
+        },
+        {
+          "insider_name": "Cohen Ryan",
+          "title": "Pres, CEO, COB",
+          "role": "COB",
+          "trade_date": "2026-01-20",
+          "value": "+$21,359,200",
+          "qty": "+1,000,000"
+        }
+      ]
+    },
+    {
+      "ticker": "HCIC",
+      "company_name": "Hennessy Capital Investment Corp. VIII",
+      "total_value": 33550000.0,
+      "total_value_formatted": "$33.5M",
+      "total_purchases": 5,
+      "unique_insiders": 3,
+      "role_counts": {
+        "COB": 2,
+        "Pres": 2,
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Hennessy Daniel J",
+          "title": "COB, CEO, 10%",
+          "role": "COB",
+          "trade_date": "2026-02-06",
+          "value": "+$6,710,000",
+          "qty": "+671,000"
+        },
+        {
+          "insider_name": "Hennessy Thomas D",
+          "title": "Pres, 10%",
+          "role": "Pres",
+          "trade_date": "2026-02-06",
+          "value": "+$6,710,000",
+          "qty": "+671,000"
+        },
+        {
+          "insider_name": "Hennessy Daniel J",
+          "title": "COB, CEO, 10%",
+          "role": "COB",
+          "trade_date": "2026-02-06",
+          "value": "+$6,710,000",
+          "qty": "+671,000"
+        },
+        {
+          "insider_name": "Hc VIII Sponsor LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-06",
+          "value": "+$6,710,000",
+          "qty": "+671,000"
+        },
+        {
+          "insider_name": "Hennessy Thomas D",
+          "title": "Pres, 10%",
+          "role": "Pres",
+          "trade_date": "2026-02-06",
+          "value": "+$6,710,000",
+          "qty": "+671,000"
+        }
+      ]
+    },
+    {
+      "ticker": "AVO",
+      "company_name": "Mission Produce, Inc.",
+      "total_value": 31170074.0,
+      "total_value_formatted": "$31.2M",
+      "total_purchases": 4,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 4
+      },
+      "trades": [
+        {
+          "insider_name": "Globalharvest Holdings Venture Ltd",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-15",
+          "value": "+$11,591,251",
+          "qty": "+985,704"
+        },
+        {
+          "insider_name": "Globalharvest Holdings Venture Ltd",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-16",
+          "value": "+$7,761,616",
+          "qty": "+624,302"
+        },
+        {
+          "insider_name": "Globalharvest Holdings Venture Ltd",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-16",
+          "value": "+$7,761,529",
+          "qty": "+624,295"
+        },
+        {
+          "insider_name": "Globalharvest Holdings Venture Ltd",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-21",
+          "value": "+$4,055,678",
+          "qty": "+309,020"
+        }
+      ]
+    },
+    {
+      "ticker": "AVR",
+      "company_name": "Anteris Technologies Global Corp.",
+      "total_value": 28750000.0,
+      "total_value_formatted": "$28.8M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "L1 Capital Pty Ltd",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-22",
+          "value": "+$28,750,000",
+          "qty": "+5,000,000"
+        }
+      ]
+    },
+    {
+      "ticker": "YSS",
+      "company_name": "Yellowstone Midco Holdings Ii, LLC",
+      "total_value": 25585000.0,
+      "total_value_formatted": "$25.6M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Blackrock Portfolio Management LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-30",
+          "value": "+$25,585,000",
+          "qty": "+752,500"
+        }
+      ]
+    },
+    {
+      "ticker": "HYMC",
+      "company_name": "Hycroft Mining Holding Corp",
+      "total_value": 20836000.0,
+      "total_value_formatted": "$20.8M",
+      "total_purchases": 3,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 3
+      },
+      "trades": [
+        {
+          "insider_name": "Sprott Eric",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-29",
+          "value": "+$9,198,000",
+          "qty": "+200,000"
+        },
+        {
+          "insider_name": "Sprott Eric",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-14",
+          "value": "+$6,642,000",
+          "qty": "+200,000"
+        },
+        {
+          "insider_name": "Sprott Eric",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-26",
+          "value": "+$4,996,000",
+          "qty": "+100,000"
+        }
+      ]
+    },
+    {
+      "ticker": "ASA",
+      "company_name": "Asa Gold & Precious Metals Ltd",
+      "total_value": 20770858.0,
+      "total_value_formatted": "$20.8M",
+      "total_purchases": 6,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 6
+      },
+      "trades": [
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$6,237,962",
+          "qty": "+88,140"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-27",
+          "value": "+$4,578,517",
+          "qty": "+60,895"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-11",
+          "value": "+$2,899,604",
+          "qty": "+40,222"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-29",
+          "value": "+$2,696,801",
+          "qty": "+38,783"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-03",
+          "value": "+$2,325,007",
+          "qty": "+35,121"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-05",
+          "value": "+$2,032,967",
+          "qty": "+31,219"
+        }
+      ]
+    },
+    {
+      "ticker": "HLXC",
+      "company_name": "Helix Acquisition Corp. III",
+      "total_value": 16000000.0,
+      "total_value_formatted": "$16.0M",
+      "total_purchases": 2,
+      "unique_insiders": 1,
+      "role_counts": {
+        "CEO": 2
+      },
+      "trades": [
+        {
+          "insider_name": "Chen Bihua",
+          "title": "Chairperson, CEO, 10%",
+          "role": "CEO",
+          "trade_date": "2026-01-26",
+          "value": "+$8,000,000",
+          "qty": "+800,000"
+        },
+        {
+          "insider_name": "Chen Bihua",
+          "title": "Chairperson, CEO, 10%",
+          "role": "CEO",
+          "trade_date": "2026-01-26",
+          "value": "+$8,000,000",
+          "qty": "+800,000"
+        }
+      ]
+    },
+    {
+      "ticker": "UAA",
+      "company_name": "Under Armour, Inc.",
+      "total_value": 14420222.0,
+      "total_value_formatted": "$14.4M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Watsa V Prem Et Al",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-22",
+          "value": "+$14,420,222",
+          "qty": "+2,335,350"
+        }
+      ]
+    },
+    {
+      "ticker": "SONO",
+      "company_name": "Sonos Inc",
+      "total_value": 11556296.0,
+      "total_value_formatted": "$11.6M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Coliseum Capital Management, LLC",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-04",
+          "value": "+$11,556,296",
+          "qty": "+733,073"
+        }
+      ]
+    },
+    {
+      "ticker": "MLAA",
+      "company_name": "Mountain Lake Acquisition Corp. II",
+      "total_value": 10200000.0,
+      "total_value_formatted": "$10.2M",
+      "total_purchases": 2,
+      "unique_insiders": 1,
+      "role_counts": {
+        "CEO": 2
+      },
+      "trades": [
+        {
+          "insider_name": "Grinberg Paul",
+          "title": "CEO, 10%",
+          "role": "CEO",
+          "trade_date": "2026-01-28",
+          "value": "+$5,100,000",
+          "qty": "+510,000"
+        },
+        {
+          "insider_name": "Grinberg Paul",
+          "title": "CEO, 10%",
+          "role": "CEO",
+          "trade_date": "2026-01-28",
+          "value": "+$5,100,000",
+          "qty": "+510,000"
+        }
+      ]
+    },
+    {
+      "ticker": "TVA",
+      "company_name": "Texas Ventures Acquisition III Corp",
+      "total_value": 9958578.0,
+      "total_value_formatted": "$10.0M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Angelo Mark",
+          "title": "Dir, 10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-04",
+          "value": "+$9,958,578",
+          "qty": "+925,000"
+        }
+      ]
+    }
+  ]
+}

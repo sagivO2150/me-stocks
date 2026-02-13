@@ -425,7 +425,7 @@ if __name__ == '__main__':
     # Parse command line arguments
     parser = argparse.ArgumentParser(description='Generate PDF report from backtest results')
     parser.add_argument('--strategy', type=str, default='card_counting',
-                       choices=['card_counting', 'smart_strategy', 'trailing_stop', 'peak_purchase'],
+                       choices=['card_counting', 'smart_strategy', 'trailing_stop', 'peak_purchase', 'simple'],
                        help='Which backtest strategy results to visualize')
     parser.add_argument('--period', type=str, default='1y',
                        choices=['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', 'max'],
@@ -437,7 +437,8 @@ if __name__ == '__main__':
         'card_counting': 'backtest_card_counting_results.csv',
         'smart_strategy': 'backtest_smart_strategy_results.csv',
         'trailing_stop': 'backtest_trailing_stop_results.csv',
-        'peak_purchase': 'backtest_results.csv'  # Original backtest
+        'peak_purchase': 'backtest_results.csv',  # Original backtest
+        'simple': 'backtest_simple_results.csv'  # Simple strategy
     }
     
     # File paths

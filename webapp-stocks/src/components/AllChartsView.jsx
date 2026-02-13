@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as ChartTooltip, ResponsiveContainer, Area, AreaChart, ComposedChart, Scatter } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as ChartTooltip, ResponsiveContainer, Area, AreaChart, ComposedChart, Scatter, ReferenceDot, Customized } from 'recharts';
 
 const AllChartsView = ({ stocks }) => {
   return (
@@ -14,6 +14,7 @@ const AllChartsView = ({ stocks }) => {
 const SingleStockChart = ({ ticker }) => {
   const [stockHistory, setStockHistory] = useState(null);
   const [insiderTrades, setInsiderTrades] = useState(null);
+  const [backtestTrades, setBacktestTrades] = useState(null);
   const [loading, setLoading] = useState(true);
   const [insiderLoading, setInsiderLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -42,6 +43,7 @@ const SingleStockChart = ({ ticker }) => {
 
   useEffect(() => {
     fetchInsiderTrades();
+    fetchBacktestResults();
   }, [ticker]);
 
   const fetchStockHistory = async (selectedPeriod) => {
@@ -78,6 +80,21 @@ const SingleStockChart = ({ ticker }) => {
       console.error('Failed to fetch insider trades:', err);
     } finally {
       setInsiderLoading(false);
+    }
+  };
+
+  const fetchBacktestResults = async () => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/backtest-results`);
+      const data = await response.json();
+      
+      if (data.success && data.trades) {
+        // Filter trades for this ticker
+        const tickerTrades = data.trades.filter(trade => trade.ticker === ticker);
+        setBacktestTrades(tickerTrades);
+      }
+    } catch (err) {
+      console.error('Failed to fetch backtest results:', err);
     }
   };
 
@@ -183,19 +200,80 @@ const SingleStockChart = ({ ticker }) => {
       });
     }
     
+    // Create maps for backtest buy/sell signals by date
+    const backtestBuysByDate = {};
+    const backtestSellsByDate = {};
+    
+    if (backtestTrades) {
+      backtestTrades.forEach(trade => {
+        const entryDateKey = trade.entry_date?.split('T')[0];
+        const exitDateKey = trade.exit_date?.split('T')[0];
+        
+        if (entryDateKey) {
+          if (!backtestBuysByDate[entryDateKey]) {
+            backtestBuysByDate[entryDateKey] = [];
+          }
+          backtestBuysByDate[entryDateKey].push({
+            entry_price: parseFloat(trade.entry_price),
+            amount_invested: parseFloat(trade.amount_invested),
+            return_pct: parseFloat(trade.return_pct),
+            profit_loss: parseFloat(trade.profit_loss),
+            exit_reason: trade.exit_reason
+          });
+        }
+        
+        if (exitDateKey) {
+          if (!backtestSellsByDate[exitDateKey]) {
+            backtestSellsByDate[exitDateKey] = [];
+          }
+          backtestSellsByDate[exitDateKey].push({
+            exit_price: parseFloat(trade.exit_price),
+            return_pct: parseFloat(trade.return_pct),
+            profit_loss: parseFloat(trade.profit_loss),
+            exit_reason: trade.exit_reason
+          });
+        }
+      });
+    }
+    
     // Merge into chart data
     return data.map(point => {
       const dateKey = point.date.split('T')[0].split(' ')[0];
       
       const purchaseData = insiderPurchasesByDate[dateKey];
       const saleData = insiderSalesByDate[dateKey];
+      const backtestBuys = backtestBuysByDate[dateKey] || [];
+      const backtestSells = backtestSellsByDate[dateKey] || [];
+      
+      // Add trade line data - each trade gets its own line with 2 points
+      const tradeLineData = {};
+      if (backtestTrades) {
+        backtestTrades.forEach((trade, idx) => {
+          const entryDate = trade.entry_date?.split('T')[0];
+          const exitDate = trade.exit_date?.split('T')[0];
+          
+          // Only add the price if this date is part of this trade line
+          if (dateKey === entryDate) {
+            tradeLineData[`trade${idx}`] = parseFloat(trade.entry_price);
+          } else if (dateKey === exitDate) {
+            tradeLineData[`trade${idx}`] = parseFloat(trade.exit_price);
+          } else {
+            tradeLineData[`trade${idx}`] = null;
+          }
+        });
+      }
       
       return {
         ...point,
         purchases: purchaseData?.totalValue || null,
         purchaseTrades: purchaseData?.trades || [],
         sales: saleData?.totalValue || null,
-        saleTrades: saleData?.trades || []
+        saleTrades: saleData?.trades || [],
+        backtestBuy: backtestBuys.length > 0 ? point.close : null,
+        backtestBuyData: backtestBuys,
+        backtestSell: backtestSells.length > 0 ? point.close : null,
+        backtestSellData: backtestSells,
+        ...tradeLineData
       };
     });
   };
@@ -236,6 +314,36 @@ const SingleStockChart = ({ ticker }) => {
             {data.saleTrades.map((trade, idx) => (
               <div key={idx} className="text-xs text-slate-300 ml-2">
                 • {trade.insider} ({trade.role}): ${(trade.value / 1000).toFixed(0)}K
+              </div>
+            ))}
+          </div>
+        )}
+        
+        {data.backtestBuyData && data.backtestBuyData.length > 0 && (
+          <div className="mt-2 pt-2 border-t border-yellow-600">
+            <p className="text-yellow-400 text-xs font-bold mb-1">
+              📈 BACKTEST BUY SIGNAL ({data.backtestBuyData.length})
+            </p>
+            {data.backtestBuyData.map((trade, idx) => (
+              <div key={idx} className="text-xs text-yellow-200 ml-2">
+                • Entry: ${trade.entry_price?.toFixed(2)} | Invested: ${trade.amount_invested?.toFixed(0)}
+                <br />
+                • Final Return: {trade.return_pct?.toFixed(1)}% | P/L: ${trade.profit_loss?.toFixed(2)}
+              </div>
+            ))}
+          </div>
+        )}
+        
+        {data.backtestSellData && data.backtestSellData.length > 0 && (
+          <div className="mt-2 pt-2 border-t border-cyan-600">
+            <p className="text-cyan-400 text-xs font-bold mb-1">
+              📉 BACKTEST SELL SIGNAL ({data.backtestSellData.length})
+            </p>
+            {data.backtestSellData.map((trade, idx) => (
+              <div key={idx} className="text-xs text-cyan-200 ml-2">
+                • Exit: ${trade.exit_price?.toFixed(2)} | Return: {trade.return_pct?.toFixed(1)}%
+                <br />
+                • Reason: {trade.exit_reason} | P/L: ${trade.profit_loss?.toFixed(2)}
               </div>
             ))}
           </div>
@@ -328,6 +436,27 @@ const SingleStockChart = ({ ticker }) => {
         </div>
       )}
 
+      {/* Backtest Legend */}
+      {backtestTrades && backtestTrades.length > 0 && (
+        <div className="mb-4 bg-slate-900 border border-yellow-600/30 rounded-lg p-3">
+          <div className="text-yellow-400 font-semibold text-sm mb-2">📊 Backtest Signals ({backtestTrades.length} trades)</div>
+          <div className="flex gap-4 text-xs flex-wrap">
+            <div className="flex items-center gap-2">
+              <span className="text-yellow-400">★</span>
+              <span className="text-slate-300">Buy Entry</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="inline-block w-3 h-3 bg-emerald-500 border-2 border-white"></span>
+              <span className="text-slate-300">Sell Exit (Profit)</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="inline-block w-3 h-3 bg-red-500 border-2 border-white"></span>
+              <span className="text-slate-300">Sell Exit (Loss)</span>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Chart */}
       <div className="bg-slate-900 rounded-lg p-3">
         {loading ? (
@@ -409,6 +538,70 @@ const SingleStockChart = ({ ticker }) => {
                 activeDot={false}
                 isAnimationActive={false}
               />
+              
+              {/* Backtest buy markers (yellow circles) */}
+              {backtestTrades && backtestTrades.length > 0 && (
+                <Scatter
+                  yAxisId="price"
+                  dataKey="backtestBuy"
+                  fill="#fbbf24"
+                  isAnimationActive={false}
+                  shape={(props) => {
+                    const { cx, cy, payload } = props;
+                    if (!payload || !payload.backtestBuy) return null;
+                    
+                    return (
+                      <circle
+                        cx={cx}
+                        cy={cy}
+                        r={8}
+                        fill="#fbbf24"
+                        stroke="#fff"
+                        strokeWidth={2}
+                      />
+                    );
+                  }}
+                />
+              )}
+              
+              {/* Backtest sell markers and connecting lines */}
+              {backtestTrades && backtestTrades.length > 0 && backtestTrades.map((trade, idx) => {
+                const isProfitable = parseFloat(trade.profit_loss) > 0;
+                const lineColor = isProfitable ? '#10b981' : '#ef4444';
+                
+                return (
+                  <Line
+                    key={`trade-line-${idx}`}
+                    yAxisId="price"
+                    type="linear"
+                    dataKey={`trade${idx}`}
+                    stroke={lineColor}
+                    strokeWidth={4}
+                    dot={(dotProps) => {
+                      const { cx, cy, payload } = dotProps;
+                      if (!payload || !payload[`trade${idx}`]) return null;
+                      
+                      // This is the sell point (end of line)
+                      const isSellPoint = payload.date === trade.exit_date;
+                      if (!isSellPoint) return null;
+                      
+                      return (
+                        <rect
+                          x={cx - 6}
+                          y={cy - 6}
+                          width={12}
+                          height={12}
+                          fill={lineColor}
+                          stroke="#fff"
+                          strokeWidth={2}
+                        />
+                      );
+                    }}
+                    isAnimationActive={false}
+                  />
+                );
+              })}
+              
               {insiderTrades && insiderTrades.total_purchases > 0 && (
                 <Scatter
                   yAxisId="insider"

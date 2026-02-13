@@ -835,6 +835,61 @@ app.get('/api/live-purchases', (req, res) => {
   });
 });
 
+// Endpoint to serve backtest results
+app.get('/api/backtest-results', (req, res) => {
+  const backtestCSV = path.join(__dirname, '../output CSVs/backtest_simple_results.csv');
+  
+  try {
+    if (!fs.existsSync(backtestCSV)) {
+      return res.json({ 
+        success: false, 
+        error: 'No backtest results found',
+        trades: []
+      });
+    }
+    
+    const fileContent = fs.readFileSync(backtestCSV, 'utf-8');
+    const lines = fileContent.split('\n').filter(line => line.trim());
+    
+    if (lines.length <= 1) {
+      return res.json({ 
+        success: true, 
+        trades: [],
+        message: 'Backtest results file is empty'
+      });
+    }
+    
+    // Parse CSV
+    const headers = lines[0].split(',').map(h => h.trim());
+    const trades = lines.slice(1).map(line => {
+      const values = line.split(',');
+      const trade = {};
+      headers.forEach((header, idx) => {
+        let value = values[idx]?.trim() || '';
+        // Remove quotes if present
+        if (value.startsWith('"') && value.endsWith('"')) {
+          value = value.slice(1, -1);
+        }
+        trade[header] = value;
+      });
+      return trade;
+    });
+    
+    res.json({ 
+      success: true, 
+      trades: trades,
+      count: trades.length
+    });
+  } catch (error) {
+    console.error('Error reading backtest results:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Failed to read backtest results',
+      message: error.message
+    });
+  }
+});
+
 // Endpoint to run the top monthly trades scraper
 app.post('/api/scrape-top-monthly', (req, res) => {
   console.log('Starting top monthly trades scraper...');
