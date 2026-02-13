@@ -3,11 +3,16 @@
 Card Counting Style Insider Trading Strategy
 =============================================
 Treats insider buying like "hot deck" in card counting:
-1. Buy on every insider purchase with 5% stop loss
+1. Buy on every insider purchase with 5% TRAILING stop loss
 2. If another insider buys while holding and profitable → DOUBLE DOWN
 3. Adjust position sizing based on win/loss streak:
    - Win: Increase next base position by 10%
    - Loss: Decrease next base position by 10%
+
+TRAILING STOP LOSS: Stop loss follows the highest price reached.
+- Buy at $10 → stop at $9.50
+- Stock rises to $20 → stop moves to $19 (5% below peak)
+- Stock drops to $19 → SELL (preserve gains, limit downside)
 
 This tests if momentum/clustering of insider buying creates exploitable patterns.
 """
@@ -73,7 +78,8 @@ def get_price_at_date(ticker, target_date, days_forward=5):
 
 def check_position_status(ticker, entry_date, entry_price, check_date, stop_loss_pct=0.05):
     """
-    Check if position is still open or hit stop loss by check_date.
+    Check if position is still open or hit TRAILING stop loss by check_date.
+    TRAILING STOP: Stop loss follows the highest price reached.
     Returns: (still_open, exit_price, exit_date, current_profit_pct)
     """
     try:
@@ -94,21 +100,30 @@ def check_position_status(ticker, entry_date, entry_price, check_date, stop_loss
         
         history.index = pd.to_datetime(history.index).strftime('%Y-%m-%d')
         
-        stop_loss_price = entry_price * (1 - stop_loss_pct)
+        # TRAILING STOP: Track highest price and stop loss follows it
+        highest_price = entry_price
+        trailing_stop_price = entry_price * (1 - stop_loss_pct)
         
-        # Check each day for stop loss
+        # Check each day for trailing stop loss
         dates_after_entry = sorted([d for d in history.index if d > entry_date])
         
         for date in dates_after_entry:
             if date > check_date:
                 break
                 
+            high_price = history.loc[date, 'High']
             low_price = history.loc[date, 'Low']
             close_price = history.loc[date, 'Close']
             
-            # Check if stop loss hit
-            if low_price <= stop_loss_price:
-                return False, stop_loss_price, date, -stop_loss_pct * 100
+            # Update highest price if new high reached
+            if high_price > highest_price:
+                highest_price = high_price
+                trailing_stop_price = highest_price * (1 - stop_loss_pct)
+            
+            # Check if trailing stop hit
+            if low_price <= trailing_stop_price:
+                loss_from_peak = ((trailing_stop_price - highest_price) / highest_price) * 100
+                return False, trailing_stop_price, date, loss_from_peak
         
         # If we get here, position is still open
         # Get current price at check_date
@@ -130,7 +145,7 @@ def check_position_status(ticker, entry_date, entry_price, check_date, stop_loss
 
 def close_position_if_open(ticker, entry_date, entry_price, max_hold_days=365):
     """
-    Close position at end of period (today or max hold days).
+    Close position at end of period (today or max hold days) using TRAILING STOP.
     Returns: (exit_price, exit_date, return_pct, exit_reason)
     """
     try:
@@ -149,17 +164,26 @@ def close_position_if_open(ticker, entry_date, entry_price, max_hold_days=365):
         
         history.index = pd.to_datetime(history.index).strftime('%Y-%m-%d')
         
-        stop_loss_price = entry_price * 0.95
+        # TRAILING STOP: Track highest price
+        highest_price = entry_price
+        trailing_stop_price = entry_price * 0.95
         
-        # Check for stop loss
+        # Check for trailing stop loss
         dates_after_entry = sorted([d for d in history.index if d > entry_date])
         
         for date in dates_after_entry:
+            high_price = history.loc[date, 'High']
             low_price = history.loc[date, 'Low']
             
-            if low_price <= stop_loss_price:
-                return_pct = -5.0
-                return stop_loss_price, date, return_pct, 'stop_loss'
+            # Update highest price if new high reached
+            if high_price > highest_price:
+                highest_price = high_price
+                trailing_stop_price = highest_price * 0.95
+            
+            # Check if trailing stop hit
+            if low_price <= trailing_stop_price:
+                return_pct = ((trailing_stop_price - entry_price) / entry_price) * 100
+                return trailing_stop_price, date, return_pct, 'stop_loss'
         
         # If no stop loss, close at last available price
         last_date = dates_after_entry[-1] if dates_after_entry else entry_date
@@ -243,7 +267,8 @@ def backtest_card_counting_strategy(json_file, initial_position_size=1000, base_
     print(f"CARD COUNTING INSIDER STRATEGY BACKTEST")
     print(f"{'='*80}")
     print(f"Strategy:")
-    print(f"  - Buy every insider purchase with 5% stop loss")
+    print(f"  - Buy every insider purchase with 5% TRAILING stop loss")
+    print(f"  - Trailing stop follows highest price (preserves gains)")
     print(f"  - Double down if another insider buys while holding and profitable")
     print(f"  - Increase position size 10% after wins, decrease 10% after losses")
     print(f"  - Starting position size: ${initial_position_size:,.0f}")
@@ -267,34 +292,53 @@ def backtest_card_counting_strategy(json_file, initial_position_size=1000, base_
             positions_to_remove = []
             
             for pos_idx, position in enumerate(open_positions[open_ticker]):
-                # Check if stop loss hit between position entry and current entry date
+                # Check if TRAILING stop loss hit between position entry and current entry date
                 pos_entry_date = position['entry_date']
                 pos_entry_price = position['entry_price']
-                stop_loss_price = pos_entry_price * 0.95
+                
+                # Track highest price and trailing stop
+                highest_price = position.get('highest_price', pos_entry_price)
+                trailing_stop_price = highest_price * 0.95
                 
                 # Get dates between position entry and now
                 dates_between = [d for d in open_history.index if pos_entry_date < d <= entry_date]
                 
                 hit_stop_loss = False
                 for date in dates_between:
-                    if open_history.loc[date, 'Low'] <= stop_loss_price:
-                        # Stop loss hit!
-                        return_pct = -5.0
-                        returned_amount = position['amount_invested'] * 0.95
+                    high_price = open_history.loc[date, 'High']
+                    low_price = open_history.loc[date, 'Low']
+                    
+                    # Update highest price if new high reached
+                    if high_price > highest_price:
+                        highest_price = high_price
+                        trailing_stop_price = highest_price * 0.95
+                    
+                    # Check if trailing stop hit
+                    if low_price <= trailing_stop_price:
+                        # Trailing stop loss hit!
+                        return_pct = ((trailing_stop_price - pos_entry_price) / pos_entry_price) * 100
+                        returned_amount = position['amount_invested'] * (1 + return_pct / 100)
                         
                         closed_trades.append({
                             **position,
                             'exit_date': date,
-                            'exit_price': stop_loss_price,
+                            'exit_price': trailing_stop_price,
                             'return_pct': return_pct,
                             'returned_amount': returned_amount,
-                            'profit_loss': returned_amount - position['amount_invested']
+                            'profit_loss': returned_amount - position['amount_invested'],
+                            'exit_reason': 'stop_loss',
+                            'peak_price': highest_price
                         })
                         
                         total_returned += returned_amount
-                        current_position_size *= (1 - base_adjustment)
                         
-                        print(f"📉 CLOSED {open_ticker}: ${pos_entry_price:.2f} → ${stop_loss_price:.2f} = -5.0% "
+                        # Adjust position size based on outcome
+                        if return_pct < 0:
+                            current_position_size *= (1 - base_adjustment)
+                        else:
+                            current_position_size *= (1 + base_adjustment)
+                        
+                        print(f"📉 CLOSED {open_ticker}: ${pos_entry_price:.2f} → ${highest_price:.2f} (peak) → ${trailing_stop_price:.2f} = {return_pct:.1f}% "
                               f"(${position['amount_invested']:,.0f} → ${returned_amount:,.0f})")
                         print(f"   New position size: ${current_position_size:,.0f}")
                         
@@ -362,7 +406,8 @@ def backtest_card_counting_strategy(json_file, initial_position_size=1000, base_
             'insider': trade['insider'],
             'role': trade['role'],
             'amount_invested': amount_to_invest,
-            'shares': amount_to_invest / entry_price
+            'shares': amount_to_invest / entry_price,
+            'highest_price': entry_price  # Track for trailing stop
         })
         
         total_invested += amount_to_invest
@@ -381,17 +426,29 @@ def backtest_card_counting_strategy(json_file, initial_position_size=1000, base_
         for position in positions:
             pos_entry_date = position['entry_date']
             pos_entry_price = position['entry_price']
-            stop_loss_price = pos_entry_price * 0.95
             
-            # Check for stop loss after position entry
+            # TRAILING STOP: Track highest price
+            highest_price = position.get('highest_price', pos_entry_price)
+            trailing_stop_price = highest_price * 0.95
+            
+            # Check for trailing stop loss after position entry
             dates_after_entry = [d for d in history.index if d > pos_entry_date]
             
             hit_stop_loss = False
             for date in dates_after_entry:
-                if history.loc[date, 'Low'] <= stop_loss_price:
-                    return_pct = -5.0
-                    returned_amount = position['amount_invested'] * 0.95
-                    exit_price = stop_loss_price
+                high_price = history.loc[date, 'High']
+                low_price = history.loc[date, 'Low']
+                
+                # Update highest price if new high reached
+                if high_price > highest_price:
+                    highest_price = high_price
+                    trailing_stop_price = highest_price * 0.95
+                
+                # Check if trailing stop hit
+                if low_price <= trailing_stop_price:
+                    return_pct = ((trailing_stop_price - pos_entry_price) / pos_entry_price) * 100
+                    returned_amount = position['amount_invested'] * (1 + return_pct / 100)
+                    exit_price = trailing_stop_price
                     exit_date = date
                     hit_stop_loss = True
                     break
@@ -408,8 +465,9 @@ def backtest_card_counting_strategy(json_file, initial_position_size=1000, base_
                 'exit_date': exit_date,
                 'exit_price': exit_price,
                 'return_pct': return_pct,
-                'exit_reason': 'stop_loss' if hit_stop_loss else 'still_holding',
+                'exit_reason': 'stop_loss' if hit_stop_loss else 'end_of_period',
                 'returned_amount': returned_amount,
+                'peak_price': highest_price,
                 'profit_loss': returned_amount - position['amount_invested']
             })
             

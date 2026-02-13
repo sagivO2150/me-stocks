@@ -3,7 +3,7 @@
 Simple Insider Trading Strategy
 ================================
 Rules:
-1. Buy on every insider purchase event with 5% stop loss
+1. Buy on every insider purchase event with 5% TRAILING stop loss
 2. If already holding the stock, DON'T re-buy on new insider events
 3. Close all positions at end of period
 """
@@ -79,6 +79,65 @@ def get_current_price(ticker):
         return None
 
 
+def apply_trailing_stop(position, end_date, stop_loss_pct):
+    """
+    Check daily prices from last_checked_date to end_date for trailing stop loss.
+    Returns: (closed_trade_dict or None, updated_position)
+    """
+    ticker = position['ticker']
+    history = PRICE_CACHE.get(ticker)
+    if history is None or history.empty:
+        return None, position
+
+    hist = history.copy()
+    if getattr(hist.index, 'tz', None) is not None:
+        hist.index = hist.index.tz_localize(None)
+
+    start_ts = pd.Timestamp(position['last_checked_date'])
+    end_ts = pd.Timestamp(end_date)
+    if end_ts <= start_ts:
+        return None, position
+    window = hist[(hist.index > start_ts) & (hist.index <= end_ts)]
+
+    for date, row in window.iterrows():
+        high_price = float(row['High'])
+        low_price = float(row['Low'])
+
+        if high_price > position['highest_price']:
+            position['highest_price'] = high_price
+
+        trailing_stop_price = position['highest_price'] * (1 - stop_loss_pct / 100)
+
+        if low_price <= trailing_stop_price:
+            exit_date = date.strftime('%Y-%m-%d')
+            exit_price = trailing_stop_price
+            return_pct = ((exit_price - position['entry_price']) / position['entry_price']) * 100
+            returned_amount = position['amount_invested'] * (1 + return_pct / 100)
+
+            closed_trade = {
+                'ticker': position['ticker'],
+                'company': position['company'],
+                'entry_date': position['entry_date'],
+                'entry_price': position['entry_price'],
+                'exit_date': exit_date,
+                'exit_price': exit_price,
+                'shares': position['shares'],
+                'amount_invested': position['amount_invested'],
+                'returned_amount': returned_amount,
+                'profit_loss': returned_amount - position['amount_invested'],
+                'return_pct': return_pct,
+                'exit_reason': 'stop_loss',
+                'insider_name': position['insider_name'],
+                'insider_value': position['insider_value'],
+                'peak_price': position['highest_price']
+            }
+
+            return closed_trade, None
+
+    position['last_checked_date'] = end_date
+    return None, position
+
+
 # Global cache for price data
 PRICE_CACHE = {}
 
@@ -95,10 +154,25 @@ def backtest_simple_strategy(json_file, position_size=1000, stop_loss_pct=5.0):
     stocks = data['data']
     
     print("\nPre-loading historical data for all tickers...")
+
+    earliest_trade_by_ticker = {}
+    for stock in stocks:
+        ticker = stock['ticker']
+        for trade in stock['trades']:
+            trade_date = trade['trade_date']
+            if ticker not in earliest_trade_by_ticker or trade_date < earliest_trade_by_ticker[ticker]:
+                earliest_trade_by_ticker[ticker] = trade_date
+
     for stock in stocks:
         ticker = stock['ticker']
         try:
-            hist = yf.Ticker(ticker).history(period='1y')
+            start_date = earliest_trade_by_ticker.get(ticker)
+            if start_date:
+                start_dt = (datetime.strptime(start_date, '%Y-%m-%d') - timedelta(days=7)).strftime('%Y-%m-%d')
+                end_dt = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
+                hist = yf.Ticker(ticker).history(start=start_dt, end=end_dt)
+            else:
+                hist = yf.Ticker(ticker).history(period='1y')
             if not hist.empty:
                 PRICE_CACHE[ticker] = hist
                 print(f"  ✓ {ticker}")
@@ -141,7 +215,8 @@ def backtest_simple_strategy(json_file, position_size=1000, stop_loss_pct=5.0):
     print("=" * 80)
     print("Rules:")
     print("  - Buy on every insider purchase event")
-    print("  - 5% stop loss on all positions")
+    print("  - 5% TRAILING stop loss on all positions")
+    print("  - Trailing stop follows highest price reached")
     print("  - DON'T re-buy if already holding the stock")
     print(f"  - Position size: ${position_size:,.0f}")
     print("=" * 80)
@@ -158,9 +233,24 @@ def backtest_simple_strategy(json_file, position_size=1000, stop_loss_pct=5.0):
     for event in all_events:
         ticker = event['ticker']
         trade_date = event['date']
-        
+
         # Get entry price (2 business days after insider trade)
         entry_date = get_business_days_later(trade_date, 2)
+
+        # Update trailing stop for all open positions up to this event date
+        positions_to_close = []
+        for pos_ticker, pos in list(open_positions.items()):
+            closed_trade, updated_pos = apply_trailing_stop(pos, entry_date, stop_loss_pct)
+            if closed_trade:
+                print(f"📉 STOP LOSS {pos_ticker}: ${pos['entry_price']:.2f} → ${closed_trade['exit_price']:.2f} = {closed_trade['return_pct']:.1f}%")
+                closed_trades.append(closed_trade)
+                positions_to_close.append(pos_ticker)
+            else:
+                open_positions[pos_ticker] = updated_pos
+
+        for pos_ticker in positions_to_close:
+            del open_positions[pos_ticker]
+        
         entry_price = get_price_at_date(ticker, entry_date)
         
         if entry_price is None:
@@ -176,61 +266,19 @@ def backtest_simple_strategy(json_file, position_size=1000, stop_loss_pct=5.0):
         # Open new position
         shares = position_size / entry_price
         open_positions[ticker] = {
+            'ticker': ticker,
             'entry_date': entry_date,
             'entry_price': entry_price,
             'shares': shares,
             'amount_invested': position_size,
             'company': event['company'],
             'insider_name': event['insider_name'],
-            'insider_value': event['value']
+            'insider_value': event['value'],
+            'highest_price': entry_price,
+            'last_checked_date': entry_date
         }
         
         print(f"💰 BUY {ticker} @ ${entry_price:.2f} on {entry_date}")
-        
-        # Check stop loss on all open positions
-        positions_to_close = []
-        for pos_ticker, pos in list(open_positions.items()):
-            current_price = get_price_at_date(pos_ticker, entry_date)
-            if current_price is None:
-                continue
-            
-            # Calculate return
-            return_pct = ((current_price - pos['entry_price']) / pos['entry_price']) * 100
-            
-            # Check stop loss
-            if return_pct <= -stop_loss_pct:
-                positions_to_close.append(pos_ticker)
-        
-        # Close positions that hit stop loss
-        for pos_ticker in positions_to_close:
-            pos = open_positions[pos_ticker]
-            exit_price = get_price_at_date(pos_ticker, entry_date)
-            exit_date = entry_date
-            
-            return_pct = ((exit_price - pos['entry_price']) / pos['entry_price']) * 100
-            returned_amount = pos['amount_invested'] * (1 + return_pct / 100)
-            profit_loss = returned_amount - pos['amount_invested']
-            
-            print(f"📉 STOP LOSS {pos_ticker}: ${pos['entry_price']:.2f} → ${exit_price:.2f} = {return_pct:.1f}%")
-            
-            closed_trades.append({
-                'ticker': pos_ticker,
-                'company': pos['company'],
-                'entry_date': pos['entry_date'],
-                'entry_price': pos['entry_price'],
-                'exit_date': exit_date,
-                'exit_price': exit_price,
-                'shares': pos['shares'],
-                'amount_invested': pos['amount_invested'],
-                'returned_amount': returned_amount,
-                'profit_loss': profit_loss,
-                'return_pct': return_pct,
-                'exit_reason': 'stop_loss',
-                'insider_name': pos['insider_name'],
-                'insider_value': pos['insider_value']
-            })
-            
-            del open_positions[pos_ticker]
     
     print(f"\n📊 Events skipped - no price: {skipped_no_price}, already holding: {skipped_already_holding}")
     
@@ -240,6 +288,23 @@ def backtest_simple_strategy(json_file, position_size=1000, stop_loss_pct=5.0):
     print("=" * 80)
     
     for ticker, pos in open_positions.items():
+        history = PRICE_CACHE.get(ticker)
+        if history is None or history.empty:
+            continue
+
+        hist = history.copy()
+        if getattr(hist.index, 'tz', None) is not None:
+            hist.index = hist.index.tz_localize(None)
+
+        last_date = hist.index.max().strftime('%Y-%m-%d')
+
+        closed_trade, updated_pos = apply_trailing_stop(pos, last_date, stop_loss_pct)
+        if closed_trade:
+            status = "✅" if closed_trade['profit_loss'] >= 0 else "❌"
+            print(f"{status} CLOSED {ticker}: ${pos['entry_price']:.2f} → ${closed_trade['exit_price']:.2f} = {closed_trade['return_pct']:+.1f}%")
+            closed_trades.append(closed_trade)
+            continue
+
         exit_price = get_current_price(ticker)
         if exit_price is None:
             continue
@@ -266,7 +331,8 @@ def backtest_simple_strategy(json_file, position_size=1000, stop_loss_pct=5.0):
             'return_pct': return_pct,
             'exit_reason': 'end_of_period',
             'insider_name': pos['insider_name'],
-            'insider_value': pos['insider_value']
+            'insider_value': pos['insider_value'],
+            'peak_price': pos.get('highest_price', pos['entry_price'])
         })
     
     # Print summary
@@ -313,7 +379,7 @@ def backtest_simple_strategy(json_file, position_size=1000, stop_loss_pct=5.0):
 
 
 if __name__ == '__main__':
-    json_file = '/Users/sagiv.oron/Documents/scripts_playground/stocks/output CSVs/top_monthly_insider_trades.json'
+    json_file = '/Users/sagiv.oron/Documents/scripts_playground/stocks/output CSVs/full_history_insider_trades.json'
     
     results = backtest_simple_strategy(
         json_file=json_file,
