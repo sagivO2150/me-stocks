@@ -2,24 +2,50 @@ import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as ChartTooltip, ResponsiveContainer, Area, AreaChart, ComposedChart, Scatter, ReferenceDot, Customized } from 'recharts';
 
 const AllChartsView = ({ stocks }) => {
+  const [allBacktestTrades, setAllBacktestTrades] = useState(null);
+  
+  // Fetch backtest results ONCE for all stocks
+  useEffect(() => {
+    const fetchBacktestResults = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/api/backtest-results`);
+        const data = await response.json();
+        
+        if (data.success && data.trades) {
+          setAllBacktestTrades(data.trades);
+        }
+      } catch (err) {
+        console.error('Failed to fetch backtest results:', err);
+      }
+    };
+    
+    fetchBacktestResults();
+  }, []);
+  
   return (
     <div className="grid grid-cols-1 gap-8">
       {stocks.map((stock) => (
-        <SingleStockChart key={stock.ticker} ticker={stock.ticker} />
+        <SingleStockChart 
+          key={stock.ticker} 
+          ticker={stock.ticker} 
+          allBacktestTrades={allBacktestTrades}
+        />
       ))}
     </div>
   );
 };
 
-const SingleStockChart = ({ ticker }) => {
+const SingleStockChart = ({ ticker, allBacktestTrades }) => {
   const [stockHistory, setStockHistory] = useState(null);
   const [insiderTrades, setInsiderTrades] = useState(null);
-  const [backtestTrades, setBacktestTrades] = useState(null);
   const [loading, setLoading] = useState(true);
   const [insiderLoading, setInsiderLoading] = useState(true);
   const [error, setError] = useState(null);
   const [period, setPeriod] = useState('1y'); // Default to 1 year
   const [focusDate, setFocusDate] = useState(''); // Empty by default
+  
+  // Filter backtest trades for this ticker
+  const backtestTrades = allBacktestTrades ? allBacktestTrades.filter(trade => trade.ticker === ticker) : null;
 
   useEffect(() => {
     if (focusDate) {
@@ -43,7 +69,6 @@ const SingleStockChart = ({ ticker }) => {
 
   useEffect(() => {
     fetchInsiderTrades();
-    fetchBacktestResults();
   }, [ticker]);
 
   const fetchStockHistory = async (selectedPeriod) => {
@@ -83,20 +108,7 @@ const SingleStockChart = ({ ticker }) => {
     }
   };
 
-  const fetchBacktestResults = async () => {
-    try {
-      const response = await fetch(`http://localhost:3001/api/backtest-results`);
-      const data = await response.json();
-      
-      if (data.success && data.trades) {
-        // Filter trades for this ticker
-        const tickerTrades = data.trades.filter(trade => trade.ticker === ticker);
-        setBacktestTrades(tickerTrades);
-      }
-    } catch (err) {
-      console.error('Failed to fetch backtest results:', err);
-    }
-  };
+
 
   const classifyInsiderRole = (title) => {
     if (!title) return 'Other';
@@ -539,51 +551,66 @@ const SingleStockChart = ({ ticker }) => {
                 isAnimationActive={false}
               />
               
-              {/* Backtest buy markers (yellow circles) */}
+              {/* Backtest trade lines - buy dots, sell dots, connecting lines */}
               {backtestTrades && backtestTrades.length > 0 && (
-                <Scatter
-                  yAxisId="price"
-                  dataKey="backtestBuy"
-                  fill="#fbbf24"
-                  isAnimationActive={false}
-                  shape={(props) => {
-                    const { cx, cy, payload } = props;
-                    if (!payload || !payload.backtestBuy) return null;
+                <>
+                  {/* Connecting lines for each trade */}
+                  {backtestTrades.map((trade, idx) => {
+                    const isProfitable = parseFloat(trade.profit_loss) > 0;
+                    const lineColor = isProfitable ? '#10b981' : '#ef4444';
                     
                     return (
-                      <circle
-                        cx={cx}
-                        cy={cy}
-                        r={8}
-                        fill="#fbbf24"
-                        stroke="#fff"
-                        strokeWidth={2}
+                      <Line
+                        key={`trade-line-${idx}`}
+                        yAxisId="price"
+                        type="linear"
+                        dataKey={`trade${idx}`}
+                        stroke={lineColor}
+                        strokeWidth={4}
+                        connectNulls={true}
+                        dot={false}
+                        activeDot={false}
+                        isAnimationActive={false}
                       />
                     );
-                  }}
-                />
-              )}
-              
-              {/* Backtest sell markers and connecting lines */}
-              {backtestTrades && backtestTrades.length > 0 && backtestTrades.map((trade, idx) => {
-                const isProfitable = parseFloat(trade.profit_loss) > 0;
-                const lineColor = isProfitable ? '#10b981' : '#ef4444';
-                
-                return (
-                  <Line
-                    key={`trade-line-${idx}`}
+                  })}
+                  
+                  {/* Buy dots (yellow circles) - render on top */}
+                  <Scatter
                     yAxisId="price"
-                    type="linear"
-                    dataKey={`trade${idx}`}
-                    stroke={lineColor}
-                    strokeWidth={4}
-                    dot={(dotProps) => {
-                      const { cx, cy, payload } = dotProps;
-                      if (!payload || !payload[`trade${idx}`]) return null;
+                    dataKey="backtestBuy"
+                    fill="#fbbf24"
+                    isAnimationActive={false}
+                    shape={(props) => {
+                      const { cx, cy, payload } = props;
+                      if (!payload || !payload.backtestBuy) return null;
                       
-                      // This is the sell point (end of line)
-                      const isSellPoint = payload.date === trade.exit_date;
-                      if (!isSellPoint) return null;
+                      return (
+                        <circle
+                          cx={cx}
+                          cy={cy}
+                          r={8}
+                          fill="#fbbf24"
+                          stroke="#fff"
+                          strokeWidth={2}
+                        />
+                      );
+                    }}
+                  />
+                  
+                  {/* Sell dots (colored squares) - render on top */}
+                  <Scatter
+                    yAxisId="price"
+                    dataKey="backtestSell"
+                    isAnimationActive={false}
+                    shape={(props) => {
+                      const { cx, cy, payload } = props;
+                      if (!payload || !payload.backtestSell) return null;
+                      
+                      // Determine color based on profit/loss from the sell data
+                      const sellData = payload.backtestSellData?.[0];
+                      const isProfitable = sellData && parseFloat(sellData.profit_loss) > 0;
+                      const color = isProfitable ? '#10b981' : '#ef4444';
                       
                       return (
                         <rect
@@ -591,16 +618,15 @@ const SingleStockChart = ({ ticker }) => {
                           y={cy - 6}
                           width={12}
                           height={12}
-                          fill={lineColor}
+                          fill={color}
                           stroke="#fff"
                           strokeWidth={2}
                         />
                       );
                     }}
-                    isAnimationActive={false}
                   />
-                );
-              })}
+                </>
+              )}
               
               {insiderTrades && insiderTrades.total_purchases > 0 && (
                 <Scatter
