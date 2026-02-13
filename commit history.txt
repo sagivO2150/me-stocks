@@ -1,3 +1,334 @@
+c3a7c977dcf0cbd948eadb0b778e0c2bad5a4778
+Add POC tab for displaying specific chart view
+Introduced a new "POC Charts" tab in the application to display a proof-of-concept chart view for specific stocks. This update enhances the user interface by providing a dedicated view mode for testing and showcasing individual stock charts.
+
+- Added a new button for "POC Charts" in the navigation bar
+- Implemented conditional rendering for the "POC Charts" view mode
+- Displayed a single POC chart for the stock ticker "GME"
+- Updated logic to exclude "POC Charts" from the trade cards grid view
+- Integrated the new view mode with the existing AllChartsView component
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# general_commit
+
+---COMMIT_SEPARATOR---
+11f29061d124f03f968eb0dfcd538b4db47b86e4
+Adjust test scripts to implement trailing stop loss logic
+Updated the backtest scripts to incorporate a trailing stop loss mechanism, enhancing the testing logic for insider trading strategies. Adjustments were also made to the PID files.
+
+- Modified `backtest_card_counting_strategy.py` to include trailing stop loss logic
+- Updated position status checks to track highest price and adjust stop loss dynamically
+- Revised explanatory comments and examples in the script for clarity
+- Updated PID files for `node-server` and `vite` to reflect new process IDs
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# general_commit
+
+---COMMIT_SEPARATOR---
+8dadb12a12ae571d161ea1aa56496aa2e0028b74
+Fix filter reset issue when switching time ranges in charts
+Resolved an issue where the filter would reset upon changing the time range in the AllChartsView component. Added logic to preserve important dates during filtering to ensure consistency across time range changes.
+
+Key changes:
+- Introduced a set to track important dates (insider trades, backtest trades).
+- Updated filtering logic to retain points based on important dates or selected time range.
+- Adjusted logic for both single-day and range-based filtering to incorporate important dates.
+- Updated PID files for node-server and Vite.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# general_commit
+
+---COMMIT_SEPARATOR---
+3ecaf5163d1870e76dabc8ea91358eacc1ee37f1
+Refactor: Centralized backtest data for all charts view
+Centralized the fetching and handling of backtest trade data in the AllChartsView component to improve efficiency and reduce redundant API calls. Updated the SingleStockChart component to utilize the centralized data.
+
+Key changes:
+- Added a single API call in AllChartsView to fetch backtest results for all stocks.
+- Passed the fetched backtest data as a prop to SingleStockChart.
+- Removed redundant backtest fetching logic from SingleStockChart.
+- Updated PID files for node-server and vite.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# general_commit
+
+---COMMIT_SEPARATOR---
+7c6881912cf79d3d9fc041f6f124c594e249bd38
+Add connecting lines between buy and sell dots in charts
+Enhanced the visualization of stock charts by adding connecting lines between buy and sell order dots. Introduced new backtest strategies and updated related scripts and endpoints.
+
+- Added connecting lines between buy and sell dots in AllChartsView.jsx
+- Updated `generate_backtest_pdf.py` to support the new "simple" strategy
+- Added new backtest strategy files and test scripts
+- Created API endpoint to serve backtest results in `server.js`
+- Updated PDF generation to include "simple" strategy results
+- Added new output files for backtest results and insider trades data
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# general_commit
+
+---COMMIT_SEPARATOR---
+9c735d832cf801af63ad1549272bc7aa2a9d3147
+Added insider events overlay to backtest PDF charts
+Enhanced the backtest PDF generation script to include insider trading events as an overlay on the stock charts. This provides better context for trade analysis.
+
+- Integrated API call to fetch insider trades data for a given ticker.
+- Added secondary y-axis to display insider purchase values on the charts.
+- Plotted insider purchase events with appropriate scaling and labels.
+- Updated the PDF output to reflect these changes.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# general_commit
+
+---COMMIT_SEPARATOR---
+1f1bfa23a14bfe2e7e4635f285f6bca11f09c6e7
+Improved trade line visuals for better lines in the PDF
+Enhanced the appearance of trade lines and price charts in the backtest PDF for improved clarity and aesthetics.
+
+- Updated trade line colors to distinguish profitable and losing trades more clearly.
+- Changed price chart colors to neutral tones to avoid conflict with trade lines.
+- Adjusted line thickness and transparency for better visual balance.
+- Refined comments and logic for determining price changes and trade visuals.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# general_commit
+
+---COMMIT_SEPARATOR---
+b27659ffba4a3ba222e58e027237c66bf5c0183e
+Replaced arrows with colored lines in backtest charts
+Updated the backtest chart generation to replace arrows with colored lines for trade visualization. This improves clarity by using green lines for profitable trades and red lines for losses.
+
+- Replaced buy/sell arrows with colored lines indicating trade outcomes.
+- Green lines represent profitable trades; red lines indicate losses.
+- Updated labels and annotations to match the new visualization style.
+- Regenerated the backtest report PDF to reflect these changes.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# general_commit
+
+---COMMIT_SEPARATOR---
+246cda22db2a189e26d02cffe88274fa4cf989f3
+Improved PDF layout for better readability
+Enhanced the appearance and structure of the generated PDF to ensure better readability and presentation. Added a new script for backtesting with live data and updated output paths.
+
+- Updated PDF layout in `UAA_complete_backtest_report.pdf`
+- Added `scripts/tests/backtest_with_live_data.py` for live data backtesting
+- Adjusted output paths for CSVs and reports
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# general_commit
+
+---COMMIT_SEPARATOR---
+576973a0fcef4e850248d6d5cef148f92c8c128f
+Improved PDF appearance in backtest visual reports
+Enhanced the visual presentation of the generated PDF reports to improve readability and aesthetics.
+
+- Added new PDFs: backtest_card_counting_visual_report.pdf and backtest_visual_report.pdf
+- Introduced script: generate_backtest_pdf.py for PDF generation
+- Updated output CSVs to align with the new PDF format
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# general_commit
+
+---COMMIT_SEPARATOR---
+fb7b7a6894ecaed30c0a7318e5a67df5a8607620
+Dotted line now calculated from bottom of chart
+Updated the logic for rendering dotted lines in the stock chart to calculate their position based on the bottom of the chart using the yAxis range instead of a fixed height.
+
+- Replaced `height` with `yAxis.range[0]` to determine chart bottom.
+- Updated both purchase and sales shapes to use the new calculation.
+- Added fallback value for `yAxis.range[0]` to ensure compatibility.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+21844e851e65cf17917c3ad0e99dbba4e3a497ef
+Add dotted lines from top for new chart, nearly complete
+Updated the AllChartsView component to include dotted lines originating from the top for the new chart. Adjusted the rendering logic for insider purchase data and updated process IDs.
+
+- Replaced `Line` with `Scatter` for insider purchase data visualization
+- Added logic to render vertical dotted lines from the top to the data points
+- Simplified shape rendering for purchase data points
+- Updated `node-server.pid` and `vite.pid` files with new process IDs
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+73eded063d6e3732c53d40c3e7b051a2cd997099
+Added "all charts" section to app interface
+Introduced a new "all charts" view mode to enhance user experience. This mode displays charts with insider overlays, accessible via a dedicated button in the navigation panel.
+
+- Updated `App.jsx` to include "all charts" view mode logic
+- Added `AllChartsView.jsx` component for rendering charts
+- Modified navigation buttons to include "📈 All Charts" option
+- Adjusted state management to support the new view mode
+- Updated PID files for server and Vite processes
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+43bced23f4697a47034a02ca5231f5d52a3bdf99
+Added multiple tests for backtesting strategies
+Created new test scripts to backtest various trading strategies and added a documentation file for recommended bot strategies.
+
+- Added `backtest_card_counting_strategy.py` test script
+- Added `backtest_peak_purchase_strategy.py` test script
+- Added `backtest_smart_strategy.py` test script
+- Added `backtest_trailing_stop_strategy.py` test script
+- Created `info/RECOMMENDED_BOT_STRATEGY.md` for strategy guidelines
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# general_commit
+
+---COMMIT_SEPARATOR---
+9ad187c5cae9e8a9638a0102f988b0549ff196b4
+Support 4 years of buys and sells in insider trade fetch
+Updated the insider trade fetch script to include both purchase and sale transactions for a 4-year period. Adjusted PID files for server processes.
+
+- Modified `fetch_insider_trades.py` to remove the exclusion of certain transaction types, enabling the retrieval of both buys and sells.
+- Updated `node-server.pid` and `vite.pid` files with new process IDs.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# open_insider
+
+---COMMIT_SEPARATOR---
+ec1f9e5c72e0ea23f3980dc52dbbbf030fb8bac1
+Extended purchase history to 4 years in Open Insider data
+Enhanced the Open Insider data scraping and processing to include up to 4 years of purchase history, while excluding sales data. Added new scripts and logging for improved analysis and debugging.
+
+- Updated `fetch_insider_trades.py` and `openinsider_scraper.py` to fetch 4 years of purchase history
+- Modified JSON output to reflect updated purchase data
+- Added new scripts for analyzing problematic tickers and testing filters
+- Introduced logging for URL comparison and debugging
+- Created documentation file `OPENINSIDER_URL_ANALYSIS.md` for URL analysis details
+- Updated PID files and insider trade data with latest changes
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# open_insider
+
+---COMMIT_SEPARATOR---
+1713f1d23a55ae83bf765a22e9a1511ca20d0e8a
+Added a disqualified label and updated insider trade data
+Updated insider trade data and added a "disqualified" label to relevant entries. Removed outdated test files and introduced a new analysis report.
+
+- Updated `top_monthly_insider_trades.json` with new trade data
+- Added "disqualified" label to specific entries in the data
+- Removed outdated test files: `test_both.py`, `test_sale_scrape.py`, `test_xs.py`
+- Modified `StockDetail.jsx` and `TopMonthlyCard.jsx` to handle the new label
+- Updated server logic in `server.js` for label processing
+- Added `STABILIZING_ANALYSIS_REPORT.md` for analysis documentation
+- Updated PID files for server and Vite processes
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# classification_events
+
+---COMMIT_SEPARATOR---
+05ca680085414199f1daad5976aec50d954041c4
+Highlight all campaign events when hovering over badges
+Updated the application to enhance the badge hover functionality by highlighting all related events within the same campaign. This provides better visualization and context for users analyzing campaign data.
+
+- Updated `top_monthly_insider_trades.json` files with campaign data structure.
+- Modified `StockDetail.jsx` to implement event highlighting for campaigns.
+- Updated server PID files to reflect changes.
+- Refreshed insider trade data in output and public JSON files.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+# classification_events
+
+---COMMIT_SEPARATOR---
+3748bb3e6f930ef5e5bf5d390ce3ea2260f918a0
+Added hover feature for badge dropdown menus
+Implemented a new functionality allowing users to expand dropdown menus by hovering over badges. This enhances the user experience by providing quicker access to menu options without requiring clicks.
+
+Key changes:
+- Removed outdated Codex files related to insider classification logic.
+- Updated StockDetail.jsx to include hover event handling for badges.
+- Adjusted server PID logs to reflect recent changes.
+- Cleaned up redundant files to streamline the codebase.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# classification_events
+# web_app
+
+---COMMIT_SEPARATOR---
+d167fdd128be969fdd2731d17314866fddd9258c
+Implemented new badge approach by Codex (untested)
+Refactored badge functionality using the new approach provided by Codex. Updated several components and data files to align with the implementation. Added new documentation and reference files for the changes. Testing is still pending.
+
+- Updated `StockDetail` and `TopMonthlyCard` components to integrate the new badge approach
+- Modified server logic in `server.js` to support updated badge functionality
+- Updated JSON data files to reflect changes in badge structure
+- Added new reference files under `info/from codex/` and `info/insider_classification_refactor.md`
+- Adjusted related logs and output files for compatibility with the new approach
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# classification_events
+
+---COMMIT_SEPARATOR---
 d02198f61ece90d8c31e5231ce5dca8d25408d42
 Improved classification logic for insider trade events
 Refined the logic behind event classifications to address inaccuracies and inconsistencies. Updated related data files and components to reflect these changes.

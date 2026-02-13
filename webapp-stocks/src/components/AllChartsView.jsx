@@ -182,8 +182,7 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
             const isSameDay = pointDate.getFullYear() === centerDate.getFullYear() &&
                               pointDate.getMonth() === centerDate.getMonth() &&
                               pointDate.getDate() === centerDate.getDate();
-            // Keep if in range OR if it's an important date
-            return isSameDay || importantDates.has(dateStr);
+                return isSameDay;
           });
         } else {
           const halfRange = rangeInDays / 2;
@@ -196,8 +195,7 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
             const dateStr = point.date.split('T')[0].split(' ')[0];
             const pointDate = new Date(dateStr + 'T00:00:00');
             const isInRange = pointDate >= startDate && pointDate <= endDate;
-            // Keep if in range OR if it's an important date
-            return isInRange || importantDates.has(dateStr);
+                return isInRange;
           });
         }
       }
@@ -426,7 +424,6 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
               key={p}
               onClick={() => {
                 setPeriod(p);
-                setFocusDate(''); // Clear focus date when switching periods
               }}
               disabled={loading}
               className={`px-3 py-1.5 text-sm rounded-lg transition-all ${
