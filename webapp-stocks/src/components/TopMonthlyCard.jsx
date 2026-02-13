@@ -28,6 +28,7 @@ const TopMonthlyCard = ({ stock }) => {
     'needs-follow-through': { label: 'Pending', icon: '⏳', colorClass: 'bg-slate-500/20 text-slate-300 border-slate-500/30', tooltip: 'Too recent to score confidently.' },
     'late-chase': { label: 'Late Chase', icon: '⚠️', colorClass: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30', tooltip: 'Bought into an uptrend, then momentum weakened.' },
     'failed-support': { label: 'Failed Support', icon: '❌', colorClass: 'bg-red-500/20 text-red-400 border-red-500/30', tooltip: 'Buying failed to hold the line.' },
+    'disqualified-timing': { label: 'Disqualified', icon: '🚫', colorClass: 'bg-gray-500/20 text-gray-400 border-gray-500/30', tooltip: 'Single purchase during slump/rise/peak. Poor timing - excluded from bot analysis.' },
     // Legacy aliases for existing JSON files
     'holy-grail': { label: 'Breakout Build', icon: '🚀', colorClass: 'bg-purple-500/20 text-purple-400 border-purple-500/30', tooltip: 'Legacy: strong post-buy breakout.' },
     'slump-recovery': { label: 'Bottom Catch', icon: '🎯', colorClass: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30', tooltip: 'Legacy: rebound from slump.' },

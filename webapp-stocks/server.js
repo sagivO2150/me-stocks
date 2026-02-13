@@ -1142,19 +1142,38 @@ function classifyAllEvents(insiderData, historyData) {
       : 0;
 
     let type = 'stabilizing-accumulation';
-
-    if (!startPrice || !endPrice || daysSinceCampaign < 6 || postTrend5Pct === null) {
-      type = 'needs-follow-through';
-    } else if (preTrendPct !== null && preTrendPct <= -15 && postTrend10Pct !== null && postTrend10Pct >= 8) {
-      type = 'bottom-fishing-win';
-    } else if (postTrend10Pct !== null && postTrend10Pct >= 8) {
-      type = 'breakout-accumulation';
-    } else if (postTrend10Pct !== null && postTrend10Pct <= -8) {
-      type = 'failed-support';
-    } else if (preTrendPct !== null && preTrendPct >= 10 && postTrend10Pct !== null && postTrend10Pct < 0) {
-      type = 'late-chase';
-    } else if (postTrend20Pct !== null && postTrend20Pct > 5) {
-      type = 'slow-burn-accumulation';
+    
+    // DISQUALIFICATION LOGIC: Single purchases during bad timing
+    // Only disqualify single-day purchases (campaigns with 1 trade date)
+    // Multi-day campaigns represent coordinated buying and are more reliable
+    const isSinglePurchase = campaign.dates.length === 1;
+    
+    if (isSinglePurchase && preTrendPct !== null) {
+      // Disqualify if bought during active slump, rise, or peak
+      const isInSlump = preTrendPct <= -15;      // Down 15%+ in 30 days
+      const isInRise = preTrendPct >= 10;        // Up 10%+ in 30 days
+      const isAtPeak = preTrendPct >= 30;        // Up 30%+ in 30 days
+      
+      if (isInSlump || isInRise || isAtPeak) {
+        type = 'disqualified-timing';
+      }
+    }
+    
+    // Only classify non-disqualified events with normal logic
+    if (type !== 'disqualified-timing') {
+      if (!startPrice || !endPrice || daysSinceCampaign < 6 || postTrend5Pct === null) {
+        type = 'needs-follow-through';
+      } else if (preTrendPct !== null && preTrendPct <= -15 && postTrend10Pct !== null && postTrend10Pct >= 8) {
+        type = 'bottom-fishing-win';
+      } else if (postTrend10Pct !== null && postTrend10Pct >= 8) {
+        type = 'breakout-accumulation';
+      } else if (postTrend10Pct !== null && postTrend10Pct <= -8) {
+        type = 'failed-support';
+      } else if (preTrendPct !== null && preTrendPct >= 10 && postTrend10Pct !== null && postTrend10Pct < 0) {
+        type = 'late-chase';
+      } else if (postTrend20Pct !== null && postTrend20Pct > 5) {
+        type = 'slow-burn-accumulation';
+      }
     }
 
     events.push({
@@ -1210,7 +1229,8 @@ function classifyPrimaryEvent(insiderData, historyData) {
     'stabilizing-accumulation',
     'needs-follow-through',
     'late-chase',
-    'failed-support'
+    'failed-support',
+    'disqualified-timing'
   ];
   for (const eventType of priority) {
     const found = allEvents.find(e => e.type === eventType);
@@ -1222,7 +1242,8 @@ function classifyPrimaryEvent(insiderData, historyData) {
         'stabilizing-accumulation': { label: 'Stabilizing', icon: '🧱', colorClass: 'bg-blue-500/20 text-blue-400 border-blue-500/30', tooltip: 'Buying likely supported price without clear breakout.' },
         'needs-follow-through': { label: 'Pending', icon: '⏳', colorClass: 'bg-slate-500/20 text-slate-300 border-slate-500/30', tooltip: 'Too recent or too little data to score yet.' },
         'late-chase': { label: 'Late Chase', icon: '⚠️', colorClass: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30', tooltip: 'Insiders bought after run-up and momentum faded.' },
-        'failed-support': { label: 'Failed Support', icon: '❌', colorClass: 'bg-red-500/20 text-red-400 border-red-500/30', tooltip: 'Buying did not prevent a post-trade drop.' }
+        'failed-support': { label: 'Failed Support', icon: '❌', colorClass: 'bg-red-500/20 text-red-400 border-red-500/30', tooltip: 'Buying did not prevent a post-trade drop.' },
+        'disqualified-timing': { label: 'Disqualified', icon: '🚫', colorClass: 'bg-gray-500/20 text-gray-400 border-gray-500/30', tooltip: 'Single purchase during slump/rise/peak. Poor timing signal - excluded from analysis.' }
       };
       return labels[eventType];
     }

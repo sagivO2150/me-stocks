@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-02-13T01:39:01.193485",
-  "total_tickers": 107,
+  "updated_at": "2026-02-13T03:24:14.411048",
+  "total_tickers": 109,
   "total_trades": 200,
   "data": [
     {
@@ -1054,6 +1054,27 @@
       ]
     },
     {
+      "ticker": "RDDT",
+      "company_name": "Reddit, Inc.",
+      "total_value": 7482139.0,
+      "total_value_formatted": "$7.5M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "Other": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Farrell Sarah E",
+          "title": "Dir",
+          "role": "Other",
+          "trade_date": "2026-02-10",
+          "value": "+$7,482,139",
+          "qty": "+50,500"
+        }
+      ]
+    },
+    {
       "ticker": "YYAI",
       "company_name": "Airwa Inc.",
       "total_value": 5774550.0,
@@ -1267,64 +1288,6 @@
       ]
     },
     {
-      "ticker": "IP",
-      "company_name": "International Paper Co /New/",
-      "total_value": 3997930.0,
-      "total_value_formatted": "$4.0M",
-      "total_purchases": 2,
-      "unique_insiders": 1,
-      "role_counts": {
-        "CEO": 2
-      },
-      "trades": [
-        {
-          "insider_name": "Silvernail Andrew K",
-          "title": "CEO",
-          "role": "CEO",
-          "trade_date": "2026-01-30",
-          "value": "+$1,998,965",
-          "qty": "+50,000"
-        },
-        {
-          "insider_name": "Silvernail Andrew K",
-          "title": "CEO",
-          "role": "CEO",
-          "trade_date": "2026-01-30",
-          "value": "+$1,998,965",
-          "qty": "+50,000"
-        }
-      ]
-    },
-    {
-      "ticker": "VANI",
-      "company_name": "Vivani Medical, Inc.",
-      "total_value": 3983333.0,
-      "total_value_formatted": "$4.0M",
-      "total_purchases": 2,
-      "unique_insiders": 1,
-      "role_counts": {
-        "10% Owner": 2
-      },
-      "trades": [
-        {
-          "insider_name": "Williams Gregg",
-          "title": "Dir, 10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-27",
-          "value": "+$1,999,999",
-          "qty": "+1,351,351"
-        },
-        {
-          "insider_name": "Williams Gregg",
-          "title": "Dir, 10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-15",
-          "value": "+$1,983,334",
-          "qty": "+1,737,765"
-        }
-      ]
-    },
-    {
       "ticker": "MUZE",
       "company_name": "Muzero Acquisition Corp",
       "total_value": 3359380.0,
@@ -1393,6 +1356,27 @@
           "trade_date": "2026-02-06",
           "value": "+$3,000,000",
           "qty": "+300,000"
+        }
+      ]
+    },
+    {
+      "ticker": "IMDX",
+      "company_name": "Insight Molecular Diagnostics Inc.",
+      "total_value": 2999999.0,
+      "total_value_formatted": "$3.0M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Broadwood Partners, L.P.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-10",
+          "value": "+$2,999,999",
+          "qty": "+521,739"
         }
       ]
     },
@@ -1481,6 +1465,48 @@
       ]
     },
     {
+      "ticker": "VANI",
+      "company_name": "Vivani Medical, Inc.",
+      "total_value": 1999999.0,
+      "total_value_formatted": "$2.0M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-27",
+          "value": "+$1,999,999",
+          "qty": "+1,351,351"
+        }
+      ]
+    },
+    {
+      "ticker": "IP",
+      "company_name": "International Paper Co /New/",
+      "total_value": 1998965.0,
+      "total_value_formatted": "$2.0M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "CEO": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Silvernail Andrew K",
+          "title": "CEO",
+          "role": "CEO",
+          "trade_date": "2026-01-30",
+          "value": "+$1,998,965",
+          "qty": "+50,000"
+        }
+      ]
+    },
+    {
       "ticker": "GEF",
       "company_name": "Greif, Inc",
       "total_value": 1971692.0,
@@ -1544,74 +1570,6 @@
           "trade_date": "2026-02-05",
           "value": "+$1,500,000",
           "qty": "+150,000"
-        }
-      ]
-    },
-    {
-      "ticker": "ALLY",
-      "company_name": "Ally Financial Inc.",
-      "total_value": 1491174.0,
-      "total_value_formatted": "$1.5M",
-      "total_purchases": 2,
-      "unique_insiders": 2,
-      "role_counts": {
-        "CEO": 1,
-        "CFO": 1
-      },
-      "trades": [
-        {
-          "insider_name": "Rhodes Michael George",
-          "title": "CEO",
-          "role": "CEO",
-          "trade_date": "2026-01-23",
-          "value": "+$991,867",
-          "qty": "+23,800"
-        },
-        {
-          "insider_name": "Hutchinson Russell E.",
-          "title": "CFO",
-          "role": "CFO",
-          "trade_date": "2026-01-27",
-          "value": "+$499,307",
-          "qty": "+11,566"
-        }
-      ]
-    },
-    {
-      "ticker": "BMI",
-      "company_name": "Badger Meter Inc",
-      "total_value": 1255517.0,
-      "total_value_formatted": "$1.3M",
-      "total_purchases": 3,
-      "unique_insiders": 3,
-      "role_counts": {
-        "COB": 1,
-        "VP": 2
-      },
-      "trades": [
-        {
-          "insider_name": "Bockhorst Kenneth",
-          "title": "COB, Pres, CEO",
-          "role": "COB",
-          "trade_date": "2026-02-10",
-          "value": "+$502,986",
-          "qty": "+3,300"
-        },
-        {
-          "insider_name": "Htwe Richard",
-          "title": "VP-Global Operations",
-          "role": "VP",
-          "trade_date": "2026-02-05",
-          "value": "+$501,153",
-          "qty": "+3,370"
-        },
-        {
-          "insider_name": "Wrocklage Robert",
-          "title": "EVP-N.A. Muncipal Utility",
-          "role": "VP",
-          "trade_date": "2026-02-09",
-          "value": "+$251,378",
-          "qty": "+1,650"
         }
       ]
     }

@@ -961,6 +961,7 @@ const StockDetail = ({ trade, onClose }) => {
     'needs-follow-through': { label: 'Pending', icon: '⏳', colorClass: 'bg-slate-500/20 text-slate-300 border-slate-500/30', tooltip: 'Too recent to score confidently.' },
     'late-chase': { label: 'Late Chase', icon: '⚠️', colorClass: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30', tooltip: 'Bought into an uptrend, then momentum weakened.' },
     'failed-support': { label: 'Failed Support', icon: '❌', colorClass: 'bg-red-500/20 text-red-400 border-red-500/30', tooltip: 'Buying failed to hold the line.' },
+    'disqualified-timing': { label: 'Disqualified', icon: '🚫', colorClass: 'bg-gray-500/20 text-gray-400 border-gray-500/30', tooltip: 'Single purchase during slump/rise/peak. Poor timing - excluded from bot analysis.' },
     // Legacy aliases for existing JSON files
     'holy-grail': { label: 'Breakout Build', icon: '🚀', colorClass: 'bg-purple-500/20 text-purple-400 border-purple-500/30', tooltip: 'Legacy: strong post-buy breakout.' },
     'slump-recovery': { label: 'Bottom Catch', icon: '🎯', colorClass: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30', tooltip: 'Legacy: rebound from slump.' },
@@ -987,7 +988,7 @@ const StockDetail = ({ trade, onClose }) => {
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-6xl w-full h-[90vh] flex flex-col shadow-2xl" style={{outline: 'none'}}>
         {/* Header */}
-        <div className="bg-slate-900 border-b border-slate-700 p-6 flex justify-between items-start flex-shrink-0">
+        <div className="bg-slate-900 border-b border-slate-700 p-6 flex justify-between items-start shrink-0">
           <div className="flex-1">
             <div className="flex items-center gap-4">
               <h2 className="text-4xl font-bold text-white">{ticker}</h2>
@@ -1032,7 +1033,7 @@ const StockDetail = ({ trade, onClose }) => {
                       
                       {/* Dropdown with dates */}
                       {isExpanded && hasDates && (
-                        <div className="absolute top-full left-0 bg-slate-800 border border-slate-600 rounded-lg shadow-xl z-10 min-w-[150px]">
+                        <div className="absolute top-full left-0 bg-slate-800 border border-slate-600 rounded-lg shadow-xl z-10 min-w-37.5">
                           <div className="p-2 pt-3 text-xs text-slate-300">
                             {event.dates.map((date, dateIdx) => {
                               // Get all campaign dates for this date
