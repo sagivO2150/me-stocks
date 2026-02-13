@@ -62,6 +62,8 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
         fetchStockHistory('max');
         return;
       }
+      
+      return;
     }
     
     fetchStockHistory(period);
