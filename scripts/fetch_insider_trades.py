@@ -83,6 +83,7 @@ def fetch_insider_trades(ticker_symbol, days_back=1461):
                 # Column layout: X | Filing Date | Trade Date | Ticker | Insider | Title | Type | Price | Shares | Owned | ΔOwn% | Value | ...
                 # cols[0]=X, cols[1]=Filing, cols[2]=Trade Date, cols[3]=Ticker, cols[4]=Insider, cols[5]=Title,
                 # cols[6]=Type, cols[7]=Price, cols[8]=Shares, cols[9]=Owned, cols[10]=ΔOwn%, cols[11]=Value
+                filing_date_col = cols[1]  # Filing date
                 trade_type_col = cols[6]  # Transaction type
                 trade_date_col = cols[2]  # Trade date
                 insider_name_col = cols[4]  # Insider name
@@ -97,18 +98,28 @@ def fetch_insider_trades(ticker_symbol, days_back=1461):
                 if trade_type not in ['P - Purchase', 'S - Sale']:
                     continue
                 
+                filing_date_str = filing_date_col.text.strip()
                 trade_date_str = trade_date_col.text.strip()
                 insider_name = insider_name_col.text.strip()
                 title = title_col.text.strip()
                 shares_text = shares_col.text.strip().replace(',', '')
                 value_text = value_col.text.strip()
                 
-                # Parse date
+                # Parse dates
                 try:
                     trade_date = datetime.strptime(trade_date_str, '%Y-%m-%d')
                     trade_date_formatted = trade_date.strftime('%Y-%m-%d')
                 except:
                     continue
+                
+                # Parse filing date (includes time, so just take the date part)
+                filing_date_formatted = None
+                try:
+                    if filing_date_str:
+                        # Format: "2022-03-23 16:37:09" - take just the date part
+                        filing_date_formatted = filing_date_str.split(' ')[0]
+                except:
+                    pass
                 
                 # Parse shares (remove + signs and convert to int)
                 try:
@@ -124,6 +135,7 @@ def fetch_insider_trades(ticker_symbol, days_back=1461):
                 
                 trade_data = {
                     "date": trade_date_formatted,
+                    "filing_date": filing_date_formatted,
                     "shares": shares,
                     "value": value,
                     "insider_name": insider_name,

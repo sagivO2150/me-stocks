@@ -837,7 +837,7 @@ app.get('/api/live-purchases', (req, res) => {
 
 // Endpoint to serve backtest results
 app.get('/api/backtest-results', (req, res) => {
-  const backtestCSV = path.join(__dirname, '../output CSVs/backtest_simple_results.csv');
+  const backtestCSV = path.join(__dirname, '../output CSVs/backtest_card_counting_results.csv');
   
   try {
     if (!fs.existsSync(backtestCSV)) {

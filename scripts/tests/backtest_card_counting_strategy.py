@@ -79,9 +79,11 @@ def get_price_at_date(ticker, target_date, days_forward=5):
         return None
 
 
-def check_position_status(ticker, entry_date, entry_price, check_date, stop_loss_pct=0.05):
+def check_position_status(ticker, entry_date, entry_price, check_date, stop_loss_pct=0.05, grace_days=2):
     """
     Check if position is still open or hit TRAILING stop loss by check_date.
+    GRACE PERIOD: First 2 business days - no stop loss.
+    After grace period: If 5%+ below entry, sell immediately. Otherwise start trailing stop.
     TRAILING STOP: Stop loss follows the highest price reached.
     Returns: (still_open, exit_price, exit_date, current_profit_pct)
     """
@@ -109,14 +111,30 @@ def check_position_status(ticker, entry_date, entry_price, check_date, stop_loss
         
         # Check each day for trailing stop loss
         dates_after_entry = sorted([d for d in history.index if d > entry_date])
+        business_days_count = 0
         
         for date in dates_after_entry:
             if date > check_date:
                 break
-                
+            
+            business_days_count += 1
             high_price = history.loc[date, 'High']
             low_price = history.loc[date, 'Low']
             close_price = history.loc[date, 'Close']
+            
+            # GRACE PERIOD: Skip stop loss for first 2 business days
+            if business_days_count <= grace_days:
+                # Update highest price during grace period
+                if high_price > highest_price:
+                    highest_price = high_price
+                continue
+            
+            # After grace period: Check if 5% below entry on the first check (day 3)
+            if business_days_count == grace_days + 1:
+                if close_price <= entry_price * (1 - stop_loss_pct):
+                    # Immediate sell if 5%+ below entry after grace period
+                    loss_pct = ((close_price - entry_price) / entry_price) * 100
+                    return False, close_price, date, loss_pct
             
             # Update highest price if new high reached
             if high_price > highest_price:
@@ -146,9 +164,11 @@ def check_position_status(ticker, entry_date, entry_price, check_date, stop_loss
         return False, None, None, None
 
 
-def close_position_if_open(ticker, entry_date, entry_price, max_hold_days=365):
+def close_position_if_open(ticker, entry_date, entry_price, max_hold_days=365, grace_days=2):
     """
     Close position at end of period (today or max hold days) using TRAILING STOP.
+    GRACE PERIOD: First 2 business days - no stop loss.
+    After grace period: If 5%+ below entry, sell immediately. Otherwise start trailing stop.
     Returns: (exit_price, exit_date, return_pct, exit_reason)
     """
     try:
@@ -173,10 +193,27 @@ def close_position_if_open(ticker, entry_date, entry_price, max_hold_days=365):
         
         # Check for trailing stop loss
         dates_after_entry = sorted([d for d in history.index if d > entry_date])
+        business_days_count = 0
         
         for date in dates_after_entry:
+            business_days_count += 1
             high_price = history.loc[date, 'High']
             low_price = history.loc[date, 'Low']
+            close_price = history.loc[date, 'Close']
+            
+            # GRACE PERIOD: Skip stop loss for first 2 business days
+            if business_days_count <= grace_days:
+                # Update highest price during grace period
+                if high_price > highest_price:
+                    highest_price = high_price
+                continue
+            
+            # After grace period: Check if 5% below entry on the first check (day 3)
+            if business_days_count == grace_days + 1:
+                if close_price <= entry_price * 0.95:
+                    # Immediate sell if 5%+ below entry after grace period
+                    return_pct = ((close_price - entry_price) / entry_price) * 100
+                    return close_price, date, return_pct, 'stop_loss'
             
             # Update highest price if new high reached
             if high_price > highest_price:
@@ -218,7 +255,8 @@ def backtest_card_counting_strategy(json_file, initial_position_size=1000, base_
     for ticker in all_tickers:
         try:
             stock = yf.Ticker(ticker)
-            history = stock.history(start='2025-01-01', end='2026-02-14')
+            # Fetch 4 years of history to cover all insider trades
+            history = stock.history(start='2022-01-01', end='2026-02-14')
             if not history.empty:
                 history.index = pd.to_datetime(history.index).strftime('%Y-%m-%d')
                 price_cache[ticker] = history
@@ -274,11 +312,11 @@ def backtest_card_counting_strategy(json_file, initial_position_size=1000, base_
     print(f"CARD COUNTING INSIDER STRATEGY BACKTEST")
     print(f"{'='*80}")
     print(f"Strategy:")
-    print(f"  - Buy every insider purchase with 5% TRAILING stop loss")
-    print(f"  - Trailing stop follows highest price (preserves gains)")
-    print(f"  - Double down if another insider buys while holding and profitable")
-    print(f"  - Increase position size 10% after wins, decrease 10% after losses")
-    print(f"  - Starting position size: ${initial_position_size:,.0f}")
+    print(f"  - Buy every insider purchase")
+    print(f"  - GRACE PERIOD: Hold 2 business days no matter what")
+    print(f"  - After 48hrs: If 5%+ below entry → SELL immediately")
+    print(f"  - Otherwise: Start 5% TRAILING stop loss (follows highest price)")
+    print(f"  - Position size: ${initial_position_size:,.0f} (fixed)")
     print(f"  - Entry timing: Filing date (when data becomes public)")
     print(f"\n{'='*80}\n")
     
@@ -301,6 +339,7 @@ def backtest_card_counting_strategy(json_file, initial_position_size=1000, base_
             
             for pos_idx, position in enumerate(open_positions[open_ticker]):
                 # Check if TRAILING stop loss hit between position entry and current entry date
+                # GRACE PERIOD: First 2 business days - no stop loss
                 pos_entry_date = position['entry_date']
                 pos_entry_price = position['entry_price']
                 
@@ -312,9 +351,47 @@ def backtest_card_counting_strategy(json_file, initial_position_size=1000, base_
                 dates_between = [d for d in open_history.index if pos_entry_date < d <= entry_date]
                 
                 hit_stop_loss = False
+                business_days_count = 0
+                
                 for date in dates_between:
+                    business_days_count += 1
                     high_price = open_history.loc[date, 'High']
                     low_price = open_history.loc[date, 'Low']
+                    close_price = open_history.loc[date, 'Close']
+                    
+                    # GRACE PERIOD: Skip stop loss for first 2 business days
+                    if business_days_count <= 2:
+                        # Update highest price during grace period
+                        if high_price > highest_price:
+                            highest_price = high_price
+                        continue
+                    
+                    # After grace period: Check if 5% below entry on first check (day 3)
+                    if business_days_count == 3:
+                        if close_price <= pos_entry_price * 0.95:
+                            # Immediate sell if 5%+ below entry after grace period
+                            return_pct = ((close_price - pos_entry_price) / pos_entry_price) * 100
+                            returned_amount = position['amount_invested'] * (1 + return_pct / 100)
+                            
+                            closed_trades.append({
+                                **position,
+                                'exit_date': date,
+                                'exit_price': close_price,
+                                'return_pct': return_pct,
+                                'returned_amount': returned_amount,
+                                'profit_loss': returned_amount - position['amount_invested'],
+                                'exit_reason': 'stop_loss',
+                                'peak_price': highest_price
+                            })
+                            
+                            total_returned += returned_amount
+                            
+                            print(f"📉 CLOSED {open_ticker}: ${pos_entry_price:.2f} → ${highest_price:.2f} (peak) → ${close_price:.2f} = {return_pct:.1f}% "
+                                  f"(${position['amount_invested']:,.0f} → ${returned_amount:,.0f})")
+                            
+                            positions_to_remove.append(pos_idx)
+                            hit_stop_loss = True
+                            break
                     
                     # Update highest price if new high reached
                     if high_price > highest_price:
@@ -340,15 +417,8 @@ def backtest_card_counting_strategy(json_file, initial_position_size=1000, base_
                         
                         total_returned += returned_amount
                         
-                        # Adjust position size based on outcome
-                        if return_pct < 0:
-                            current_position_size *= (1 - base_adjustment)
-                        else:
-                            current_position_size *= (1 + base_adjustment)
-                        
                         print(f"📉 CLOSED {open_ticker}: ${pos_entry_price:.2f} → ${highest_price:.2f} (peak) → ${trailing_stop_price:.2f} = {return_pct:.1f}% "
                               f"(${position['amount_invested']:,.0f} → ${returned_amount:,.0f})")
-                        print(f"   New position size: ${current_position_size:,.0f}")
                         
                         positions_to_remove.append(pos_idx)
                         hit_stop_loss = True
@@ -370,35 +440,12 @@ def backtest_card_counting_strategy(json_file, initial_position_size=1000, base_
         actual_entry_date = available_dates[0]
         entry_price = history.loc[actual_entry_date, 'Close']
         
-        # Check if we already have open positions in this ticker
+        # Always invest the same amount
+        amount_to_invest = current_position_size
+        
         if ticker in open_positions:
-            # Check if any position is profitable
-            profitable_positions = []
-            for position in open_positions[ticker]:
-                # Get current price
-                if actual_entry_date in history.index:
-                    current_price = history.loc[actual_entry_date, 'Close']
-                    current_profit = ((current_price - position['entry_price']) / position['entry_price']) * 100
-                    
-                    if current_profit > 0:
-                        profitable_positions.append((position, current_profit))
-            
-            if profitable_positions:
-                # DOUBLE DOWN! The deck is hot!
-                amount_to_invest = current_position_size * 2  # Double!
-                
-                print(f"\n🔥 DOUBLE DOWN on {ticker}!")
-                print(f"   Already holding {len(open_positions[ticker])} position(s), "
-                      f"{len(profitable_positions)} profitable")
-                print(f"   New insider: {trade['insider'][:30]} buying {trade['value']}")
-                print(f"   Investing ${amount_to_invest:,.0f} (2x normal) @ ${entry_price:.2f}")
-            else:
-                # Have positions but none profitable - normal buy
-                amount_to_invest = current_position_size
-                print(f"\n💰 ADD to {ticker} @ ${entry_price:.2f} (${amount_to_invest:,.0f})")
+            print(f"\n💰 ADD to {ticker} @ ${entry_price:.2f} (${amount_to_invest:,.0f})")
         else:
-            # No existing position - normal buy
-            amount_to_invest = current_position_size
             print(f"\n💰 NEW {ticker} @ ${entry_price:.2f} (${amount_to_invest:,.0f})")
         
         # Open the position
@@ -443,9 +490,31 @@ def backtest_card_counting_strategy(json_file, initial_position_size=1000, base_
             dates_after_entry = [d for d in history.index if d > pos_entry_date]
             
             hit_stop_loss = False
+            business_days_count = 0
+            
             for date in dates_after_entry:
+                business_days_count += 1
                 high_price = history.loc[date, 'High']
                 low_price = history.loc[date, 'Low']
+                close_price = history.loc[date, 'Close']
+                
+                # GRACE PERIOD: Skip stop loss for first 2 business days
+                if business_days_count <= 2:
+                    # Update highest price during grace period
+                    if high_price > highest_price:
+                        highest_price = high_price
+                    continue
+                
+                # After grace period: Check if 5% below entry on first check (day 3)
+                if business_days_count == 3:
+                    if close_price <= pos_entry_price * 0.95:
+                        # Immediate sell if 5%+ below entry after grace period
+                        return_pct = ((close_price - pos_entry_price) / pos_entry_price) * 100
+                        returned_amount = position['amount_invested'] * (1 + return_pct / 100)
+                        exit_price = close_price
+                        exit_date = date
+                        hit_stop_loss = True
+                        break
                 
                 # Update highest price if new high reached
                 if high_price > highest_price:
@@ -545,7 +614,7 @@ def backtest_card_counting_strategy(json_file, initial_position_size=1000, base_
 
 
 if __name__ == '__main__':
-    json_file = '/Users/sagiv.oron/Documents/scripts_playground/stocks/output CSVs/top_monthly_insider_trades.json'
+    json_file = '/Users/sagiv.oron/Documents/scripts_playground/stocks/output CSVs/full_history_insider_trades.json'
     
     results = backtest_card_counting_strategy(
         json_file=json_file,

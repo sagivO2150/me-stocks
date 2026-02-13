@@ -34,6 +34,7 @@ def fetch_all_insider_trades(tickers):
                 value_formatted = f"+${purchase['value']:,.0f}"
                 trade = {
                     'trade_date': purchase['date'],
+                    'filing_date': purchase.get('filing_date'),  # Include filing date
                     'insider_name': purchase['insider_name'],
                     'title': purchase.get('title', ''),
                     'value': value_formatted,

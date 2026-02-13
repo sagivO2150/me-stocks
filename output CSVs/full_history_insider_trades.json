@@ -1,7 +1,7 @@
 {
   "updated_at": "2026-02-13",
   "total_tickers": 20,
-  "total_trades": 270,
+  "total_trades": 275,
   "data": [
     {
       "ticker": "WRB",
@@ -12,6 +12,7 @@
       "trades": [
         {
           "trade_date": "2022-07-05",
+          "filing_date": "2022-09-14",
           "insider_name": "Talisman Jonathan",
           "title": "Dir",
           "value": "+$406",
@@ -19,6 +20,7 @@
         },
         {
           "trade_date": "2022-07-29",
+          "filing_date": "2022-08-02",
           "insider_name": "Brockbank Mark Ellwood",
           "title": "Dir",
           "value": "+$371,784",
@@ -26,6 +28,7 @@
         },
         {
           "trade_date": "2025-12-18",
+          "filing_date": "2025-12-22",
           "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
           "title": "10%",
           "value": "+$42,548,370",
@@ -33,6 +36,7 @@
         },
         {
           "trade_date": "2025-12-23",
+          "filing_date": "2025-12-29",
           "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
           "title": "10%",
           "value": "+$62,037,866",
@@ -40,6 +44,7 @@
         },
         {
           "trade_date": "2025-12-30",
+          "filing_date": "2026-01-02",
           "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
           "title": "10%",
           "value": "+$47,167,124",
@@ -47,6 +52,7 @@
         },
         {
           "trade_date": "2026-01-05",
+          "filing_date": "2026-01-07",
           "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
           "title": "10%",
           "value": "+$47,416,247",
@@ -54,6 +60,7 @@
         },
         {
           "trade_date": "2026-01-08",
+          "filing_date": "2026-01-09",
           "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
           "title": "10%",
           "value": "+$32,640,884",
@@ -61,6 +68,7 @@
         },
         {
           "trade_date": "2026-01-12",
+          "filing_date": "2026-01-14",
           "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
           "title": "10%",
           "value": "+$55,622,807",
@@ -68,6 +76,7 @@
         },
         {
           "trade_date": "2026-01-15",
+          "filing_date": "2026-01-16",
           "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
           "title": "10%",
           "value": "+$36,644,801",
@@ -75,6 +84,7 @@
         },
         {
           "trade_date": "2026-01-20",
+          "filing_date": "2026-01-21",
           "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
           "title": "10%",
           "value": "+$42,612,018",
@@ -82,6 +92,7 @@
         },
         {
           "trade_date": "2026-01-22",
+          "filing_date": "2026-01-23",
           "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
           "title": "10%",
           "value": "+$46,898,492",
@@ -89,6 +100,7 @@
         },
         {
           "trade_date": "2026-01-26",
+          "filing_date": "2026-01-28",
           "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
           "title": "10%",
           "value": "+$69,297,690",
@@ -96,6 +108,7 @@
         },
         {
           "trade_date": "2026-01-29",
+          "filing_date": "2026-01-30",
           "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
           "title": "10%",
           "value": "+$33,087,353",
@@ -103,6 +116,7 @@
         },
         {
           "trade_date": "2026-02-02",
+          "filing_date": "2026-02-04",
           "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
           "title": "10%",
           "value": "+$21,451,897",
@@ -110,6 +124,7 @@
         },
         {
           "trade_date": "2026-02-05",
+          "filing_date": "2026-02-06",
           "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
           "title": "10%",
           "value": "+$2,835,251",
@@ -117,6 +132,7 @@
         },
         {
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
           "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
           "title": "10%",
           "value": "+$6,828,152",
@@ -133,6 +149,7 @@
       "trades": [
         {
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
           "insider_name": "Ra Capital Management, L.P.",
           "title": "Dir, 10%",
           "value": "+$59,040,000",
@@ -140,6 +157,7 @@
         },
         {
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
           "insider_name": "Behbahani Ali",
           "title": "Dir, 10%",
           "value": "+$15,000,000",
@@ -147,6 +165,7 @@
         },
         {
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
           "insider_name": "Florence Anthony A. Jr.",
           "title": "10%",
           "value": "+$15,000,000",
@@ -154,6 +173,7 @@
         },
         {
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
           "insider_name": "Baskett Forest",
           "title": "10%",
           "value": "+$15,000,000",
@@ -161,6 +181,7 @@
         },
         {
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
           "insider_name": "New Enterprise Associates 17, L.P.",
           "title": "10%",
           "value": "+$15,000,000",
@@ -168,6 +189,7 @@
         },
         {
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
           "insider_name": "Yang Rick",
           "title": "10%",
           "value": "+$15,000,000",
@@ -175,6 +197,7 @@
         },
         {
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
           "insider_name": "Makhzoumi Mohamad",
           "title": "10%",
           "value": "+$15,000,000",
@@ -182,6 +205,7 @@
         },
         {
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
           "insider_name": "Sandell Scott D",
           "title": "10%",
           "value": "+$15,000,000",
@@ -189,6 +213,7 @@
         },
         {
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
           "insider_name": "Chang Carmen",
           "title": "10%",
           "value": "+$15,000,000",
@@ -196,6 +221,7 @@
         },
         {
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
           "insider_name": "Mathers Edward T",
           "title": "10%",
           "value": "+$15,000,000",
@@ -203,6 +229,7 @@
         },
         {
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
           "insider_name": "Walker Paul Edward",
           "title": "10%",
           "value": "+$15,000,000",
@@ -210,6 +237,7 @@
         },
         {
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
           "insider_name": "Pardo Geoffrey B",
           "title": "Dir",
           "value": "+$5,000,000",
@@ -217,6 +245,7 @@
         },
         {
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
           "insider_name": "Khan Bilal Arshad",
           "title": "Dir",
           "value": "+$2,160,000",
@@ -224,6 +253,7 @@
         },
         {
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-10",
           "insider_name": "Nielsen Kirk G.",
           "title": "Dir",
           "value": "+$2,640,000",
@@ -231,6 +261,7 @@
         },
         {
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-10",
           "insider_name": "Vensana Capital I Gp, LLC",
           "title": "10%",
           "value": "+$2,640,000",
@@ -247,6 +278,7 @@
       "trades": [
         {
           "trade_date": "2022-06-16",
+          "filing_date": "2022-11-23",
           "insider_name": "Caring Richard",
           "title": "See Remarks, 10%",
           "value": "+$152,054",
@@ -254,6 +286,7 @@
         },
         {
           "trade_date": "2022-12-07",
+          "filing_date": "2022-12-09",
           "insider_name": "Caring Richard",
           "title": "See Remarks, 10%",
           "value": "+$29,147",
@@ -261,6 +294,7 @@
         },
         {
           "trade_date": "2022-12-08",
+          "filing_date": "2022-12-12",
           "insider_name": "Ein Mark",
           "title": "Dir",
           "value": "+$1,787,624",
@@ -268,6 +302,7 @@
         },
         {
           "trade_date": "2022-12-21",
+          "filing_date": "2022-12-23",
           "insider_name": "Caring Richard",
           "title": "See Remarks, 10%",
           "value": "+$397,990",
@@ -275,6 +310,7 @@
         },
         {
           "trade_date": "2022-12-23",
+          "filing_date": "2022-12-28",
           "insider_name": "Caring Richard",
           "title": "See Remarks, 10%",
           "value": "+$719,960",
@@ -282,6 +318,7 @@
         },
         {
           "trade_date": "2023-03-13",
+          "filing_date": "2023-03-15",
           "insider_name": "Caring Richard",
           "title": "See Remarks, 10%",
           "value": "+$37,616",
@@ -289,6 +326,7 @@
         },
         {
           "trade_date": "2023-03-15",
+          "filing_date": "2023-03-17",
           "insider_name": "Caring Richard",
           "title": "See Remarks, 10%",
           "value": "+$30,118",
@@ -296,6 +334,7 @@
         },
         {
           "trade_date": "2023-03-17",
+          "filing_date": "2023-03-21",
           "insider_name": "Caring Richard",
           "title": "See Remarks, 10%",
           "value": "+$19,896",
@@ -303,6 +342,7 @@
         },
         {
           "trade_date": "2023-05-19",
+          "filing_date": "2023-05-23",
           "insider_name": "Caring Richard",
           "title": "See Remarks, 10%",
           "value": "+$38,574",
@@ -310,6 +350,7 @@
         },
         {
           "trade_date": "2023-05-23",
+          "filing_date": "2023-05-25",
           "insider_name": "Caring Richard",
           "title": "See Remarks, 10%",
           "value": "+$31,060",
@@ -317,6 +358,7 @@
         },
         {
           "trade_date": "2023-09-15",
+          "filing_date": "2023-09-20",
           "insider_name": "Jackson Yusef",
           "title": "Dir",
           "value": "+$14,286",
@@ -324,6 +366,7 @@
         },
         {
           "trade_date": "2024-06-20",
+          "filing_date": "2024-06-24",
           "insider_name": "Jackson Yusef",
           "title": "Dir",
           "value": "+$2,670",
@@ -331,10 +374,68 @@
         },
         {
           "trade_date": "2026-01-29",
+          "filing_date": "2026-02-02",
           "insider_name": "Popstefanov Gjorgi",
           "title": "Dir",
           "value": "+$99,999,999",
           "qty": "+11,111,111"
+        }
+      ]
+    },
+    {
+      "ticker": "NFRX",
+      "company_name": "NFRX Company",
+      "total_value": 89999919,
+      "total_purchases": 6,
+      "unique_insiders": 1,
+      "trades": [
+        {
+          "trade_date": "2026-02-02",
+          "filing_date": "2026-02-03",
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "value": "+$9,999,986",
+          "qty": "+399,520"
+        },
+        {
+          "trade_date": "2026-02-05",
+          "filing_date": "2026-02-06",
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "value": "+$9,999,998",
+          "qty": "+390,320"
+        },
+        {
+          "trade_date": "2026-02-06",
+          "filing_date": "2026-02-09",
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "value": "+$9,999,977",
+          "qty": "+386,996"
+        },
+        {
+          "trade_date": "2026-02-09",
+          "filing_date": "2026-02-10",
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "value": "+$9,999,978",
+          "qty": "+383,729"
+        },
+        {
+          "trade_date": "2026-02-10",
+          "filing_date": "2026-02-11",
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "value": "+$9,999,989",
+          "qty": "+378,931"
+        },
+        {
+          "trade_date": "2026-02-12",
+          "filing_date": "2026-02-13",
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "value": "+$39,999,991",
+          "qty": "+1,485,332"
         }
       ]
     },
@@ -347,6 +448,7 @@
       "trades": [
         {
           "trade_date": "2024-01-18",
+          "filing_date": "2024-01-22",
           "insider_name": "Paulson & Co. Inc.",
           "title": "10%",
           "value": "+$1,506,122",
@@ -354,6 +456,7 @@
         },
         {
           "trade_date": "2025-02-27",
+          "filing_date": "2025-02-28",
           "insider_name": "Electrum Strategic Opportunities Fund II L.P.",
           "title": "10%",
           "value": "+$553,119",
@@ -361,6 +464,7 @@
         },
         {
           "trade_date": "2025-03-03",
+          "filing_date": "2025-03-05",
           "insider_name": "Paulson & Co. Inc.",
           "title": "10%",
           "value": "+$2,900,000",
@@ -368,6 +472,7 @@
         },
         {
           "trade_date": "2026-01-27",
+          "filing_date": "2026-01-29",
           "insider_name": "Electrum Global Holdings L.P.",
           "title": "10%",
           "value": "+$7,000,000",
@@ -375,6 +480,7 @@
         },
         {
           "trade_date": "2026-01-27",
+          "filing_date": "2026-01-27",
           "insider_name": "Paulson & Co. Inc.",
           "title": "10%",
           "value": "+$40,000,000",
@@ -382,6 +488,7 @@
         },
         {
           "trade_date": "2026-01-28",
+          "filing_date": "2026-01-30",
           "insider_name": "Paulson & Co. Inc.",
           "title": "10%",
           "value": "+$25,120,703",
@@ -398,6 +505,7 @@
       "trades": [
         {
           "trade_date": "2022-05-27",
+          "filing_date": "2022-06-01",
           "insider_name": "Gibbs David W",
           "title": "Dir",
           "value": "+$474,818",
@@ -405,6 +513,7 @@
         },
         {
           "trade_date": "2025-08-13",
+          "filing_date": "2025-08-14",
           "insider_name": "Aumen Eric J",
           "title": "Chief Accounting Officer",
           "value": "+$10,000",
@@ -412,6 +521,7 @@
         },
         {
           "trade_date": "2025-08-13",
+          "filing_date": "2025-08-14",
           "insider_name": "Fitzpatrick Dawn N.",
           "title": "Dir",
           "value": "+$493,000",
@@ -419,6 +529,7 @@
         },
         {
           "trade_date": "2025-08-18",
+          "filing_date": "2025-08-19",
           "insider_name": "El-Erian Mohamed",
           "title": "Dir",
           "value": "+$519,960",
@@ -426,6 +537,7 @@
         },
         {
           "trade_date": "2025-08-21",
+          "filing_date": "2025-08-21",
           "insider_name": "Sweeney Robert John",
           "title": "Dir",
           "value": "+$488,200",
@@ -433,6 +545,7 @@
         },
         {
           "trade_date": "2025-12-22",
+          "filing_date": "2025-12-29",
           "insider_name": "Watsa V Prem Et Al",
           "title": "10%",
           "value": "+$70,963,523",
@@ -440,6 +553,7 @@
         },
         {
           "trade_date": "2025-12-30",
+          "filing_date": "2026-01-02",
           "insider_name": "Watsa V Prem Et Al",
           "title": "10%",
           "value": "+$67,443,913",
@@ -447,6 +561,7 @@
         },
         {
           "trade_date": "2026-01-16",
+          "filing_date": "2026-01-21",
           "insider_name": "Watsa V Prem Et Al",
           "title": "10%",
           "value": "+$49,684,526",
@@ -454,6 +569,7 @@
         },
         {
           "trade_date": "2026-01-22",
+          "filing_date": "2026-01-26",
           "insider_name": "Watsa V Prem Et Al",
           "title": "10%",
           "value": "+$14,420,222",
@@ -461,6 +577,7 @@
         },
         {
           "trade_date": "2026-01-27",
+          "filing_date": "2026-01-29",
           "insider_name": "Watsa V Prem Et Al",
           "title": "10%",
           "value": "+$16,445,714",
@@ -477,6 +594,7 @@
       "trades": [
         {
           "trade_date": "2026-02-04",
+          "filing_date": "2026-02-09",
           "insider_name": "Suvretta Capital Management, LLC",
           "title": "Dir, 10%",
           "value": "+$10,542,478",
@@ -484,6 +602,7 @@
         },
         {
           "trade_date": "2026-02-05",
+          "filing_date": "2026-02-05",
           "insider_name": "Coric Vlad",
           "title": "Dir",
           "value": "+$1,999,982",
@@ -491,6 +610,7 @@
         },
         {
           "trade_date": "2026-02-05",
+          "filing_date": "2026-02-05",
           "insider_name": "Childs John W",
           "title": "Dir",
           "value": "+$4,999,989",
@@ -498,6 +618,7 @@
         },
         {
           "trade_date": "2026-02-05",
+          "filing_date": "2026-02-05",
           "insider_name": "Longitude Capital Partners V, LLC",
           "title": "10%",
           "value": "+$18,275,000",
@@ -505,6 +626,7 @@
         },
         {
           "trade_date": "2026-02-05",
+          "filing_date": "2026-02-05",
           "insider_name": "Enright Patrick G",
           "title": "Dir, 10%",
           "value": "+$18,275,000",
@@ -521,6 +643,7 @@
       "trades": [
         {
           "trade_date": "2026-02-04",
+          "filing_date": "2026-02-06",
           "insider_name": "Foresite Capital Management Iv, LLC",
           "title": "10%",
           "value": "+$999,990",
@@ -528,6 +651,7 @@
         },
         {
           "trade_date": "2026-02-04",
+          "filing_date": "2026-02-06",
           "insider_name": "Frazier Kenneth C",
           "title": "Dir",
           "value": "+$1,999,998",
@@ -535,6 +659,7 @@
         },
         {
           "trade_date": "2026-02-04",
+          "filing_date": "2026-02-06",
           "insider_name": "Wolfe Josh",
           "title": "Dir, 10%",
           "value": "+$4,999,968",
@@ -542,6 +667,7 @@
         },
         {
           "trade_date": "2026-02-04",
+          "filing_date": "2026-02-06",
           "insider_name": "Lux Venture Partners V, LLC",
           "title": "10%",
           "value": "+$4,999,968",
@@ -549,61 +675,11 @@
         },
         {
           "trade_date": "2026-02-06",
+          "filing_date": "2026-02-09",
           "insider_name": "Column Group IV Gp, LP",
           "title": "10%",
           "value": "+$38,119,680",
           "qty": "+2,117,760"
-        }
-      ]
-    },
-    {
-      "ticker": "NFRX",
-      "company_name": "NFRX Company",
-      "total_value": 89999919,
-      "total_purchases": 6,
-      "unique_insiders": 1,
-      "trades": [
-        {
-          "trade_date": "2026-02-02",
-          "insider_name": "Harrison Street Real Assets Fund LLC",
-          "title": "10%",
-          "value": "+$9,999,986",
-          "qty": "+399,520"
-        },
-        {
-          "trade_date": "2026-02-05",
-          "insider_name": "Harrison Street Real Assets Fund LLC",
-          "title": "10%",
-          "value": "+$9,999,998",
-          "qty": "+390,320"
-        },
-        {
-          "trade_date": "2026-02-06",
-          "insider_name": "Harrison Street Real Assets Fund LLC",
-          "title": "10%",
-          "value": "+$9,999,977",
-          "qty": "+386,996"
-        },
-        {
-          "trade_date": "2026-02-09",
-          "insider_name": "Harrison Street Real Assets Fund LLC",
-          "title": "10%",
-          "value": "+$9,999,978",
-          "qty": "+383,729"
-        },
-        {
-          "trade_date": "2026-02-10",
-          "insider_name": "Harrison Street Real Assets Fund LLC",
-          "title": "10%",
-          "value": "+$9,999,989",
-          "qty": "+378,931"
-        },
-        {
-          "trade_date": "2026-02-12",
-          "insider_name": "Harrison Street Real Assets Fund LLC",
-          "title": "10%",
-          "value": "+$39,999,991",
-          "qty": "+1,485,332"
         }
       ]
     },
@@ -616,6 +692,7 @@
       "trades": [
         {
           "trade_date": "2022-03-21",
+          "filing_date": "2022-03-23",
           "insider_name": "Cheng Lawrence",
           "title": "Dir",
           "value": "+$383,355",
@@ -623,6 +700,7 @@
         },
         {
           "trade_date": "2022-03-22",
+          "filing_date": "2022-03-22",
           "insider_name": "Cohen Ryan",
           "title": "Dir, 10%",
           "value": "+$10,176,342",
@@ -630,6 +708,7 @@
         },
         {
           "trade_date": "2022-03-24",
+          "filing_date": "2022-03-24",
           "insider_name": "Attal Alain",
           "title": "Dir",
           "value": "+$194,865",
@@ -637,6 +716,7 @@
         },
         {
           "trade_date": "2023-03-29",
+          "filing_date": "2023-03-31",
           "insider_name": "Cheng Lawrence",
           "title": "Dir",
           "value": "+$113,990",
@@ -644,6 +724,7 @@
         },
         {
           "trade_date": "2023-06-09",
+          "filing_date": "2023-06-13",
           "insider_name": "Cohen Ryan",
           "title": "Exec COB, 10%",
           "value": "+$10,000,392",
@@ -651,6 +732,7 @@
         },
         {
           "trade_date": "2023-06-09",
+          "filing_date": "2023-06-12",
           "insider_name": "Cheng Lawrence",
           "title": "Dir",
           "value": "+$111,900",
@@ -658,6 +740,7 @@
         },
         {
           "trade_date": "2023-06-09",
+          "filing_date": "2023-06-09",
           "insider_name": "Attal Alain",
           "title": "Dir",
           "value": "+$224,000",
@@ -665,6 +748,7 @@
         },
         {
           "trade_date": "2023-09-08",
+          "filing_date": "2023-09-11",
           "insider_name": "Cheng Lawrence",
           "title": "Dir",
           "value": "+$105,926",
@@ -672,6 +756,7 @@
         },
         {
           "trade_date": "2023-09-08",
+          "filing_date": "2023-09-11",
           "insider_name": "Attal Alain",
           "title": "Dir",
           "value": "+$266,700",
@@ -679,6 +764,7 @@
         },
         {
           "trade_date": "2024-04-08",
+          "filing_date": "2024-04-09",
           "insider_name": "Cheng Lawrence",
           "title": "Dir",
           "value": "+$112,238",
@@ -686,6 +772,7 @@
         },
         {
           "trade_date": "2024-07-08",
+          "filing_date": "2024-07-09",
           "insider_name": "Cheng Lawrence",
           "title": "Dir",
           "value": "+$102,879",
@@ -693,6 +780,7 @@
         },
         {
           "trade_date": "2025-04-03",
+          "filing_date": "2025-04-07",
           "insider_name": "Cheng Lawrence",
           "title": "Dir",
           "value": "+$107,700",
@@ -700,6 +788,7 @@
         },
         {
           "trade_date": "2025-04-03",
+          "filing_date": "2025-04-07",
           "insider_name": "Cohen Ryan",
           "title": "Pres, CEO, COB",
           "value": "+$10,775,000",
@@ -707,6 +796,7 @@
         },
         {
           "trade_date": "2025-04-10",
+          "filing_date": "2025-04-10",
           "insider_name": "Attal Alain",
           "title": "Dir",
           "value": "+$257,500",
@@ -714,6 +804,7 @@
         },
         {
           "trade_date": "2025-06-30",
+          "filing_date": "2025-07-01",
           "insider_name": "Grube James",
           "title": "Dir",
           "value": "+$132,183",
@@ -721,6 +812,7 @@
         },
         {
           "trade_date": "2026-01-20",
+          "filing_date": "2026-01-22",
           "insider_name": "Cohen Ryan",
           "title": "Pres, CEO, COB",
           "value": "+$21,359,200",
@@ -728,6 +820,7 @@
         },
         {
           "trade_date": "2026-01-20",
+          "filing_date": "2026-01-20",
           "insider_name": "Attal Alain",
           "title": "Dir",
           "value": "+$250,798",
@@ -735,6 +828,7 @@
         },
         {
           "trade_date": "2026-01-21",
+          "filing_date": "2026-01-21",
           "insider_name": "Attal Alain",
           "title": "Dir",
           "value": "+$259,577",
@@ -742,6 +836,7 @@
         },
         {
           "trade_date": "2026-01-23",
+          "filing_date": "2026-01-26",
           "insider_name": "Cheng Lawrence",
           "title": "Dir",
           "value": "+$114,369",
@@ -758,6 +853,7 @@
       "trades": [
         {
           "trade_date": "2026-02-06",
+          "filing_date": "2026-02-09",
           "insider_name": "Hennessy Thomas D",
           "title": "Pres, 10%",
           "value": "+$6,710,000",
@@ -765,6 +861,7 @@
         },
         {
           "trade_date": "2026-02-06",
+          "filing_date": "2026-02-09",
           "insider_name": "Hennessy Daniel J",
           "title": "COB, CEO, 10%",
           "value": "+$6,710,000",
@@ -772,6 +869,7 @@
         },
         {
           "trade_date": "2026-02-06",
+          "filing_date": "2026-02-09",
           "insider_name": "Hc VIII Sponsor LLC",
           "title": "10%",
           "value": "+$6,710,000",
@@ -788,6 +886,7 @@
       "trades": [
         {
           "trade_date": "2022-03-15",
+          "filing_date": "2022-03-16",
           "insider_name": "Lind Bonnie Cruickshank",
           "title": "Dir",
           "value": "+$11,385",
@@ -795,6 +894,7 @@
         },
         {
           "trade_date": "2022-03-16",
+          "filing_date": "2022-03-17",
           "insider_name": "Barnard Stephen J",
           "title": "Pres, CEO",
           "value": "+$293,729",
@@ -802,6 +902,7 @@
         },
         {
           "trade_date": "2025-11-04",
+          "filing_date": "2025-11-06",
           "insider_name": "Globalharvest Holdings Venture Ltd",
           "title": "10%",
           "value": "+$582,626",
@@ -809,6 +910,7 @@
         },
         {
           "trade_date": "2025-11-06",
+          "filing_date": "2025-11-10",
           "insider_name": "Globalharvest Holdings Venture Ltd",
           "title": "10%",
           "value": "+$904,296",
@@ -816,6 +918,7 @@
         },
         {
           "trade_date": "2025-11-10",
+          "filing_date": "2025-11-14",
           "insider_name": "Globalharvest Holdings Venture Ltd",
           "title": "10%",
           "value": "+$65,565",
@@ -823,6 +926,7 @@
         },
         {
           "trade_date": "2025-11-11",
+          "filing_date": "2025-11-14",
           "insider_name": "Globalharvest Holdings Venture Ltd",
           "title": "10%",
           "value": "+$323,407",
@@ -830,6 +934,7 @@
         },
         {
           "trade_date": "2025-12-23",
+          "filing_date": "2025-12-30",
           "insider_name": "Globalharvest Holdings Venture Ltd",
           "title": "10%",
           "value": "+$2,336,868",
@@ -837,6 +942,7 @@
         },
         {
           "trade_date": "2025-12-30",
+          "filing_date": "2026-01-05",
           "insider_name": "Globalharvest Holdings Venture Ltd",
           "title": "10%",
           "value": "+$3,361,590",
@@ -844,6 +950,7 @@
         },
         {
           "trade_date": "2026-01-05",
+          "filing_date": "2026-01-07",
           "insider_name": "Globalharvest Holdings Venture Ltd",
           "title": "10%",
           "value": "+$770,377",
@@ -851,6 +958,7 @@
         },
         {
           "trade_date": "2026-01-07",
+          "filing_date": "2026-01-09",
           "insider_name": "Globalharvest Holdings Venture Ltd",
           "title": "10%",
           "value": "+$250,399",
@@ -858,6 +966,7 @@
         },
         {
           "trade_date": "2026-01-15",
+          "filing_date": "2026-01-20",
           "insider_name": "Globalharvest Holdings Venture Ltd",
           "title": "10%",
           "value": "+$11,591,251",
@@ -865,6 +974,7 @@
         },
         {
           "trade_date": "2026-01-16",
+          "filing_date": "2026-01-26",
           "insider_name": "Globalharvest Holdings Venture Ltd",
           "title": "10%",
           "value": "+$7,761,616",
@@ -872,6 +982,7 @@
         },
         {
           "trade_date": "2026-01-16",
+          "filing_date": "2026-01-21",
           "insider_name": "Globalharvest Holdings Venture Ltd",
           "title": "10%",
           "value": "+$7,761,529",
@@ -879,6 +990,7 @@
         },
         {
           "trade_date": "2026-01-21",
+          "filing_date": "2026-01-26",
           "insider_name": "Globalharvest Holdings Venture Ltd",
           "title": "10%",
           "value": "+$4,055,678",
@@ -895,6 +1007,7 @@
       "trades": [
         {
           "trade_date": "2026-01-22",
+          "filing_date": "2026-02-09",
           "insider_name": "L1 Capital Pty Ltd",
           "title": "10%",
           "value": "+$28,750,000",
@@ -911,6 +1024,7 @@
       "trades": [
         {
           "trade_date": "2026-01-30",
+          "filing_date": "2026-02-03",
           "insider_name": "Erwin Tami A.",
           "title": "Dir",
           "value": "+$99,994",
@@ -918,6 +1032,7 @@
         },
         {
           "trade_date": "2026-01-30",
+          "filing_date": "2026-02-03",
           "insider_name": "Letarte Tyler",
           "title": "Dir",
           "value": "+$49,980",
@@ -925,6 +1040,7 @@
         },
         {
           "trade_date": "2026-01-30",
+          "filing_date": "2026-02-03",
           "insider_name": "Blackrock Portfolio Management LLC",
           "title": "10%",
           "value": "+$25,585,000",
@@ -941,6 +1057,7 @@
       "trades": [
         {
           "trade_date": "2023-05-03",
+          "filing_date": "2023-05-04",
           "insider_name": "Jennings Rebecca",
           "title": "SVP",
           "value": "+$5,009",
@@ -948,6 +1065,7 @@
         },
         {
           "trade_date": "2025-06-13",
+          "filing_date": "2025-06-17",
           "insider_name": "Sprott Eric",
           "title": "10%",
           "value": "+$22,225,000",
@@ -955,6 +1073,7 @@
         },
         {
           "trade_date": "2025-09-10",
+          "filing_date": "2025-09-12",
           "insider_name": "Sprott Eric",
           "title": "10%",
           "value": "+$39,995,333",
@@ -962,6 +1081,7 @@
         },
         {
           "trade_date": "2025-10-14",
+          "filing_date": "2025-10-16",
           "insider_name": "Sprott Eric",
           "title": "10%",
           "value": "+$49,985,000",
@@ -969,6 +1089,7 @@
         },
         {
           "trade_date": "2025-11-11",
+          "filing_date": "2025-11-14",
           "insider_name": "Sprott Eric",
           "title": "10%",
           "value": "+$13,130,000",
@@ -976,6 +1097,7 @@
         },
         {
           "trade_date": "2025-11-17",
+          "filing_date": "2025-11-19",
           "insider_name": "Sprott Eric",
           "title": "10%",
           "value": "+$4,148,000",
@@ -983,6 +1105,7 @@
         },
         {
           "trade_date": "2025-12-03",
+          "filing_date": "2025-12-05",
           "insider_name": "Sprott Eric",
           "title": "10%",
           "value": "+$24,110,487",
@@ -990,6 +1113,7 @@
         },
         {
           "trade_date": "2025-12-09",
+          "filing_date": "2025-12-11",
           "insider_name": "Sprott Eric",
           "title": "10%",
           "value": "+$5,703,600",
@@ -997,6 +1121,7 @@
         },
         {
           "trade_date": "2025-12-12",
+          "filing_date": "2025-12-16",
           "insider_name": "Sprott Eric",
           "title": "10%",
           "value": "+$5,742,000",
@@ -1004,6 +1129,7 @@
         },
         {
           "trade_date": "2025-12-17",
+          "filing_date": "2025-12-18",
           "insider_name": "Sprott Eric",
           "title": "10%",
           "value": "+$3,212,000",
@@ -1011,6 +1137,7 @@
         },
         {
           "trade_date": "2025-12-19",
+          "filing_date": "2025-12-23",
           "insider_name": "Sprott Eric",
           "title": "10%",
           "value": "+$2,446,500",
@@ -1018,6 +1145,7 @@
         },
         {
           "trade_date": "2025-12-24",
+          "filing_date": "2025-12-30",
           "insider_name": "Sprott Eric",
           "title": "10%",
           "value": "+$16,545,000",
@@ -1025,6 +1153,7 @@
         },
         {
           "trade_date": "2026-01-08",
+          "filing_date": "2026-01-09",
           "insider_name": "Sprott Eric",
           "title": "10%",
           "value": "+$3,284,250",
@@ -1032,6 +1161,7 @@
         },
         {
           "trade_date": "2026-01-14",
+          "filing_date": "2026-01-15",
           "insider_name": "Sprott Eric",
           "title": "10%",
           "value": "+$6,642,000",
@@ -1039,6 +1169,7 @@
         },
         {
           "trade_date": "2026-01-26",
+          "filing_date": "2026-01-27",
           "insider_name": "Sprott Eric",
           "title": "10%",
           "value": "+$4,996,000",
@@ -1046,6 +1177,7 @@
         },
         {
           "trade_date": "2026-01-29",
+          "filing_date": "2026-01-30",
           "insider_name": "Sprott Eric",
           "title": "10%",
           "value": "+$9,198,000",
@@ -1062,6 +1194,7 @@
       "trades": [
         {
           "trade_date": "2022-07-05",
+          "filing_date": "2022-07-05",
           "insider_name": "Hoene Mary Joan",
           "title": "Dir",
           "value": "+$1,428",
@@ -1069,6 +1202,7 @@
         },
         {
           "trade_date": "2022-07-25",
+          "filing_date": "2022-07-26",
           "insider_name": "Donovan William",
           "title": "Dir",
           "value": "+$6,785",
@@ -1076,6 +1210,7 @@
         },
         {
           "trade_date": "2022-09-27",
+          "filing_date": "2022-09-28",
           "insider_name": "Hansen Bruce D",
           "title": "Dir",
           "value": "+$12,109",
@@ -1083,6 +1218,7 @@
         },
         {
           "trade_date": "2023-10-24",
+          "filing_date": "2023-10-25",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$659,218",
@@ -1090,6 +1226,7 @@
         },
         {
           "trade_date": "2023-10-26",
+          "filing_date": "2023-10-30",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$176,088",
@@ -1097,6 +1234,7 @@
         },
         {
           "trade_date": "2023-10-30",
+          "filing_date": "2023-10-31",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$7,359",
@@ -1104,6 +1242,7 @@
         },
         {
           "trade_date": "2023-11-03",
+          "filing_date": "2023-11-06",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$1,068,166",
@@ -1111,6 +1250,7 @@
         },
         {
           "trade_date": "2023-11-08",
+          "filing_date": "2023-11-09",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$2,531",
@@ -1118,6 +1258,7 @@
         },
         {
           "trade_date": "2023-11-09",
+          "filing_date": "2023-11-13",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$415,007",
@@ -1125,6 +1266,7 @@
         },
         {
           "trade_date": "2023-11-15",
+          "filing_date": "2023-11-17",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$1,838,584",
@@ -1132,6 +1274,7 @@
         },
         {
           "trade_date": "2023-11-20",
+          "filing_date": "2023-11-21",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$2,021,154",
@@ -1139,6 +1282,7 @@
         },
         {
           "trade_date": "2023-11-22",
+          "filing_date": "2023-11-24",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$800,240",
@@ -1146,6 +1290,7 @@
         },
         {
           "trade_date": "2023-11-27",
+          "filing_date": "2023-11-28",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$1,422,263",
@@ -1153,6 +1298,7 @@
         },
         {
           "trade_date": "2023-11-29",
+          "filing_date": "2023-11-30",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$1,335,691",
@@ -1160,6 +1306,7 @@
         },
         {
           "trade_date": "2023-12-01",
+          "filing_date": "2023-12-05",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$637,817",
@@ -1167,6 +1314,7 @@
         },
         {
           "trade_date": "2023-12-05",
+          "filing_date": "2023-12-06",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$313,298",
@@ -1174,6 +1322,7 @@
         },
         {
           "trade_date": "2023-12-05",
+          "filing_date": "2023-12-05",
           "insider_name": "Merk Alexander",
           "title": "COO",
           "value": "+$32,564",
@@ -1181,6 +1330,7 @@
         },
         {
           "trade_date": "2023-12-06",
+          "filing_date": "2023-12-06",
           "insider_name": "Merk Alexander",
           "title": "COO",
           "value": "+$55,047",
@@ -1188,6 +1338,7 @@
         },
         {
           "trade_date": "2023-12-07",
+          "filing_date": "2023-12-11",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$288,152",
@@ -1195,6 +1346,7 @@
         },
         {
           "trade_date": "2023-12-07",
+          "filing_date": "2023-12-07",
           "insider_name": "Merk Alexander",
           "title": "COO",
           "value": "+$69,492",
@@ -1202,6 +1354,7 @@
         },
         {
           "trade_date": "2023-12-08",
+          "filing_date": "2023-12-08",
           "insider_name": "Hoene Mary Joan",
           "title": "Dir",
           "value": "+$7,570",
@@ -1209,6 +1362,7 @@
         },
         {
           "trade_date": "2023-12-08",
+          "filing_date": "2023-12-08",
           "insider_name": "Merk Alexander",
           "title": "COO",
           "value": "+$102,223",
@@ -1216,6 +1370,7 @@
         },
         {
           "trade_date": "2023-12-11",
+          "filing_date": "2023-12-12",
           "insider_name": "Merk Alexander",
           "title": "Dir",
           "value": "+$115,482",
@@ -1223,6 +1378,7 @@
         },
         {
           "trade_date": "2023-12-11",
+          "filing_date": "2023-12-11",
           "insider_name": "Merk Alexander",
           "title": "COO",
           "value": "+$65,635",
@@ -1230,6 +1386,7 @@
         },
         {
           "trade_date": "2023-12-13",
+          "filing_date": "2023-12-14",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$60,212",
@@ -1237,6 +1394,7 @@
         },
         {
           "trade_date": "2023-12-14",
+          "filing_date": "2023-12-14",
           "insider_name": "Merk Alexander",
           "title": "COO",
           "value": "+$380,093",
@@ -1244,6 +1402,7 @@
         },
         {
           "trade_date": "2023-12-18",
+          "filing_date": "2023-12-18",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$1,660,025",
@@ -1251,6 +1410,7 @@
         },
         {
           "trade_date": "2023-12-19",
+          "filing_date": "2023-12-21",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$3,560,693",
@@ -1258,6 +1418,7 @@
         },
         {
           "trade_date": "2023-12-19",
+          "filing_date": "2023-12-19",
           "insider_name": "Donovan William",
           "title": "Dir",
           "value": "+$24,000",
@@ -1265,6 +1426,7 @@
         },
         {
           "trade_date": "2023-12-20",
+          "filing_date": "2023-12-20",
           "insider_name": "Hoene Mary Joan",
           "title": "Dir",
           "value": "+$7,910",
@@ -1272,6 +1434,7 @@
         },
         {
           "trade_date": "2023-12-26",
+          "filing_date": "2023-12-27",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$52,653",
@@ -1279,6 +1442,7 @@
         },
         {
           "trade_date": "2024-01-02",
+          "filing_date": "2024-01-02",
           "insider_name": "Hoene Mary Joan",
           "title": "Dir",
           "value": "+$7,580",
@@ -1286,6 +1450,7 @@
         },
         {
           "trade_date": "2024-01-02",
+          "filing_date": "2024-01-02",
           "insider_name": "Merk Alexander",
           "title": "COO",
           "value": "+$388,161",
@@ -1293,6 +1458,7 @@
         },
         {
           "trade_date": "2024-01-02",
+          "filing_date": "2024-01-02",
           "insider_name": "Hansen Bruce D",
           "title": "Dir",
           "value": "+$30,360",
@@ -1300,6 +1466,7 @@
         },
         {
           "trade_date": "2024-01-03",
+          "filing_date": "2024-01-03",
           "insider_name": "Hoene Mary Joan",
           "title": "Dir",
           "value": "+$1,478",
@@ -1307,6 +1474,7 @@
         },
         {
           "trade_date": "2024-01-08",
+          "filing_date": "2024-01-08",
           "insider_name": "Hoene Mary Joan",
           "title": "Dir",
           "value": "+$5,920",
@@ -1314,6 +1482,7 @@
         },
         {
           "trade_date": "2024-11-14",
+          "filing_date": "2024-12-10",
           "insider_name": "Hoene Mary Joan",
           "title": "Dir",
           "value": "+$7,478",
@@ -1321,6 +1490,7 @@
         },
         {
           "trade_date": "2024-11-14",
+          "filing_date": "2024-11-14",
           "insider_name": "Hoene Mary Joan",
           "title": "Dir",
           "value": "+$7,478",
@@ -1328,6 +1498,7 @@
         },
         {
           "trade_date": "2024-12-26",
+          "filing_date": "2024-12-30",
           "insider_name": "Merk Alexander",
           "title": "COO",
           "value": "+$487,357",
@@ -1335,6 +1506,7 @@
         },
         {
           "trade_date": "2024-12-31",
+          "filing_date": "2025-01-03",
           "insider_name": "Merk Alexander",
           "title": "COO",
           "value": "+$300,220",
@@ -1342,6 +1514,7 @@
         },
         {
           "trade_date": "2024-12-31",
+          "filing_date": "2025-01-03",
           "insider_name": "Merk Alexander",
           "title": "COO",
           "value": "+$300,220",
@@ -1349,6 +1522,7 @@
         },
         {
           "trade_date": "2025-01-03",
+          "filing_date": "2025-01-06",
           "insider_name": "Hoene Mary Joan",
           "title": "Dir",
           "value": "+$8,744",
@@ -1356,6 +1530,7 @@
         },
         {
           "trade_date": "2025-01-03",
+          "filing_date": "2025-01-03",
           "insider_name": "Merk Alexander",
           "title": "COO",
           "value": "+$646,684",
@@ -1363,6 +1538,7 @@
         },
         {
           "trade_date": "2025-01-06",
+          "filing_date": "2025-01-07",
           "insider_name": "Merk Alexander",
           "title": "COO",
           "value": "+$711,250",
@@ -1370,6 +1546,7 @@
         },
         {
           "trade_date": "2025-01-08",
+          "filing_date": "2025-01-10",
           "insider_name": "Merk Alexander",
           "title": "COO",
           "value": "+$634,720",
@@ -1377,6 +1554,7 @@
         },
         {
           "trade_date": "2025-01-10",
+          "filing_date": "2025-01-22",
           "insider_name": "Donovan William",
           "title": "Dir",
           "value": "+$6,612",
@@ -1384,6 +1562,7 @@
         },
         {
           "trade_date": "2025-01-10",
+          "filing_date": "2025-01-10",
           "insider_name": "Donovan William",
           "title": "Dir",
           "value": "+$8,812",
@@ -1391,6 +1570,7 @@
         },
         {
           "trade_date": "2025-01-14",
+          "filing_date": "2025-01-15",
           "insider_name": "Merk Alexander",
           "title": "COO",
           "value": "+$653,379",
@@ -1398,6 +1578,7 @@
         },
         {
           "trade_date": "2025-01-16",
+          "filing_date": "2025-01-17",
           "insider_name": "Merk Alexander",
           "title": "COO",
           "value": "+$687,128",
@@ -1405,6 +1586,7 @@
         },
         {
           "trade_date": "2025-08-07",
+          "filing_date": "2025-08-11",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$3,657,547",
@@ -1412,6 +1594,7 @@
         },
         {
           "trade_date": "2025-08-11",
+          "filing_date": "2025-08-12",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$11,476,500",
@@ -1419,6 +1602,7 @@
         },
         {
           "trade_date": "2025-08-12",
+          "filing_date": "2025-08-14",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$12,598,503",
@@ -1426,6 +1610,7 @@
         },
         {
           "trade_date": "2025-08-14",
+          "filing_date": "2025-08-18",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$626,926",
@@ -1433,6 +1618,7 @@
         },
         {
           "trade_date": "2025-08-18",
+          "filing_date": "2025-08-19",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$55,136",
@@ -1440,6 +1626,7 @@
         },
         {
           "trade_date": "2025-08-19",
+          "filing_date": "2025-08-21",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$337,963",
@@ -1447,6 +1634,7 @@
         },
         {
           "trade_date": "2025-08-21",
+          "filing_date": "2025-08-25",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$187,562",
@@ -1454,6 +1642,7 @@
         },
         {
           "trade_date": "2025-08-25",
+          "filing_date": "2025-08-26",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$274,555",
@@ -1461,6 +1650,7 @@
         },
         {
           "trade_date": "2025-08-27",
+          "filing_date": "2025-09-02",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$622,417",
@@ -1468,6 +1658,7 @@
         },
         {
           "trade_date": "2025-09-02",
+          "filing_date": "2025-09-04",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$3,893,258",
@@ -1475,6 +1666,7 @@
         },
         {
           "trade_date": "2025-09-04",
+          "filing_date": "2025-09-08",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$1,295,171",
@@ -1482,6 +1674,7 @@
         },
         {
           "trade_date": "2025-09-08",
+          "filing_date": "2025-09-09",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$992,655",
@@ -1489,6 +1682,7 @@
         },
         {
           "trade_date": "2025-09-09",
+          "filing_date": "2025-09-11",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$2,022,416",
@@ -1496,6 +1690,7 @@
         },
         {
           "trade_date": "2025-09-11",
+          "filing_date": "2025-09-15",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$8,357,572",
@@ -1503,6 +1698,7 @@
         },
         {
           "trade_date": "2025-09-15",
+          "filing_date": "2025-09-17",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$4,506,703",
@@ -1510,6 +1706,7 @@
         },
         {
           "trade_date": "2025-09-17",
+          "filing_date": "2025-09-19",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$1,062,359",
@@ -1517,6 +1714,7 @@
         },
         {
           "trade_date": "2025-09-19",
+          "filing_date": "2025-09-23",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$241,447",
@@ -1524,6 +1722,7 @@
         },
         {
           "trade_date": "2025-10-07",
+          "filing_date": "2025-10-08",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$2,169,179",
@@ -1531,6 +1730,7 @@
         },
         {
           "trade_date": "2025-10-08",
+          "filing_date": "2025-10-09",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$1,147,072",
@@ -1538,6 +1738,7 @@
         },
         {
           "trade_date": "2025-10-09",
+          "filing_date": "2025-10-14",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$3,571,924",
@@ -1545,6 +1746,7 @@
         },
         {
           "trade_date": "2025-10-14",
+          "filing_date": "2025-10-16",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$2,272,989",
@@ -1552,6 +1754,7 @@
         },
         {
           "trade_date": "2025-10-16",
+          "filing_date": "2025-10-20",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$5,308,819",
@@ -1559,6 +1762,7 @@
         },
         {
           "trade_date": "2025-10-20",
+          "filing_date": "2025-10-21",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$579,457",
@@ -1566,6 +1770,7 @@
         },
         {
           "trade_date": "2025-10-21",
+          "filing_date": "2025-10-23",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$2,029,236",
@@ -1573,6 +1778,7 @@
         },
         {
           "trade_date": "2025-10-23",
+          "filing_date": "2025-10-27",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$1,912,870",
@@ -1580,6 +1786,7 @@
         },
         {
           "trade_date": "2025-10-27",
+          "filing_date": "2025-10-28",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$1,256,280",
@@ -1587,6 +1794,7 @@
         },
         {
           "trade_date": "2025-10-28",
+          "filing_date": "2025-10-30",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$995,907",
@@ -1594,6 +1802,7 @@
         },
         {
           "trade_date": "2025-10-30",
+          "filing_date": "2025-11-03",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$808,084",
@@ -1601,6 +1810,7 @@
         },
         {
           "trade_date": "2025-11-03",
+          "filing_date": "2025-11-04",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$1,208,484",
@@ -1608,6 +1818,7 @@
         },
         {
           "trade_date": "2025-11-04",
+          "filing_date": "2025-11-06",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$934,377",
@@ -1615,6 +1826,7 @@
         },
         {
           "trade_date": "2025-11-10",
+          "filing_date": "2025-11-12",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$683,135",
@@ -1622,6 +1834,7 @@
         },
         {
           "trade_date": "2025-11-13",
+          "filing_date": "2025-11-17",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$126,047",
@@ -1629,6 +1842,7 @@
         },
         {
           "trade_date": "2025-11-17",
+          "filing_date": "2025-11-18",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$858,171",
@@ -1636,6 +1850,7 @@
         },
         {
           "trade_date": "2025-11-18",
+          "filing_date": "2025-11-20",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$593,177",
@@ -1643,6 +1858,7 @@
         },
         {
           "trade_date": "2025-11-20",
+          "filing_date": "2025-11-24",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$1,762,846",
@@ -1650,6 +1866,7 @@
         },
         {
           "trade_date": "2025-11-25",
+          "filing_date": "2025-11-26",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$355,046",
@@ -1657,6 +1874,7 @@
         },
         {
           "trade_date": "2025-12-01",
+          "filing_date": "2025-12-02",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$511,078",
@@ -1664,6 +1882,7 @@
         },
         {
           "trade_date": "2025-12-02",
+          "filing_date": "2025-12-04",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$937,751",
@@ -1671,6 +1890,7 @@
         },
         {
           "trade_date": "2025-12-04",
+          "filing_date": "2025-12-08",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$1,240,487",
@@ -1678,6 +1898,7 @@
         },
         {
           "trade_date": "2025-12-08",
+          "filing_date": "2025-12-09",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$395,201",
@@ -1685,6 +1906,7 @@
         },
         {
           "trade_date": "2025-12-10",
+          "filing_date": "2025-12-11",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$562,374",
@@ -1692,6 +1914,7 @@
         },
         {
           "trade_date": "2025-12-12",
+          "filing_date": "2025-12-15",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$792,314",
@@ -1699,6 +1922,7 @@
         },
         {
           "trade_date": "2025-12-15",
+          "filing_date": "2025-12-16",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$457,015",
@@ -1706,6 +1930,7 @@
         },
         {
           "trade_date": "2025-12-16",
+          "filing_date": "2025-12-18",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$1,060,530",
@@ -1713,6 +1938,7 @@
         },
         {
           "trade_date": "2025-12-18",
+          "filing_date": "2025-12-22",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$223,235",
@@ -1720,6 +1946,7 @@
         },
         {
           "trade_date": "2025-12-22",
+          "filing_date": "2025-12-29",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$323,803",
@@ -1727,6 +1954,7 @@
         },
         {
           "trade_date": "2025-12-24",
+          "filing_date": "2025-12-30",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$667,214",
@@ -1734,6 +1962,7 @@
         },
         {
           "trade_date": "2025-12-30",
+          "filing_date": "2026-01-02",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$962,492",
@@ -1741,6 +1970,7 @@
         },
         {
           "trade_date": "2026-01-02",
+          "filing_date": "2026-01-05",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$517,523",
@@ -1748,6 +1978,7 @@
         },
         {
           "trade_date": "2026-01-05",
+          "filing_date": "2026-01-06",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$529,006",
@@ -1755,6 +1986,7 @@
         },
         {
           "trade_date": "2026-01-06",
+          "filing_date": "2026-01-08",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$417,792",
@@ -1762,6 +1994,7 @@
         },
         {
           "trade_date": "2026-01-08",
+          "filing_date": "2026-01-12",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$408,049",
@@ -1769,6 +2002,7 @@
         },
         {
           "trade_date": "2026-01-12",
+          "filing_date": "2026-01-13",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$610,319",
@@ -1776,6 +2010,7 @@
         },
         {
           "trade_date": "2026-01-13",
+          "filing_date": "2026-01-15",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$1,297,352",
@@ -1783,6 +2018,7 @@
         },
         {
           "trade_date": "2026-01-15",
+          "filing_date": "2026-01-20",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$583,775",
@@ -1790,6 +2026,7 @@
         },
         {
           "trade_date": "2026-01-20",
+          "filing_date": "2026-01-22",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$246,016",
@@ -1797,6 +2034,7 @@
         },
         {
           "trade_date": "2026-01-26",
+          "filing_date": "2026-01-27",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$102,060",
@@ -1804,6 +2042,7 @@
         },
         {
           "trade_date": "2026-01-27",
+          "filing_date": "2026-01-29",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$4,578,517",
@@ -1811,6 +2050,7 @@
         },
         {
           "trade_date": "2026-01-29",
+          "filing_date": "2026-02-02",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$2,696,801",
@@ -1818,6 +2058,7 @@
         },
         {
           "trade_date": "2026-02-02",
+          "filing_date": "2026-02-03",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$544,110",
@@ -1825,6 +2066,7 @@
         },
         {
           "trade_date": "2026-02-03",
+          "filing_date": "2026-02-05",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$2,325,007",
@@ -1832,6 +2074,7 @@
         },
         {
           "trade_date": "2026-02-05",
+          "filing_date": "2026-02-09",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$2,032,967",
@@ -1839,6 +2082,7 @@
         },
         {
           "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$6,237,962",
@@ -1846,6 +2090,7 @@
         },
         {
           "trade_date": "2026-02-11",
+          "filing_date": "2026-02-12",
           "insider_name": "Saba Capital Management, L.P.",
           "title": "10%",
           "value": "+$2,899,604",
@@ -1862,10 +2107,68 @@
       "trades": [
         {
           "trade_date": "2026-01-26",
+          "filing_date": "2026-01-28",
           "insider_name": "Chen Bihua",
           "title": "Chairperson, CEO, 10%",
           "value": "+$8,000,000",
           "qty": "+800,000"
+        }
+      ]
+    },
+    {
+      "ticker": "NDAQ",
+      "company_name": "NDAQ Company",
+      "total_value": 17485430,
+      "total_purchases": 6,
+      "unique_insiders": 6,
+      "trades": [
+        {
+          "trade_date": "2023-06-13",
+          "filing_date": "2023-06-15",
+          "insider_name": "Black Steven D",
+          "title": "Dir",
+          "value": "+$205,840",
+          "qty": "+4,000"
+        },
+        {
+          "trade_date": "2023-07-31",
+          "filing_date": "2023-08-02",
+          "insider_name": "Friedman Adena T",
+          "title": "Chair, CEO",
+          "value": "+$510,000",
+          "qty": "+10,000"
+        },
+        {
+          "trade_date": "2023-08-03",
+          "filing_date": "2023-08-07",
+          "insider_name": "Yabuki Jeffery W",
+          "title": "Dir",
+          "value": "+$24,700",
+          "qty": "+500"
+        },
+        {
+          "trade_date": "2023-10-23",
+          "filing_date": "2023-10-25",
+          "insider_name": "Torgeby Johan",
+          "title": "Dir",
+          "value": "+$705,880",
+          "qty": "+14,000"
+        },
+        {
+          "trade_date": "2024-11-13",
+          "filing_date": "2024-11-14",
+          "insider_name": "Zollar Alfred W",
+          "title": "Dir",
+          "value": "+$203,970",
+          "qty": "+2,542"
+        },
+        {
+          "trade_date": "2026-02-13",
+          "filing_date": "2026-02-13",
+          "insider_name": "Investor Ab",
+          "title": "10%",
+          "value": "+$15,835,040",
+          "qty": "+200,000"
         }
       ]
     },
@@ -1878,6 +2181,7 @@
       "trades": [
         {
           "trade_date": "2022-05-27",
+          "filing_date": "2022-06-01",
           "insider_name": "Gibbs David W",
           "title": "Dir",
           "value": "+$474,818",
@@ -1885,6 +2189,7 @@
         },
         {
           "trade_date": "2025-08-13",
+          "filing_date": "2025-08-14",
           "insider_name": "Aumen Eric J",
           "title": "Chief Accounting Officer",
           "value": "+$10,000",
@@ -1892,6 +2197,7 @@
         },
         {
           "trade_date": "2025-08-13",
+          "filing_date": "2025-08-14",
           "insider_name": "Fitzpatrick Dawn N.",
           "title": "Dir",
           "value": "+$493,000",
@@ -1899,6 +2205,7 @@
         },
         {
           "trade_date": "2025-08-18",
+          "filing_date": "2025-08-19",
           "insider_name": "El-Erian Mohamed",
           "title": "Dir",
           "value": "+$519,960",
@@ -1906,6 +2213,7 @@
         },
         {
           "trade_date": "2025-08-21",
+          "filing_date": "2025-08-21",
           "insider_name": "Sweeney Robert John",
           "title": "Dir",
           "value": "+$488,200",
@@ -1913,6 +2221,7 @@
         },
         {
           "trade_date": "2025-12-22",
+          "filing_date": "2025-12-29",
           "insider_name": "Watsa V Prem Et Al",
           "title": "10%",
           "value": "+$70,963,523",
@@ -1920,6 +2229,7 @@
         },
         {
           "trade_date": "2025-12-30",
+          "filing_date": "2026-01-02",
           "insider_name": "Watsa V Prem Et Al",
           "title": "10%",
           "value": "+$67,443,913",
@@ -1927,6 +2237,7 @@
         },
         {
           "trade_date": "2026-01-16",
+          "filing_date": "2026-01-21",
           "insider_name": "Watsa V Prem Et Al",
           "title": "10%",
           "value": "+$49,684,526",
@@ -1934,6 +2245,7 @@
         },
         {
           "trade_date": "2026-01-22",
+          "filing_date": "2026-01-26",
           "insider_name": "Watsa V Prem Et Al",
           "title": "10%",
           "value": "+$14,420,222",
@@ -1941,6 +2253,7 @@
         },
         {
           "trade_date": "2026-01-27",
+          "filing_date": "2026-01-29",
           "insider_name": "Watsa V Prem Et Al",
           "title": "10%",
           "value": "+$16,445,714",
@@ -1957,6 +2270,7 @@
       "trades": [
         {
           "trade_date": "2025-04-03",
+          "filing_date": "2025-04-07",
           "insider_name": "Coliseum Capital Management, LLC",
           "title": "10%",
           "value": "+$1,873,230",
@@ -1964,6 +2278,7 @@
         },
         {
           "trade_date": "2025-06-12",
+          "filing_date": "2025-06-16",
           "insider_name": "Coliseum Capital Management, LLC",
           "title": "10%",
           "value": "+$6,580,893",
@@ -1971,6 +2286,7 @@
         },
         {
           "trade_date": "2025-06-20",
+          "filing_date": "2025-06-24",
           "insider_name": "Coliseum Capital Management, LLC",
           "title": "10%",
           "value": "+$4,245,197",
@@ -1978,6 +2294,7 @@
         },
         {
           "trade_date": "2025-07-25",
+          "filing_date": "2025-07-29",
           "insider_name": "Coliseum Capital Management, LLC",
           "title": "10%",
           "value": "+$14,803,883",
@@ -1985,6 +2302,7 @@
         },
         {
           "trade_date": "2025-08-01",
+          "filing_date": "2025-08-05",
           "insider_name": "Coliseum Capital Management, LLC",
           "title": "10%",
           "value": "+$2,591,345",
@@ -1992,6 +2310,7 @@
         },
         {
           "trade_date": "2025-08-07",
+          "filing_date": "2025-08-11",
           "insider_name": "Coliseum Capital Management, LLC",
           "title": "10%",
           "value": "+$1,968,328",
@@ -1999,6 +2318,7 @@
         },
         {
           "trade_date": "2025-08-08",
+          "filing_date": "2025-08-11",
           "insider_name": "Darrell Bracken",
           "title": "Dir",
           "value": "+$250,000",
@@ -2006,6 +2326,7 @@
         },
         {
           "trade_date": "2025-08-08",
+          "filing_date": "2025-08-11",
           "insider_name": "Casey Saori",
           "title": "CFO",
           "value": "+$248,688",
@@ -2013,6 +2334,7 @@
         },
         {
           "trade_date": "2025-08-08",
+          "filing_date": "2025-08-11",
           "insider_name": "Genachowski Julius",
           "title": "Dir",
           "value": "+$250,205",
@@ -2020,6 +2342,7 @@
         },
         {
           "trade_date": "2025-08-08",
+          "filing_date": "2025-08-11",
           "insider_name": "Conrad Thomas",
           "title": "CEO",
           "value": "+$1,024,299",
@@ -2027,6 +2350,7 @@
         },
         {
           "trade_date": "2025-11-17",
+          "filing_date": "2025-11-18",
           "insider_name": "Conrad Thomas",
           "title": "CEO",
           "value": "+$1,008,045",
@@ -2034,6 +2358,7 @@
         },
         {
           "trade_date": "2026-02-04",
+          "filing_date": "2026-02-06",
           "insider_name": "Coliseum Capital Management, LLC",
           "title": "10%",
           "value": "+$11,556,296",
@@ -2050,26 +2375,11 @@
       "trades": [
         {
           "trade_date": "2026-01-28",
+          "filing_date": "2026-01-30",
           "insider_name": "Grinberg Paul",
           "title": "CEO, 10%",
           "value": "+$5,100,000",
           "qty": "+510,000"
-        }
-      ]
-    },
-    {
-      "ticker": "TVA",
-      "company_name": "TVA Company",
-      "total_value": 9958578,
-      "total_purchases": 1,
-      "unique_insiders": 1,
-      "trades": [
-        {
-          "trade_date": "2026-02-04",
-          "insider_name": "Angelo Mark",
-          "title": "Dir, 10%",
-          "value": "+$9,958,578",
-          "qty": "+925,000"
         }
       ]
     }
