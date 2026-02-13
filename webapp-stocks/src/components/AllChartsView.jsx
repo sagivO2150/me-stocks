@@ -410,96 +410,82 @@ const SingleStockChart = ({ ticker }) => {
                 isAnimationActive={false}
               />
               {insiderTrades && insiderTrades.total_purchases > 0 && (
-                <Line
+                <Scatter
                   yAxisId="insider"
-                  type="monotone"
                   dataKey="purchases"
-                  stroke="#10b981"
-                  strokeWidth={2}
+                  fill="#10b981"
                   isAnimationActive={false}
-                  strokeDasharray="3 3"
-                  dot={(dotProps) => {
-                    const { cx, cy, payload } = dotProps;
-                    if (!payload || !payload.purchaseTrades || payload.purchaseTrades.length === 0) {
-                      return <circle key={`purchase-empty-${cx}-${cy}`} cx={cx} cy={cy} r={0} fill="none" />;
-                    }
+                  shape={(props) => {
+                    const { cx, cy, payload, height } = props;
+                    if (!payload || !payload.purchases || payload.purchases <= 0) return null;
                     
-                    const trades = payload.purchaseTrades;
-                    const numTrades = trades.length;
+                    // Calculate the bottom of the chart (height of ResponsiveContainer)
+                    const chartBottom = height || 300;
                     
-                    if (numTrades === 1) {
-                      return (
-                        <circle 
-                          key={`purchase-${cx}-${cy}`} 
-                          cx={cx} 
-                          cy={cy} 
-                          r={6} 
-                          fill="#10b981" 
-                          stroke="#fff" 
+                    return (
+                      <g key={`purchase-${cx}-${cy}`}>
+                        {/* Vertical dotted line from bottom to dot */}
+                        <line
+                          x1={cx}
+                          y1={chartBottom}
+                          x2={cx}
+                          y2={cy}
+                          stroke="#10b981"
+                          strokeWidth={3}
+                          strokeDasharray="4 4"
+                          strokeOpacity={0.6}
+                        />
+                        {/* Circle at the top */}
+                        <circle
+                          cx={cx}
+                          cy={cy}
+                          r={8}
+                          fill="#10b981"
+                          stroke="#fff"
                           strokeWidth={2}
                         />
-                      );
-                    } else {
-                      const spacing = 3;
-                      const startX = cx - ((numTrades - 1) * spacing) / 2;
-                      return (
-                        <g key={`purchase-group-${cx}-${cy}`}>
-                          {trades.map((trade, idx) => (
-                            <circle
-                              key={`purchase-${cx}-${cy}-${idx}`}
-                              cx={startX + (idx * spacing)}
-                              cy={cy}
-                              r={5}
-                              fill="#10b981"
-                              stroke="#fff"
-                              strokeWidth={1.5}
-                            />
-                          ))}
-                        </g>
-                      );
-                    }
+                      </g>
+                    );
                   }}
                 />
               )}
               {insiderTrades && insiderTrades.total_sales > 0 && (
-                <Line
+                <Scatter
                   yAxisId="insider"
-                  type="monotone"
                   dataKey="sales"
-                  stroke="#ef4444"
-                  strokeWidth={2}
-                  strokeDasharray="5 5"
+                  fill="#ef4444"
                   isAnimationActive={false}
-                  dot={(dotProps) => {
-                    const { cx, cy, payload } = dotProps;
-                    if (!payload || !payload.saleTrades || payload.saleTrades.length === 0) {
-                      return <circle key={`sale-empty-${cx}-${cy}`} cx={cx} cy={cy} r={0} fill="none" />;
-                    }
+                  shape={(props) => {
+                    const { cx, cy, payload, height } = props;
+                    if (!payload || !payload.sales || payload.sales <= 0) return null;
                     
-                    const trades = payload.saleTrades;
-                    const numTrades = trades.length;
+                    // Calculate the bottom of the chart
+                    const chartBottom = height || 300;
                     
-                    if (numTrades === 1) {
-                      return <circle key={`sale-${cx}-${cy}`} cx={cx} cy={cy} r={6} fill="#ef4444" stroke="#fff" strokeWidth={2} />;
-                    } else {
-                      const spacing = 3;
-                      const startX = cx - ((numTrades - 1) * spacing) / 2;
-                      return (
-                        <g key={`sale-group-${cx}-${cy}`}>
-                          {trades.map((trade, idx) => (
-                            <circle
-                              key={`sale-${cx}-${cy}-${idx}`}
-                              cx={startX + (idx * spacing)}
-                              cy={cy}
-                              r={5}
-                              fill="#ef4444"
-                              stroke="#fff"
-                              strokeWidth={1.5}
-                            />
-                          ))}
-                        </g>
-                      );
-                    }
+                    return (
+                      <g key={`sale-${cx}-${cy}`}>
+                        {/* Vertical dotted line from bottom to dot */}
+                        <line
+                          x1={cx}
+                          y1={chartBottom}
+                          x2={cx}
+                          y2={cy}
+                          stroke="#ef4444"
+                          strokeWidth={3}
+                          strokeDasharray="5 5"
+                          strokeOpacity={0.6}
+                        />
+                        {/* Circle at the top */}
+                        <circle
+                          cx={cx}
+                          cy={cy}
+                          r={8}
+                          fill="#ef4444"
+                          stroke="#fff"
+                          strokeWidth={2}
+                        />
+                      </g>
+                    );
                   }}
                 />
               )}
