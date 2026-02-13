@@ -416,11 +416,11 @@ const SingleStockChart = ({ ticker }) => {
                   fill="#10b981"
                   isAnimationActive={false}
                   shape={(props) => {
-                    const { cx, cy, payload, height } = props;
+                    const { cx, cy, payload, yAxis } = props;
                     if (!payload || !payload.purchases || payload.purchases <= 0) return null;
                     
-                    // Calculate the bottom of the chart (height of ResponsiveContainer)
-                    const chartBottom = height || 300;
+                    // Get the chart bottom from yAxis range
+                    const chartBottom = yAxis?.range?.[0] || 290; // yAxis.range[0] is the bottom pixel coordinate
                     
                     return (
                       <g key={`purchase-${cx}-${cy}`}>
@@ -456,11 +456,11 @@ const SingleStockChart = ({ ticker }) => {
                   fill="#ef4444"
                   isAnimationActive={false}
                   shape={(props) => {
-                    const { cx, cy, payload, height } = props;
+                    const { cx, cy, payload, yAxis } = props;
                     if (!payload || !payload.sales || payload.sales <= 0) return null;
                     
-                    // Calculate the bottom of the chart
-                    const chartBottom = height || 300;
+                    // Get the chart bottom from yAxis range
+                    const chartBottom = yAxis?.range?.[0] || 290; // yAxis.range[0] is the bottom pixel coordinate
                     
                     return (
                       <g key={`sale-${cx}-${cy}`}>
