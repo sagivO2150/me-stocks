@@ -366,8 +366,12 @@ def backtest_card_counting_strategy(json_file, initial_position_size=1000, base_
                             highest_price = high_price
                         continue
                     
-                    # After grace period: Check if 5% below entry on first check (day 3)
+                    # After grace period ends (day 3+): Initialize trailing stop with grace period peak
                     if business_days_count == 3:
+                        # Recalculate trailing stop based on highest price from grace period
+                        trailing_stop_price = highest_price * 0.95
+                        
+                        # Check if 5% below entry on first check (day 3)
                         if close_price <= pos_entry_price * 0.95:
                             # Immediate sell if 5%+ below entry after grace period
                             return_pct = ((close_price - pos_entry_price) / pos_entry_price) * 100
@@ -423,6 +427,10 @@ def backtest_card_counting_strategy(json_file, initial_position_size=1000, base_
                         positions_to_remove.append(pos_idx)
                         hit_stop_loss = True
                         break
+                
+                # If position not closed, update its highest_price for next iteration
+                if not hit_stop_loss:
+                    position['highest_price'] = highest_price
             
             # Remove closed positions
             for pos_idx in sorted(positions_to_remove, reverse=True):
@@ -505,8 +513,12 @@ def backtest_card_counting_strategy(json_file, initial_position_size=1000, base_
                         highest_price = high_price
                     continue
                 
-                # After grace period: Check if 5% below entry on first check (day 3)
+                # After grace period ends (day 3+): Initialize trailing stop with grace period peak
                 if business_days_count == 3:
+                    # Recalculate trailing stop based on highest price from grace period
+                    trailing_stop_price = highest_price * 0.95
+                    
+                    # Check if 5% below entry on first check (day 3)
                     if close_price <= pos_entry_price * 0.95:
                         # Immediate sell if 5%+ below entry after grace period
                         return_pct = ((close_price - pos_entry_price) / pos_entry_price) * 100
