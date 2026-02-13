@@ -6,6 +6,7 @@ import TopMonthlyCard from './components/TopMonthlyCard';
 import LivePurchasesCard from './components/LivePurchasesCard';
 import FilterPanel from './components/FilterPanel';
 import StockDetail from './components/StockDetail';
+import AllChartsView from './components/AllChartsView';
 
 function App() {
   const [trades, setTrades] = useState([]);
@@ -25,7 +26,7 @@ function App() {
     chamber: 'all',
     days: 0              // No time limit - show all trades
   });
-  const [viewMode, setViewMode] = useState('insider'); // 'insider', 'political', 'monthly', 'live'
+  const [viewMode, setViewMode] = useState('insider'); // 'insider', 'political', 'monthly', 'live', 'all-charts'
   const [monthlySortType, setMonthlySortType] = useState('amount'); // 'amount', 'c-level', '10-percent'
   const [loading, setLoading] = useState(true);
   const [politicalLoading, setPoliticalLoading] = useState(false);
@@ -346,6 +347,16 @@ function App() {
             >
               🔴 Live Purchases
             </button>
+            <button
+              onClick={() => setViewMode('all-charts')}
+              className={`px-6 py-2 rounded-md font-medium transition ${
+                viewMode === 'all-charts'
+                  ? 'bg-orange-600 text-white'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              📈 All Charts
+            </button>
           </div>
 
           <div className="mt-4 inline-block bg-slate-800 rounded-lg px-6 py-3 border border-slate-700">
@@ -375,6 +386,13 @@ function App() {
                 <span className="text-slate-400">Found </span>
                 <span className="text-red-400 font-bold text-xl">{livePurchases.length}</span>
                 <span className="text-slate-400"> stocks with purchases today</span>
+              </>
+            )}
+            {viewMode === 'all-charts' && (
+              <>
+                <span className="text-slate-400">Showing </span>
+                <span className="text-orange-400 font-bold text-xl">{topMonthlyTrades.length}</span>
+                <span className="text-slate-400"> charts with insider overlays</span>
               </>
             )}
           </div>
@@ -427,23 +445,24 @@ function App() {
         )}
 
         {/* Trade Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Show insider trades */}
-          {viewMode === 'insider' && trades.map((trade, index) => (
-            <div key={`insider-${index}`} onClick={() => setSelectedTrade(trade)} className="cursor-pointer">
-              <TradeCard trade={trade} />
-            </div>
-          ))}
-          
-          {/* Show political trades */}
-          {viewMode === 'political' && politicalTrades.map((trade, index) => (
-            <div key={`political-${trade.id || index}`} onClick={() => setSelectedTrade(trade)} className="cursor-pointer">
-              <PoliticalTradeCard trade={trade} />
-            </div>
-          ))}
-          
-          {/* Show top monthly trades */}
-          {viewMode === 'monthly' && (() => {
+        {viewMode !== 'all-charts' && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Show insider trades */}
+            {viewMode === 'insider' && trades.map((trade, index) => (
+              <div key={`insider-${index}`} onClick={() => setSelectedTrade(trade)} className="cursor-pointer">
+                <TradeCard trade={trade} />
+              </div>
+            ))}
+            
+            {/* Show political trades */}
+            {viewMode === 'political' && politicalTrades.map((trade, index) => (
+              <div key={`political-${trade.id || index}`} onClick={() => setSelectedTrade(trade)} className="cursor-pointer">
+                <PoliticalTradeCard trade={trade} />
+              </div>
+            ))}
+            
+            {/* Show top monthly trades */}
+            {viewMode === 'monthly' && (() => {
             // Sort monthly trades based on selected sort type
             const sortedTrades = [...topMonthlyTrades].sort((a, b) => {
               if (monthlySortType === 'amount') {
@@ -547,7 +566,29 @@ function App() {
               </div>
             </div>
           )}
-        </div>
+          </div>
+        )}
+
+        {/* All Charts View */}
+        {viewMode === 'all-charts' && (
+          <>
+            {monthlyLoading ? (
+              <div className="text-center text-slate-400 py-12">
+                Loading charts...
+              </div>
+            ) : topMonthlyTrades.length === 0 ? (
+              <div className="bg-yellow-900/30 border border-yellow-700 rounded-lg p-8 text-center">
+                <div className="text-yellow-300 text-xl mb-2">⚠️ No monthly data available</div>
+                <div className="text-yellow-200 text-sm">
+                  <p className="mb-2">Monthly insider trading data hasn't been loaded yet.</p>
+                  <p>Click the "Update Monthly Data" button in the filter panel to fetch the latest data.</p>
+                </div>
+              </div>
+            ) : (
+              <AllChartsView stocks={topMonthlyTrades} />
+            )}
+          </>
+        )}
 
         {/* Load More Button for Political Trades */}
         {viewMode === 'political' && politicalPagination.hasMore && (
