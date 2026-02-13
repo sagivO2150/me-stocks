@@ -289,6 +289,7 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
       const backtestSells = backtestSellsByDate[dateKey] || [];
       
       // Add trade line data - each trade gets its own line with 2 points
+      // Use close price for visual alignment with stock curve
       const tradeLineData = {};
       if (backtestTrades) {
         backtestTrades.forEach((trade, idx) => {
@@ -296,10 +297,11 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
           const exitDate = trade.exit_date?.split('T')[0];
           
           // Only add the price if this date is part of this trade line
+          // Use close price for visual alignment
           if (dateKey === entryDate) {
-            tradeLineData[`trade${idx}`] = parseFloat(trade.entry_price);
+            tradeLineData[`trade${idx}`] = point.close;
           } else if (dateKey === exitDate) {
-            tradeLineData[`trade${idx}`] = parseFloat(trade.exit_price);
+            tradeLineData[`trade${idx}`] = point.close;
           } else {
             tradeLineData[`trade${idx}`] = null;
           }
@@ -312,9 +314,9 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
         purchaseTrades: purchaseData?.trades || [],
         sales: saleData?.totalValue || null,
         saleTrades: saleData?.trades || [],
-        backtestBuy: backtestBuys.length > 0 ? backtestBuys[0].entry_price : null,
+        backtestBuy: backtestBuys.length > 0 ? point.close : null,
         backtestBuyData: backtestBuys,
-        backtestSell: backtestSells.length > 0 ? backtestSells[0].exit_price : null,
+        backtestSell: backtestSells.length > 0 ? point.close : null,
         backtestSellData: backtestSells,
         ...tradeLineData
       };
