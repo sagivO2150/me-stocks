@@ -89,7 +89,7 @@ def get_stock_data(ticker, period='1y'):
 
 
 def create_chart_with_trades(ax, ticker, stock_data, backtest_trades, company_name):
-    """Create a single stock chart with buy/sell markers"""
+    """Create a single stock chart with colored trade lines (green=profit, red=loss)"""
     
     # Plot price line
     dates = stock_data.index
@@ -110,13 +110,13 @@ def create_chart_with_trades(ax, ticker, stock_data, backtest_trades, company_na
     stock_dates_map = {d: stock_data.index[i] for i, d in enumerate(stock_dates)}
     
     # Track if we've added labels
-    buy_label_added = False
-    sell_label_added = False
+    profit_label_added = False
+    loss_label_added = False
     
-    # Add buy/sell markers from backtest
+    # Draw trade lines from backtest
     for idx, trade in backtest_trades.iterrows():
         try:
-            # Entry (Buy) marker
+            # Entry date/price
             entry_date_str = pd.to_datetime(trade['entry_date']).date()
             entry_price = float(trade['entry_price'])
             
@@ -132,26 +132,8 @@ def create_chart_with_trades(ax, ticker, stock_data, backtest_trades, company_na
                         entry_stock_date = stock_dates_map[check_date]
                         break
             
-            if entry_stock_date is not None:
-                # Get actual price from stock data at that date
-                actual_price = stock_data.loc[entry_stock_date, 'Close']
-                
-                ax.scatter(entry_stock_date, actual_price, color=COLORS['purchase'], 
-                          s=300, marker='^', edgecolors='white', linewidths=3, 
-                          zorder=10, label='Buy Signal' if not buy_label_added else '')
-                buy_label_added = True
-                
-                # Add entry price annotation
-                ax.annotate(f'Buy\n${entry_price:.2f}', 
-                           xy=(entry_stock_date, actual_price),
-                           xytext=(0, 20), textcoords='offset points',
-                           ha='center', fontsize=8, fontweight='bold',
-                           color='white',
-                           bbox=dict(boxstyle='round,pad=0.4', facecolor=COLORS['purchase'], alpha=0.9),
-                           arrowprops=dict(arrowstyle='->', color=COLORS['purchase'], lw=2))
-            
-            # Exit (Sell) marker
-            if pd.notna(trade.get('exit_date')):
+            # Exit date/price
+            if pd.notna(trade.get('exit_date')) and entry_stock_date is not None:
                 exit_date_str = pd.to_datetime(trade['exit_date']).date()
                 exit_price = float(trade['exit_price'])
                 
@@ -167,30 +149,28 @@ def create_chart_with_trades(ax, ticker, stock_data, backtest_trades, company_na
                             exit_stock_date = stock_dates_map[check_date]
                             break
                 
-                if exit_stock_date is not None and entry_stock_date is not None:
-                    # Get actual price from stock data
-                    actual_exit_price = stock_data.loc[exit_stock_date, 'Close']
+                if exit_stock_date is not None:
+                    # Determine line color based on profit/loss
+                    is_profit = trade['return_pct'] > 0
+                    line_color = COLORS['purchase'] if is_profit else COLORS['sale']
                     
-                    marker_color = COLORS['purchase'] if trade['return_pct'] > 0 else COLORS['sale']
-                    ax.scatter(exit_stock_date, actual_exit_price, color=marker_color, 
-                              s=300, marker='v', edgecolors='white', linewidths=3, 
-                              zorder=10, label='Sell Signal' if not sell_label_added else '')
-                    sell_label_added = True
+                    # Draw thick line from entry to exit
+                    label = None
+                    if is_profit and not profit_label_added:
+                        label = f'Profitable Trade'
+                        profit_label_added = True
+                    elif not is_profit and not loss_label_added:
+                        label = f'Losing Trade'
+                        loss_label_added = True
                     
-                    # Draw line connecting buy and sell
                     ax.plot([entry_stock_date, exit_stock_date], 
-                           [stock_data.loc[entry_stock_date, 'Close'], actual_exit_price], 
-                           color=marker_color, linestyle='--', linewidth=2.5, alpha=0.7, zorder=5)
-                    
-                    # Add profit/loss annotation at the sell point
-                    profit_text = f"Sell\n${exit_price:.2f}\n{trade['return_pct']:+.1f}%"
-                    ax.annotate(profit_text, 
-                               xy=(exit_stock_date, actual_exit_price),
-                               xytext=(0, -30), textcoords='offset points',
-                               ha='center', fontsize=8, fontweight='bold',
-                               color='white',
-                               bbox=dict(boxstyle='round,pad=0.4', facecolor=marker_color, alpha=0.9),
-                               arrowprops=dict(arrowstyle='->', color=marker_color, lw=2))
+                           [entry_price, exit_price], 
+                           color=line_color, 
+                           linewidth=4, 
+                           alpha=0.8, 
+                           zorder=10,
+                           label=label,
+                           solid_capstyle='round')
         
         except Exception as e:
             print(f"  ⚠️  Could not plot trade {idx} for {ticker}: {e}")
