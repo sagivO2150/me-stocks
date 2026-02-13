@@ -31,14 +31,21 @@ def fetch_insider_trades(ticker_symbol, days_back=1461):
         - error: Error message if failed
     """
     try:
-        # Use direct ticker page - most reliable and gets all available data
-        url = f"http://openinsider.com/{ticker_symbol.upper()}"
+        # Use extended screener URL for ~4 years of data instead of ~2 years
+        url = "http://openinsider.com/screener"
+        params = {
+            's': ticker_symbol.upper(),
+            'fd': str(days_back),  # Filing days back (~4 years default)
+            'xp': '1',             # Exclude certain transaction types
+            'cnt': '1000',         # Max results per page
+            'page': '1'
+        }
         
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
         }
         
-        response = requests.get(url, headers=headers, timeout=30)
+        response = requests.get(url, params=params, headers=headers, timeout=30)
         response.raise_for_status()
         
         soup = BeautifulSoup(response.text, 'html.parser')

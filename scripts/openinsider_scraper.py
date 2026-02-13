@@ -37,14 +37,22 @@ def scrape_ticker_details(ticker, filing_days=30, trade_type='purchase'):
     """
     from datetime import datetime, timedelta
     
-    url = f"http://openinsider.com/search?q={ticker}"
+    # Use extended screener URL for ~4 years of data instead of ~2 years
+    url = "http://openinsider.com/screener"
+    params = {
+        's': ticker,
+        'fd': '1461',  # ~4 years of filing data
+        'xp': '1',     # Exclude certain transaction types
+        'cnt': '1000', # Max results
+        'page': '1'
+    }
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
     }
     
     try:
         time.sleep(0.3)  # Rate limiting
-        response = requests.get(url, headers=headers, timeout=30)
+        response = requests.get(url, params=params, headers=headers, timeout=30)
         response.raise_for_status()
         
         soup = BeautifulSoup(response.content, 'html.parser')

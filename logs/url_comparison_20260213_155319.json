@@ -1,0 +1,419 @@
+{
+  "timestamp": "2026-02-13T15:53:19.353909",
+  "summary": {
+    "simple": {
+      "success": 50,
+      "failed": 0,
+      "total_trades": 389,
+      "details": []
+    },
+    "extended": {
+      "success": 50,
+      "failed": 0,
+      "total_trades": 622,
+      "details": []
+    }
+  },
+  "comparison": [
+    {
+      "ticker": "WRB",
+      "simple_trades": 14,
+      "extended_trades": 16,
+      "difference": 2,
+      "simple_date_range": "2026-02-09 to 2025-12-18",
+      "extended_date_range": "2026-02-09 to 2022-07-05"
+    },
+    {
+      "ticker": "SGP",
+      "simple_trades": 15,
+      "extended_trades": 15,
+      "difference": 0,
+      "simple_date_range": "2026-02-09 to 2026-02-09",
+      "extended_date_range": "2026-02-09 to 2026-02-09"
+    },
+    {
+      "ticker": "SHCO",
+      "simple_trades": 2,
+      "extended_trades": 13,
+      "difference": 11,
+      "simple_date_range": "2026-01-29 to 2024-06-20",
+      "extended_date_range": "2026-01-29 to 2022-06-16"
+    },
+    {
+      "ticker": "THM",
+      "simple_trades": 5,
+      "extended_trades": 6,
+      "difference": 1,
+      "simple_date_range": "2026-01-28 to 2025-02-27",
+      "extended_date_range": "2026-01-28 to 2024-01-18"
+    },
+    {
+      "ticker": "UA",
+      "simple_trades": 9,
+      "extended_trades": 10,
+      "difference": 1,
+      "simple_date_range": "2026-01-27 to 2025-08-13",
+      "extended_date_range": "2026-01-27 to 2022-05-27"
+    },
+    {
+      "ticker": "MANE",
+      "simple_trades": 5,
+      "extended_trades": 5,
+      "difference": 0,
+      "simple_date_range": "2026-02-05 to 2026-02-04",
+      "extended_date_range": "2026-02-05 to 2026-02-04"
+    },
+    {
+      "ticker": "EIKN",
+      "simple_trades": 5,
+      "extended_trades": 5,
+      "difference": 0,
+      "simple_date_range": "2026-02-06 to 2026-02-04",
+      "extended_date_range": "2026-02-06 to 2026-02-04"
+    },
+    {
+      "ticker": "NFRX",
+      "simple_trades": 5,
+      "extended_trades": 5,
+      "difference": 0,
+      "simple_date_range": "2026-02-10 to 2026-02-02",
+      "extended_date_range": "2026-02-10 to 2026-02-02"
+    },
+    {
+      "ticker": "AKTS",
+      "simple_trades": 6,
+      "extended_trades": 6,
+      "difference": 0,
+      "simple_date_range": "2026-01-12 to 2026-01-12",
+      "extended_date_range": "2026-01-12 to 2026-01-12"
+    },
+    {
+      "ticker": "GME",
+      "simple_trades": 10,
+      "extended_trades": 19,
+      "difference": 9,
+      "simple_date_range": "2026-01-23 to 2024-04-08",
+      "extended_date_range": "2026-01-23 to 2022-03-21"
+    },
+    {
+      "ticker": "HCIC",
+      "simple_trades": 3,
+      "extended_trades": 3,
+      "difference": 0,
+      "simple_date_range": "2026-02-06 to 2026-02-06",
+      "extended_date_range": "2026-02-06 to 2026-02-06"
+    },
+    {
+      "ticker": "AVO",
+      "simple_trades": 12,
+      "extended_trades": 14,
+      "difference": 2,
+      "simple_date_range": "2026-01-21 to 2025-11-04",
+      "extended_date_range": "2026-01-21 to 2022-03-15"
+    },
+    {
+      "ticker": "AVR",
+      "simple_trades": 1,
+      "extended_trades": 1,
+      "difference": 0,
+      "simple_date_range": "2026-01-22 to 2026-01-22",
+      "extended_date_range": "2026-01-22 to 2026-01-22"
+    },
+    {
+      "ticker": "YSS",
+      "simple_trades": 3,
+      "extended_trades": 3,
+      "difference": 0,
+      "simple_date_range": "2026-01-30 to 2026-01-30",
+      "extended_date_range": "2026-01-30 to 2026-01-30"
+    },
+    {
+      "ticker": "HYMC",
+      "simple_trades": 15,
+      "extended_trades": 16,
+      "difference": 1,
+      "simple_date_range": "2026-01-29 to 2025-06-13",
+      "extended_date_range": "2026-01-29 to 2023-05-03"
+    },
+    {
+      "ticker": "ASA",
+      "simple_trades": 77,
+      "extended_trades": 113,
+      "difference": 36,
+      "simple_date_range": "2026-02-11 to 2024-11-14",
+      "extended_date_range": "2026-02-11 to 2022-07-05"
+    },
+    {
+      "ticker": "HLXC",
+      "simple_trades": 1,
+      "extended_trades": 1,
+      "difference": 0,
+      "simple_date_range": "2026-01-26 to 2026-01-26",
+      "extended_date_range": "2026-01-26 to 2026-01-26"
+    },
+    {
+      "ticker": "UAA",
+      "simple_trades": 9,
+      "extended_trades": 10,
+      "difference": 1,
+      "simple_date_range": "2026-01-27 to 2025-08-13",
+      "extended_date_range": "2026-01-27 to 2022-05-27"
+    },
+    {
+      "ticker": "SONO",
+      "simple_trades": 12,
+      "extended_trades": 12,
+      "difference": 0,
+      "simple_date_range": "2026-02-04 to 2025-04-03",
+      "extended_date_range": "2026-02-04 to 2025-04-03"
+    },
+    {
+      "ticker": "MLAA",
+      "simple_trades": 1,
+      "extended_trades": 1,
+      "difference": 0,
+      "simple_date_range": "2026-01-28 to 2026-01-28",
+      "extended_date_range": "2026-01-28 to 2026-01-28"
+    },
+    {
+      "ticker": "TVA",
+      "simple_trades": 1,
+      "extended_trades": 1,
+      "difference": 0,
+      "simple_date_range": "2026-02-04 to 2026-02-04",
+      "extended_date_range": "2026-02-04 to 2026-02-04"
+    },
+    {
+      "ticker": "LIFE",
+      "simple_trades": 3,
+      "extended_trades": 3,
+      "difference": 0,
+      "simple_date_range": "2026-01-30 to 2026-01-29",
+      "extended_date_range": "2026-01-30 to 2026-01-29"
+    },
+    {
+      "ticker": "MIRM",
+      "simple_trades": 10,
+      "extended_trades": 14,
+      "difference": 4,
+      "simple_date_range": "2026-01-23 to 2019-09-10",
+      "extended_date_range": "2026-01-23 to 2019-09-10"
+    },
+    {
+      "ticker": "PMN",
+      "simple_trades": 9,
+      "extended_trades": 19,
+      "difference": 10,
+      "simple_date_range": "2026-02-03 to 2024-07-31",
+      "extended_date_range": "2026-02-03 to 2022-07-11"
+    },
+    {
+      "ticker": "FEAM",
+      "simple_trades": 7,
+      "extended_trades": 9,
+      "difference": 2,
+      "simple_date_range": "2026-02-02 to 2025-08-25",
+      "extended_date_range": "2026-02-02 to 2023-06-07"
+    },
+    {
+      "ticker": "LEE",
+      "simple_trades": 8,
+      "extended_trades": 13,
+      "difference": 5,
+      "simple_date_range": "2026-02-05 to 2024-03-18",
+      "extended_date_range": "2026-02-05 to 2022-05-09"
+    },
+    {
+      "ticker": "MU",
+      "simple_trades": 1,
+      "extended_trades": 1,
+      "difference": 0,
+      "simple_date_range": "2026-01-13 to 2026-01-13",
+      "extended_date_range": "2026-01-13 to 2026-01-13"
+    },
+    {
+      "ticker": "TCI",
+      "simple_trades": 2,
+      "extended_trades": 2,
+      "difference": 0,
+      "simple_date_range": "2026-01-12 to 2026-01-12",
+      "extended_date_range": "2026-01-12 to 2026-01-12"
+    },
+    {
+      "ticker": "RDDT",
+      "simple_trades": 3,
+      "extended_trades": 5,
+      "difference": 2,
+      "simple_date_range": "2026-02-10 to 2025-03-12",
+      "extended_date_range": "2026-02-10 to 2024-03-25"
+    },
+    {
+      "ticker": "YYAI",
+      "simple_trades": 6,
+      "extended_trades": 12,
+      "difference": 6,
+      "simple_date_range": "2026-01-21 to 2025-10-08",
+      "extended_date_range": "2026-01-21 to 2022-07-15"
+    },
+    {
+      "ticker": "EMPD",
+      "simple_trades": 14,
+      "extended_trades": 17,
+      "difference": 3,
+      "simple_date_range": "2026-02-02 to 2024-07-05",
+      "extended_date_range": "2026-02-02 to 2022-05-16"
+    },
+    {
+      "ticker": "KKR",
+      "simple_trades": 3,
+      "extended_trades": 6,
+      "difference": 3,
+      "simple_date_range": "2026-02-09 to 2025-05-06",
+      "extended_date_range": "2026-02-09 to 2022-02-17"
+    },
+    {
+      "ticker": "ALXO",
+      "simple_trades": 7,
+      "extended_trades": 7,
+      "difference": 0,
+      "simple_date_range": "2026-02-02 to 2024-03-14",
+      "extended_date_range": "2026-02-02 to 2024-03-14"
+    },
+    {
+      "ticker": "CAQ",
+      "simple_trades": 1,
+      "extended_trades": 1,
+      "difference": 0,
+      "simple_date_range": "2026-02-09 to 2026-02-09",
+      "extended_date_range": "2026-02-09 to 2026-02-09"
+    },
+    {
+      "ticker": "LW",
+      "simple_trades": 6,
+      "extended_trades": 7,
+      "difference": 1,
+      "simple_date_range": "2026-02-06 to 2024-07-26",
+      "extended_date_range": "2026-02-06 to 2023-10-16"
+    },
+    {
+      "ticker": "MIGI",
+      "simple_trades": 6,
+      "extended_trades": 7,
+      "difference": 1,
+      "simple_date_range": "2026-01-28 to 2025-11-26",
+      "extended_date_range": "2026-01-28 to 2022-11-28"
+    },
+    {
+      "ticker": "RUM",
+      "simple_trades": 2,
+      "extended_trades": 3,
+      "difference": 1,
+      "simple_date_range": "2026-02-03 to 2025-11-19",
+      "extended_date_range": "2026-02-03 to 2022-09-16"
+    },
+    {
+      "ticker": "ABT",
+      "simple_trades": 2,
+      "extended_trades": 2,
+      "difference": 0,
+      "simple_date_range": "2026-02-04 to 2026-01-23",
+      "extended_date_range": "2026-02-04 to 2026-01-23"
+    },
+    {
+      "ticker": "MUZE",
+      "simple_trades": 1,
+      "extended_trades": 1,
+      "difference": 0,
+      "simple_date_range": "2026-02-02 to 2026-02-02",
+      "extended_date_range": "2026-02-02 to 2026-02-02"
+    },
+    {
+      "ticker": "STEX",
+      "simple_trades": 10,
+      "extended_trades": 34,
+      "difference": 24,
+      "simple_date_range": "2026-02-04 to 2025-07-25",
+      "extended_date_range": "2026-02-04 to 2022-05-20"
+    },
+    {
+      "ticker": "CEPS",
+      "simple_trades": 1,
+      "extended_trades": 1,
+      "difference": 0,
+      "simple_date_range": "2026-02-06 to 2026-02-06",
+      "extended_date_range": "2026-02-06 to 2026-02-06"
+    },
+    {
+      "ticker": "IMDX",
+      "simple_trades": 15,
+      "extended_trades": 38,
+      "difference": 23,
+      "simple_date_range": "2026-02-10 to 2024-04-11",
+      "extended_date_range": "2026-02-10 to 2022-03-15"
+    },
+    {
+      "ticker": "FIEE",
+      "simple_trades": 4,
+      "extended_trades": 6,
+      "difference": 2,
+      "simple_date_range": "2026-02-10 to 2024-12-26",
+      "extended_date_range": "2026-02-10 to 2023-12-06"
+    },
+    {
+      "ticker": "NOMA",
+      "simple_trades": 1,
+      "extended_trades": 1,
+      "difference": 0,
+      "simple_date_range": "2025-11-20 to 2025-11-20",
+      "extended_date_range": "2025-11-20 to 2025-11-20"
+    },
+    {
+      "ticker": "USAR",
+      "simple_trades": 2,
+      "extended_trades": 2,
+      "difference": 0,
+      "simple_date_range": "2026-01-29 to 2026-01-29",
+      "extended_date_range": "2026-01-29 to 2026-01-29"
+    },
+    {
+      "ticker": "LXRX",
+      "simple_trades": 1,
+      "extended_trades": 15,
+      "difference": 14,
+      "simple_date_range": "2026-02-02 to 2026-02-02",
+      "extended_date_range": "2026-02-02 to 2022-08-01"
+    },
+    {
+      "ticker": "VANI",
+      "simple_trades": 21,
+      "extended_trades": 74,
+      "difference": 53,
+      "simple_date_range": "2026-01-27 to 2023-11-22",
+      "extended_date_range": "2026-01-27 to 2022-05-18"
+    },
+    {
+      "ticker": "IP",
+      "simple_trades": 2,
+      "extended_trades": 2,
+      "difference": 0,
+      "simple_date_range": "2026-01-30 to 2026-01-30",
+      "extended_date_range": "2026-01-30 to 2026-01-30"
+    },
+    {
+      "ticker": "GEF",
+      "simple_trades": 29,
+      "extended_trades": 44,
+      "difference": 15,
+      "simple_date_range": "2026-02-09 to 2024-03-05",
+      "extended_date_range": "2026-02-09 to 2022-04-07"
+    },
+    {
+      "ticker": "CLBRU",
+      "simple_trades": 1,
+      "extended_trades": 1,
+      "difference": 0,
+      "simple_date_range": "2026-02-05 to 2026-02-05",
+      "extended_date_range": "2026-02-05 to 2026-02-05"
+    }
+  ]
+}

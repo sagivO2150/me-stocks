@@ -1,17 +1,17 @@
 {
-  "updated_at": "2026-02-13T03:24:14.411048",
-  "total_tickers": 109,
+  "updated_at": "2026-02-13T15:56:44.809752",
+  "total_tickers": 111,
   "total_trades": 200,
   "data": [
     {
       "ticker": "WRB",
       "company_name": "Berkley W R Corp",
-      "total_value": 315278461,
-      "total_value_formatted": "$315.3M",
-      "total_purchases": 9,
+      "total_value": 259655654,
+      "total_value_formatted": "$259.7M",
+      "total_purchases": 8,
       "unique_insiders": 1,
       "role_counts": {
-        "10% Owner": 9
+        "10% Owner": 8
       },
       "trades": [
         {
@@ -21,14 +21,6 @@
           "trade_date": "2026-01-26",
           "value": "+$69,297,690",
           "qty": "+1,028,931"
-        },
-        {
-          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-12",
-          "value": "+$55,622,807",
-          "qty": "+811,041"
         },
         {
           "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
@@ -139,39 +131,7 @@
           "qty": "+3,690,000"
         },
         {
-          "insider_name": "Chang Carmen",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-09",
-          "value": "+$15,000,000",
-          "qty": "+937,500"
-        },
-        {
-          "insider_name": "Baskett Forest",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-09",
-          "value": "+$15,000,000",
-          "qty": "+937,500"
-        },
-        {
-          "insider_name": "Sandell Scott D",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-09",
-          "value": "+$15,000,000",
-          "qty": "+937,500"
-        },
-        {
-          "insider_name": "Makhzoumi Mohamad",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-09",
-          "value": "+$15,000,000",
-          "qty": "+937,500"
-        },
-        {
-          "insider_name": "Mathers Edward T",
+          "insider_name": "Walker Paul Edward",
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
@@ -187,6 +147,30 @@
           "qty": "+937,500"
         },
         {
+          "insider_name": "Mathers Edward T",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Makhzoumi Mohamad",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Chang Carmen",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
           "insider_name": "New Enterprise Associates 17, L.P.",
           "title": "10%",
           "role": "10% Owner",
@@ -195,7 +179,15 @@
           "qty": "+937,500"
         },
         {
-          "insider_name": "Florence Anthony A. Jr.",
+          "insider_name": "Sandell Scott D",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-09",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Baskett Forest",
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
@@ -211,7 +203,7 @@
           "qty": "+937,500"
         },
         {
-          "insider_name": "Walker Paul Edward",
+          "insider_name": "Florence Anthony A. Jr.",
           "title": "10%",
           "role": "10% Owner",
           "trade_date": "2026-02-09",
@@ -227,17 +219,17 @@
           "qty": "+312,500"
         },
         {
-          "insider_name": "Nielsen Kirk G.",
-          "title": "Dir",
-          "role": "Other",
+          "insider_name": "Vensana Capital I Gp, LLC",
+          "title": "10%",
+          "role": "10% Owner",
           "trade_date": "2026-02-09",
           "value": "+$2,640,000",
           "qty": "+165,000"
         },
         {
-          "insider_name": "Vensana Capital I Gp, LLC",
-          "title": "10%",
-          "role": "10% Owner",
+          "insider_name": "Nielsen Kirk G.",
+          "title": "Dir",
+          "role": "Other",
           "trade_date": "2026-02-09",
           "value": "+$2,640,000",
           "qty": "+165,000"
@@ -691,60 +683,6 @@
       ]
     },
     {
-      "ticker": "AKTS",
-      "company_name": "Aktis Oncology, Inc.",
-      "total_value": 44251632,
-      "total_value_formatted": "$44.3M",
-      "total_purchases": 3,
-      "unique_insiders": 3,
-      "role_counts": {
-        "10% Owner": 3
-      },
-      "trades": [
-        {
-          "insider_name": "Gadicke Ansbert",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-12",
-          "value": "+$20,029,986",
-          "qty": "+1,112,777"
-        },
-        {
-          "insider_name": "Mpm Bioventures 2018, L.P.",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-12",
-          "value": "+$20,029,986",
-          "qty": "+1,112,777"
-        },
-        {
-          "insider_name": "Foley Todd",
-          "title": "Dir, 10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-12",
-          "value": "+$4,191,660",
-          "qty": "+232,870"
-        }
-      ],
-      "eventClassification": [
-        {
-          "type": "stabilizing-accumulation",
-          "count": 1,
-          "dates": [
-            "2026-01-12"
-          ],
-          "campaigns": [
-            {
-              "startDate": "2026-01-12",
-              "allDates": [
-                "2026-01-12"
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
       "ticker": "GME",
       "company_name": "Gamestop Corp.",
       "total_value": 42718400,
@@ -875,9 +813,9 @@
           "qty": "+671,000"
         },
         {
-          "insider_name": "Hennessy Thomas D",
-          "title": "Pres, 10%",
-          "role": "Pres",
+          "insider_name": "Hennessy Daniel J",
+          "title": "COB, CEO, 10%",
+          "role": "COB",
           "trade_date": "2026-02-06",
           "value": "+$6,710,000",
           "qty": "+671,000"
@@ -891,9 +829,9 @@
           "qty": "+671,000"
         },
         {
-          "insider_name": "Hennessy Daniel J",
-          "title": "COB, CEO, 10%",
-          "role": "COB",
+          "insider_name": "Hennessy Thomas D",
+          "title": "Pres, 10%",
+          "role": "Pres",
           "trade_date": "2026-02-06",
           "value": "+$6,710,000",
           "qty": "+671,000"
@@ -1690,23 +1628,23 @@
       "total_purchases": 2,
       "unique_insiders": 2,
       "role_counts": {
-        "Other": 1,
-        "10% Owner": 1
+        "10% Owner": 1,
+        "Other": 1
       },
       "trades": [
-        {
-          "insider_name": "Wheeler William J",
-          "title": "Dir",
-          "role": "Other",
-          "trade_date": "2026-01-30",
-          "value": "+$4,949,975",
-          "qty": "+260,525"
-        },
         {
           "insider_name": "Botha Roelof",
           "title": "Dir, 10%",
           "role": "10% Owner",
           "trade_date": "2026-01-29",
+          "value": "+$4,949,975",
+          "qty": "+260,525"
+        },
+        {
+          "insider_name": "Wheeler William J",
+          "title": "Dir",
+          "role": "Other",
+          "trade_date": "2026-01-30",
           "value": "+$4,949,975",
           "qty": "+260,525"
         }
@@ -1823,6 +1761,60 @@
               "startDate": "2026-01-23",
               "allDates": [
                 "2026-01-23"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ticker": "THS",
+      "company_name": "Treehouse Foods, Inc.",
+      "total_value": 8783283,
+      "total_value_formatted": "$8.8M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "Silver Point Capital L.P.",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-02-10",
+          "value": "+$8,783,283",
+          "qty": "+357,917"
+        }
+      ],
+      "eventClassification": [
+        {
+          "type": "stabilizing-accumulation",
+          "count": 1,
+          "dates": [
+            "2025-05-08"
+          ],
+          "campaigns": [
+            {
+              "startDate": "2025-05-08",
+              "allDates": [
+                "2025-05-08",
+                "2025-05-13"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "needs-follow-through",
+          "count": 1,
+          "dates": [
+            "2026-02-10"
+          ],
+          "campaigns": [
+            {
+              "startDate": "2026-02-10",
+              "allDates": [
+                "2026-02-10"
               ]
             }
           ]
@@ -2088,52 +2080,6 @@
       ]
     },
     {
-      "ticker": "TCI",
-      "company_name": "Transcontinental Realty Investors Inc",
-      "total_value": 7772554,
-      "total_value_formatted": "$7.8M",
-      "total_purchases": 2,
-      "unique_insiders": 1,
-      "role_counts": {
-        "10% Owner": 2
-      },
-      "trades": [
-        {
-          "insider_name": "American Realty Investors Inc",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-12",
-          "value": "+$3,886,277",
-          "qty": "+70,023"
-        },
-        {
-          "insider_name": "American Realty Investors Inc",
-          "title": "10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-12",
-          "value": "+$3,886,277",
-          "qty": "+70,023"
-        }
-      ],
-      "eventClassification": [
-        {
-          "type": "stabilizing-accumulation",
-          "count": 1,
-          "dates": [
-            "2026-01-12"
-          ],
-          "campaigns": [
-            {
-              "startDate": "2026-01-12",
-              "allDates": [
-                "2026-01-12"
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
       "ticker": "RDDT",
       "company_name": "Reddit, Inc.",
       "total_value": 7482139,
@@ -2250,6 +2196,167 @@
                 "2026-01-05",
                 "2026-01-07",
                 "2026-01-11"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ticker": "PSEC",
+      "company_name": "Prospect Capital Corp",
+      "total_value": 5499540,
+      "total_value_formatted": "$5.5M",
+      "total_purchases": 2,
+      "unique_insiders": 1,
+      "role_counts": {
+        "COO": 2
+      },
+      "trades": [
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "role": "COO",
+          "trade_date": "2026-02-11",
+          "value": "+$2,749,770",
+          "qty": "+942,800"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "role": "COO",
+          "trade_date": "2026-02-11",
+          "value": "+$2,749,770",
+          "qty": "+942,800"
+        }
+      ],
+      "eventClassification": [
+        {
+          "type": "stabilizing-accumulation",
+          "count": 8,
+          "dates": [
+            "2024-03-11",
+            "2024-05-10",
+            "2024-06-20",
+            "2024-08-30",
+            "2024-11-12",
+            "2024-12-24",
+            "2025-03-11",
+            "2025-09-17"
+          ],
+          "campaigns": [
+            {
+              "startDate": "2024-03-11",
+              "allDates": [
+                "2024-03-11"
+              ]
+            },
+            {
+              "startDate": "2024-05-10",
+              "allDates": [
+                "2024-05-10",
+                "2024-05-13"
+              ]
+            },
+            {
+              "startDate": "2024-06-20",
+              "allDates": [
+                "2024-06-20"
+              ]
+            },
+            {
+              "startDate": "2024-08-30",
+              "allDates": [
+                "2024-08-30",
+                "2024-09-03",
+                "2024-09-04",
+                "2024-09-05",
+                "2024-09-06",
+                "2024-09-09",
+                "2024-09-10",
+                "2024-09-12",
+                "2024-09-13",
+                "2024-09-16",
+                "2024-09-17"
+              ]
+            },
+            {
+              "startDate": "2024-11-12",
+              "allDates": [
+                "2024-11-12",
+                "2024-11-14",
+                "2024-11-15",
+                "2024-11-18",
+                "2024-11-19",
+                "2024-11-20",
+                "2024-11-21",
+                "2024-11-22",
+                "2024-11-25",
+                "2024-11-26",
+                "2024-11-27",
+                "2024-11-29"
+              ]
+            },
+            {
+              "startDate": "2024-12-24",
+              "allDates": [
+                "2024-12-24"
+              ]
+            },
+            {
+              "startDate": "2025-03-11",
+              "allDates": [
+                "2025-03-11",
+                "2025-03-12",
+                "2025-03-13",
+                "2025-03-14",
+                "2025-03-17",
+                "2025-03-18",
+                "2025-03-19",
+                "2025-03-20",
+                "2025-03-21",
+                "2025-03-24"
+              ]
+            },
+            {
+              "startDate": "2025-09-17",
+              "allDates": [
+                "2025-09-17",
+                "2025-09-22",
+                "2025-09-23",
+                "2025-09-24",
+                "2025-09-25"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "slow-burn-accumulation",
+          "count": 1,
+          "dates": [
+            "2025-06-20"
+          ],
+          "campaigns": [
+            {
+              "startDate": "2025-06-20",
+              "allDates": [
+                "2025-06-20",
+                "2025-06-23"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "needs-follow-through",
+          "count": 1,
+          "dates": [
+            "2026-02-11"
+          ],
+          "campaigns": [
+            {
+              "startDate": "2026-02-11",
+              "allDates": [
+                "2026-02-11"
               ]
             }
           ]
@@ -2733,6 +2840,292 @@
       ]
     },
     {
+      "ticker": "IP",
+      "company_name": "International Paper Co /New/",
+      "total_value": 3997930,
+      "total_value_formatted": "$4.0M",
+      "total_purchases": 2,
+      "unique_insiders": 1,
+      "role_counts": {
+        "CEO": 2
+      },
+      "trades": [
+        {
+          "insider_name": "Silvernail Andrew K",
+          "title": "CEO",
+          "role": "CEO",
+          "trade_date": "2026-01-30",
+          "value": "+$1,998,965",
+          "qty": "+50,000"
+        },
+        {
+          "insider_name": "Silvernail Andrew K",
+          "title": "CEO",
+          "role": "CEO",
+          "trade_date": "2026-01-30",
+          "value": "+$1,998,965",
+          "qty": "+50,000"
+        }
+      ],
+      "eventClassification": [
+        {
+          "type": "breakout-accumulation",
+          "count": 1,
+          "dates": [
+            "2026-01-30"
+          ],
+          "campaigns": [
+            {
+              "startDate": "2026-01-30",
+              "allDates": [
+                "2026-01-30"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ticker": "VANI",
+      "company_name": "Vivani Medical, Inc.",
+      "total_value": 3983333,
+      "total_value_formatted": "$4.0M",
+      "total_purchases": 2,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 2
+      },
+      "trades": [
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-27",
+          "value": "+$1,999,999",
+          "qty": "+1,351,351"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-15",
+          "value": "+$1,983,334",
+          "qty": "+1,737,765"
+        }
+      ],
+      "eventClassification": [
+        {
+          "type": "needs-follow-through",
+          "count": 2,
+          "dates": [
+            "2023-11-22",
+            "2025-11-15"
+          ],
+          "campaigns": [
+            {
+              "startDate": "2023-11-22",
+              "allDates": [
+                "2023-11-22"
+              ]
+            },
+            {
+              "startDate": "2025-11-15",
+              "allDates": [
+                "2025-11-15"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "slow-burn-accumulation",
+          "count": 4,
+          "dates": [
+            "2024-02-15",
+            "2024-07-30",
+            "2024-10-01",
+            "2025-12-29"
+          ],
+          "campaigns": [
+            {
+              "startDate": "2024-02-15",
+              "allDates": [
+                "2024-02-15"
+              ]
+            },
+            {
+              "startDate": "2024-07-30",
+              "allDates": [
+                "2024-07-30"
+              ]
+            },
+            {
+              "startDate": "2024-10-01",
+              "allDates": [
+                "2024-10-01"
+              ]
+            },
+            {
+              "startDate": "2025-12-29",
+              "allDates": [
+                "2025-12-29"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "disqualified-timing",
+          "count": 2,
+          "dates": [
+            "2024-11-08",
+            "2025-10-27"
+          ],
+          "campaigns": [
+            {
+              "startDate": "2024-11-08",
+              "allDates": [
+                "2024-11-08"
+              ]
+            },
+            {
+              "startDate": "2025-10-27",
+              "allDates": [
+                "2025-10-27"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "stabilizing-accumulation",
+          "count": 4,
+          "dates": [
+            "2025-02-28",
+            "2025-04-01",
+            "2025-04-21",
+            "2025-12-15"
+          ],
+          "campaigns": [
+            {
+              "startDate": "2025-02-28",
+              "allDates": [
+                "2025-02-28"
+              ]
+            },
+            {
+              "startDate": "2025-04-01",
+              "allDates": [
+                "2025-04-01",
+                "2025-04-02",
+                "2025-04-04",
+                "2025-04-09"
+              ]
+            },
+            {
+              "startDate": "2025-04-21",
+              "allDates": [
+                "2025-04-21",
+                "2025-04-24"
+              ]
+            },
+            {
+              "startDate": "2025-12-15",
+              "allDates": [
+                "2025-12-15"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "breakout-accumulation",
+          "count": 4,
+          "dates": [
+            "2025-05-14",
+            "2025-09-15",
+            "2025-10-15",
+            "2026-01-15"
+          ],
+          "campaigns": [
+            {
+              "startDate": "2025-05-14",
+              "allDates": [
+                "2025-05-14"
+              ]
+            },
+            {
+              "startDate": "2025-09-15",
+              "allDates": [
+                "2025-09-15"
+              ]
+            },
+            {
+              "startDate": "2025-10-15",
+              "allDates": [
+                "2025-10-15"
+              ]
+            },
+            {
+              "startDate": "2026-01-15",
+              "allDates": [
+                "2026-01-15"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "failed-support",
+          "count": 1,
+          "dates": [
+            "2026-01-27"
+          ],
+          "campaigns": [
+            {
+              "startDate": "2026-01-27",
+              "allDates": [
+                "2026-01-27"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ticker": "TCI",
+      "company_name": "Transcontinental Realty Investors Inc",
+      "total_value": 3886277,
+      "total_value_formatted": "$3.9M",
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "role_counts": {
+        "10% Owner": 1
+      },
+      "trades": [
+        {
+          "insider_name": "American Realty Investors Inc",
+          "title": "10%",
+          "role": "10% Owner",
+          "trade_date": "2026-01-12",
+          "value": "+$3,886,277",
+          "qty": "+70,023"
+        }
+      ],
+      "eventClassification": [
+        {
+          "type": "stabilizing-accumulation",
+          "count": 1,
+          "dates": [
+            "2026-01-12"
+          ],
+          "campaigns": [
+            {
+              "startDate": "2026-01-12",
+              "allDates": [
+                "2026-01-12"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "ticker": "MUZE",
       "company_name": "Muzero Acquisition Corp",
       "total_value": 3359380,
@@ -3148,238 +3541,6 @@
       ]
     },
     {
-      "ticker": "VANI",
-      "company_name": "Vivani Medical, Inc.",
-      "total_value": 1999999,
-      "total_value_formatted": "$2.0M",
-      "total_purchases": 1,
-      "unique_insiders": 1,
-      "role_counts": {
-        "10% Owner": 1
-      },
-      "trades": [
-        {
-          "insider_name": "Williams Gregg",
-          "title": "Dir, 10%",
-          "role": "10% Owner",
-          "trade_date": "2026-01-27",
-          "value": "+$1,999,999",
-          "qty": "+1,351,351"
-        }
-      ],
-      "eventClassification": [
-        {
-          "type": "needs-follow-through",
-          "count": 2,
-          "dates": [
-            "2023-11-22",
-            "2025-11-15"
-          ],
-          "campaigns": [
-            {
-              "startDate": "2023-11-22",
-              "allDates": [
-                "2023-11-22"
-              ]
-            },
-            {
-              "startDate": "2025-11-15",
-              "allDates": [
-                "2025-11-15"
-              ]
-            }
-          ]
-        },
-        {
-          "type": "slow-burn-accumulation",
-          "count": 4,
-          "dates": [
-            "2024-02-15",
-            "2024-07-30",
-            "2024-10-01",
-            "2025-12-29"
-          ],
-          "campaigns": [
-            {
-              "startDate": "2024-02-15",
-              "allDates": [
-                "2024-02-15"
-              ]
-            },
-            {
-              "startDate": "2024-07-30",
-              "allDates": [
-                "2024-07-30"
-              ]
-            },
-            {
-              "startDate": "2024-10-01",
-              "allDates": [
-                "2024-10-01"
-              ]
-            },
-            {
-              "startDate": "2025-12-29",
-              "allDates": [
-                "2025-12-29"
-              ]
-            }
-          ]
-        },
-        {
-          "type": "disqualified-timing",
-          "count": 2,
-          "dates": [
-            "2024-11-08",
-            "2025-10-27"
-          ],
-          "campaigns": [
-            {
-              "startDate": "2024-11-08",
-              "allDates": [
-                "2024-11-08"
-              ]
-            },
-            {
-              "startDate": "2025-10-27",
-              "allDates": [
-                "2025-10-27"
-              ]
-            }
-          ]
-        },
-        {
-          "type": "stabilizing-accumulation",
-          "count": 4,
-          "dates": [
-            "2025-02-28",
-            "2025-04-01",
-            "2025-04-21",
-            "2025-12-15"
-          ],
-          "campaigns": [
-            {
-              "startDate": "2025-02-28",
-              "allDates": [
-                "2025-02-28"
-              ]
-            },
-            {
-              "startDate": "2025-04-01",
-              "allDates": [
-                "2025-04-01",
-                "2025-04-02",
-                "2025-04-04",
-                "2025-04-09"
-              ]
-            },
-            {
-              "startDate": "2025-04-21",
-              "allDates": [
-                "2025-04-21",
-                "2025-04-24"
-              ]
-            },
-            {
-              "startDate": "2025-12-15",
-              "allDates": [
-                "2025-12-15"
-              ]
-            }
-          ]
-        },
-        {
-          "type": "breakout-accumulation",
-          "count": 4,
-          "dates": [
-            "2025-05-14",
-            "2025-09-15",
-            "2025-10-15",
-            "2026-01-15"
-          ],
-          "campaigns": [
-            {
-              "startDate": "2025-05-14",
-              "allDates": [
-                "2025-05-14"
-              ]
-            },
-            {
-              "startDate": "2025-09-15",
-              "allDates": [
-                "2025-09-15"
-              ]
-            },
-            {
-              "startDate": "2025-10-15",
-              "allDates": [
-                "2025-10-15"
-              ]
-            },
-            {
-              "startDate": "2026-01-15",
-              "allDates": [
-                "2026-01-15"
-              ]
-            }
-          ]
-        },
-        {
-          "type": "failed-support",
-          "count": 1,
-          "dates": [
-            "2026-01-27"
-          ],
-          "campaigns": [
-            {
-              "startDate": "2026-01-27",
-              "allDates": [
-                "2026-01-27"
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "ticker": "IP",
-      "company_name": "International Paper Co /New/",
-      "total_value": 1998965,
-      "total_value_formatted": "$2.0M",
-      "total_purchases": 1,
-      "unique_insiders": 1,
-      "role_counts": {
-        "CEO": 1
-      },
-      "trades": [
-        {
-          "insider_name": "Silvernail Andrew K",
-          "title": "CEO",
-          "role": "CEO",
-          "trade_date": "2026-01-30",
-          "value": "+$1,998,965",
-          "qty": "+50,000"
-        }
-      ],
-      "eventClassification": [
-        {
-          "type": "breakout-accumulation",
-          "count": 1,
-          "dates": [
-            "2026-01-30"
-          ],
-          "campaigns": [
-            {
-              "startDate": "2026-01-30",
-              "allDates": [
-                "2026-01-30"
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
       "ticker": "GEF",
       "company_name": "Greif, Inc",
       "total_value": 1971692,
@@ -3530,28 +3691,6 @@
           ]
         }
       ]
-    },
-    {
-      "ticker": "CLBRU",
-      "company_name": "Colombier Acquisition Corp. III",
-      "total_value": 1500000,
-      "total_value_formatted": "$1.5M",
-      "total_purchases": 1,
-      "unique_insiders": 1,
-      "role_counts": {
-        "10% Owner": 1
-      },
-      "trades": [
-        {
-          "insider_name": "Malik Omeed",
-          "title": "See Remarks, 10%",
-          "role": "10% Owner",
-          "trade_date": "2026-02-05",
-          "value": "+$1,500,000",
-          "qty": "+150,000"
-        }
-      ],
-      "eventClassification": []
     }
   ]
 }
