@@ -259,7 +259,8 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
             amount_invested: parseFloat(trade.amount_invested),
             return_pct: parseFloat(trade.return_pct),
             profit_loss: parseFloat(trade.profit_loss),
-            exit_reason: trade.exit_reason
+            exit_reason: trade.exit_reason,
+            exit_date: exitDateKey
           });
         }
         
@@ -271,7 +272,8 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
             exit_price: parseFloat(trade.exit_price),
             return_pct: parseFloat(trade.return_pct),
             profit_loss: parseFloat(trade.profit_loss),
-            exit_reason: trade.exit_reason
+            exit_reason: trade.exit_reason,
+            entry_date: entryDateKey
           });
         }
       });
@@ -324,14 +326,12 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
     
     const data = payload[0].payload;
     const date = new Date(data.date);
+    const formattedDate = date.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
     
     return (
       <div className="bg-slate-800 border-2 border-slate-600 rounded-lg p-3 shadow-xl">
         <p className="text-white font-bold text-sm mb-2">
-          {date.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}
-        </p>
-        <p className="text-emerald-400 text-sm">
-          Close: <span className="font-bold">${data.close?.toFixed(2)}</span>
+          {formattedDate}
         </p>
         
         {data.purchaseTrades && data.purchaseTrades.length > 0 && (
@@ -365,13 +365,16 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
             <p className="text-yellow-400 text-xs font-bold mb-1">
               📈 BACKTEST BUY SIGNAL ({data.backtestBuyData.length})
             </p>
-            {data.backtestBuyData.map((trade, idx) => (
-              <div key={idx} className="text-xs text-yellow-200 ml-2">
-                • Entry: ${trade.entry_price?.toFixed(2)} | Invested: ${trade.amount_invested?.toFixed(0)}
-                <br />
-                • Final Return: {trade.return_pct?.toFixed(1)}% | P/L: ${trade.profit_loss?.toFixed(2)}
-              </div>
-            ))}
+            {data.backtestBuyData.map((trade, idx) => {
+              const exitDate = trade.exit_date ? new Date(trade.exit_date).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }) : 'N/A';
+              return (
+                <div key={idx} className="text-xs text-yellow-200 ml-2">
+                  • Entry: ${trade.entry_price?.toFixed(2)} | Invested: ${trade.amount_invested?.toFixed(0)}
+                  <br />
+                  • Till {exitDate} | Return: {trade.return_pct?.toFixed(1)}% | P/L: ${trade.profit_loss?.toFixed(2)}
+                </div>
+              );
+            })}
           </div>
         )}
         
@@ -380,13 +383,16 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
             <p className="text-cyan-400 text-xs font-bold mb-1">
               📉 BACKTEST SELL SIGNAL ({data.backtestSellData.length})
             </p>
-            {data.backtestSellData.map((trade, idx) => (
-              <div key={idx} className="text-xs text-cyan-200 ml-2">
-                • Exit: ${trade.exit_price?.toFixed(2)} | Return: {trade.return_pct?.toFixed(1)}%
-                <br />
-                • Reason: {trade.exit_reason} | P/L: ${trade.profit_loss?.toFixed(2)}
-              </div>
-            ))}
+            {data.backtestSellData.map((trade, idx) => {
+              const entryDate = trade.entry_date ? new Date(trade.entry_date).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }) : 'N/A';
+              return (
+                <div key={idx} className="text-xs text-cyan-200 ml-2">
+                  • Since {entryDate} | Exit: ${trade.exit_price?.toFixed(2)} | Return: {trade.return_pct?.toFixed(1)}%
+                  <br />
+                  • Reason: {trade.exit_reason} | P/L: ${trade.profit_loss?.toFixed(2)}
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
