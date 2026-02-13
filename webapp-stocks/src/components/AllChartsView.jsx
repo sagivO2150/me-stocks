@@ -312,9 +312,9 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
         purchaseTrades: purchaseData?.trades || [],
         sales: saleData?.totalValue || null,
         saleTrades: saleData?.trades || [],
-        backtestBuy: backtestBuys.length > 0 ? point.close : null,
+        backtestBuy: backtestBuys.length > 0 ? backtestBuys[0].entry_price : null,
         backtestBuyData: backtestBuys,
-        backtestSell: backtestSells.length > 0 ? point.close : null,
+        backtestSell: backtestSells.length > 0 ? backtestSells[0].exit_price : null,
         backtestSellData: backtestSells,
         ...tradeLineData
       };
