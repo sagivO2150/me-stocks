@@ -357,6 +357,16 @@ function App() {
             >
               📈 All Charts
             </button>
+            <button
+              onClick={() => setViewMode('all-charts-poc')}
+              className={`px-6 py-2 rounded-md font-medium transition ${
+                viewMode === 'all-charts-poc'
+                  ? 'bg-amber-600 text-white'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              🧪 POC Charts
+            </button>
           </div>
 
           <div className="mt-4 inline-block bg-slate-800 rounded-lg px-6 py-3 border border-slate-700">
@@ -393,6 +403,13 @@ function App() {
                 <span className="text-slate-400">Showing </span>
                 <span className="text-orange-400 font-bold text-xl">{topMonthlyTrades.length}</span>
                 <span className="text-slate-400"> charts with insider overlays</span>
+              </>
+            )}
+            {viewMode === 'all-charts-poc' && (
+              <>
+                <span className="text-slate-400">Showing </span>
+                <span className="text-amber-400 font-bold text-xl">1</span>
+                <span className="text-slate-400"> POC chart (GME)</span>
               </>
             )}
           </div>
@@ -445,7 +462,7 @@ function App() {
         )}
 
         {/* Trade Cards Grid */}
-        {viewMode !== 'all-charts' && (
+        {viewMode !== 'all-charts' && viewMode !== 'all-charts-poc' && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Show insider trades */}
             {viewMode === 'insider' && trades.map((trade, index) => (
@@ -588,6 +605,11 @@ function App() {
               <AllChartsView stocks={topMonthlyTrades} />
             )}
           </>
+        )}
+
+        {/* POC Charts View (GME only) */}
+        {viewMode === 'all-charts-poc' && (
+          <AllChartsView stocks={[{ ticker: 'GME' }]} />
         )}
 
         {/* Load More Button for Political Trades */}
