@@ -132,6 +132,33 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
     
     let data = [...stockHistory.history];
     
+    // Collect all important dates (insider trades, backtest trades) that should be kept
+    const importantDates = new Set();
+    
+    // Add insider trade dates
+    if (insiderTrades?.purchases) {
+      insiderTrades.purchases.forEach(trade => {
+        const dateKey = trade.trade_date?.split('T')[0];
+        if (dateKey) importantDates.add(dateKey);
+      });
+    }
+    if (insiderTrades?.sales) {
+      insiderTrades.sales.forEach(trade => {
+        const dateKey = trade.trade_date?.split('T')[0];
+        if (dateKey) importantDates.add(dateKey);
+      });
+    }
+    
+    // Add backtest trade dates (both entry and exit)
+    if (backtestTrades) {
+      backtestTrades.forEach(trade => {
+        const entryDate = trade.entry_date?.split('T')[0];
+        const exitDate = trade.exit_date?.split('T')[0];
+        if (entryDate) importantDates.add(entryDate);
+        if (exitDate) importantDates.add(exitDate);
+      });
+    }
+    
     // Apply date-based filtering if focusDate is set
     if (focusDate) {
       const centerDate = new Date(focusDate + 'T00:00:00');
@@ -155,7 +182,8 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
             const isSameDay = pointDate.getFullYear() === centerDate.getFullYear() &&
                               pointDate.getMonth() === centerDate.getMonth() &&
                               pointDate.getDate() === centerDate.getDate();
-            return isSameDay;
+            // Keep if in range OR if it's an important date
+            return isSameDay || importantDates.has(dateStr);
           });
         } else {
           const halfRange = rangeInDays / 2;
@@ -168,7 +196,8 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
             const dateStr = point.date.split('T')[0].split(' ')[0];
             const pointDate = new Date(dateStr + 'T00:00:00');
             const isInRange = pointDate >= startDate && pointDate <= endDate;
-            return isInRange;
+            // Keep if in range OR if it's an important date
+            return isInRange || importantDates.has(dateStr);
           });
         }
       }
@@ -395,7 +424,10 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
           {['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', 'max'].map((p) => (
             <button
               key={p}
-              onClick={() => setPeriod(p)}
+              onClick={() => {
+                setPeriod(p);
+                setFocusDate(''); // Clear focus date when switching periods
+              }}
               disabled={loading}
               className={`px-3 py-1.5 text-sm rounded-lg transition-all ${
                 period === p
