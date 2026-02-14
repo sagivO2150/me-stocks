@@ -607,9 +607,9 @@ function App() {
           </>
         )}
 
-        {/* POC Charts View (GME + HYMC) */}
+        {/* POC Charts View (GME + HYMC + ASA) */}
         {viewMode === 'all-charts-poc' && (
-          <AllChartsView stocks={[{ ticker: 'GME' }, { ticker: 'HYMC' }]} />
+          <AllChartsView stocks={[{ ticker: 'GME' }, { ticker: 'HYMC' }, { ticker: 'ASA' }]} />
         )}
 
         {/* Load More Button for Political Trades */}

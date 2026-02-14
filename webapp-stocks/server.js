@@ -859,18 +859,34 @@ app.get('/api/backtest-results', (req, res) => {
       });
     }
     
-    // Parse CSV
-    const headers = lines[0].split(',').map(h => h.trim());
+    // Parse CSV properly handling quoted fields with commas
+    const parseCSVLine = (line) => {
+      const result = [];
+      let current = '';
+      let inQuotes = false;
+      
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        
+        if (char === '"') {
+          inQuotes = !inQuotes;
+        } else if (char === ',' && !inQuotes) {
+          result.push(current.trim());
+          current = '';
+        } else {
+          current += char;
+        }
+      }
+      result.push(current.trim());
+      return result;
+    };
+    
+    const headers = parseCSVLine(lines[0]);
     const trades = lines.slice(1).map(line => {
-      const values = line.split(',');
+      const values = parseCSVLine(line);
       const trade = {};
       headers.forEach((header, idx) => {
-        let value = values[idx]?.trim() || '';
-        // Remove quotes if present
-        if (value.startsWith('"') && value.endsWith('"')) {
-          value = value.slice(1, -1);
-        }
-        trade[header] = value;
+        trade[header] = values[idx] || '';
       });
       return trade;
     });
