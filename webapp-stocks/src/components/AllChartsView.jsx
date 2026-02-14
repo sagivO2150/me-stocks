@@ -475,25 +475,44 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
       )}
 
       {/* Backtest Legend */}
-      {backtestTrades && backtestTrades.length > 0 && (
-        <div className="mb-4 bg-slate-900 border border-yellow-600/30 rounded-lg p-3">
-          <div className="text-yellow-400 font-semibold text-sm mb-2">📊 Backtest Signals ({backtestTrades.length} trades)</div>
-          <div className="flex gap-4 text-xs flex-wrap">
-            <div className="flex items-center gap-2">
-              <span className="text-yellow-400">★</span>
-              <span className="text-slate-300">Buy Entry</span>
+      {backtestTrades && backtestTrades.length > 0 && (() => {
+        // Calculate statistics
+        const totalInvested = backtestTrades.reduce((sum, trade) => sum + parseFloat(trade.amount_invested || 0), 0);
+        const totalProfitLoss = backtestTrades.reduce((sum, trade) => sum + parseFloat(trade.profit_loss || 0), 0);
+        const winRate = totalProfitLoss / totalInvested * 100;
+        const isProfit = totalProfitLoss >= 0;
+        
+        return (
+          <div className="mb-4 bg-slate-900 border border-yellow-600/30 rounded-lg p-3">
+            <div className="flex items-start justify-between mb-2">
+              <div className="text-yellow-400 font-semibold text-sm">📊 Backtest Signals ({backtestTrades.length} trades)</div>
+              <div className="text-right">
+                <div className="text-xs text-slate-400">Total Invested: <span className="text-white font-semibold">${totalInvested.toLocaleString('en-US', {maximumFractionDigits: 0})}</span></div>
+                <div className="text-xs text-slate-400">
+                  Net {isProfit ? 'Profit' : 'Loss'}: 
+                  <span className={`font-semibold ml-1 ${isProfit ? 'text-emerald-400' : 'text-red-400'}`}>
+                    ${Math.abs(totalProfitLoss).toLocaleString('en-US', {maximumFractionDigits: 0})} ({isProfit ? '+' : '-'}{Math.abs(winRate).toFixed(1)}%)
+                  </span>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="inline-block w-3 h-3 bg-emerald-500 border-2 border-white"></span>
-              <span className="text-slate-300">Sell Exit (Profit)</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="inline-block w-3 h-3 bg-red-500 border-2 border-white"></span>
-              <span className="text-slate-300">Sell Exit (Loss)</span>
+            <div className="flex gap-4 text-xs flex-wrap">
+              <div className="flex items-center gap-2">
+                <span className="text-yellow-400">★</span>
+                <span className="text-slate-300">Buy Entry</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="inline-block w-3 h-3 bg-emerald-500 border-2 border-white"></span>
+                <span className="text-slate-300">Sell Exit (Profit)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="inline-block w-3 h-3 bg-red-500 border-2 border-white"></span>
+                <span className="text-slate-300">Sell Exit (Loss)</span>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* Chart */}
       <div className="bg-slate-900 rounded-lg p-3">
