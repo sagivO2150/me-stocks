@@ -408,8 +408,8 @@ function App() {
             {viewMode === 'all-charts-poc' && (
               <>
                 <span className="text-slate-400">Showing </span>
-                <span className="text-amber-400 font-bold text-xl">1</span>
-                <span className="text-slate-400"> POC chart (GME)</span>
+                <span className="text-amber-400 font-bold text-xl">2</span>
+                <span className="text-slate-400"> POC charts (GME, HYMC)</span>
               </>
             )}
           </div>
@@ -607,9 +607,9 @@ function App() {
           </>
         )}
 
-        {/* POC Charts View (GME only) */}
+        {/* POC Charts View (GME + HYMC) */}
         {viewMode === 'all-charts-poc' && (
-          <AllChartsView stocks={[{ ticker: 'GME' }]} />
+          <AllChartsView stocks={[{ ticker: 'GME' }, { ticker: 'HYMC' }]} />
         )}
 
         {/* Load More Button for Political Trades */}
