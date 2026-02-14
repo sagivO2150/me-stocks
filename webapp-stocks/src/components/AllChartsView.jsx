@@ -349,19 +349,6 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
           </div>
         )}
         
-        {data.saleTrades && data.saleTrades.length > 0 && (
-          <div className="mt-2 pt-2 border-t border-slate-600">
-            <p className="text-red-400 text-xs font-bold mb-1">
-              🔴 Insider Sales ({data.saleTrades.length})
-            </p>
-            {data.saleTrades.map((trade, idx) => (
-              <div key={idx} className="text-xs text-slate-300 ml-2">
-                • {trade.insider} ({trade.role}): ${(trade.value / 1000).toFixed(0)}K
-              </div>
-            ))}
-          </div>
-        )}
-        
         {data.backtestBuyData && data.backtestBuyData.length > 0 && (
           <div className="mt-2 pt-2 border-t border-yellow-600">
             <p className="text-yellow-400 text-xs font-bold mb-1">
@@ -699,46 +686,6 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
                           cy={cy}
                           r={8}
                           fill="#10b981"
-                          stroke="#fff"
-                          strokeWidth={2}
-                        />
-                      </g>
-                    );
-                  }}
-                />
-              )}
-              {insiderTrades && insiderTrades.total_sales > 0 && (
-                <Scatter
-                  yAxisId="insider"
-                  dataKey="sales"
-                  fill="#ef4444"
-                  isAnimationActive={false}
-                  shape={(props) => {
-                    const { cx, cy, payload, yAxis } = props;
-                    if (!payload || !payload.sales || payload.sales <= 0) return null;
-                    
-                    // Get the chart bottom from yAxis range
-                    const chartBottom = yAxis?.range?.[0] || 290; // yAxis.range[0] is the bottom pixel coordinate
-                    
-                    return (
-                      <g key={`sale-${cx}-${cy}`}>
-                        {/* Vertical dotted line from bottom to dot */}
-                        <line
-                          x1={cx}
-                          y1={chartBottom}
-                          x2={cx}
-                          y2={cy}
-                          stroke="#ef4444"
-                          strokeWidth={3}
-                          strokeDasharray="5 5"
-                          strokeOpacity={0.6}
-                        />
-                        {/* Circle at the top */}
-                        <circle
-                          cx={cx}
-                          cy={cy}
-                          r={8}
-                          fill="#ef4444"
                           stroke="#fff"
                           strokeWidth={2}
                         />
