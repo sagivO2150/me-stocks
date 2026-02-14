@@ -97,14 +97,16 @@ def has_insider_purchase_within_days(ticker, check_date, all_insider_purchases, 
 def backtest_aggressive_daily():
     """
     Backtest with daily position checks - realistic trading simulation.
+    Uses MERGED data (full history + monthly) to include all stocks.
     """
-    json_file = '/Users/sagiv.oron/Documents/scripts_playground/stocks/output CSVs/full_history_insider_trades.json'
+    json_file = '/Users/sagiv.oron/Documents/scripts_playground/stocks/output CSVs/merged_insider_trades.json'
     
     with open(json_file, 'r') as f:
         data = json.load(f)
     
     # Load all tickers in parallel
     print("🚀 Loading historical data with multiprocessing...")
+    print(f"📊 Processing {len(data['data'])} stocks from merged dataset...")
     all_tickers = list(set(stock['ticker'] for stock in data['data']))
     
     with Pool(processes=cpu_count()) as pool:
@@ -262,6 +264,12 @@ def backtest_aggressive_daily():
             low_price = history.loc[current_date, 'Low']
             close_price = history.loc[current_date, 'Close']
             
+            # Handle missing High/Low data (some stocks don't have intraday data)
+            if pd.isna(high_price) or high_price is None:
+                high_price = close_price
+            if pd.isna(low_price) or low_price is None:
+                low_price = close_price
+            
             for pos in open_positions[ticker][:]:
                 pos['days_held'] += 1
                 
@@ -295,7 +303,11 @@ def backtest_aggressive_daily():
                 
                 # Check if stop loss hit
                 if low_price <= trailing_stop_price:
-                    return_pct = ((trailing_stop_price - pos['entry_price']) / pos['entry_price']) * 100
+                    # Use realistic fill: the trailing stop price OR the open price if it gapped down
+                    # For simplicity, use close price as a conservative estimate
+                    actual_exit_price = min(trailing_stop_price, close_price)
+                    
+                    return_pct = ((actual_exit_price - pos['entry_price']) / pos['entry_price']) * 100
                     profit_loss = pos['amount_invested'] * (return_pct / 100)
                     returned_amount = pos['amount_invested'] + profit_loss
                     
@@ -306,7 +318,7 @@ def backtest_aggressive_daily():
                         'entry_date': pos['entry_date'],
                         'entry_price': pos['entry_price'],
                         'exit_date': current_date,
-                        'exit_price': trailing_stop_price,
+                        'exit_price': actual_exit_price,
                         'exit_reason': 'stop_loss',
                         'amount_invested': pos['amount_invested'],
                         'returned_amount': returned_amount,

@@ -1,0 +1,6304 @@
+{
+  "data": [
+    {
+      "ticker": "WRB",
+      "company_name": "WRB",
+      "total_value": 550298394.0,
+      "total_purchases": 17,
+      "unique_insiders": 3,
+      "trades": [
+        {
+          "insider_name": "Talisman Jonathan",
+          "title": "Dir",
+          "trade_date": "2022-07-05",
+          "filing_date": "2022-09-14",
+          "value": "+$406",
+          "qty": "+6"
+        },
+        {
+          "insider_name": "Brockbank Mark Ellwood",
+          "title": "Dir",
+          "trade_date": "2022-07-29",
+          "filing_date": "2022-08-02",
+          "value": "+$371,784",
+          "qty": "+6,000"
+        },
+        {
+          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
+          "title": "10%",
+          "trade_date": "2025-12-18",
+          "filing_date": "2025-12-22",
+          "value": "+$42,548,370",
+          "qty": "+610,350"
+        },
+        {
+          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
+          "title": "10%",
+          "trade_date": "2025-12-23",
+          "filing_date": "2025-12-29",
+          "value": "+$62,037,866",
+          "qty": "+879,573"
+        },
+        {
+          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
+          "title": "10%",
+          "trade_date": "2025-12-30",
+          "filing_date": "2026-01-02",
+          "value": "+$47,167,124",
+          "qty": "+672,734"
+        },
+        {
+          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
+          "title": "10%",
+          "trade_date": "2026-01-05",
+          "filing_date": "2026-01-07",
+          "value": "+$47,416,247",
+          "qty": "+681,218"
+        },
+        {
+          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
+          "title": "10%",
+          "trade_date": "2026-01-08",
+          "filing_date": "2026-01-09",
+          "value": "+$32,640,884",
+          "qty": "+470,000"
+        },
+        {
+          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
+          "title": "10%",
+          "trade_date": "2026-01-12",
+          "filing_date": "2026-01-14",
+          "value": "+$55,622,807",
+          "qty": "+811,041"
+        },
+        {
+          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
+          "title": "10%",
+          "trade_date": "2026-01-15",
+          "filing_date": "2026-01-16",
+          "value": "+$36,644,801",
+          "qty": "+535,000"
+        },
+        {
+          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
+          "title": "10%",
+          "trade_date": "2026-01-20",
+          "filing_date": "2026-01-21",
+          "value": "+$42,612,018",
+          "qty": "+630,000"
+        },
+        {
+          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
+          "title": "10%",
+          "trade_date": "2026-01-22",
+          "filing_date": "2026-01-23",
+          "value": "+$46,898,492",
+          "qty": "+698,000"
+        },
+        {
+          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
+          "title": "10%",
+          "trade_date": "2026-01-26",
+          "filing_date": "2026-01-28",
+          "value": "+$69,297,690",
+          "qty": "+1,028,931"
+        },
+        {
+          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
+          "title": "10%",
+          "trade_date": "2026-01-29",
+          "filing_date": "2026-01-30",
+          "value": "+$33,087,353",
+          "qty": "+485,000"
+        },
+        {
+          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
+          "title": "10%",
+          "trade_date": "2026-02-02",
+          "filing_date": "2026-02-04",
+          "value": "+$21,451,897",
+          "qty": "+315,221"
+        },
+        {
+          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
+          "title": "10%",
+          "trade_date": "2026-02-05",
+          "filing_date": "2026-02-06",
+          "value": "+$2,835,251",
+          "qty": "+40,000"
+        },
+        {
+          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
+          "title": "10%",
+          "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
+          "value": "+$6,828,152",
+          "qty": "+97,996"
+        },
+        {
+          "insider_name": "Mitsui Sumitomo Insurance Co Ltd",
+          "title": "10%",
+          "trade_date": "2026-02-12",
+          "filing_date": "2026-02-13",
+          "value": "+$2,837,252",
+          "qty": "+40,000"
+        }
+      ]
+    },
+    {
+      "ticker": "SGP",
+      "company_name": "SGP",
+      "total_value": 221480000.0,
+      "total_purchases": 15,
+      "unique_insiders": 15,
+      "trades": [
+        {
+          "insider_name": "Ra Capital Management, L.P.",
+          "title": "Dir, 10%",
+          "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
+          "value": "+$59,040,000",
+          "qty": "+3,690,000"
+        },
+        {
+          "insider_name": "Behbahani Ali",
+          "title": "Dir, 10%",
+          "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Florence Anthony A. Jr.",
+          "title": "10%",
+          "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Baskett Forest",
+          "title": "10%",
+          "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "New Enterprise Associates 17, L.P.",
+          "title": "10%",
+          "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Yang Rick",
+          "title": "10%",
+          "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Makhzoumi Mohamad",
+          "title": "10%",
+          "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Sandell Scott D",
+          "title": "10%",
+          "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Chang Carmen",
+          "title": "10%",
+          "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Mathers Edward T",
+          "title": "10%",
+          "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Walker Paul Edward",
+          "title": "10%",
+          "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
+          "value": "+$15,000,000",
+          "qty": "+937,500"
+        },
+        {
+          "insider_name": "Pardo Geoffrey B",
+          "title": "Dir",
+          "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
+          "value": "+$5,000,000",
+          "qty": "+312,500"
+        },
+        {
+          "insider_name": "Khan Bilal Arshad",
+          "title": "Dir",
+          "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
+          "value": "+$2,160,000",
+          "qty": "+135,000"
+        },
+        {
+          "insider_name": "Nielsen Kirk G.",
+          "title": "Dir",
+          "trade_date": "2026-02-09",
+          "filing_date": "2026-02-10",
+          "value": "+$2,640,000",
+          "qty": "+165,000"
+        },
+        {
+          "insider_name": "Vensana Capital I Gp, LLC",
+          "title": "10%",
+          "trade_date": "2026-02-09",
+          "filing_date": "2026-02-10",
+          "value": "+$2,640,000",
+          "qty": "+165,000"
+        }
+      ]
+    },
+    {
+      "ticker": "SHCO",
+      "company_name": "SHCO",
+      "total_value": 107722900.0,
+      "total_purchases": 19,
+      "unique_insiders": 7,
+      "trades": [
+        {
+          "insider_name": "Goldman Sachs Group Inc",
+          "title": "10%",
+          "trade_date": "2021-07-19",
+          "filing_date": "2021-12-22",
+          "value": "+$31,761",
+          "qty": "+2,963"
+        },
+        {
+          "insider_name": "Afzal Humera",
+          "title": "CFO",
+          "trade_date": "2021-07-19",
+          "filing_date": "2021-07-21",
+          "value": "+$1,400",
+          "qty": "+100"
+        },
+        {
+          "insider_name": "Ein Mark",
+          "title": "Dir",
+          "trade_date": "2021-07-19",
+          "filing_date": "2021-07-21",
+          "value": "+$1,750,000",
+          "qty": "+125,000"
+        },
+        {
+          "insider_name": "Jackson Yusef",
+          "title": "Dir",
+          "trade_date": "2021-07-19",
+          "filing_date": "2021-07-21",
+          "value": "+$196,000",
+          "qty": "+14,000"
+        },
+        {
+          "insider_name": "Jackson Yusef",
+          "title": "Dir",
+          "trade_date": "2021-07-22",
+          "filing_date": "2021-07-26",
+          "value": "+$52,686",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Burkle Ronald W",
+          "title": "Exec. Chairman; See Remarks, 10%",
+          "trade_date": "2021-08-31",
+          "filing_date": "2021-09-02",
+          "value": "+$2,430,059",
+          "qty": "+200,000"
+        },
+        {
+          "insider_name": "Caring Richard",
+          "title": "See Remarks, 10%",
+          "trade_date": "2022-06-16",
+          "filing_date": "2022-11-23",
+          "value": "+$152,054",
+          "qty": "+32,281"
+        },
+        {
+          "insider_name": "Caring Richard",
+          "title": "See Remarks, 10%",
+          "trade_date": "2022-12-07",
+          "filing_date": "2022-12-09",
+          "value": "+$29,147",
+          "qty": "+8,000"
+        },
+        {
+          "insider_name": "Ein Mark",
+          "title": "Dir",
+          "trade_date": "2022-12-08",
+          "filing_date": "2022-12-12",
+          "value": "+$1,787,624",
+          "qty": "+456,936"
+        },
+        {
+          "insider_name": "Caring Richard",
+          "title": "See Remarks, 10%",
+          "trade_date": "2022-12-21",
+          "filing_date": "2022-12-23",
+          "value": "+$397,990",
+          "qty": "+109,740"
+        },
+        {
+          "insider_name": "Caring Richard",
+          "title": "See Remarks, 10%",
+          "trade_date": "2022-12-23",
+          "filing_date": "2022-12-28",
+          "value": "+$719,960",
+          "qty": "+200,000"
+        },
+        {
+          "insider_name": "Caring Richard",
+          "title": "See Remarks, 10%",
+          "trade_date": "2023-03-13",
+          "filing_date": "2023-03-15",
+          "value": "+$37,616",
+          "qty": "+5,500"
+        },
+        {
+          "insider_name": "Caring Richard",
+          "title": "See Remarks, 10%",
+          "trade_date": "2023-03-15",
+          "filing_date": "2023-03-17",
+          "value": "+$30,118",
+          "qty": "+4,903"
+        },
+        {
+          "insider_name": "Caring Richard",
+          "title": "See Remarks, 10%",
+          "trade_date": "2023-03-17",
+          "filing_date": "2023-03-21",
+          "value": "+$19,896",
+          "qty": "+3,000"
+        },
+        {
+          "insider_name": "Caring Richard",
+          "title": "See Remarks, 10%",
+          "trade_date": "2023-05-19",
+          "filing_date": "2023-05-23",
+          "value": "+$38,574",
+          "qty": "+5,400"
+        },
+        {
+          "insider_name": "Caring Richard",
+          "title": "See Remarks, 10%",
+          "trade_date": "2023-05-23",
+          "filing_date": "2023-05-25",
+          "value": "+$31,060",
+          "qty": "+4,950"
+        },
+        {
+          "insider_name": "Jackson Yusef",
+          "title": "Dir",
+          "trade_date": "2023-09-15",
+          "filing_date": "2023-09-20",
+          "value": "+$14,286",
+          "qty": "+2,000"
+        },
+        {
+          "insider_name": "Jackson Yusef",
+          "title": "Dir",
+          "trade_date": "2024-06-20",
+          "filing_date": "2024-06-24",
+          "value": "+$2,670",
+          "qty": "+500"
+        },
+        {
+          "insider_name": "Popstefanov Gjorgi",
+          "title": "Dir",
+          "trade_date": "2026-01-29",
+          "filing_date": "2026-02-02",
+          "value": "+$99,999,999",
+          "qty": "+11,111,111"
+        }
+      ]
+    },
+    {
+      "ticker": "NFRX",
+      "company_name": "NFRX",
+      "total_value": 89999919.0,
+      "total_purchases": 6,
+      "unique_insiders": 1,
+      "trades": [
+        {
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "trade_date": "2026-02-02",
+          "filing_date": "2026-02-03",
+          "value": "+$9,999,986",
+          "qty": "+399,520"
+        },
+        {
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "trade_date": "2026-02-05",
+          "filing_date": "2026-02-06",
+          "value": "+$9,999,998",
+          "qty": "+390,320"
+        },
+        {
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "trade_date": "2026-02-06",
+          "filing_date": "2026-02-09",
+          "value": "+$9,999,977",
+          "qty": "+386,996"
+        },
+        {
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "trade_date": "2026-02-09",
+          "filing_date": "2026-02-10",
+          "value": "+$9,999,978",
+          "qty": "+383,729"
+        },
+        {
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "trade_date": "2026-02-10",
+          "filing_date": "2026-02-11",
+          "value": "+$9,999,989",
+          "qty": "+378,931"
+        },
+        {
+          "insider_name": "Harrison Street Real Assets Fund LLC",
+          "title": "10%",
+          "trade_date": "2026-02-12",
+          "filing_date": "2026-02-13",
+          "value": "+$39,999,991",
+          "qty": "+1,485,332"
+        }
+      ]
+    },
+    {
+      "ticker": "THM",
+      "company_name": "THM",
+      "total_value": 77079944.0,
+      "total_purchases": 6,
+      "unique_insiders": 3,
+      "trades": [
+        {
+          "insider_name": "Paulson & Co. Inc.",
+          "title": "10%",
+          "trade_date": "2024-01-18",
+          "filing_date": "2024-01-22",
+          "value": "+$1,506,122",
+          "qty": "+2,268,256"
+        },
+        {
+          "insider_name": "Electrum Strategic Opportunities Fund II L.P.",
+          "title": "10%",
+          "trade_date": "2025-02-27",
+          "filing_date": "2025-02-28",
+          "value": "+$553,119",
+          "qty": "+1,152,091"
+        },
+        {
+          "insider_name": "Paulson & Co. Inc.",
+          "title": "10%",
+          "trade_date": "2025-03-03",
+          "filing_date": "2025-03-05",
+          "value": "+$2,900,000",
+          "qty": "+6,040,408"
+        },
+        {
+          "insider_name": "Electrum Global Holdings L.P.",
+          "title": "10%",
+          "trade_date": "2026-01-27",
+          "filing_date": "2026-01-29",
+          "value": "+$7,000,000",
+          "qty": "+3,153,153"
+        },
+        {
+          "insider_name": "Paulson & Co. Inc.",
+          "title": "10%",
+          "trade_date": "2026-01-27",
+          "filing_date": "2026-01-27",
+          "value": "+$40,000,000",
+          "qty": "+18,018,018"
+        },
+        {
+          "insider_name": "Paulson & Co. Inc.",
+          "title": "10%",
+          "trade_date": "2026-01-28",
+          "filing_date": "2026-01-30",
+          "value": "+$25,120,703",
+          "qty": "+11,315,632"
+        }
+      ]
+    },
+    {
+      "ticker": "UA",
+      "company_name": "UA",
+      "total_value": 220943876.0,
+      "total_purchases": 10,
+      "unique_insiders": 6,
+      "trades": [
+        {
+          "insider_name": "Gibbs David W",
+          "title": "Dir",
+          "trade_date": "2022-05-27",
+          "filing_date": "2022-06-01",
+          "value": "+$474,818",
+          "qty": "+50,000"
+        },
+        {
+          "insider_name": "Aumen Eric J",
+          "title": "Chief Accounting Officer",
+          "trade_date": "2025-08-13",
+          "filing_date": "2025-08-14",
+          "value": "+$10,000",
+          "qty": "+2,045"
+        },
+        {
+          "insider_name": "Fitzpatrick Dawn N.",
+          "title": "Dir",
+          "trade_date": "2025-08-13",
+          "filing_date": "2025-08-14",
+          "value": "+$493,000",
+          "qty": "+100,000"
+        },
+        {
+          "insider_name": "El-Erian Mohamed",
+          "title": "Dir",
+          "trade_date": "2025-08-18",
+          "filing_date": "2025-08-19",
+          "value": "+$519,960",
+          "qty": "+100,000"
+        },
+        {
+          "insider_name": "Sweeney Robert John",
+          "title": "Dir",
+          "trade_date": "2025-08-21",
+          "filing_date": "2025-08-21",
+          "value": "+$488,200",
+          "qty": "+100,000"
+        },
+        {
+          "insider_name": "Watsa V Prem Et Al",
+          "title": "10%",
+          "trade_date": "2025-12-22",
+          "filing_date": "2025-12-29",
+          "value": "+$70,963,523",
+          "qty": "+15,681,964"
+        },
+        {
+          "insider_name": "Watsa V Prem Et Al",
+          "title": "10%",
+          "trade_date": "2025-12-30",
+          "filing_date": "2026-01-02",
+          "value": "+$67,443,913",
+          "qty": "+13,182,469"
+        },
+        {
+          "insider_name": "Watsa V Prem Et Al",
+          "title": "10%",
+          "trade_date": "2026-01-16",
+          "filing_date": "2026-01-21",
+          "value": "+$49,684,526",
+          "qty": "+8,607,267"
+        },
+        {
+          "insider_name": "Watsa V Prem Et Al",
+          "title": "10%",
+          "trade_date": "2026-01-22",
+          "filing_date": "2026-01-26",
+          "value": "+$14,420,222",
+          "qty": "+2,335,350"
+        },
+        {
+          "insider_name": "Watsa V Prem Et Al",
+          "title": "10%",
+          "trade_date": "2026-01-27",
+          "filing_date": "2026-01-29",
+          "value": "+$16,445,714",
+          "qty": "+2,641,105"
+        }
+      ]
+    },
+    {
+      "ticker": "MANE",
+      "company_name": "MANE",
+      "total_value": 54092449.0,
+      "total_purchases": 5,
+      "unique_insiders": 5,
+      "trades": [
+        {
+          "insider_name": "Suvretta Capital Management, LLC",
+          "title": "Dir, 10%",
+          "trade_date": "2026-02-04",
+          "filing_date": "2026-02-09",
+          "value": "+$10,542,478",
+          "qty": "+282,674"
+        },
+        {
+          "insider_name": "Coric Vlad",
+          "title": "Dir",
+          "trade_date": "2026-02-05",
+          "filing_date": "2026-02-05",
+          "value": "+$1,999,982",
+          "qty": "+117,646"
+        },
+        {
+          "insider_name": "Childs John W",
+          "title": "Dir",
+          "trade_date": "2026-02-05",
+          "filing_date": "2026-02-05",
+          "value": "+$4,999,989",
+          "qty": "+294,117"
+        },
+        {
+          "insider_name": "Longitude Capital Partners V, LLC",
+          "title": "10%",
+          "trade_date": "2026-02-05",
+          "filing_date": "2026-02-05",
+          "value": "+$18,275,000",
+          "qty": "+1,075,000"
+        },
+        {
+          "insider_name": "Enright Patrick G",
+          "title": "Dir, 10%",
+          "trade_date": "2026-02-05",
+          "filing_date": "2026-02-05",
+          "value": "+$18,275,000",
+          "qty": "+1,075,000"
+        }
+      ]
+    },
+    {
+      "ticker": "EIKN",
+      "company_name": "EIKN",
+      "total_value": 51119604.0,
+      "total_purchases": 5,
+      "unique_insiders": 5,
+      "trades": [
+        {
+          "insider_name": "Foresite Capital Management Iv, LLC",
+          "title": "10%",
+          "trade_date": "2026-02-04",
+          "filing_date": "2026-02-06",
+          "value": "+$999,990",
+          "qty": "+55,555"
+        },
+        {
+          "insider_name": "Frazier Kenneth C",
+          "title": "Dir",
+          "trade_date": "2026-02-04",
+          "filing_date": "2026-02-06",
+          "value": "+$1,999,998",
+          "qty": "+111,111"
+        },
+        {
+          "insider_name": "Wolfe Josh",
+          "title": "Dir, 10%",
+          "trade_date": "2026-02-04",
+          "filing_date": "2026-02-06",
+          "value": "+$4,999,968",
+          "qty": "+277,776"
+        },
+        {
+          "insider_name": "Lux Venture Partners V, LLC",
+          "title": "10%",
+          "trade_date": "2026-02-04",
+          "filing_date": "2026-02-06",
+          "value": "+$4,999,968",
+          "qty": "+277,776"
+        },
+        {
+          "insider_name": "Column Group IV Gp, LP",
+          "title": "10%",
+          "trade_date": "2026-02-06",
+          "filing_date": "2026-02-09",
+          "value": "+$38,119,680",
+          "qty": "+2,117,760"
+        }
+      ]
+    },
+    {
+      "ticker": "GME",
+      "company_name": "GME",
+      "total_value": 55048914.0,
+      "total_purchases": 19,
+      "unique_insiders": 4,
+      "trades": [
+        {
+          "insider_name": "Cheng Lawrence",
+          "title": "Dir",
+          "trade_date": "2022-03-21",
+          "filing_date": "2022-03-23",
+          "value": "+$383,355",
+          "qty": "+4,000"
+        },
+        {
+          "insider_name": "Cohen Ryan",
+          "title": "Dir, 10%",
+          "trade_date": "2022-03-22",
+          "filing_date": "2022-03-22",
+          "value": "+$10,176,342",
+          "qty": "+100,000"
+        },
+        {
+          "insider_name": "Attal Alain",
+          "title": "Dir",
+          "trade_date": "2022-03-24",
+          "filing_date": "2022-03-24",
+          "value": "+$194,865",
+          "qty": "+1,500"
+        },
+        {
+          "insider_name": "Cheng Lawrence",
+          "title": "Dir",
+          "trade_date": "2023-03-29",
+          "filing_date": "2023-03-31",
+          "value": "+$113,990",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Cohen Ryan",
+          "title": "Exec COB, 10%",
+          "trade_date": "2023-06-09",
+          "filing_date": "2023-06-13",
+          "value": "+$10,000,392",
+          "qty": "+443,842"
+        },
+        {
+          "insider_name": "Cheng Lawrence",
+          "title": "Dir",
+          "trade_date": "2023-06-09",
+          "filing_date": "2023-06-12",
+          "value": "+$111,900",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Attal Alain",
+          "title": "Dir",
+          "trade_date": "2023-06-09",
+          "filing_date": "2023-06-09",
+          "value": "+$224,000",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "Cheng Lawrence",
+          "title": "Dir",
+          "trade_date": "2023-09-08",
+          "filing_date": "2023-09-11",
+          "value": "+$105,926",
+          "qty": "+6,000"
+        },
+        {
+          "insider_name": "Attal Alain",
+          "title": "Dir",
+          "trade_date": "2023-09-08",
+          "filing_date": "2023-09-11",
+          "value": "+$266,700",
+          "qty": "+15,000"
+        },
+        {
+          "insider_name": "Cheng Lawrence",
+          "title": "Dir",
+          "trade_date": "2024-04-08",
+          "filing_date": "2024-04-09",
+          "value": "+$112,238",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "Cheng Lawrence",
+          "title": "Dir",
+          "trade_date": "2024-07-08",
+          "filing_date": "2024-07-09",
+          "value": "+$102,879",
+          "qty": "+4,140"
+        },
+        {
+          "insider_name": "Cheng Lawrence",
+          "title": "Dir",
+          "trade_date": "2025-04-03",
+          "filing_date": "2025-04-07",
+          "value": "+$107,700",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Cohen Ryan",
+          "title": "Pres, CEO, COB",
+          "trade_date": "2025-04-03",
+          "filing_date": "2025-04-07",
+          "value": "+$10,775,000",
+          "qty": "+500,000"
+        },
+        {
+          "insider_name": "Attal Alain",
+          "title": "Dir",
+          "trade_date": "2025-04-10",
+          "filing_date": "2025-04-10",
+          "value": "+$257,500",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "Grube James",
+          "title": "Dir",
+          "trade_date": "2025-06-30",
+          "filing_date": "2025-07-01",
+          "value": "+$132,183",
+          "qty": "+5,575"
+        },
+        {
+          "insider_name": "Cohen Ryan",
+          "title": "Pres, CEO, COB",
+          "trade_date": "2026-01-20",
+          "filing_date": "2026-01-22",
+          "value": "+$21,359,200",
+          "qty": "+1,000,000"
+        },
+        {
+          "insider_name": "Attal Alain",
+          "title": "Dir",
+          "trade_date": "2026-01-20",
+          "filing_date": "2026-01-20",
+          "value": "+$250,798",
+          "qty": "+12,000"
+        },
+        {
+          "insider_name": "Attal Alain",
+          "title": "Dir",
+          "trade_date": "2026-01-21",
+          "filing_date": "2026-01-21",
+          "value": "+$259,577",
+          "qty": "+12,000"
+        },
+        {
+          "insider_name": "Cheng Lawrence",
+          "title": "Dir",
+          "trade_date": "2026-01-23",
+          "filing_date": "2026-01-26",
+          "value": "+$114,369",
+          "qty": "+5,000"
+        }
+      ]
+    },
+    {
+      "ticker": "HCIC",
+      "company_name": "HCIC",
+      "total_value": 20130000.0,
+      "total_purchases": 3,
+      "unique_insiders": 3,
+      "trades": [
+        {
+          "insider_name": "Hennessy Thomas D",
+          "title": "Pres, 10%",
+          "trade_date": "2026-02-06",
+          "filing_date": "2026-02-09",
+          "value": "+$6,710,000",
+          "qty": "+671,000"
+        },
+        {
+          "insider_name": "Hennessy Daniel J",
+          "title": "COB, CEO, 10%",
+          "trade_date": "2026-02-06",
+          "filing_date": "2026-02-09",
+          "value": "+$6,710,000",
+          "qty": "+671,000"
+        },
+        {
+          "insider_name": "Hc VIII Sponsor LLC",
+          "title": "10%",
+          "trade_date": "2026-02-06",
+          "filing_date": "2026-02-09",
+          "value": "+$6,710,000",
+          "qty": "+671,000"
+        }
+      ]
+    },
+    {
+      "ticker": "AVO",
+      "company_name": "AVO",
+      "total_value": 40267436.0,
+      "total_purchases": 15,
+      "unique_insiders": 3,
+      "trades": [
+        {
+          "insider_name": "Barnard Stephen J",
+          "title": "Pres, CEO",
+          "trade_date": "2021-03-30",
+          "filing_date": "2021-03-30",
+          "value": "+$197,120",
+          "qty": "+11,200"
+        },
+        {
+          "insider_name": "Lind Bonnie Cruickshank",
+          "title": "Dir",
+          "trade_date": "2022-03-15",
+          "filing_date": "2022-03-16",
+          "value": "+$11,385",
+          "qty": "+1,000"
+        },
+        {
+          "insider_name": "Barnard Stephen J",
+          "title": "Pres, CEO",
+          "trade_date": "2022-03-16",
+          "filing_date": "2022-03-17",
+          "value": "+$293,729",
+          "qty": "+25,000"
+        },
+        {
+          "insider_name": "Globalharvest Holdings Venture Ltd",
+          "title": "10%",
+          "trade_date": "2025-11-04",
+          "filing_date": "2025-11-06",
+          "value": "+$582,626",
+          "qty": "+49,839"
+        },
+        {
+          "insider_name": "Globalharvest Holdings Venture Ltd",
+          "title": "10%",
+          "trade_date": "2025-11-06",
+          "filing_date": "2025-11-10",
+          "value": "+$904,296",
+          "qty": "+75,710"
+        },
+        {
+          "insider_name": "Globalharvest Holdings Venture Ltd",
+          "title": "10%",
+          "trade_date": "2025-11-10",
+          "filing_date": "2025-11-14",
+          "value": "+$65,565",
+          "qty": "+5,262"
+        },
+        {
+          "insider_name": "Globalharvest Holdings Venture Ltd",
+          "title": "10%",
+          "trade_date": "2025-11-11",
+          "filing_date": "2025-11-14",
+          "value": "+$323,407",
+          "qty": "+25,914"
+        },
+        {
+          "insider_name": "Globalharvest Holdings Venture Ltd",
+          "title": "10%",
+          "trade_date": "2025-12-23",
+          "filing_date": "2025-12-30",
+          "value": "+$2,336,868",
+          "qty": "+201,310"
+        },
+        {
+          "insider_name": "Globalharvest Holdings Venture Ltd",
+          "title": "10%",
+          "trade_date": "2025-12-30",
+          "filing_date": "2026-01-05",
+          "value": "+$3,361,590",
+          "qty": "+289,953"
+        },
+        {
+          "insider_name": "Globalharvest Holdings Venture Ltd",
+          "title": "10%",
+          "trade_date": "2026-01-05",
+          "filing_date": "2026-01-07",
+          "value": "+$770,377",
+          "qty": "+66,569"
+        },
+        {
+          "insider_name": "Globalharvest Holdings Venture Ltd",
+          "title": "10%",
+          "trade_date": "2026-01-07",
+          "filing_date": "2026-01-09",
+          "value": "+$250,399",
+          "qty": "+21,155"
+        },
+        {
+          "insider_name": "Globalharvest Holdings Venture Ltd",
+          "title": "10%",
+          "trade_date": "2026-01-15",
+          "filing_date": "2026-01-20",
+          "value": "+$11,591,251",
+          "qty": "+985,704"
+        },
+        {
+          "insider_name": "Globalharvest Holdings Venture Ltd",
+          "title": "10%",
+          "trade_date": "2026-01-16",
+          "filing_date": "2026-01-26",
+          "value": "+$7,761,616",
+          "qty": "+624,302"
+        },
+        {
+          "insider_name": "Globalharvest Holdings Venture Ltd",
+          "title": "10%",
+          "trade_date": "2026-01-16",
+          "filing_date": "2026-01-21",
+          "value": "+$7,761,529",
+          "qty": "+624,295"
+        },
+        {
+          "insider_name": "Globalharvest Holdings Venture Ltd",
+          "title": "10%",
+          "trade_date": "2026-01-21",
+          "filing_date": "2026-01-26",
+          "value": "+$4,055,678",
+          "qty": "+309,020"
+        }
+      ]
+    },
+    {
+      "ticker": "AVR",
+      "company_name": "AVR",
+      "total_value": 28750000.0,
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "trades": [
+        {
+          "insider_name": "L1 Capital Pty Ltd",
+          "title": "10%",
+          "trade_date": "2026-01-22",
+          "filing_date": "2026-02-09",
+          "value": "+$28,750,000",
+          "qty": "+5,000,000"
+        }
+      ]
+    },
+    {
+      "ticker": "YSS",
+      "company_name": "YSS",
+      "total_value": 25734974.0,
+      "total_purchases": 3,
+      "unique_insiders": 3,
+      "trades": [
+        {
+          "insider_name": "Erwin Tami A.",
+          "title": "Dir",
+          "trade_date": "2026-01-30",
+          "filing_date": "2026-02-03",
+          "value": "+$99,994",
+          "qty": "+2,941"
+        },
+        {
+          "insider_name": "Letarte Tyler",
+          "title": "Dir",
+          "trade_date": "2026-01-30",
+          "filing_date": "2026-02-03",
+          "value": "+$49,980",
+          "qty": "+1,470"
+        },
+        {
+          "insider_name": "Blackrock Portfolio Management LLC",
+          "title": "10%",
+          "trade_date": "2026-01-30",
+          "filing_date": "2026-02-03",
+          "value": "+$25,585,000",
+          "qty": "+752,500"
+        }
+      ]
+    },
+    {
+      "ticker": "HYMC",
+      "company_name": "HYMC",
+      "total_value": 211779429.0,
+      "total_purchases": 19,
+      "unique_insiders": 5,
+      "trades": [
+        {
+          "insider_name": "Rideout Stanton K",
+          "title": "EVP, CFO",
+          "trade_date": "2021-06-08",
+          "filing_date": "2021-06-10",
+          "value": "+$192,500",
+          "qty": "+55,000"
+        },
+        {
+          "insider_name": "Garrett Diane R",
+          "title": "Pres, CEO, Dir",
+          "trade_date": "2021-06-08",
+          "filing_date": "2021-06-10",
+          "value": "+$192,500",
+          "qty": "+55,000"
+        },
+        {
+          "insider_name": "Harrison Michael James",
+          "title": "Dir",
+          "trade_date": "2021-06-08",
+          "filing_date": "2021-06-10",
+          "value": "+$26,250",
+          "qty": "+7,500"
+        },
+        {
+          "insider_name": "Jennings Rebecca",
+          "title": "SVP",
+          "trade_date": "2023-05-03",
+          "filing_date": "2023-05-04",
+          "value": "+$5,009",
+          "qty": "+11,940"
+        },
+        {
+          "insider_name": "Sprott Eric",
+          "title": "10%",
+          "trade_date": "2025-06-13",
+          "filing_date": "2025-06-17",
+          "value": "+$22,225,000",
+          "qty": "+6,350,000"
+        },
+        {
+          "insider_name": "Sprott Eric",
+          "title": "10%",
+          "trade_date": "2025-09-10",
+          "filing_date": "2025-09-12",
+          "value": "+$39,995,333",
+          "qty": "+9,344,704"
+        },
+        {
+          "insider_name": "Sprott Eric",
+          "title": "10%",
+          "trade_date": "2025-10-14",
+          "filing_date": "2025-10-16",
+          "value": "+$49,985,000",
+          "qty": "+7,690,000"
+        },
+        {
+          "insider_name": "Sprott Eric",
+          "title": "10%",
+          "trade_date": "2025-11-11",
+          "filing_date": "2025-11-14",
+          "value": "+$13,130,000",
+          "qty": "+1,500,000"
+        },
+        {
+          "insider_name": "Sprott Eric",
+          "title": "10%",
+          "trade_date": "2025-11-17",
+          "filing_date": "2025-11-19",
+          "value": "+$4,148,000",
+          "qty": "+400,000"
+        },
+        {
+          "insider_name": "Sprott Eric",
+          "title": "10%",
+          "trade_date": "2025-12-03",
+          "filing_date": "2025-12-05",
+          "value": "+$24,110,487",
+          "qty": "+2,340,824"
+        },
+        {
+          "insider_name": "Sprott Eric",
+          "title": "10%",
+          "trade_date": "2025-12-09",
+          "filing_date": "2025-12-11",
+          "value": "+$5,703,600",
+          "qty": "+480,000"
+        },
+        {
+          "insider_name": "Sprott Eric",
+          "title": "10%",
+          "trade_date": "2025-12-12",
+          "filing_date": "2025-12-16",
+          "value": "+$5,742,000",
+          "qty": "+440,000"
+        },
+        {
+          "insider_name": "Sprott Eric",
+          "title": "10%",
+          "trade_date": "2025-12-17",
+          "filing_date": "2025-12-18",
+          "value": "+$3,212,000",
+          "qty": "+220,000"
+        },
+        {
+          "insider_name": "Sprott Eric",
+          "title": "10%",
+          "trade_date": "2025-12-19",
+          "filing_date": "2025-12-23",
+          "value": "+$2,446,500",
+          "qty": "+150,000"
+        },
+        {
+          "insider_name": "Sprott Eric",
+          "title": "10%",
+          "trade_date": "2025-12-24",
+          "filing_date": "2025-12-30",
+          "value": "+$16,545,000",
+          "qty": "+700,000"
+        },
+        {
+          "insider_name": "Sprott Eric",
+          "title": "10%",
+          "trade_date": "2026-01-08",
+          "filing_date": "2026-01-09",
+          "value": "+$3,284,250",
+          "qty": "+125,000"
+        },
+        {
+          "insider_name": "Sprott Eric",
+          "title": "10%",
+          "trade_date": "2026-01-14",
+          "filing_date": "2026-01-15",
+          "value": "+$6,642,000",
+          "qty": "+200,000"
+        },
+        {
+          "insider_name": "Sprott Eric",
+          "title": "10%",
+          "trade_date": "2026-01-26",
+          "filing_date": "2026-01-27",
+          "value": "+$4,996,000",
+          "qty": "+100,000"
+        },
+        {
+          "insider_name": "Sprott Eric",
+          "title": "10%",
+          "trade_date": "2026-01-29",
+          "filing_date": "2026-01-30",
+          "value": "+$9,198,000",
+          "qty": "+200,000"
+        }
+      ]
+    },
+    {
+      "ticker": "ASA",
+      "company_name": "ASA",
+      "total_value": 137056501.0,
+      "total_purchases": 116,
+      "unique_insiders": 5,
+      "trades": [
+        {
+          "insider_name": "Donovan William",
+          "title": "Dir",
+          "trade_date": "2021-03-05",
+          "filing_date": "2021-03-05",
+          "value": "+$18,500",
+          "qty": "+1,000"
+        },
+        {
+          "insider_name": "Hoene Mary Joan",
+          "title": "Dir",
+          "trade_date": "2021-06-30",
+          "filing_date": "2021-07-02",
+          "value": "+$1,295",
+          "qty": "+60"
+        },
+        {
+          "insider_name": "Hoene Mary Joan",
+          "title": "Dir",
+          "trade_date": "2022-01-19",
+          "filing_date": "2022-01-20",
+          "value": "+$1,492",
+          "qty": "+70"
+        },
+        {
+          "insider_name": "Hoene Mary Joan",
+          "title": "Dir",
+          "trade_date": "2022-07-05",
+          "filing_date": "2022-07-05",
+          "value": "+$1,428",
+          "qty": "+100"
+        },
+        {
+          "insider_name": "Donovan William",
+          "title": "Dir",
+          "trade_date": "2022-07-25",
+          "filing_date": "2022-07-26",
+          "value": "+$6,785",
+          "qty": "+500"
+        },
+        {
+          "insider_name": "Hansen Bruce D",
+          "title": "Dir",
+          "trade_date": "2022-09-27",
+          "filing_date": "2022-09-28",
+          "value": "+$12,109",
+          "qty": "+1,000"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2023-10-24",
+          "filing_date": "2023-10-25",
+          "value": "+$659,218",
+          "qty": "+47,984"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2023-10-26",
+          "filing_date": "2023-10-30",
+          "value": "+$176,088",
+          "qty": "+13,005"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2023-10-30",
+          "filing_date": "2023-10-31",
+          "value": "+$7,359",
+          "qty": "+534"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2023-11-03",
+          "filing_date": "2023-11-06",
+          "value": "+$1,068,166",
+          "qty": "+77,669"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2023-11-08",
+          "filing_date": "2023-11-09",
+          "value": "+$2,531",
+          "qty": "+189"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2023-11-09",
+          "filing_date": "2023-11-13",
+          "value": "+$415,007",
+          "qty": "+31,110"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2023-11-15",
+          "filing_date": "2023-11-17",
+          "value": "+$1,838,584",
+          "qty": "+135,281"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2023-11-20",
+          "filing_date": "2023-11-21",
+          "value": "+$2,021,154",
+          "qty": "+144,575"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2023-11-22",
+          "filing_date": "2023-11-24",
+          "value": "+$800,240",
+          "qty": "+56,000"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2023-11-27",
+          "filing_date": "2023-11-28",
+          "value": "+$1,422,263",
+          "qty": "+97,862"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2023-11-29",
+          "filing_date": "2023-11-30",
+          "value": "+$1,335,691",
+          "qty": "+87,102"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2023-12-01",
+          "filing_date": "2023-12-05",
+          "value": "+$637,817",
+          "qty": "+41,028"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2023-12-05",
+          "filing_date": "2023-12-06",
+          "value": "+$313,298",
+          "qty": "+20,445"
+        },
+        {
+          "insider_name": "Merk Alexander",
+          "title": "COO",
+          "trade_date": "2023-12-05",
+          "filing_date": "2023-12-05",
+          "value": "+$32,564",
+          "qty": "+2,100"
+        },
+        {
+          "insider_name": "Merk Alexander",
+          "title": "COO",
+          "trade_date": "2023-12-06",
+          "filing_date": "2023-12-06",
+          "value": "+$55,047",
+          "qty": "+3,600"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2023-12-07",
+          "filing_date": "2023-12-11",
+          "value": "+$288,152",
+          "qty": "+18,699"
+        },
+        {
+          "insider_name": "Merk Alexander",
+          "title": "COO",
+          "trade_date": "2023-12-07",
+          "filing_date": "2023-12-07",
+          "value": "+$69,492",
+          "qty": "+4,500"
+        },
+        {
+          "insider_name": "Hoene Mary Joan",
+          "title": "Dir",
+          "trade_date": "2023-12-08",
+          "filing_date": "2023-12-08",
+          "value": "+$7,570",
+          "qty": "+500"
+        },
+        {
+          "insider_name": "Merk Alexander",
+          "title": "COO",
+          "trade_date": "2023-12-08",
+          "filing_date": "2023-12-08",
+          "value": "+$102,223",
+          "qty": "+6,700"
+        },
+        {
+          "insider_name": "Merk Alexander",
+          "title": "Dir",
+          "trade_date": "2023-12-11",
+          "filing_date": "2023-12-12",
+          "value": "+$115,482",
+          "qty": "+7,820"
+        },
+        {
+          "insider_name": "Merk Alexander",
+          "title": "COO",
+          "trade_date": "2023-12-11",
+          "filing_date": "2023-12-11",
+          "value": "+$65,635",
+          "qty": "+4,350"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2023-12-13",
+          "filing_date": "2023-12-14",
+          "value": "+$60,212",
+          "qty": "+4,110"
+        },
+        {
+          "insider_name": "Merk Alexander",
+          "title": "COO",
+          "trade_date": "2023-12-14",
+          "filing_date": "2023-12-14",
+          "value": "+$380,093",
+          "qty": "+24,400"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2023-12-18",
+          "filing_date": "2023-12-18",
+          "value": "+$1,660,025",
+          "qty": "+107,445"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2023-12-19",
+          "filing_date": "2023-12-21",
+          "value": "+$3,560,693",
+          "qty": "+223,381"
+        },
+        {
+          "insider_name": "Donovan William",
+          "title": "Dir",
+          "trade_date": "2023-12-19",
+          "filing_date": "2023-12-19",
+          "value": "+$24,000",
+          "qty": "+1,500"
+        },
+        {
+          "insider_name": "Hoene Mary Joan",
+          "title": "Dir",
+          "trade_date": "2023-12-20",
+          "filing_date": "2023-12-20",
+          "value": "+$7,910",
+          "qty": "+500"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2023-12-26",
+          "filing_date": "2023-12-27",
+          "value": "+$52,653",
+          "qty": "+3,297"
+        },
+        {
+          "insider_name": "Hoene Mary Joan",
+          "title": "Dir",
+          "trade_date": "2024-01-02",
+          "filing_date": "2024-01-02",
+          "value": "+$7,580",
+          "qty": "+500"
+        },
+        {
+          "insider_name": "Merk Alexander",
+          "title": "COO",
+          "trade_date": "2024-01-02",
+          "filing_date": "2024-01-02",
+          "value": "+$388,161",
+          "qty": "+25,549"
+        },
+        {
+          "insider_name": "Hansen Bruce D",
+          "title": "Dir",
+          "trade_date": "2024-01-02",
+          "filing_date": "2024-01-02",
+          "value": "+$30,360",
+          "qty": "+2,000"
+        },
+        {
+          "insider_name": "Hoene Mary Joan",
+          "title": "Dir",
+          "trade_date": "2024-01-03",
+          "filing_date": "2024-01-03",
+          "value": "+$1,478",
+          "qty": "+100"
+        },
+        {
+          "insider_name": "Hoene Mary Joan",
+          "title": "Dir",
+          "trade_date": "2024-01-08",
+          "filing_date": "2024-01-08",
+          "value": "+$5,920",
+          "qty": "+400"
+        },
+        {
+          "insider_name": "Hoene Mary Joan",
+          "title": "Dir",
+          "trade_date": "2024-11-14",
+          "filing_date": "2024-12-10",
+          "value": "+$7,478",
+          "qty": "+380"
+        },
+        {
+          "insider_name": "Hoene Mary Joan",
+          "title": "Dir",
+          "trade_date": "2024-11-14",
+          "filing_date": "2024-11-14",
+          "value": "+$7,478",
+          "qty": "+380"
+        },
+        {
+          "insider_name": "Merk Alexander",
+          "title": "COO",
+          "trade_date": "2024-12-26",
+          "filing_date": "2024-12-30",
+          "value": "+$487,357",
+          "qty": "+24,168"
+        },
+        {
+          "insider_name": "Merk Alexander",
+          "title": "COO",
+          "trade_date": "2024-12-31",
+          "filing_date": "2025-01-03",
+          "value": "+$300,220",
+          "qty": "+14,441"
+        },
+        {
+          "insider_name": "Merk Alexander",
+          "title": "COO",
+          "trade_date": "2024-12-31",
+          "filing_date": "2025-01-03",
+          "value": "+$300,220",
+          "qty": "+14,441"
+        },
+        {
+          "insider_name": "Hoene Mary Joan",
+          "title": "Dir",
+          "trade_date": "2025-01-03",
+          "filing_date": "2025-01-06",
+          "value": "+$8,744",
+          "qty": "+420"
+        },
+        {
+          "insider_name": "Merk Alexander",
+          "title": "COO",
+          "trade_date": "2025-01-03",
+          "filing_date": "2025-01-03",
+          "value": "+$646,684",
+          "qty": "+30,825"
+        },
+        {
+          "insider_name": "Merk Alexander",
+          "title": "COO",
+          "trade_date": "2025-01-06",
+          "filing_date": "2025-01-07",
+          "value": "+$711,250",
+          "qty": "+33,774"
+        },
+        {
+          "insider_name": "Merk Alexander",
+          "title": "COO",
+          "trade_date": "2025-01-08",
+          "filing_date": "2025-01-10",
+          "value": "+$634,720",
+          "qty": "+28,860"
+        },
+        {
+          "insider_name": "Donovan William",
+          "title": "Dir",
+          "trade_date": "2025-01-10",
+          "filing_date": "2025-01-22",
+          "value": "+$6,612",
+          "qty": "+300"
+        },
+        {
+          "insider_name": "Donovan William",
+          "title": "Dir",
+          "trade_date": "2025-01-10",
+          "filing_date": "2025-01-10",
+          "value": "+$8,812",
+          "qty": "+400"
+        },
+        {
+          "insider_name": "Merk Alexander",
+          "title": "COO",
+          "trade_date": "2025-01-14",
+          "filing_date": "2025-01-15",
+          "value": "+$653,379",
+          "qty": "+29,700"
+        },
+        {
+          "insider_name": "Merk Alexander",
+          "title": "COO",
+          "trade_date": "2025-01-16",
+          "filing_date": "2025-01-17",
+          "value": "+$687,128",
+          "qty": "+31,248"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-08-07",
+          "filing_date": "2025-08-11",
+          "value": "+$3,657,547",
+          "qty": "+104,809"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-08-11",
+          "filing_date": "2025-08-12",
+          "value": "+$11,476,500",
+          "qty": "+327,900"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-08-12",
+          "filing_date": "2025-08-14",
+          "value": "+$12,598,503",
+          "qty": "+356,005"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-08-14",
+          "filing_date": "2025-08-18",
+          "value": "+$626,926",
+          "qty": "+18,310"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-08-18",
+          "filing_date": "2025-08-19",
+          "value": "+$55,136",
+          "qty": "+1,600"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-08-19",
+          "filing_date": "2025-08-21",
+          "value": "+$337,963",
+          "qty": "+9,943"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-08-21",
+          "filing_date": "2025-08-25",
+          "value": "+$187,562",
+          "qty": "+5,230"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-08-25",
+          "filing_date": "2025-08-26",
+          "value": "+$274,555",
+          "qty": "+7,520"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-08-27",
+          "filing_date": "2025-09-02",
+          "value": "+$622,417",
+          "qty": "+16,853"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-09-02",
+          "filing_date": "2025-09-04",
+          "value": "+$3,893,258",
+          "qty": "+100,568"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-09-04",
+          "filing_date": "2025-09-08",
+          "value": "+$1,295,171",
+          "qty": "+33,459"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-09-08",
+          "filing_date": "2025-09-09",
+          "value": "+$992,655",
+          "qty": "+24,510"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-09-09",
+          "filing_date": "2025-09-11",
+          "value": "+$2,022,416",
+          "qty": "+50,351"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-09-11",
+          "filing_date": "2025-09-15",
+          "value": "+$8,357,572",
+          "qty": "+205,492"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-09-15",
+          "filing_date": "2025-09-17",
+          "value": "+$4,506,703",
+          "qty": "+108,641"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-09-17",
+          "filing_date": "2025-09-19",
+          "value": "+$1,062,359",
+          "qty": "+25,870"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-09-19",
+          "filing_date": "2025-09-23",
+          "value": "+$241,447",
+          "qty": "+5,779"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-10-07",
+          "filing_date": "2025-10-08",
+          "value": "+$2,169,179",
+          "qty": "+46,649"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-10-08",
+          "filing_date": "2025-10-09",
+          "value": "+$1,147,072",
+          "qty": "+23,813"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-10-09",
+          "filing_date": "2025-10-14",
+          "value": "+$3,571,924",
+          "qty": "+75,263"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-10-14",
+          "filing_date": "2025-10-16",
+          "value": "+$2,272,989",
+          "qty": "+45,003"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-10-16",
+          "filing_date": "2025-10-20",
+          "value": "+$5,308,819",
+          "qty": "+105,772"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-10-20",
+          "filing_date": "2025-10-21",
+          "value": "+$579,457",
+          "qty": "+11,566"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-10-21",
+          "filing_date": "2025-10-23",
+          "value": "+$2,029,236",
+          "qty": "+45,090"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-10-23",
+          "filing_date": "2025-10-27",
+          "value": "+$1,912,870",
+          "qty": "+41,507"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-10-27",
+          "filing_date": "2025-10-28",
+          "value": "+$1,256,280",
+          "qty": "+28,500"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-10-28",
+          "filing_date": "2025-10-30",
+          "value": "+$995,907",
+          "qty": "+21,975"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-10-30",
+          "filing_date": "2025-11-03",
+          "value": "+$808,084",
+          "qty": "+17,547"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-11-03",
+          "filing_date": "2025-11-04",
+          "value": "+$1,208,484",
+          "qty": "+26,152"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-11-04",
+          "filing_date": "2025-11-06",
+          "value": "+$934,377",
+          "qty": "+20,998"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-11-10",
+          "filing_date": "2025-11-12",
+          "value": "+$683,135",
+          "qty": "+14,280"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-11-13",
+          "filing_date": "2025-11-17",
+          "value": "+$126,047",
+          "qty": "+2,550"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-11-17",
+          "filing_date": "2025-11-18",
+          "value": "+$858,171",
+          "qty": "+18,124"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-11-18",
+          "filing_date": "2025-11-20",
+          "value": "+$593,177",
+          "qty": "+12,362"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-11-20",
+          "filing_date": "2025-11-24",
+          "value": "+$1,762,846",
+          "qty": "+37,280"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-11-25",
+          "filing_date": "2025-11-26",
+          "value": "+$355,046",
+          "qty": "+7,283"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-12-01",
+          "filing_date": "2025-12-02",
+          "value": "+$511,078",
+          "qty": "+9,560"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-12-02",
+          "filing_date": "2025-12-04",
+          "value": "+$937,751",
+          "qty": "+17,654"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-12-04",
+          "filing_date": "2025-12-08",
+          "value": "+$1,240,487",
+          "qty": "+23,410"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-12-08",
+          "filing_date": "2025-12-09",
+          "value": "+$395,201",
+          "qty": "+7,542"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-12-10",
+          "filing_date": "2025-12-11",
+          "value": "+$562,374",
+          "qty": "+10,397"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-12-12",
+          "filing_date": "2025-12-15",
+          "value": "+$792,314",
+          "qty": "+13,696"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-12-15",
+          "filing_date": "2025-12-16",
+          "value": "+$457,015",
+          "qty": "+7,866"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-12-16",
+          "filing_date": "2025-12-18",
+          "value": "+$1,060,530",
+          "qty": "+18,495"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-12-18",
+          "filing_date": "2025-12-22",
+          "value": "+$223,235",
+          "qty": "+3,881"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-12-22",
+          "filing_date": "2025-12-29",
+          "value": "+$323,803",
+          "qty": "+5,284"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-12-24",
+          "filing_date": "2025-12-30",
+          "value": "+$667,214",
+          "qty": "+11,292"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2025-12-30",
+          "filing_date": "2026-01-02",
+          "value": "+$962,492",
+          "qty": "+16,004"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2026-01-02",
+          "filing_date": "2026-01-05",
+          "value": "+$517,523",
+          "qty": "+8,782"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2026-01-05",
+          "filing_date": "2026-01-06",
+          "value": "+$529,006",
+          "qty": "+8,770"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2026-01-06",
+          "filing_date": "2026-01-08",
+          "value": "+$417,792",
+          "qty": "+6,878"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2026-01-08",
+          "filing_date": "2026-01-12",
+          "value": "+$408,049",
+          "qty": "+6,631"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2026-01-12",
+          "filing_date": "2026-01-13",
+          "value": "+$610,319",
+          "qty": "+9,508"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2026-01-13",
+          "filing_date": "2026-01-15",
+          "value": "+$1,297,352",
+          "qty": "+20,162"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2026-01-15",
+          "filing_date": "2026-01-20",
+          "value": "+$583,775",
+          "qty": "+9,195"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2026-01-20",
+          "filing_date": "2026-01-22",
+          "value": "+$246,016",
+          "qty": "+3,723"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2026-01-26",
+          "filing_date": "2026-01-27",
+          "value": "+$102,060",
+          "qty": "+1,400"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2026-01-27",
+          "filing_date": "2026-01-29",
+          "value": "+$4,578,517",
+          "qty": "+60,895"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2026-01-29",
+          "filing_date": "2026-02-02",
+          "value": "+$2,696,801",
+          "qty": "+38,783"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2026-02-02",
+          "filing_date": "2026-02-03",
+          "value": "+$544,110",
+          "qty": "+8,466"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2026-02-03",
+          "filing_date": "2026-02-05",
+          "value": "+$2,325,007",
+          "qty": "+35,121"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2026-02-05",
+          "filing_date": "2026-02-09",
+          "value": "+$2,032,967",
+          "qty": "+31,219"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
+          "value": "+$6,237,962",
+          "qty": "+88,140"
+        },
+        {
+          "insider_name": "Saba Capital Management, L.P.",
+          "title": "10%",
+          "trade_date": "2026-02-11",
+          "filing_date": "2026-02-12",
+          "value": "+$2,899,604",
+          "qty": "+40,222"
+        }
+      ]
+    },
+    {
+      "ticker": "HLXC",
+      "company_name": "HLXC",
+      "total_value": 8000000.0,
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "trades": [
+        {
+          "insider_name": "Chen Bihua",
+          "title": "Chairperson, CEO, 10%",
+          "trade_date": "2026-01-26",
+          "filing_date": "2026-01-28",
+          "value": "+$8,000,000",
+          "qty": "+800,000"
+        }
+      ]
+    },
+    {
+      "ticker": "NDAQ",
+      "company_name": "NDAQ",
+      "total_value": 17485430.0,
+      "total_purchases": 6,
+      "unique_insiders": 6,
+      "trades": [
+        {
+          "insider_name": "Black Steven D",
+          "title": "Dir",
+          "trade_date": "2023-06-13",
+          "filing_date": "2023-06-15",
+          "value": "+$205,840",
+          "qty": "+4,000"
+        },
+        {
+          "insider_name": "Friedman Adena T",
+          "title": "Chair, CEO",
+          "trade_date": "2023-07-31",
+          "filing_date": "2023-08-02",
+          "value": "+$510,000",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "Yabuki Jeffery W",
+          "title": "Dir",
+          "trade_date": "2023-08-03",
+          "filing_date": "2023-08-07",
+          "value": "+$24,700",
+          "qty": "+500"
+        },
+        {
+          "insider_name": "Torgeby Johan",
+          "title": "Dir",
+          "trade_date": "2023-10-23",
+          "filing_date": "2023-10-25",
+          "value": "+$705,880",
+          "qty": "+14,000"
+        },
+        {
+          "insider_name": "Zollar Alfred W",
+          "title": "Dir",
+          "trade_date": "2024-11-13",
+          "filing_date": "2024-11-14",
+          "value": "+$203,970",
+          "qty": "+2,542"
+        },
+        {
+          "insider_name": "Investor Ab",
+          "title": "10%",
+          "trade_date": "2026-02-13",
+          "filing_date": "2026-02-13",
+          "value": "+$15,835,040",
+          "qty": "+200,000"
+        }
+      ]
+    },
+    {
+      "ticker": "UAA",
+      "company_name": "UAA",
+      "total_value": 220943876.0,
+      "total_purchases": 10,
+      "unique_insiders": 6,
+      "trades": [
+        {
+          "insider_name": "Gibbs David W",
+          "title": "Dir",
+          "trade_date": "2022-05-27",
+          "filing_date": "2022-06-01",
+          "value": "+$474,818",
+          "qty": "+50,000"
+        },
+        {
+          "insider_name": "Aumen Eric J",
+          "title": "Chief Accounting Officer",
+          "trade_date": "2025-08-13",
+          "filing_date": "2025-08-14",
+          "value": "+$10,000",
+          "qty": "+2,045"
+        },
+        {
+          "insider_name": "Fitzpatrick Dawn N.",
+          "title": "Dir",
+          "trade_date": "2025-08-13",
+          "filing_date": "2025-08-14",
+          "value": "+$493,000",
+          "qty": "+100,000"
+        },
+        {
+          "insider_name": "El-Erian Mohamed",
+          "title": "Dir",
+          "trade_date": "2025-08-18",
+          "filing_date": "2025-08-19",
+          "value": "+$519,960",
+          "qty": "+100,000"
+        },
+        {
+          "insider_name": "Sweeney Robert John",
+          "title": "Dir",
+          "trade_date": "2025-08-21",
+          "filing_date": "2025-08-21",
+          "value": "+$488,200",
+          "qty": "+100,000"
+        },
+        {
+          "insider_name": "Watsa V Prem Et Al",
+          "title": "10%",
+          "trade_date": "2025-12-22",
+          "filing_date": "2025-12-29",
+          "value": "+$70,963,523",
+          "qty": "+15,681,964"
+        },
+        {
+          "insider_name": "Watsa V Prem Et Al",
+          "title": "10%",
+          "trade_date": "2025-12-30",
+          "filing_date": "2026-01-02",
+          "value": "+$67,443,913",
+          "qty": "+13,182,469"
+        },
+        {
+          "insider_name": "Watsa V Prem Et Al",
+          "title": "10%",
+          "trade_date": "2026-01-16",
+          "filing_date": "2026-01-21",
+          "value": "+$49,684,526",
+          "qty": "+8,607,267"
+        },
+        {
+          "insider_name": "Watsa V Prem Et Al",
+          "title": "10%",
+          "trade_date": "2026-01-22",
+          "filing_date": "2026-01-26",
+          "value": "+$14,420,222",
+          "qty": "+2,335,350"
+        },
+        {
+          "insider_name": "Watsa V Prem Et Al",
+          "title": "10%",
+          "trade_date": "2026-01-27",
+          "filing_date": "2026-01-29",
+          "value": "+$16,445,714",
+          "qty": "+2,641,105"
+        }
+      ]
+    },
+    {
+      "ticker": "SONO",
+      "company_name": "SONO",
+      "total_value": 48404754.0,
+      "total_purchases": 13,
+      "unique_insiders": 6,
+      "trades": [
+        {
+          "insider_name": "Volpi Michelangelo",
+          "title": "Dir",
+          "trade_date": "2021-02-19",
+          "filing_date": "2021-02-22",
+          "value": "+$2,004,345",
+          "qty": "+53,666"
+        },
+        {
+          "insider_name": "Coliseum Capital Management, LLC",
+          "title": "10%",
+          "trade_date": "2025-04-03",
+          "filing_date": "2025-04-07",
+          "value": "+$1,873,230",
+          "qty": "+209,663"
+        },
+        {
+          "insider_name": "Coliseum Capital Management, LLC",
+          "title": "10%",
+          "trade_date": "2025-06-12",
+          "filing_date": "2025-06-16",
+          "value": "+$6,580,893",
+          "qty": "+651,588"
+        },
+        {
+          "insider_name": "Coliseum Capital Management, LLC",
+          "title": "10%",
+          "trade_date": "2025-06-20",
+          "filing_date": "2025-06-24",
+          "value": "+$4,245,197",
+          "qty": "+423,428"
+        },
+        {
+          "insider_name": "Coliseum Capital Management, LLC",
+          "title": "10%",
+          "trade_date": "2025-07-25",
+          "filing_date": "2025-07-29",
+          "value": "+$14,803,883",
+          "qty": "+1,312,087"
+        },
+        {
+          "insider_name": "Coliseum Capital Management, LLC",
+          "title": "10%",
+          "trade_date": "2025-08-01",
+          "filing_date": "2025-08-05",
+          "value": "+$2,591,345",
+          "qty": "+242,683"
+        },
+        {
+          "insider_name": "Coliseum Capital Management, LLC",
+          "title": "10%",
+          "trade_date": "2025-08-07",
+          "filing_date": "2025-08-11",
+          "value": "+$1,968,328",
+          "qty": "+182,406"
+        },
+        {
+          "insider_name": "Darrell Bracken",
+          "title": "Dir",
+          "trade_date": "2025-08-08",
+          "filing_date": "2025-08-11",
+          "value": "+$250,000",
+          "qty": "+22,412"
+        },
+        {
+          "insider_name": "Casey Saori",
+          "title": "CFO",
+          "trade_date": "2025-08-08",
+          "filing_date": "2025-08-11",
+          "value": "+$248,688",
+          "qty": "+22,727"
+        },
+        {
+          "insider_name": "Genachowski Julius",
+          "title": "Dir",
+          "trade_date": "2025-08-08",
+          "filing_date": "2025-08-11",
+          "value": "+$250,205",
+          "qty": "+22,850"
+        },
+        {
+          "insider_name": "Conrad Thomas",
+          "title": "CEO",
+          "trade_date": "2025-08-08",
+          "filing_date": "2025-08-11",
+          "value": "+$1,024,299",
+          "qty": "+92,300"
+        },
+        {
+          "insider_name": "Conrad Thomas",
+          "title": "CEO",
+          "trade_date": "2025-11-17",
+          "filing_date": "2025-11-18",
+          "value": "+$1,008,045",
+          "qty": "+62,325"
+        },
+        {
+          "insider_name": "Coliseum Capital Management, LLC",
+          "title": "10%",
+          "trade_date": "2026-02-04",
+          "filing_date": "2026-02-06",
+          "value": "+$11,556,296",
+          "qty": "+733,073"
+        }
+      ]
+    },
+    {
+      "ticker": "MLAA",
+      "company_name": "MLAA",
+      "total_value": 5100000.0,
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "trades": [
+        {
+          "insider_name": "Grinberg Paul",
+          "title": "CEO, 10%",
+          "trade_date": "2026-01-28",
+          "filing_date": "2026-01-30",
+          "value": "+$5,100,000",
+          "qty": "+510,000"
+        }
+      ]
+    },
+    {
+      "ticker": "TVA",
+      "company_name": "TVA",
+      "total_value": 9958578.0,
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "trades": [
+        {
+          "insider_name": "Angelo Mark",
+          "title": "Dir, 10%",
+          "trade_date": "2026-02-04",
+          "filing_date": "2026-02-06",
+          "value": "+$9,958,578",
+          "qty": "+925,000"
+        }
+      ]
+    },
+    {
+      "ticker": "LIFE",
+      "company_name": "LIFE",
+      "total_value": 9999947.0,
+      "total_purchases": 3,
+      "unique_insiders": 3,
+      "trades": [
+        {
+          "insider_name": "Botha Roelof",
+          "title": "Dir, 10%",
+          "trade_date": "2026-01-29",
+          "filing_date": "2026-02-02",
+          "value": "+$4,949,975",
+          "qty": "+260,525"
+        },
+        {
+          "insider_name": "Wheeler William J",
+          "title": "Dir",
+          "trade_date": "2026-01-30",
+          "filing_date": "2026-01-30",
+          "value": "+$4,949,975",
+          "qty": "+260,525"
+        },
+        {
+          "insider_name": "Mullin Mark W.",
+          "title": "Dir",
+          "trade_date": "2026-01-30",
+          "filing_date": "2026-01-30",
+          "value": "+$99,997",
+          "qty": "+5,263"
+        }
+      ]
+    },
+    {
+      "ticker": "MIRM",
+      "company_name": "MIRM",
+      "total_value": 14075901.0,
+      "total_purchases": 17,
+      "unique_insiders": 5,
+      "trades": [
+        {
+          "insider_name": "Longpre Lara",
+          "title": "Chief Development Officer",
+          "trade_date": "2019-09-10",
+          "filing_date": "2024-03-18",
+          "value": "+$10,268",
+          "qty": "+965"
+        },
+        {
+          "insider_name": "Clements Ian",
+          "title": "CFO",
+          "trade_date": "2020-12-23",
+          "filing_date": "2021-03-08",
+          "value": "+$29,691",
+          "qty": "+1,592"
+        },
+        {
+          "insider_name": "Clements Ian",
+          "title": "CFO",
+          "trade_date": "2021-11-24",
+          "filing_date": "2021-11-29",
+          "value": "+$20,505",
+          "qty": "+1,450"
+        },
+        {
+          "insider_name": "Peetz Christopher",
+          "title": "Pres, CEO",
+          "trade_date": "2021-11-24",
+          "filing_date": "2021-11-29",
+          "value": "+$100,800",
+          "qty": "+7,000"
+        },
+        {
+          "insider_name": "Heron Patrick J",
+          "title": "Dir, 10%",
+          "trade_date": "2023-08-31",
+          "filing_date": "2023-09-05",
+          "value": "+$3,884,764",
+          "qty": "+147,991"
+        },
+        {
+          "insider_name": "Heron Patrick J",
+          "title": "Dir",
+          "trade_date": "2023-09-11",
+          "filing_date": "2023-09-13",
+          "value": "+$256,791",
+          "qty": "+8,437"
+        },
+        {
+          "insider_name": "Bjerkholt Eric",
+          "title": "CFO",
+          "trade_date": "2023-09-11",
+          "filing_date": "2023-09-12",
+          "value": "+$296,492",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "Heron Patrick J",
+          "title": "Dir",
+          "trade_date": "2023-09-13",
+          "filing_date": "2023-09-15",
+          "value": "+$81,425",
+          "qty": "+2,625"
+        },
+        {
+          "insider_name": "Bjerkholt Eric",
+          "title": "CFO",
+          "trade_date": "2024-03-18",
+          "filing_date": "2024-03-18",
+          "value": "+$51,600",
+          "qty": "+2,000"
+        },
+        {
+          "insider_name": "Bjerkholt Eric",
+          "title": "CFO",
+          "trade_date": "2024-03-27",
+          "filing_date": "2024-03-27",
+          "value": "+$49,600",
+          "qty": "+2,000"
+        },
+        {
+          "insider_name": "Heron Patrick J",
+          "title": "Dir",
+          "trade_date": "2024-09-06",
+          "filing_date": "2024-09-10",
+          "value": "+$9,563",
+          "qty": "+230"
+        },
+        {
+          "insider_name": "Heron Patrick J",
+          "title": "Dir",
+          "trade_date": "2024-09-18",
+          "filing_date": "2024-09-20",
+          "value": "+$4,301",
+          "qty": "+115"
+        },
+        {
+          "insider_name": "Heron Patrick J",
+          "title": "Dir",
+          "trade_date": "2025-03-04",
+          "filing_date": "2025-03-06",
+          "value": "+$72,724",
+          "qty": "+1,602"
+        },
+        {
+          "insider_name": "Heron Patrick J",
+          "title": "Dir",
+          "trade_date": "2025-03-06",
+          "filing_date": "2025-03-10",
+          "value": "+$83,661",
+          "qty": "+1,915"
+        },
+        {
+          "insider_name": "Heron Patrick J",
+          "title": "Dir",
+          "trade_date": "2025-03-10",
+          "filing_date": "2025-03-12",
+          "value": "+$99,518",
+          "qty": "+2,298"
+        },
+        {
+          "insider_name": "Heron Patrick J",
+          "title": "Dir",
+          "trade_date": "2025-03-14",
+          "filing_date": "2025-03-18",
+          "value": "+$24,214",
+          "qty": "+549"
+        },
+        {
+          "insider_name": "Heron Patrick J",
+          "title": "Dir",
+          "trade_date": "2026-01-23",
+          "filing_date": "2026-01-27",
+          "value": "+$8,999,984",
+          "qty": "+131,425"
+        }
+      ]
+    },
+    {
+      "ticker": "THS",
+      "company_name": "THS",
+      "total_value": 36359539.0,
+      "total_purchases": 6,
+      "unique_insiders": 4,
+      "trades": [
+        {
+          "insider_name": "Jana Partners LLC",
+          "title": "See Remarks",
+          "trade_date": "2023-08-08",
+          "filing_date": "2023-08-10",
+          "value": "+$1,913,565",
+          "qty": "+41,500"
+        },
+        {
+          "insider_name": "Jana Partners LLC",
+          "title": "(See Remarks)",
+          "trade_date": "2023-09-06",
+          "filing_date": "2023-09-08",
+          "value": "+$4,999,990",
+          "qty": "+112,275"
+        },
+        {
+          "insider_name": "Jana Partners Management, LP",
+          "title": "See Remarks, 10%",
+          "trade_date": "2025-05-08",
+          "filing_date": "2025-05-12",
+          "value": "+$12,660,607",
+          "qty": "+566,589"
+        },
+        {
+          "insider_name": "Oakland Steven",
+          "title": "CEO, Pres",
+          "trade_date": "2025-05-08",
+          "filing_date": "2025-05-09",
+          "value": "+$100,004",
+          "qty": "+4,660"
+        },
+        {
+          "insider_name": "Jana Partners Management, LP",
+          "title": "(See Remarks), 10%",
+          "trade_date": "2025-05-13",
+          "filing_date": "2025-05-14",
+          "value": "+$7,902,090",
+          "qty": "+339,000"
+        },
+        {
+          "insider_name": "Silver Point Capital L.P.",
+          "title": "10%",
+          "trade_date": "2026-02-10",
+          "filing_date": "2026-02-12",
+          "value": "+$8,783,283",
+          "qty": "+357,917"
+        }
+      ]
+    },
+    {
+      "ticker": "PMN",
+      "company_name": "PMN",
+      "total_value": 9003455.0,
+      "total_purchases": 19,
+      "unique_insiders": 10,
+      "trades": [
+        {
+          "insider_name": "Williams Eugene",
+          "title": "COB, CEO",
+          "trade_date": "2022-07-11",
+          "filing_date": "2022-07-12",
+          "value": "+$9,800",
+          "qty": "+1,000"
+        },
+        {
+          "insider_name": "Kirwin Patrick D.",
+          "title": "Dir",
+          "trade_date": "2022-08-17",
+          "filing_date": "2022-08-18",
+          "value": "+$23,680",
+          "qty": "+4,000"
+        },
+        {
+          "insider_name": "Williams Eugene",
+          "title": "Dir",
+          "trade_date": "2022-12-02",
+          "filing_date": "2022-12-06",
+          "value": "+$5,980",
+          "qty": "+1,000"
+        },
+        {
+          "insider_name": "Farfel Gail M",
+          "title": "CEO",
+          "trade_date": "2022-12-06",
+          "filing_date": "2022-12-08",
+          "value": "+$5,700",
+          "qty": "+1,000"
+        },
+        {
+          "insider_name": "Williams Eugene",
+          "title": "Dir",
+          "trade_date": "2022-12-07",
+          "filing_date": "2022-12-08",
+          "value": "+$5,486",
+          "qty": "+1,000"
+        },
+        {
+          "insider_name": "Kirwin Patrick D.",
+          "title": "Dir",
+          "trade_date": "2022-12-09",
+          "filing_date": "2022-12-13",
+          "value": "+$4,980",
+          "qty": "+1,000"
+        },
+        {
+          "insider_name": "Williams Eugene",
+          "title": "Dir",
+          "trade_date": "2022-12-12",
+          "filing_date": "2022-12-13",
+          "value": "+$5,075",
+          "qty": "+1,000"
+        },
+        {
+          "insider_name": "Kirwin Patrick D.",
+          "title": "Dir",
+          "trade_date": "2022-12-13",
+          "filing_date": "2022-12-15",
+          "value": "+$13,890",
+          "qty": "+3,000"
+        },
+        {
+          "insider_name": "Farfel Gail M",
+          "title": "CEO",
+          "trade_date": "2022-12-14",
+          "filing_date": "2022-12-16",
+          "value": "+$4,940",
+          "qty": "+1,000"
+        },
+        {
+          "insider_name": "Williams Eugene",
+          "title": "Dir",
+          "trade_date": "2022-12-16",
+          "filing_date": "2022-12-19",
+          "value": "+$9,290",
+          "qty": "+2,000"
+        },
+        {
+          "insider_name": "Title 19 Promis",
+          "title": "10%",
+          "trade_date": "2024-07-31",
+          "filing_date": "2024-08-02",
+          "value": "+$0",
+          "qty": "+465,116"
+        },
+        {
+          "insider_name": "Gordon Michael S",
+          "title": "10%",
+          "trade_date": "2024-07-31",
+          "filing_date": "2024-08-02",
+          "value": "+$0",
+          "qty": "+465,116"
+        },
+        {
+          "insider_name": "Sclar Jeremy M.",
+          "title": "10%",
+          "trade_date": "2024-07-31",
+          "filing_date": "2024-08-02",
+          "value": "+$0",
+          "qty": "+697,674"
+        },
+        {
+          "insider_name": "Kirwin Patrick D.",
+          "title": "Dir",
+          "trade_date": "2024-08-14",
+          "filing_date": "2024-08-16",
+          "value": "+$12,492",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "Gordon Michael S",
+          "title": "10%",
+          "trade_date": "2024-09-16",
+          "filing_date": "2024-09-18",
+          "value": "+$116,880",
+          "qty": "+93,223"
+        },
+        {
+          "insider_name": "Shafmaster Madge K.",
+          "title": "Dir",
+          "trade_date": "2024-09-20",
+          "filing_date": "2024-09-24",
+          "value": "+$255,750",
+          "qty": "+200,000"
+        },
+        {
+          "insider_name": "Cashman Neil",
+          "title": "Chief Scientific Officer",
+          "trade_date": "2025-02-10",
+          "filing_date": "2025-02-12",
+          "value": "+$14,595",
+          "qty": "+15,000"
+        },
+        {
+          "insider_name": "Milbury Max A.",
+          "title": "Principal Accounting Officer",
+          "trade_date": "2025-10-03",
+          "filing_date": "2025-10-06",
+          "value": "+$14,929",
+          "qty": "+30,392"
+        },
+        {
+          "insider_name": "Abg Management Ltd.",
+          "title": "10%",
+          "trade_date": "2026-02-03",
+          "filing_date": "2026-02-05",
+          "value": "+$8,499,988",
+          "qty": "+700,741"
+        }
+      ]
+    },
+    {
+      "ticker": "FEAM",
+      "company_name": "FEAM",
+      "total_value": 8761687.0,
+      "total_purchases": 9,
+      "unique_insiders": 6,
+      "trades": [
+        {
+          "insider_name": "Vant Hoff Graham",
+          "title": "Dir",
+          "trade_date": "2023-06-07",
+          "filing_date": "2023-06-07",
+          "value": "+$16,384",
+          "qty": "+4,250"
+        },
+        {
+          "insider_name": "Salisbury David J",
+          "title": "Dir",
+          "trade_date": "2023-06-09",
+          "filing_date": "2023-06-12",
+          "value": "+$19,617",
+          "qty": "+4,955"
+        },
+        {
+          "insider_name": "Ascend Global Investment Fund Spc - Strategic Segregated Portfolio",
+          "title": "Dir, 10%",
+          "trade_date": "2025-08-25",
+          "filing_date": "2025-08-27",
+          "value": "+$350,000",
+          "qty": "+100,000"
+        },
+        {
+          "insider_name": "Bep Special Situations IV LLC",
+          "title": "Dir, 10%",
+          "trade_date": "2025-08-25",
+          "filing_date": "2025-08-27",
+          "value": "+$350,000",
+          "qty": "+100,000"
+        },
+        {
+          "insider_name": "Weibel Paul Wesley III",
+          "title": "CEO",
+          "trade_date": "2025-08-25",
+          "filing_date": "2025-08-25",
+          "value": "+$5,698",
+          "qty": "+1,628"
+        },
+        {
+          "insider_name": "Malm Joshua",
+          "title": "CFO",
+          "trade_date": "2025-08-25",
+          "filing_date": "2025-08-25",
+          "value": "+$4,988",
+          "qty": "+1,425"
+        },
+        {
+          "insider_name": "Bep Special Situations IV LLC",
+          "title": "Dir, 10%",
+          "trade_date": "2026-02-02",
+          "filing_date": "2026-02-04",
+          "value": "+$8,000,000",
+          "qty": "+4,000,000"
+        },
+        {
+          "insider_name": "Malm Joshua",
+          "title": "CFO",
+          "trade_date": "2026-02-02",
+          "filing_date": "2026-02-03",
+          "value": "+$7,500",
+          "qty": "+3,750"
+        },
+        {
+          "insider_name": "Weibel Paul Wesley III",
+          "title": "CEO",
+          "trade_date": "2026-02-02",
+          "filing_date": "2026-02-03",
+          "value": "+$7,500",
+          "qty": "+3,750"
+        }
+      ]
+    },
+    {
+      "ticker": "LEE",
+      "company_name": "LEE",
+      "total_value": 9612207.0,
+      "total_purchases": 13,
+      "unique_insiders": 5,
+      "trades": [
+        {
+          "insider_name": "Pearson David T.",
+          "title": "Dir",
+          "trade_date": "2022-05-09",
+          "filing_date": "2022-05-10",
+          "value": "+$39,303",
+          "qty": "+2,100"
+        },
+        {
+          "insider_name": "Fletcher Steven C.",
+          "title": "Dir",
+          "trade_date": "2023-03-08",
+          "filing_date": "2023-03-10",
+          "value": "+$31,960",
+          "qty": "+2,000"
+        },
+        {
+          "insider_name": "Moloney Herbert W III",
+          "title": "Dir",
+          "trade_date": "2023-08-07",
+          "filing_date": "2023-08-07",
+          "value": "+$26,660",
+          "qty": "+2,000"
+        },
+        {
+          "insider_name": "McAlmont Shaun",
+          "title": "Dir",
+          "trade_date": "2023-08-15",
+          "filing_date": "2023-08-16",
+          "value": "+$19,153",
+          "qty": "+1,700"
+        },
+        {
+          "insider_name": "Fletcher Steven C.",
+          "title": "Dir",
+          "trade_date": "2024-02-06",
+          "filing_date": "2024-02-08",
+          "value": "+$19,976",
+          "qty": "+2,000"
+        },
+        {
+          "insider_name": "Quint Digital Ltd",
+          "title": "10%",
+          "trade_date": "2024-03-18",
+          "filing_date": "2024-03-20",
+          "value": "+$600,930",
+          "qty": "+46,500"
+        },
+        {
+          "insider_name": "Quint Digital Ltd",
+          "title": "10%",
+          "trade_date": "2024-03-22",
+          "filing_date": "2024-03-25",
+          "value": "+$310,280",
+          "qty": "+22,000"
+        },
+        {
+          "insider_name": "Quint Digital Ltd",
+          "title": "10%",
+          "trade_date": "2024-03-25",
+          "filing_date": "2024-03-27",
+          "value": "+$298,430",
+          "qty": "+20,000"
+        },
+        {
+          "insider_name": "Quint Digital Ltd",
+          "title": "10%",
+          "trade_date": "2024-03-26",
+          "filing_date": "2024-03-27",
+          "value": "+$265,350",
+          "qty": "+17,000"
+        },
+        {
+          "insider_name": "Fletcher Steven C.",
+          "title": "Dir",
+          "trade_date": "2024-05-07",
+          "filing_date": "2024-05-08",
+          "value": "+$12,370",
+          "qty": "+1,000"
+        },
+        {
+          "insider_name": "Fletcher Steven C.",
+          "title": "Dir",
+          "trade_date": "2024-08-07",
+          "filing_date": "2024-08-09",
+          "value": "+$9,350",
+          "qty": "+1,000"
+        },
+        {
+          "insider_name": "Fletcher Steven C.",
+          "title": "Dir",
+          "trade_date": "2025-02-19",
+          "filing_date": "2025-02-20",
+          "value": "+$11,570",
+          "qty": "+1,000"
+        },
+        {
+          "insider_name": "Quint Digital Ltd",
+          "title": "10%",
+          "trade_date": "2026-02-05",
+          "filing_date": "2026-02-11",
+          "value": "+$7,966,875",
+          "qty": "+2,451,346"
+        }
+      ]
+    },
+    {
+      "ticker": "MU",
+      "company_name": "MU",
+      "total_value": 7821723.0,
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "trades": [
+        {
+          "insider_name": "Liu Teyin M",
+          "title": "Dir",
+          "trade_date": "2026-01-13",
+          "filing_date": "2026-01-15",
+          "value": "+$7,821,723",
+          "qty": "+23,200"
+        }
+      ]
+    },
+    {
+      "ticker": "RDDT",
+      "company_name": "RDDT",
+      "total_value": 8123369.0,
+      "total_purchases": 5,
+      "unique_insiders": 3,
+      "trades": [
+        {
+          "insider_name": "Habiger David C",
+          "title": "Dir",
+          "trade_date": "2024-03-25",
+          "filing_date": "2024-03-27",
+          "value": "+$102,000",
+          "qty": "+3,000"
+        },
+        {
+          "insider_name": "Sauerberg Robert A.",
+          "title": "Dir",
+          "trade_date": "2024-03-25",
+          "filing_date": "2024-03-27",
+          "value": "+$340,000",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "Habiger David C",
+          "title": "Dir",
+          "trade_date": "2025-03-12",
+          "filing_date": "2025-03-14",
+          "value": "+$100,895",
+          "qty": "+774"
+        },
+        {
+          "insider_name": "Habiger David C",
+          "title": "Dir",
+          "trade_date": "2025-03-13",
+          "filing_date": "2025-03-17",
+          "value": "+$98,335",
+          "qty": "+780"
+        },
+        {
+          "insider_name": "Farrell Sarah E",
+          "title": "Dir",
+          "trade_date": "2026-02-10",
+          "filing_date": "2026-02-12",
+          "value": "+$7,482,139",
+          "qty": "+50,500"
+        }
+      ]
+    },
+    {
+      "ticker": "YYAI",
+      "company_name": "YYAI",
+      "total_value": 8840692.0,
+      "total_purchases": 12,
+      "unique_insiders": 3,
+      "trades": [
+        {
+          "insider_name": "Bitnile Holdings, Inc.",
+          "title": "10%",
+          "trade_date": "2022-07-15",
+          "filing_date": "2022-08-01",
+          "value": "+$53,912",
+          "qty": "+57,500"
+        },
+        {
+          "insider_name": "Bitnile Holdings, Inc.",
+          "title": "10%",
+          "trade_date": "2022-07-15",
+          "filing_date": "2022-07-19",
+          "value": "+$53,912",
+          "qty": "+57,500"
+        },
+        {
+          "insider_name": "Bitnile Holdings, Inc.",
+          "title": "10%",
+          "trade_date": "2022-07-29",
+          "filing_date": "2022-08-01",
+          "value": "+$21,434",
+          "qty": "+23,200"
+        },
+        {
+          "insider_name": "Bitnile Holdings, Inc.",
+          "title": "10%",
+          "trade_date": "2022-08-01",
+          "filing_date": "2022-08-03",
+          "value": "+$8,219",
+          "qty": "+8,000"
+        },
+        {
+          "insider_name": "Bitnile Holdings, Inc.",
+          "title": "10%",
+          "trade_date": "2022-08-03",
+          "filing_date": "2022-08-04",
+          "value": "+$1,160",
+          "qty": "+1,000"
+        },
+        {
+          "insider_name": "Bitnile Holdings, Inc.",
+          "title": "10%",
+          "trade_date": "2022-08-04",
+          "filing_date": "2022-08-08",
+          "value": "+$21,136",
+          "qty": "+19,000"
+        },
+        {
+          "insider_name": "Belfiore Michael Anthony",
+          "title": "10%",
+          "trade_date": "2025-10-08",
+          "filing_date": "2025-10-15",
+          "value": "+$1,027,122",
+          "qty": "+3,213,095"
+        },
+        {
+          "insider_name": "Belfiore Michael Anthony",
+          "title": "Former 10% Owner",
+          "trade_date": "2025-10-27",
+          "filing_date": "2025-10-30",
+          "value": "+$17,847",
+          "qty": "+6,133"
+        },
+        {
+          "insider_name": "Zhou Hongyu",
+          "title": "Dir",
+          "trade_date": "2026-01-05",
+          "filing_date": "2026-01-07",
+          "value": "+$142,380",
+          "qty": "+139,918"
+        },
+        {
+          "insider_name": "Zhou Hongyu",
+          "title": "Dir",
+          "trade_date": "2026-01-07",
+          "filing_date": "2026-01-09",
+          "value": "+$219,807",
+          "qty": "+189,097"
+        },
+        {
+          "insider_name": "Zhou Hongyu",
+          "title": "Dir",
+          "trade_date": "2026-01-11",
+          "filing_date": "2026-01-13",
+          "value": "+$1,499,213",
+          "qty": "+1,109,922"
+        },
+        {
+          "insider_name": "Zhou Hongyu",
+          "title": "Dir",
+          "trade_date": "2026-01-21",
+          "filing_date": "2026-01-22",
+          "value": "+$5,774,550",
+          "qty": "+4,215,000"
+        }
+      ]
+    },
+    {
+      "ticker": "PSEC",
+      "company_name": "PSEC",
+      "total_value": 101717156.0,
+      "total_purchases": 82,
+      "unique_insiders": 5,
+      "trades": [
+        {
+          "insider_name": "Stark Eugene S",
+          "title": "Dir",
+          "trade_date": "2021-05-12",
+          "filing_date": "2021-05-14",
+          "value": "+$15,560",
+          "qty": "+2,000"
+        },
+        {
+          "insider_name": "Van Dask Kristin Lea",
+          "title": "CFO, TREASURER, SECRETARY, CCO",
+          "trade_date": "2022-09-07",
+          "filing_date": "2022-09-09",
+          "value": "+$19,478",
+          "qty": "+2,650"
+        },
+        {
+          "insider_name": "Stark Eugene S",
+          "title": "Dir",
+          "trade_date": "2022-09-07",
+          "filing_date": "2022-09-09",
+          "value": "+$14,700",
+          "qty": "+2,000"
+        },
+        {
+          "insider_name": "Stark Eugene S",
+          "title": "Dir",
+          "trade_date": "2022-09-26",
+          "filing_date": "2022-09-28",
+          "value": "+$13,100",
+          "qty": "+2,000"
+        },
+        {
+          "insider_name": "Van Dask Kristin Lea",
+          "title": "CFO, TREASURER, SECRETARY, CCO",
+          "trade_date": "2022-11-11",
+          "filing_date": "2022-11-15",
+          "value": "+$31,909",
+          "qty": "+4,250"
+        },
+        {
+          "insider_name": "Van Dask Kristin Lea",
+          "title": "CFO, TREASURER, SECRETARY, CCO",
+          "trade_date": "2023-03-14",
+          "filing_date": "2023-03-16",
+          "value": "+$41,220",
+          "qty": "+6,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2023-05-11",
+          "filing_date": "2023-05-16",
+          "value": "+$1,237,000",
+          "qty": "+200,000"
+        },
+        {
+          "insider_name": "Stark Eugene S",
+          "title": "Dir",
+          "trade_date": "2023-09-11",
+          "filing_date": "2023-09-13",
+          "value": "+$18,000",
+          "qty": "+3,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2023-09-11",
+          "filing_date": "2023-09-13",
+          "value": "+$98,955",
+          "qty": "+16,520"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2023-09-12",
+          "filing_date": "2023-09-14",
+          "value": "+$995,298",
+          "qty": "+166,160"
+        },
+        {
+          "insider_name": "Van Dask Kristin Lea",
+          "title": "CFO, TREASURER, SECRETARY, CCO",
+          "trade_date": "2023-11-10",
+          "filing_date": "2023-11-14",
+          "value": "+$28,398",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2023-11-20",
+          "filing_date": "2023-11-22",
+          "value": "+$63,837",
+          "qty": "+11,000"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2023-11-21",
+          "filing_date": "2023-11-24",
+          "value": "+$90,563",
+          "qty": "+15,750"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2023-11-27",
+          "filing_date": "2023-11-29",
+          "value": "+$57,500",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2023-11-28",
+          "filing_date": "2023-11-30",
+          "value": "+$56,200",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2023-11-29",
+          "filing_date": "2023-12-01",
+          "value": "+$56,000",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2023-12-04",
+          "filing_date": "2023-12-06",
+          "value": "+$56,600",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2023-12-05",
+          "filing_date": "2023-12-07",
+          "value": "+$56,391",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2023-12-06",
+          "filing_date": "2023-12-08",
+          "value": "+$56,700",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "Van Dask Kristin Lea",
+          "title": "CFO, TREASURER, SECRETARY, CCO",
+          "trade_date": "2024-03-11",
+          "filing_date": "2024-03-13",
+          "value": "+$27,200",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2024-05-10",
+          "filing_date": "2024-05-14",
+          "value": "+$4,377,477",
+          "qty": "+798,901"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2024-05-13",
+          "filing_date": "2024-05-15",
+          "value": "+$22,407",
+          "qty": "+4,099"
+        },
+        {
+          "insider_name": "Van Dask Kristin Lea",
+          "title": "CFO, TREASURER, SECRETARY, CCO",
+          "trade_date": "2024-06-20",
+          "filing_date": "2024-06-24",
+          "value": "+$74,925",
+          "qty": "+3,330"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2024-08-30",
+          "filing_date": "2024-09-04",
+          "value": "+$25,996",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2024-08-30",
+          "filing_date": "2024-09-04",
+          "value": "+$12,935,000",
+          "qty": "+2,500,000"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2024-09-03",
+          "filing_date": "2024-09-05",
+          "value": "+$26,143",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2024-09-03",
+          "filing_date": "2024-09-05",
+          "value": "+$3,877,500",
+          "qty": "+750,000"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2024-09-04",
+          "filing_date": "2024-09-06",
+          "value": "+$26,350",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2024-09-04",
+          "filing_date": "2024-09-06",
+          "value": "+$3,922,500",
+          "qty": "+750,000"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2024-09-05",
+          "filing_date": "2024-09-09",
+          "value": "+$26,250",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2024-09-05",
+          "filing_date": "2024-09-09",
+          "value": "+$1,151,283",
+          "qty": "+218,957"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2024-09-06",
+          "filing_date": "2024-09-10",
+          "value": "+$26,250",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2024-09-06",
+          "filing_date": "2024-09-10",
+          "value": "+$3,945,000",
+          "qty": "+750,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2024-09-09",
+          "filing_date": "2024-09-11",
+          "value": "+$2,507,059",
+          "qty": "+473,030"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2024-09-09",
+          "filing_date": "2024-09-11",
+          "value": "+$26,650",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2024-09-10",
+          "filing_date": "2024-09-12",
+          "value": "+$505,073",
+          "qty": "+95,477"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2024-09-10",
+          "filing_date": "2024-09-12",
+          "value": "+$26,500",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2024-09-12",
+          "filing_date": "2024-09-16",
+          "value": "+$26,750",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2024-09-13",
+          "filing_date": "2024-09-17",
+          "value": "+$27,200",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2024-09-16",
+          "filing_date": "2024-09-18",
+          "value": "+$27,500",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Stark Eugene S",
+          "title": "Dir",
+          "trade_date": "2024-09-17",
+          "filing_date": "2024-09-19",
+          "value": "+$13,750",
+          "qty": "+2,500"
+        },
+        {
+          "insider_name": "Van Dask Kristin Lea",
+          "title": "CFO, TREASURER, SECRETARY, CCO",
+          "trade_date": "2024-11-12",
+          "filing_date": "2024-11-14",
+          "value": "+$65,208",
+          "qty": "+15,200"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2024-11-14",
+          "filing_date": "2024-11-18",
+          "value": "+$4,370,000",
+          "qty": "+1,000,000"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2024-11-14",
+          "filing_date": "2024-11-18",
+          "value": "+$21,635",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2024-11-15",
+          "filing_date": "2024-11-19",
+          "value": "+$905,960",
+          "qty": "+205,900"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2024-11-15",
+          "filing_date": "2024-11-19",
+          "value": "+$21,900",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2024-11-18",
+          "filing_date": "2024-11-20",
+          "value": "+$22,295",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2024-11-18",
+          "filing_date": "2024-11-20",
+          "value": "+$3,742,610",
+          "qty": "+837,273"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2024-11-19",
+          "filing_date": "2024-11-21",
+          "value": "+$4,630,000",
+          "qty": "+1,000,000"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2024-11-19",
+          "filing_date": "2024-11-21",
+          "value": "+$22,500",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2024-11-20",
+          "filing_date": "2024-11-22",
+          "value": "+$23,245",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2024-11-20",
+          "filing_date": "2024-11-22",
+          "value": "+$4,590,000",
+          "qty": "+1,000,000"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2024-11-21",
+          "filing_date": "2024-11-25",
+          "value": "+$23,000",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2024-11-21",
+          "filing_date": "2024-11-25",
+          "value": "+$4,640,000",
+          "qty": "+1,000,000"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2024-11-22",
+          "filing_date": "2024-11-26",
+          "value": "+$23,596",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2024-11-22",
+          "filing_date": "2024-11-26",
+          "value": "+$4,780,000",
+          "qty": "+1,000,000"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2024-11-25",
+          "filing_date": "2024-11-27",
+          "value": "+$24,145",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2024-11-26",
+          "filing_date": "2024-11-29",
+          "value": "+$23,577",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2024-11-27",
+          "filing_date": "2024-12-02",
+          "value": "+$1,005,858",
+          "qty": "+210,000"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2024-11-29",
+          "filing_date": "2024-12-03",
+          "value": "+$1,010,058",
+          "qty": "+210,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2024-12-24",
+          "filing_date": "2024-12-27",
+          "value": "+$8,580,000",
+          "qty": "+2,000,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2025-03-11",
+          "filing_date": "2025-03-13",
+          "value": "+$8,640,000",
+          "qty": "+2,000,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2025-03-12",
+          "filing_date": "2025-03-14",
+          "value": "+$1,018,920",
+          "qty": "+240,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2025-03-13",
+          "filing_date": "2025-03-17",
+          "value": "+$1,009,104",
+          "qty": "+240,000"
+        },
+        {
+          "insider_name": "Gremp William",
+          "title": "Dir",
+          "trade_date": "2025-03-14",
+          "filing_date": "2025-03-18",
+          "value": "+$3,816",
+          "qty": "+900"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2025-03-14",
+          "filing_date": "2025-03-18",
+          "value": "+$1,026,600",
+          "qty": "+240,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2025-03-17",
+          "filing_date": "2025-03-19",
+          "value": "+$1,033,104",
+          "qty": "+240,000"
+        },
+        {
+          "insider_name": "Gremp William",
+          "title": "Dir",
+          "trade_date": "2025-03-18",
+          "filing_date": "2025-03-20",
+          "value": "+$81,984",
+          "qty": "+19,100"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2025-03-18",
+          "filing_date": "2025-03-20",
+          "value": "+$103,222",
+          "qty": "+24,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2025-03-19",
+          "filing_date": "2025-03-21",
+          "value": "+$103,130",
+          "qty": "+24,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2025-03-20",
+          "filing_date": "2025-03-24",
+          "value": "+$102,667",
+          "qty": "+24,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2025-03-21",
+          "filing_date": "2025-03-25",
+          "value": "+$102,250",
+          "qty": "+24,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2025-03-24",
+          "filing_date": "2025-03-26",
+          "value": "+$101,681",
+          "qty": "+24,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2025-06-20",
+          "filing_date": "2025-06-24",
+          "value": "+$1,988,763",
+          "qty": "+623,300"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2025-06-23",
+          "filing_date": "2025-06-25",
+          "value": "+$1,008,646",
+          "qty": "+319,000"
+        },
+        {
+          "insider_name": "Stark Eugene S",
+          "title": "Dir",
+          "trade_date": "2025-09-17",
+          "filing_date": "2025-09-19",
+          "value": "+$6,975",
+          "qty": "+2,500"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2025-09-22",
+          "filing_date": "2025-09-24",
+          "value": "+$997,219",
+          "qty": "+374,500"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2025-09-23",
+          "filing_date": "2025-09-25",
+          "value": "+$1,021,478",
+          "qty": "+384,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2025-09-24",
+          "filing_date": "2025-09-26",
+          "value": "+$1,939,610",
+          "qty": "+741,158"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2025-09-25",
+          "filing_date": "2025-09-29",
+          "value": "+$1,002,700",
+          "qty": "+370,000"
+        },
+        {
+          "insider_name": "Barry John F",
+          "title": "CEO, 10%",
+          "trade_date": "2025-09-25",
+          "filing_date": "2025-09-29",
+          "value": "+$2,517,758",
+          "qty": "+925,000"
+        },
+        {
+          "insider_name": "Eliasek M Grier",
+          "title": "COO",
+          "trade_date": "2026-02-11",
+          "filing_date": "2026-02-13",
+          "value": "+$2,749,770",
+          "qty": "+942,800"
+        }
+      ]
+    },
+    {
+      "ticker": "EMPD",
+      "company_name": "EMPD",
+      "total_value": 10981359.0,
+      "total_purchases": 27,
+      "unique_insiders": 6,
+      "trades": [
+        {
+          "insider_name": "Okonsky Christian",
+          "title": "CTO, 10%",
+          "trade_date": "2021-10-18",
+          "filing_date": "2021-10-20",
+          "value": "+$288,628",
+          "qty": "+31,281"
+        },
+        {
+          "insider_name": "James Adrian",
+          "title": "Dir, 10%",
+          "trade_date": "2021-10-18",
+          "filing_date": "2021-10-19",
+          "value": "+$2,111,249",
+          "qty": "+235,000"
+        },
+        {
+          "insider_name": "James Adrian",
+          "title": "Dir, 10%",
+          "trade_date": "2021-10-19",
+          "filing_date": "2021-10-22",
+          "value": "+$201,994",
+          "qty": "+23,298"
+        },
+        {
+          "insider_name": "James Adrian",
+          "title": "Dir, 10%",
+          "trade_date": "2021-10-19",
+          "filing_date": "2021-10-20",
+          "value": "+$1,050,690",
+          "qty": "+115,000"
+        },
+        {
+          "insider_name": "James Adrian",
+          "title": "Dir, 10%",
+          "trade_date": "2021-10-22",
+          "filing_date": "2021-10-25",
+          "value": "+$244,080",
+          "qty": "+27,302"
+        },
+        {
+          "insider_name": "James Adrian",
+          "title": "Dir, 10%",
+          "trade_date": "2021-10-25",
+          "filing_date": "2021-10-26",
+          "value": "+$70,182",
+          "qty": "+6,300"
+        },
+        {
+          "insider_name": "James Adrian",
+          "title": "Dir, 10%",
+          "trade_date": "2021-11-16",
+          "filing_date": "2021-11-17",
+          "value": "+$488,345",
+          "qty": "+34,150"
+        },
+        {
+          "insider_name": "James Adrian",
+          "title": "Dir, 10%",
+          "trade_date": "2021-11-17",
+          "filing_date": "2021-11-18",
+          "value": "+$337,122",
+          "qty": "+21,650"
+        },
+        {
+          "insider_name": "James Adrian",
+          "title": "Dir, 10%",
+          "trade_date": "2021-11-18",
+          "filing_date": "2021-11-19",
+          "value": "+$231,951",
+          "qty": "+14,400"
+        },
+        {
+          "insider_name": "James Adrian",
+          "title": "Dir, 10%",
+          "trade_date": "2021-12-13",
+          "filing_date": "2021-12-14",
+          "value": "+$25,351",
+          "qty": "+2,300"
+        },
+        {
+          "insider_name": "Davis Stephanie Michelle",
+          "title": "COO",
+          "trade_date": "2022-05-16",
+          "filing_date": "2022-05-27",
+          "value": "+$515",
+          "qty": "+452"
+        },
+        {
+          "insider_name": "Okonsky Christian",
+          "title": "CTO, 10%",
+          "trade_date": "2022-05-19",
+          "filing_date": "2022-05-20",
+          "value": "+$23,180",
+          "qty": "+20,000"
+        },
+        {
+          "insider_name": "Davis Stephanie Michelle",
+          "title": "COO",
+          "trade_date": "2022-05-31",
+          "filing_date": "2022-06-01",
+          "value": "+$4,928",
+          "qty": "+3,650"
+        },
+        {
+          "insider_name": "Ubs Group AG",
+          "title": "10%",
+          "trade_date": "2024-07-05",
+          "filing_date": "2024-07-10",
+          "value": "+$489",
+          "qty": "+108"
+        },
+        {
+          "insider_name": "Sabby Management, LLC",
+          "title": "10%",
+          "trade_date": "2024-08-02",
+          "filing_date": "2024-08-06",
+          "value": "+$213,407",
+          "qty": "+114,923"
+        },
+        {
+          "insider_name": "Sabby Management, LLC",
+          "title": "10%",
+          "trade_date": "2024-08-06",
+          "filing_date": "2024-08-08",
+          "value": "+$82,806",
+          "qty": "+47,040"
+        },
+        {
+          "insider_name": "Sabby Management, LLC",
+          "title": "10%",
+          "trade_date": "2024-08-08",
+          "filing_date": "2024-08-12",
+          "value": "+$24,929",
+          "qty": "+15,135"
+        },
+        {
+          "insider_name": "Sabby Management, LLC",
+          "title": "10%",
+          "trade_date": "2024-08-12",
+          "filing_date": "2024-08-14",
+          "value": "+$15,659",
+          "qty": "+9,459"
+        },
+        {
+          "insider_name": "Sabby Management, LLC",
+          "title": "10%",
+          "trade_date": "2024-08-14",
+          "filing_date": "2024-08-16",
+          "value": "+$74,171",
+          "qty": "+47,672"
+        },
+        {
+          "insider_name": "Sabby Management, LLC",
+          "title": "10%",
+          "trade_date": "2024-08-16",
+          "filing_date": "2024-08-20",
+          "value": "+$32,424",
+          "qty": "+22,039"
+        },
+        {
+          "insider_name": "Sabby Management, LLC",
+          "title": "10%",
+          "trade_date": "2024-08-20",
+          "filing_date": "2024-08-22",
+          "value": "+$43,840",
+          "qty": "+28,710"
+        },
+        {
+          "insider_name": "Sabby Management, LLC",
+          "title": "10%",
+          "trade_date": "2024-08-22",
+          "filing_date": "2024-08-26",
+          "value": "+$10,770",
+          "qty": "+7,098"
+        },
+        {
+          "insider_name": "Sabby Management, LLC",
+          "title": "10%",
+          "trade_date": "2024-08-26",
+          "filing_date": "2024-08-28",
+          "value": "+$4,936",
+          "qty": "+3,194"
+        },
+        {
+          "insider_name": "Sabby Management, LLC",
+          "title": "10%",
+          "trade_date": "2024-08-28",
+          "filing_date": "2024-08-30",
+          "value": "+$37,350",
+          "qty": "+25,062"
+        },
+        {
+          "insider_name": "Sabby Management, LLC",
+          "title": "10%",
+          "trade_date": "2024-08-30",
+          "filing_date": "2024-09-03",
+          "value": "+$14,156",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "Atg Capital Opportunities Fund LP",
+          "title": "10%",
+          "trade_date": "2026-01-28",
+          "filing_date": "2026-01-30",
+          "value": "+$2,115,728",
+          "qty": "+428,626"
+        },
+        {
+          "insider_name": "Atg Capital Opportunities Fund LP",
+          "title": "10%",
+          "trade_date": "2026-02-02",
+          "filing_date": "2026-02-04",
+          "value": "+$3,232,479",
+          "qty": "+691,145"
+        }
+      ]
+    },
+    {
+      "ticker": "KKR",
+      "company_name": "KKR",
+      "total_value": 14119812.0,
+      "total_purchases": 7,
+      "unique_insiders": 3,
+      "trades": [
+        {
+          "insider_name": "Scully Robert W",
+          "title": "Dir",
+          "trade_date": "2021-02-12",
+          "filing_date": "2021-02-17",
+          "value": "+$1,251,479",
+          "qty": "+26,000"
+        },
+        {
+          "insider_name": "Cohler Matt",
+          "title": "Dir",
+          "trade_date": "2022-02-17",
+          "filing_date": "2022-02-22",
+          "value": "+$493,388",
+          "qty": "+8,305"
+        },
+        {
+          "insider_name": "Cohler Matt",
+          "title": "Dir",
+          "trade_date": "2022-02-24",
+          "filing_date": "2022-02-25",
+          "value": "+$505,908",
+          "qty": "+8,683"
+        },
+        {
+          "insider_name": "Cohler Matt",
+          "title": "Dir",
+          "trade_date": "2022-08-08",
+          "filing_date": "2022-08-10",
+          "value": "+$991,485",
+          "qty": "+18,710"
+        },
+        {
+          "insider_name": "Scully Robert W",
+          "title": "Dir",
+          "trade_date": "2025-05-06",
+          "filing_date": "2025-05-08",
+          "value": "+$1,503,733",
+          "qty": "+13,250"
+        },
+        {
+          "insider_name": "Barakett Timothy R",
+          "title": "Dir",
+          "trade_date": "2025-05-22",
+          "filing_date": "2025-05-27",
+          "value": "+$4,127,319",
+          "qty": "+35,000"
+        },
+        {
+          "insider_name": "Barakett Timothy R",
+          "title": "Dir",
+          "trade_date": "2026-02-09",
+          "filing_date": "2026-02-11",
+          "value": "+$5,246,500",
+          "qty": "+50,000"
+        }
+      ]
+    },
+    {
+      "ticker": "ALXO",
+      "company_name": "ALXO",
+      "total_value": 5458605.0,
+      "total_purchases": 7,
+      "unique_insiders": 5,
+      "trades": [
+        {
+          "insider_name": "Lettmann Jason",
+          "title": "CEO",
+          "trade_date": "2024-03-14",
+          "filing_date": "2024-03-18",
+          "value": "+$49,771",
+          "qty": "+4,400"
+        },
+        {
+          "insider_name": "Garcia Peter S",
+          "title": "CFO",
+          "trade_date": "2024-06-13",
+          "filing_date": "2024-06-24",
+          "value": "+$102,338",
+          "qty": "+12,000"
+        },
+        {
+          "insider_name": "Garcia Peter S",
+          "title": "CFO",
+          "trade_date": "2024-06-13",
+          "filing_date": "2024-06-17",
+          "value": "+$102,338",
+          "qty": "+12,000"
+        },
+        {
+          "insider_name": "Hemrajani Rekha",
+          "title": "Dir",
+          "trade_date": "2024-12-02",
+          "filing_date": "2024-12-04",
+          "value": "+$46,404",
+          "qty": "+30,000"
+        },
+        {
+          "insider_name": "Shantharam Harish",
+          "title": "CFO",
+          "trade_date": "2025-08-18",
+          "filing_date": "2025-08-20",
+          "value": "+$58,403",
+          "qty": "+75,000"
+        },
+        {
+          "insider_name": "Lettmann Jason",
+          "title": "CEO",
+          "trade_date": "2025-09-16",
+          "filing_date": "2025-09-18",
+          "value": "+$99,352",
+          "qty": "+92,233"
+        },
+        {
+          "insider_name": "Goodman Corey S",
+          "title": "Dir, 10%",
+          "trade_date": "2026-02-02",
+          "filing_date": "2026-02-04",
+          "value": "+$4,999,999",
+          "qty": "+3,184,713"
+        }
+      ]
+    },
+    {
+      "ticker": "CAQ",
+      "company_name": "CAQ",
+      "total_value": 4955000.0,
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "trades": [
+        {
+          "insider_name": "Cam-Phung Michael Tam",
+          "title": "Dir, 10%",
+          "trade_date": "2026-02-09",
+          "filing_date": "2026-02-10",
+          "value": "+$4,955,000",
+          "qty": "+495,500"
+        }
+      ]
+    },
+    {
+      "ticker": "LW",
+      "company_name": "LW",
+      "total_value": 4659623.0,
+      "total_purchases": 10,
+      "unique_insiders": 5,
+      "trades": [
+        {
+          "insider_name": "Jurgensen William G",
+          "title": "Dir",
+          "trade_date": "2021-07-29",
+          "filing_date": "2021-08-02",
+          "value": "+$147,666",
+          "qty": "+2,151"
+        },
+        {
+          "insider_name": "Bensen Peter J",
+          "title": "Dir",
+          "trade_date": "2021-10-11",
+          "filing_date": "2021-10-12",
+          "value": "+$278,740",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Niblock Robert A",
+          "title": "Dir",
+          "trade_date": "2021-10-20",
+          "filing_date": "2021-10-21",
+          "value": "+$141,000",
+          "qty": "+2,500"
+        },
+        {
+          "insider_name": "Jurgensen William G",
+          "title": "Dir",
+          "trade_date": "2023-10-16",
+          "filing_date": "2023-10-17",
+          "value": "+$253,050",
+          "qty": "+3,000"
+        },
+        {
+          "insider_name": "Jurgensen William G",
+          "title": "Dir",
+          "trade_date": "2024-07-26",
+          "filing_date": "2024-07-29",
+          "value": "+$554,291",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "Niblock Robert A",
+          "title": "Dir",
+          "trade_date": "2024-07-26",
+          "filing_date": "2024-07-29",
+          "value": "+$277,476",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Blixt Charles A",
+          "title": "Dir",
+          "trade_date": "2024-12-23",
+          "filing_date": "2024-12-23",
+          "value": "+$75,901",
+          "qty": "+1,200"
+        },
+        {
+          "insider_name": "Jurgensen William G",
+          "title": "Dir",
+          "trade_date": "2024-12-23",
+          "filing_date": "2024-12-23",
+          "value": "+$316,350",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Niblock Robert A",
+          "title": "Dir",
+          "trade_date": "2025-01-13",
+          "filing_date": "2025-01-14",
+          "value": "+$182,819",
+          "qty": "+3,000"
+        },
+        {
+          "insider_name": "Craps Jan Eli B",
+          "title": "Exec Chair",
+          "trade_date": "2026-02-06",
+          "filing_date": "2026-02-06",
+          "value": "+$2,432,330",
+          "qty": "+50,000"
+        }
+      ]
+    },
+    {
+      "ticker": "MIGI",
+      "company_name": "MIGI",
+      "total_value": 10286768.0,
+      "total_purchases": 11,
+      "unique_insiders": 6,
+      "trades": [
+        {
+          "insider_name": "Rubini Jonathan Brian",
+          "title": "10%",
+          "trade_date": "2021-03-09",
+          "filing_date": "2021-03-11",
+          "value": "+$1,250,000",
+          "qty": "+10,416,667"
+        },
+        {
+          "insider_name": "Rimon Gold Assets Ltd",
+          "title": "10%",
+          "trade_date": "2021-03-09",
+          "filing_date": "2021-03-11",
+          "value": "+$1,300,000",
+          "qty": "+10,833,333"
+        },
+        {
+          "insider_name": "Eisenberg Or",
+          "title": "CFO, Secretary",
+          "trade_date": "2021-03-09",
+          "filing_date": "2021-03-11",
+          "value": "+$100,000",
+          "qty": "+833,333"
+        },
+        {
+          "insider_name": "Danenberg Noam",
+          "title": "CEO",
+          "trade_date": "2021-03-09",
+          "filing_date": "2021-03-11",
+          "value": "+$350,000",
+          "qty": "+2,916,667"
+        },
+        {
+          "insider_name": "Hughes Michael Forrest",
+          "title": "Dir",
+          "trade_date": "2022-11-28",
+          "filing_date": "2022-11-29",
+          "value": "+$12,873",
+          "qty": "+35,000"
+        },
+        {
+          "insider_name": "Endeavor Blockchain, LLC",
+          "title": "10%",
+          "trade_date": "2025-11-26",
+          "filing_date": "2026-01-22",
+          "value": "+$4,388,681",
+          "qty": "+801,279"
+        },
+        {
+          "insider_name": "Endeavor Blockchain, LLC",
+          "title": "10%",
+          "trade_date": "2025-12-26",
+          "filing_date": "2026-01-12",
+          "value": "+$917,550",
+          "qty": "+205,000"
+        },
+        {
+          "insider_name": "Endeavor Blockchain, LLC",
+          "title": "10%",
+          "trade_date": "2026-01-09",
+          "filing_date": "2026-01-12",
+          "value": "+$829,562",
+          "qty": "+182,018"
+        },
+        {
+          "insider_name": "Endeavor Blockchain, LLC",
+          "title": "10%",
+          "trade_date": "2026-01-16",
+          "filing_date": "2026-01-21",
+          "value": "+$655,200",
+          "qty": "+140,000"
+        },
+        {
+          "insider_name": "Endeavor Blockchain, LLC",
+          "title": "10%",
+          "trade_date": "2026-01-26",
+          "filing_date": "2026-01-26",
+          "value": "+$290,400",
+          "qty": "+60,000"
+        },
+        {
+          "insider_name": "Endeavor Blockchain, LLC",
+          "title": "10%",
+          "trade_date": "2026-01-28",
+          "filing_date": "2026-01-30",
+          "value": "+$192,502",
+          "qty": "+42,100"
+        }
+      ]
+    },
+    {
+      "ticker": "RUM",
+      "company_name": "RUM",
+      "total_value": 28582665.0,
+      "total_purchases": 4,
+      "unique_insiders": 3,
+      "trades": [
+        {
+          "insider_name": "Cfac Holdings Vi, LLC",
+          "title": "10%",
+          "trade_date": "2021-02-23",
+          "filing_date": "2021-02-25",
+          "value": "+$7,000,000",
+          "qty": "+700,000"
+        },
+        {
+          "insider_name": "Cfac Holdings Vi, LLC",
+          "title": "Former 10% holder",
+          "trade_date": "2022-09-16",
+          "filing_date": "2022-09-20",
+          "value": "+$11,590,000",
+          "qty": "+3,034,000"
+        },
+        {
+          "insider_name": "Tether Holdings, S.A. De C.V.",
+          "title": "10%",
+          "trade_date": "2025-11-19",
+          "filing_date": "2025-11-21",
+          "value": "+$5,772,367",
+          "qty": "+1,063,670"
+        },
+        {
+          "insider_name": "Tether Global Investments Fund, S.I.C.A.F., S.A.",
+          "title": "10%",
+          "trade_date": "2026-02-03",
+          "filing_date": "2026-02-06",
+          "value": "+$4,220,298",
+          "qty": "+777,012"
+        }
+      ]
+    },
+    {
+      "ticker": "ABT",
+      "company_name": "ABT",
+      "total_value": 3351198.0,
+      "total_purchases": 3,
+      "unique_insiders": 3,
+      "trades": [
+        {
+          "insider_name": "Kumbier Michelle",
+          "title": "Dir",
+          "trade_date": "2021-02-23",
+          "filing_date": "2021-02-25",
+          "value": "+$249,900",
+          "qty": "+2,040"
+        },
+        {
+          "insider_name": "Ford Robert B",
+          "title": "COB, CEO",
+          "trade_date": "2026-01-23",
+          "filing_date": "2026-01-26",
+          "value": "+$2,013,967",
+          "qty": "+18,800"
+        },
+        {
+          "insider_name": "Starks Daniel J",
+          "title": "Dir",
+          "trade_date": "2026-02-04",
+          "filing_date": "2026-02-06",
+          "value": "+$1,087,331",
+          "qty": "+10,000"
+        }
+      ]
+    },
+    {
+      "ticker": "TCI",
+      "company_name": "TCI",
+      "total_value": 7772554.0,
+      "total_purchases": 2,
+      "unique_insiders": 1,
+      "trades": [
+        {
+          "insider_name": "American Realty Investors Inc",
+          "title": "10%",
+          "trade_date": "2026-01-12",
+          "filing_date": "2026-01-21",
+          "value": "+$3,886,277",
+          "qty": "+70,023"
+        },
+        {
+          "insider_name": "American Realty Investors Inc",
+          "title": "10%",
+          "trade_date": "2026-01-12",
+          "filing_date": "2026-01-14",
+          "value": "+$3,886,277",
+          "qty": "+70,023"
+        }
+      ]
+    },
+    {
+      "ticker": "MUZE",
+      "company_name": "MUZE",
+      "total_value": 3359380.0,
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "trades": [
+        {
+          "insider_name": "Muzero Acquisition Sponsors LLC",
+          "title": "10%",
+          "trade_date": "2026-02-02",
+          "filing_date": "2026-02-04",
+          "value": "+$3,359,380",
+          "qty": "+335,938"
+        }
+      ]
+    },
+    {
+      "ticker": "STEX",
+      "company_name": "STEX",
+      "total_value": 5151188.0,
+      "total_purchases": 49,
+      "unique_insiders": 9,
+      "trades": [
+        {
+          "insider_name": "Chaussy Steve",
+          "title": "CFO",
+          "trade_date": "2021-05-21",
+          "filing_date": "2021-05-24",
+          "value": "+$6,770",
+          "qty": "+2,000"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO, 10%",
+          "trade_date": "2021-05-25",
+          "filing_date": "2021-09-03",
+          "value": "+$16,390",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO, 10%",
+          "trade_date": "2021-05-26",
+          "filing_date": "2021-09-03",
+          "value": "+$10,966",
+          "qty": "+3,200"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO, 10%",
+          "trade_date": "2021-05-26",
+          "filing_date": "2021-09-03",
+          "value": "+$13,128",
+          "qty": "+4,000"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO, 10%",
+          "trade_date": "2021-05-27",
+          "filing_date": "2021-09-03",
+          "value": "+$14,791",
+          "qty": "+4,200"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO, 10%",
+          "trade_date": "2021-05-28",
+          "filing_date": "2021-09-03",
+          "value": "+$11,090",
+          "qty": "+3,000"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO, 10%",
+          "trade_date": "2021-06-02",
+          "filing_date": "2021-09-03",
+          "value": "+$15,630",
+          "qty": "+4,000"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO, 10%",
+          "trade_date": "2021-06-03",
+          "filing_date": "2021-09-03",
+          "value": "+$11,010",
+          "qty": "+3,000"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO, 10%",
+          "trade_date": "2021-06-07",
+          "filing_date": "2021-09-03",
+          "value": "+$7,130",
+          "qty": "+2,000"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO, 10%",
+          "trade_date": "2021-06-10",
+          "filing_date": "2021-09-03",
+          "value": "+$16,110",
+          "qty": "+4,000"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO, 10%",
+          "trade_date": "2021-08-13",
+          "filing_date": "2021-09-03",
+          "value": "+$37,206",
+          "qty": "+11,700"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO",
+          "trade_date": "2021-08-30",
+          "filing_date": "2021-08-31",
+          "value": "+$27,194",
+          "qty": "+9,000"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO",
+          "trade_date": "2021-09-01",
+          "filing_date": "2021-09-02",
+          "value": "+$17,337",
+          "qty": "+5,600"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO",
+          "trade_date": "2021-09-01",
+          "filing_date": "2021-09-01",
+          "value": "+$19,802",
+          "qty": "+6,400"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO",
+          "trade_date": "2021-09-20",
+          "filing_date": "2021-09-29",
+          "value": "+$24,365",
+          "qty": "+8,586"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO",
+          "trade_date": "2022-05-20",
+          "filing_date": "2022-05-24",
+          "value": "+$17,663",
+          "qty": "+15,500"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO",
+          "trade_date": "2022-05-24",
+          "filing_date": "2022-05-25",
+          "value": "+$9,601",
+          "qty": "+8,744"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO",
+          "trade_date": "2022-05-25",
+          "filing_date": "2022-05-26",
+          "value": "+$10,695",
+          "qty": "+9,300"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO",
+          "trade_date": "2022-08-16",
+          "filing_date": "2022-08-17",
+          "value": "+$22,602",
+          "qty": "+25,100"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO",
+          "trade_date": "2022-08-17",
+          "filing_date": "2022-08-19",
+          "value": "+$12,659",
+          "qty": "+13,100"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO",
+          "trade_date": "2022-08-19",
+          "filing_date": "2022-08-22",
+          "value": "+$10,030",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "Chaussy Steve",
+          "title": "CFO",
+          "trade_date": "2022-08-22",
+          "filing_date": "2022-08-24",
+          "value": "+$9,016",
+          "qty": "+8,000"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO",
+          "trade_date": "2022-08-23",
+          "filing_date": "2022-08-24",
+          "value": "+$13,040",
+          "qty": "+12,000"
+        },
+        {
+          "insider_name": "Fleming Gray",
+          "title": "Chief Commercial Officer",
+          "trade_date": "2022-08-24",
+          "filing_date": "2022-08-31",
+          "value": "+$42,522",
+          "qty": "+36,036"
+        },
+        {
+          "insider_name": "Gallagher Patrick Joseph",
+          "title": "Dir",
+          "trade_date": "2022-08-24",
+          "filing_date": "2022-08-25",
+          "value": "+$19,720",
+          "qty": "+17,000"
+        },
+        {
+          "insider_name": "Sieckhaus John",
+          "title": "COO",
+          "trade_date": "2022-08-24",
+          "filing_date": "2022-08-25",
+          "value": "+$11,347",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO",
+          "trade_date": "2022-08-25",
+          "filing_date": "2022-08-29",
+          "value": "+$19,414",
+          "qty": "+16,726"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO",
+          "trade_date": "2022-08-29",
+          "filing_date": "2022-08-31",
+          "value": "+$19,358",
+          "qty": "+17,850"
+        },
+        {
+          "insider_name": "Sieckhaus John",
+          "title": "COO",
+          "trade_date": "2022-08-30",
+          "filing_date": "2022-09-01",
+          "value": "+$5,335",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO",
+          "trade_date": "2022-09-01",
+          "filing_date": "2022-09-02",
+          "value": "+$18,704",
+          "qty": "+17,240"
+        },
+        {
+          "insider_name": "Chaussy Steve",
+          "title": "CFO",
+          "trade_date": "2022-09-01",
+          "filing_date": "2022-09-02",
+          "value": "+$12,929",
+          "qty": "+11,425"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO",
+          "trade_date": "2022-09-02",
+          "filing_date": "2022-09-07",
+          "value": "+$12,912",
+          "qty": "+12,300"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO",
+          "trade_date": "2022-09-07",
+          "filing_date": "2022-09-08",
+          "value": "+$6,207",
+          "qty": "+7,250"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO",
+          "trade_date": "2022-09-08",
+          "filing_date": "2022-09-12",
+          "value": "+$43,372",
+          "qty": "+52,466"
+        },
+        {
+          "insider_name": "Sieckhaus John",
+          "title": "COO",
+          "trade_date": "2022-09-12",
+          "filing_date": "2022-09-12",
+          "value": "+$4,550",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Buhaly Steven J",
+          "title": "CFO",
+          "trade_date": "2023-02-08",
+          "filing_date": "2023-02-08",
+          "value": "+$0",
+          "qty": "+232,882"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO",
+          "trade_date": "2023-05-31",
+          "filing_date": "2023-06-09",
+          "value": "+$18,852",
+          "qty": "+12,600"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO",
+          "trade_date": "2023-06-12",
+          "filing_date": "2023-06-12",
+          "value": "+$7,040",
+          "qty": "+6,000"
+        },
+        {
+          "insider_name": "Londoner Kenneth L",
+          "title": "CEO",
+          "trade_date": "2023-06-13",
+          "filing_date": "2023-06-13",
+          "value": "+$19,358",
+          "qty": "+15,600"
+        },
+        {
+          "insider_name": "Giustra Frank",
+          "title": "10%",
+          "trade_date": "2025-07-25",
+          "filing_date": "2025-09-15",
+          "value": "+$734,725",
+          "qty": "+178,205"
+        },
+        {
+          "insider_name": "Lekstrom Morgan Lee",
+          "title": "Dir",
+          "trade_date": "2025-11-21",
+          "filing_date": "2025-11-21",
+          "value": "+$25,060",
+          "qty": "+7,000"
+        },
+        {
+          "insider_name": "Giustra Frank",
+          "title": "10%",
+          "trade_date": "2026-01-23",
+          "filing_date": "2026-01-27",
+          "value": "+$3,000,000",
+          "qty": "+1,000,000"
+        },
+        {
+          "insider_name": "Williams Mitchell Young",
+          "title": "Chief Investment Officer",
+          "trade_date": "2026-01-23",
+          "filing_date": "2026-01-26",
+          "value": "+$155,852",
+          "qty": "+51,511"
+        },
+        {
+          "insider_name": "Lekstrom Morgan Lee",
+          "title": "Dir",
+          "trade_date": "2026-01-23",
+          "filing_date": "2026-01-26",
+          "value": "+$128,486",
+          "qty": "+41,000"
+        },
+        {
+          "insider_name": "Lekstrom Morgan Lee",
+          "title": "Dir, 10%",
+          "trade_date": "2026-01-26",
+          "filing_date": "2026-01-27",
+          "value": "+$75,900",
+          "qty": "+23,000"
+        },
+        {
+          "insider_name": "Lekstrom Morgan Lee",
+          "title": "Dir, 10%",
+          "trade_date": "2026-01-27",
+          "filing_date": "2026-01-27",
+          "value": "+$17,160",
+          "qty": "+5,500"
+        },
+        {
+          "insider_name": "Lekstrom Morgan Lee",
+          "title": "Dir, 10%",
+          "trade_date": "2026-01-29",
+          "filing_date": "2026-01-29",
+          "value": "+$9,250",
+          "qty": "+2,500"
+        },
+        {
+          "insider_name": "Lekstrom Morgan Lee",
+          "title": "Dir, 10%",
+          "trade_date": "2026-02-03",
+          "filing_date": "2026-02-03",
+          "value": "+$71,910",
+          "qty": "+23,500"
+        },
+        {
+          "insider_name": "Giustra Frank",
+          "title": "10%",
+          "trade_date": "2026-02-04",
+          "filing_date": "2026-02-04",
+          "value": "+$317,000",
+          "qty": "+100,000"
+        }
+      ]
+    },
+    {
+      "ticker": "CEPS",
+      "company_name": "CEPS",
+      "total_value": 3000000.0,
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "trades": [
+        {
+          "insider_name": "Cantor Ep Holdings Vi, LLC",
+          "title": "10%",
+          "trade_date": "2026-02-06",
+          "filing_date": "2026-02-09",
+          "value": "+$3,000,000",
+          "qty": "+300,000"
+        }
+      ]
+    },
+    {
+      "ticker": "IMDX",
+      "company_name": "IMDX",
+      "total_value": 60399593.0,
+      "total_purchases": 39,
+      "unique_insiders": 16,
+      "trades": [
+        {
+          "insider_name": "Andrews Ronald Asbury",
+          "title": "CEO",
+          "trade_date": "2021-03-19",
+          "filing_date": "2021-03-22",
+          "value": "+$52,702",
+          "qty": "+11,000"
+        },
+        {
+          "insider_name": "Levine Mitchell S",
+          "title": "CFO",
+          "trade_date": "2022-03-15",
+          "filing_date": "2022-03-15",
+          "value": "+$29,150",
+          "qty": "+25,000"
+        },
+        {
+          "insider_name": "Andrews Ronald Asbury",
+          "title": "CEO",
+          "trade_date": "2022-03-16",
+          "filing_date": "2022-03-17",
+          "value": "+$64,150",
+          "qty": "+50,000"
+        },
+        {
+          "insider_name": "Redmond Cavan M.",
+          "title": "Dir",
+          "trade_date": "2022-03-16",
+          "filing_date": "2022-03-16",
+          "value": "+$47,560",
+          "qty": "+40,000"
+        },
+        {
+          "insider_name": "Paulsen Gisela",
+          "title": "COO",
+          "trade_date": "2022-03-17",
+          "filing_date": "2022-03-17",
+          "value": "+$19,767",
+          "qty": "+16,500"
+        },
+        {
+          "insider_name": "Ross Douglas T.",
+          "title": "Chief Scientific Officer",
+          "trade_date": "2022-03-25",
+          "filing_date": "2022-03-28",
+          "value": "+$21,000",
+          "qty": "+15,000"
+        },
+        {
+          "insider_name": "Pura Vida Investments, LLC",
+          "title": "10%",
+          "trade_date": "2022-04-14",
+          "filing_date": "2022-06-28",
+          "value": "+$250,350",
+          "qty": "+200,000"
+        },
+        {
+          "insider_name": "Pura Vida Investments, LLC",
+          "title": "10%",
+          "trade_date": "2022-04-14",
+          "filing_date": "2022-04-29",
+          "value": "+$7,887,850",
+          "qty": "+5,931,707"
+        },
+        {
+          "insider_name": "Pura Vida Investments, LLC",
+          "title": "10%",
+          "trade_date": "2022-04-14",
+          "filing_date": "2022-04-18",
+          "value": "+$7,887,850",
+          "qty": "+5,931,707"
+        },
+        {
+          "insider_name": "Broadwood Partners, L.P.",
+          "title": "10%",
+          "trade_date": "2022-04-14",
+          "filing_date": "2022-04-15",
+          "value": "+$8,000,000",
+          "qty": "+6,003,752"
+        },
+        {
+          "insider_name": "Kingsley Alfred D",
+          "title": "Dir",
+          "trade_date": "2022-08-15",
+          "filing_date": "2022-08-17",
+          "value": "+$9,700",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "Gutfreund John Peter",
+          "title": "Dir",
+          "trade_date": "2022-08-15",
+          "filing_date": "2022-08-17",
+          "value": "+$23,250",
+          "qty": "+25,000"
+        },
+        {
+          "insider_name": "Arno Andrew",
+          "title": "Dir",
+          "trade_date": "2022-08-15",
+          "filing_date": "2022-08-17",
+          "value": "+$144,121",
+          "qty": "+150,000"
+        },
+        {
+          "insider_name": "Andrews Ronald Asbury",
+          "title": "Pres, CEO",
+          "trade_date": "2022-08-16",
+          "filing_date": "2022-08-18",
+          "value": "+$38,400",
+          "qty": "+40,000"
+        },
+        {
+          "insider_name": "Griffith Melinda",
+          "title": "Dir",
+          "trade_date": "2022-08-16",
+          "filing_date": "2022-08-17",
+          "value": "+$10,000",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "Carter Jennifer L.",
+          "title": "Dir",
+          "trade_date": "2022-08-16",
+          "filing_date": "2022-08-17",
+          "value": "+$9,975",
+          "qty": "+10,500"
+        },
+        {
+          "insider_name": "Last Andrew J.",
+          "title": "Dir",
+          "trade_date": "2022-08-17",
+          "filing_date": "2022-08-19",
+          "value": "+$17,400",
+          "qty": "+20,000"
+        },
+        {
+          "insider_name": "Arno Andrew",
+          "title": "Dir",
+          "trade_date": "2022-08-17",
+          "filing_date": "2022-08-19",
+          "value": "+$13,500",
+          "qty": "+15,000"
+        },
+        {
+          "insider_name": "Kingsley Alfred D",
+          "title": "Dir",
+          "trade_date": "2022-12-22",
+          "filing_date": "2022-12-27",
+          "value": "+$7,125",
+          "qty": "+25,000"
+        },
+        {
+          "insider_name": "Arno Andrew",
+          "title": "Dir",
+          "trade_date": "2022-12-23",
+          "filing_date": "2022-12-28",
+          "value": "+$87,875",
+          "qty": "+250,000"
+        },
+        {
+          "insider_name": "Gutfreund John Peter",
+          "title": "Dir",
+          "trade_date": "2022-12-23",
+          "filing_date": "2022-12-28",
+          "value": "+$24,728",
+          "qty": "+75,000"
+        },
+        {
+          "insider_name": "Broadwood Partners, L.P.",
+          "title": "10%",
+          "trade_date": "2023-04-03",
+          "filing_date": "2023-04-05",
+          "value": "+$8,093,898",
+          "qty": "+26,827,638"
+        },
+        {
+          "insider_name": "Pura Vida Investments, LLC",
+          "title": "10%",
+          "trade_date": "2023-04-05",
+          "filing_date": "2023-04-07",
+          "value": "+$200,027",
+          "qty": "+663,000"
+        },
+        {
+          "insider_name": "Kingsley Alfred D",
+          "title": "Dir",
+          "trade_date": "2023-06-14",
+          "filing_date": "2023-06-15",
+          "value": "+$6,447",
+          "qty": "+30,000"
+        },
+        {
+          "insider_name": "Broadwood Partners, L.P.",
+          "title": "10%",
+          "trade_date": "2024-04-11",
+          "filing_date": "2024-04-15",
+          "value": "+$7,057,688",
+          "qty": "+2,420,000"
+        },
+        {
+          "insider_name": "Riggs Josh",
+          "title": "CEO, Pres",
+          "trade_date": "2024-04-11",
+          "filing_date": "2024-04-15",
+          "value": "+$10,001",
+          "qty": "+3,390"
+        },
+        {
+          "insider_name": "Arno Andrew",
+          "title": "Dir",
+          "trade_date": "2024-04-11",
+          "filing_date": "2024-04-15",
+          "value": "+$99,999",
+          "qty": "+33,898"
+        },
+        {
+          "insider_name": "James Andrea S.",
+          "title": "CFO",
+          "trade_date": "2024-10-02",
+          "filing_date": "2024-10-04",
+          "value": "+$100,000",
+          "qty": "+33,670"
+        },
+        {
+          "insider_name": "Broadwood Partners, L.P.",
+          "title": "10%",
+          "trade_date": "2024-10-02",
+          "filing_date": "2024-10-04",
+          "value": "+$3,877,619",
+          "qty": "+1,315,339"
+        },
+        {
+          "insider_name": "James Andrea S.",
+          "title": "CFO",
+          "trade_date": "2024-12-05",
+          "filing_date": "2024-12-09",
+          "value": "+$45,800",
+          "qty": "+20,000"
+        },
+        {
+          "insider_name": "Smith Patrick W",
+          "title": "10%",
+          "trade_date": "2024-12-26",
+          "filing_date": "2024-12-27",
+          "value": "+$192,166",
+          "qty": "+90,219"
+        },
+        {
+          "insider_name": "Arno Andrew",
+          "title": "Dir",
+          "trade_date": "2024-12-26",
+          "filing_date": "2024-12-26",
+          "value": "+$26,350",
+          "qty": "+12,500"
+        },
+        {
+          "insider_name": "Smith Patrick W",
+          "title": "10%",
+          "trade_date": "2025-01-13",
+          "filing_date": "2025-01-15",
+          "value": "+$34,114",
+          "qty": "+16,055"
+        },
+        {
+          "insider_name": "Smith Patrick W",
+          "title": "10%",
+          "trade_date": "2025-01-29",
+          "filing_date": "2025-01-31",
+          "value": "+$8,438",
+          "qty": "+4,198"
+        },
+        {
+          "insider_name": "Smith Patrick W",
+          "title": "10%",
+          "trade_date": "2025-01-31",
+          "filing_date": "2025-02-04",
+          "value": "+$1,839",
+          "qty": "+915"
+        },
+        {
+          "insider_name": "Broadwood Partners, L.P.",
+          "title": "10%",
+          "trade_date": "2025-02-06",
+          "filing_date": "2025-02-10",
+          "value": "+$10,589,675",
+          "qty": "+5,165,695"
+        },
+        {
+          "insider_name": "James Andrea S.",
+          "title": "CFO",
+          "trade_date": "2025-02-07",
+          "filing_date": "2025-02-11",
+          "value": "+$200,000",
+          "qty": "+97,561"
+        },
+        {
+          "insider_name": "Smith Patrick W",
+          "title": "10%",
+          "trade_date": "2025-02-07",
+          "filing_date": "2025-02-11",
+          "value": "+$2,209,080",
+          "qty": "+1,077,600"
+        },
+        {
+          "insider_name": "Broadwood Partners, L.P.",
+          "title": "10%",
+          "trade_date": "2026-02-10",
+          "filing_date": "2026-02-12",
+          "value": "+$2,999,999",
+          "qty": "+521,739"
+        }
+      ]
+    },
+    {
+      "ticker": "FIEE",
+      "company_name": "FIEE",
+      "total_value": 9799925.0,
+      "total_purchases": 15,
+      "unique_insiders": 10,
+      "trades": [
+        {
+          "insider_name": "Horowitz Joshua",
+          "title": "Dir",
+          "trade_date": "2021-07-29",
+          "filing_date": "2021-07-30",
+          "value": "+$100,000",
+          "qty": "+40,000"
+        },
+        {
+          "insider_name": "Doherty Sean Patrick",
+          "title": "CFO",
+          "trade_date": "2021-07-29",
+          "filing_date": "2021-07-29",
+          "value": "+$50,000",
+          "qty": "+20,000"
+        },
+        {
+          "insider_name": "Chynoweth Graham James",
+          "title": "CEO",
+          "trade_date": "2021-07-29",
+          "filing_date": "2021-07-29",
+          "value": "+$500,000",
+          "qty": "+200,000"
+        },
+        {
+          "insider_name": "Zheng Nicole Elisabeth",
+          "title": "Pres, CMO",
+          "trade_date": "2021-08-19",
+          "filing_date": "2021-08-23",
+          "value": "+$1,012",
+          "qty": "+444"
+        },
+        {
+          "insider_name": "Horowitz Joshua",
+          "title": "Dir",
+          "trade_date": "2021-08-23",
+          "filing_date": "2021-08-23",
+          "value": "+$43,642",
+          "qty": "+20,000"
+        },
+        {
+          "insider_name": "Zheng Nicole Elisabeth",
+          "title": "Pres, CMO",
+          "trade_date": "2021-08-25",
+          "filing_date": "2021-08-26",
+          "value": "+$8,001",
+          "qty": "+3,509"
+        },
+        {
+          "insider_name": "Doherty Sean Patrick",
+          "title": "CFO",
+          "trade_date": "2021-08-25",
+          "filing_date": "2021-08-25",
+          "value": "+$5,040",
+          "qty": "+2,250"
+        },
+        {
+          "insider_name": "Horowitz Joshua",
+          "title": "Dir",
+          "trade_date": "2021-11-29",
+          "filing_date": "2021-12-01",
+          "value": "+$25,306",
+          "qty": "+19,849"
+        },
+        {
+          "insider_name": "Chynoweth Graham James",
+          "title": "CEO",
+          "trade_date": "2021-12-03",
+          "filing_date": "2021-12-03",
+          "value": "+$13,800",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "Hitchcock Elizabeth Cash",
+          "title": "10%",
+          "trade_date": "2023-12-06",
+          "filing_date": "2023-12-08",
+          "value": "+$1,122,448",
+          "qty": "+743,343"
+        },
+        {
+          "insider_name": "Hitchcock Jeremy P.",
+          "title": "Exec COB, 10%",
+          "trade_date": "2023-12-06",
+          "filing_date": "2023-12-08",
+          "value": "+$1,122,448",
+          "qty": "+743,343"
+        },
+        {
+          "insider_name": "Lazar David E.",
+          "title": "Dir, 10%",
+          "trade_date": "2024-12-26",
+          "filing_date": "2024-12-31",
+          "value": "+$49,974",
+          "qty": "+1,456,980"
+        },
+        {
+          "insider_name": "Yu Cao",
+          "title": "CFO, 10%",
+          "trade_date": "2025-05-09",
+          "filing_date": "2025-05-13",
+          "value": "+$2,600,000",
+          "qty": "+1,585,366"
+        },
+        {
+          "insider_name": "Bin Hu",
+          "title": "Dir, 10%",
+          "trade_date": "2025-05-09",
+          "filing_date": "2025-05-13",
+          "value": "+$1,400,001",
+          "qty": "+853,659"
+        },
+        {
+          "insider_name": "Elements Corporate Services Ltd",
+          "title": "10%",
+          "trade_date": "2026-02-10",
+          "filing_date": "2026-02-12",
+          "value": "+$2,758,253",
+          "qty": "+2,138,181"
+        }
+      ]
+    },
+    {
+      "ticker": "PSNL",
+      "company_name": "PSNL",
+      "total_value": 23603855.0,
+      "total_purchases": 4,
+      "unique_insiders": 3,
+      "trades": [
+        {
+          "insider_name": "Lightspeed Venture Partners Select Iv, L.P.",
+          "title": "Affiliate of 10% Owner",
+          "trade_date": "2022-03-02",
+          "filing_date": "2022-03-04",
+          "value": "+$3,102,974",
+          "qty": "+314,750"
+        },
+        {
+          "insider_name": "Myers Woodrow A Jr",
+          "title": "Dir",
+          "trade_date": "2024-03-01",
+          "filing_date": "2024-03-05",
+          "value": "+$16,700",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "Tempus Ai, Inc.",
+          "title": "10%",
+          "trade_date": "2024-08-16",
+          "filing_date": "2024-08-20",
+          "value": "+$17,745,000",
+          "qty": "+3,500,000"
+        },
+        {
+          "insider_name": "Tempus Ai, Inc.",
+          "title": "10%",
+          "trade_date": "2025-11-18",
+          "filing_date": "2026-02-13",
+          "value": "+$2,739,181",
+          "qty": "+320,267"
+        }
+      ]
+    },
+    {
+      "ticker": "NOMA",
+      "company_name": "NOMA",
+      "total_value": 2260558.0,
+      "total_purchases": 1,
+      "unique_insiders": 1,
+      "trades": [
+        {
+          "insider_name": "Sport City Cadiz S.L.",
+          "title": "10%",
+          "trade_date": "2025-11-20",
+          "filing_date": "2026-01-30",
+          "value": "+$2,260,558",
+          "qty": "+260,433"
+        }
+      ]
+    },
+    {
+      "ticker": "USAR",
+      "company_name": "USAR",
+      "total_value": 2173239.0,
+      "total_purchases": 2,
+      "unique_insiders": 2,
+      "trades": [
+        {
+          "insider_name": "Trabuco Carolyn",
+          "title": "Dir",
+          "trade_date": "2026-01-29",
+          "filing_date": "2026-01-29",
+          "value": "+$29,379",
+          "qty": "+1,300"
+        },
+        {
+          "insider_name": "Blitzer Michael",
+          "title": "Dir",
+          "trade_date": "2026-01-29",
+          "filing_date": "2026-01-29",
+          "value": "+$2,143,860",
+          "qty": "+100,000"
+        }
+      ]
+    },
+    {
+      "ticker": "LXRX",
+      "company_name": "LXRX",
+      "total_value": 121009367.0,
+      "total_purchases": 15,
+      "unique_insiders": 7,
+      "trades": [
+        {
+          "insider_name": "Artal International S.C.A.",
+          "title": "Dir, 10%",
+          "trade_date": "2022-08-01",
+          "filing_date": "2022-08-01",
+          "value": "+$40,434,500",
+          "qty": "+16,173,800"
+        },
+        {
+          "insider_name": "Invus Us Partners LLC",
+          "title": "Dir, 10%",
+          "trade_date": "2022-08-01",
+          "filing_date": "2022-08-01",
+          "value": "+$2,456,500",
+          "qty": "+982,600"
+        },
+        {
+          "insider_name": "Debbane Raymond",
+          "title": "Dir",
+          "trade_date": "2022-08-01",
+          "filing_date": "2022-08-01",
+          "value": "+$2,456,500",
+          "qty": "+982,600"
+        },
+        {
+          "insider_name": "Artal International S.C.A.",
+          "title": "Dir, 10%",
+          "trade_date": "2023-06-05",
+          "filing_date": "2023-06-05",
+          "value": "+$72,215,130",
+          "qty": "+27,775,050"
+        },
+        {
+          "insider_name": "Wade Jeffrey L",
+          "title": "Pres, CFO",
+          "trade_date": "2023-06-20",
+          "filing_date": "2023-06-20",
+          "value": "+$28,000",
+          "qty": "+12,000"
+        },
+        {
+          "insider_name": "Coats Lonnel",
+          "title": "CEO",
+          "trade_date": "2023-06-22",
+          "filing_date": "2023-06-22",
+          "value": "+$92,400",
+          "qty": "+40,000"
+        },
+        {
+          "insider_name": "McDermott Wendy",
+          "title": "VP, HR",
+          "trade_date": "2023-06-23",
+          "filing_date": "2023-06-27",
+          "value": "+$24,300",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "Coats Lonnel",
+          "title": "CEO",
+          "trade_date": "2023-06-23",
+          "filing_date": "2023-06-26",
+          "value": "+$46,742",
+          "qty": "+20,000"
+        },
+        {
+          "insider_name": "Coats Lonnel",
+          "title": "CEO",
+          "trade_date": "2023-06-29",
+          "filing_date": "2023-06-29",
+          "value": "+$21,600",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "McDermott Wendy",
+          "title": "VP, HR",
+          "trade_date": "2023-08-04",
+          "filing_date": "2023-08-07",
+          "value": "+$11,040",
+          "qty": "+6,000"
+        },
+        {
+          "insider_name": "Wade Jeffrey L",
+          "title": "Pres, CFO",
+          "trade_date": "2023-09-14",
+          "filing_date": "2023-09-14",
+          "value": "+$13,800",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "Debbane Raymond",
+          "title": "Dir",
+          "trade_date": "2023-10-10",
+          "filing_date": "2023-10-12",
+          "value": "+$1,103,957",
+          "qty": "+1,000,000"
+        },
+        {
+          "insider_name": "Coats Lonnel",
+          "title": "CEO",
+          "trade_date": "2023-11-10",
+          "filing_date": "2023-11-13",
+          "value": "+$10,100",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "Coats Lonnel",
+          "title": "CEO",
+          "trade_date": "2023-11-16",
+          "filing_date": "2023-11-17",
+          "value": "+$94,797",
+          "qty": "+90,000"
+        },
+        {
+          "insider_name": "Invus Global Management, LLC",
+          "title": "Dir, 10%",
+          "trade_date": "2026-02-02",
+          "filing_date": "2026-02-04",
+          "value": "+$2,000,001",
+          "qty": "+1,538,462"
+        }
+      ]
+    },
+    {
+      "ticker": "VANI",
+      "company_name": "VANI",
+      "total_value": 29451406.0,
+      "total_purchases": 74,
+      "unique_insiders": 5,
+      "trades": [
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2022-05-18",
+          "filing_date": "2022-05-20",
+          "value": "+$1,428,597",
+          "qty": "+803,487"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2022-05-23",
+          "filing_date": "2022-05-25",
+          "value": "+$438,597",
+          "qty": "+222,598"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2022-05-31",
+          "filing_date": "2022-06-02",
+          "value": "+$719,451",
+          "qty": "+312,493"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2022-06-03",
+          "filing_date": "2022-06-07",
+          "value": "+$9,748",
+          "qty": "+3,960"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2022-06-13",
+          "filing_date": "2022-06-15",
+          "value": "+$7,600",
+          "qty": "+3,800"
+        },
+        {
+          "insider_name": "Bolck Joachim Eberhard",
+          "title": "10%",
+          "trade_date": "2022-09-12",
+          "filing_date": "2023-04-25",
+          "value": "+$49,039",
+          "qty": "+15,568"
+        },
+        {
+          "insider_name": "Bolck Joachim Eberhard",
+          "title": "10%",
+          "trade_date": "2022-10-14",
+          "filing_date": "2023-04-25",
+          "value": "+$25,816",
+          "qty": "+14,668"
+        },
+        {
+          "insider_name": "Bolck Joachim Eberhard",
+          "title": "10%",
+          "trade_date": "2022-10-21",
+          "filing_date": "2023-04-25",
+          "value": "+$47,520",
+          "qty": "+26,400"
+        },
+        {
+          "insider_name": "Bolck Joachim Eberhard",
+          "title": "10%",
+          "trade_date": "2022-11-15",
+          "filing_date": "2023-04-25",
+          "value": "+$3,280",
+          "qty": "+2,000"
+        },
+        {
+          "insider_name": "Dwyer Donald",
+          "title": "Chief Business Officer",
+          "trade_date": "2022-11-17",
+          "filing_date": "2022-11-21",
+          "value": "+$14,500",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "Bolck Joachim Eberhard",
+          "title": "10%",
+          "trade_date": "2022-12-19",
+          "filing_date": "2023-04-25",
+          "value": "+$26,970",
+          "qty": "+29,000"
+        },
+        {
+          "insider_name": "Bolck Joachim Eberhard",
+          "title": "10%",
+          "trade_date": "2022-12-21",
+          "filing_date": "2023-04-25",
+          "value": "+$38,000",
+          "qty": "+40,000"
+        },
+        {
+          "insider_name": "Bolck Joachim Eberhard",
+          "title": "10%",
+          "trade_date": "2022-12-27",
+          "filing_date": "2023-04-25",
+          "value": "+$30,600",
+          "qty": "+30,000"
+        },
+        {
+          "insider_name": "Bolck Joachim Eberhard",
+          "title": "10%",
+          "trade_date": "2023-01-03",
+          "filing_date": "2023-04-25",
+          "value": "+$18,000",
+          "qty": "+20,000"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2023-04-27",
+          "filing_date": "2023-05-01",
+          "value": "+$2,195,564",
+          "qty": "+2,040,494"
+        },
+        {
+          "insider_name": "Mendelsohn Aaron",
+          "title": "Dir",
+          "trade_date": "2023-06-09",
+          "filing_date": "2023-06-12",
+          "value": "+$12,980",
+          "qty": "+10,000"
+        },
+        {
+          "insider_name": "Dwyer Donald",
+          "title": "Chief Business Officer",
+          "trade_date": "2023-06-22",
+          "filing_date": "2023-06-26",
+          "value": "+$6,200",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Makes Brigid",
+          "title": "CFO",
+          "trade_date": "2023-06-27",
+          "filing_date": "2023-06-29",
+          "value": "+$4,870",
+          "qty": "+4,000"
+        },
+        {
+          "insider_name": "Dwyer Donald",
+          "title": "Chief Business Officer",
+          "trade_date": "2023-08-17",
+          "filing_date": "2023-08-18",
+          "value": "+$8,100",
+          "qty": "+7,500"
+        },
+        {
+          "insider_name": "Dwyer Donald",
+          "title": "Chief Business Officer",
+          "trade_date": "2023-08-31",
+          "filing_date": "2023-09-05",
+          "value": "+$7,050",
+          "qty": "+7,500"
+        },
+        {
+          "insider_name": "Makes Brigid",
+          "title": "CFO",
+          "trade_date": "2023-08-31",
+          "filing_date": "2023-09-05",
+          "value": "+$5,580",
+          "qty": "+6,000"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2023-08-31",
+          "filing_date": "2023-09-01",
+          "value": "+$15,106",
+          "qty": "+16,183"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2023-09-05",
+          "filing_date": "2023-09-07",
+          "value": "+$50,021",
+          "qty": "+53,267"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir",
+          "trade_date": "2023-09-08",
+          "filing_date": "2023-09-12",
+          "value": "+$13,279",
+          "qty": "+13,997"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2023-09-14",
+          "filing_date": "2023-09-18",
+          "value": "+$97,357",
+          "qty": "+101,779"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2023-09-20",
+          "filing_date": "2023-09-22",
+          "value": "+$19,716",
+          "qty": "+21,426"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2023-09-25",
+          "filing_date": "2023-09-27",
+          "value": "+$25,383",
+          "qty": "+26,681"
+        },
+        {
+          "insider_name": "Dwyer Donald",
+          "title": "Chief Business Officer",
+          "trade_date": "2023-09-27",
+          "filing_date": "2023-09-27",
+          "value": "+$1,010",
+          "qty": "+1,000"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2023-09-28",
+          "filing_date": "2023-10-02",
+          "value": "+$36,810",
+          "qty": "+36,210"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2023-10-03",
+          "filing_date": "2023-10-05",
+          "value": "+$9,924",
+          "qty": "+9,924"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2023-10-06",
+          "filing_date": "2023-10-10",
+          "value": "+$89,645",
+          "qty": "+87,887"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2023-10-09",
+          "filing_date": "2023-10-11",
+          "value": "+$664",
+          "qty": "+664"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2023-10-12",
+          "filing_date": "2023-10-16",
+          "value": "+$12,513",
+          "qty": "+12,419"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2023-10-20",
+          "filing_date": "2023-10-24",
+          "value": "+$103,368",
+          "qty": "+103,368"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2023-11-16",
+          "filing_date": "2023-11-20",
+          "value": "+$3,103",
+          "qty": "+3,266"
+        },
+        {
+          "insider_name": "Dwyer Donald",
+          "title": "Chief Business Officer",
+          "trade_date": "2023-11-20",
+          "filing_date": "2023-11-22",
+          "value": "+$5,280",
+          "qty": "+5,500"
+        },
+        {
+          "insider_name": "Dwyer Donald",
+          "title": "Chief Business Officer",
+          "trade_date": "2023-11-22",
+          "filing_date": "2024-08-01",
+          "value": "+$1,920",
+          "qty": "+2,000"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2023-11-22",
+          "filing_date": "2023-11-27",
+          "value": "+$3,290",
+          "qty": "+3,463"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2023-12-06",
+          "filing_date": "2023-12-08",
+          "value": "+$953",
+          "qty": "+993"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2023-12-11",
+          "filing_date": "2023-12-13",
+          "value": "+$26,510",
+          "qty": "+29,806"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2023-12-14",
+          "filing_date": "2023-12-18",
+          "value": "+$3,845",
+          "qty": "+4,301"
+        },
+        {
+          "insider_name": "Makes Brigid",
+          "title": "CFO",
+          "trade_date": "2023-12-15",
+          "filing_date": "2023-12-18",
+          "value": "+$4,430",
+          "qty": "+5,000"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2023-12-19",
+          "filing_date": "2023-12-21",
+          "value": "+$135,403",
+          "qty": "+153,872"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2023-12-22",
+          "filing_date": "2023-12-27",
+          "value": "+$100",
+          "qty": "+100"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2024-01-02",
+          "filing_date": "2024-01-03",
+          "value": "+$7,182",
+          "qty": "+7,111"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2024-01-04",
+          "filing_date": "2024-01-05",
+          "value": "+$6,654",
+          "qty": "+6,200"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2024-01-08",
+          "filing_date": "2024-01-09",
+          "value": "+$7,269",
+          "qty": "+6,731"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2024-01-16",
+          "filing_date": "2024-01-16",
+          "value": "+$13,198",
+          "qty": "+13,067"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2024-01-18",
+          "filing_date": "2024-01-19",
+          "value": "+$1,087",
+          "qty": "+1,076"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2024-01-22",
+          "filing_date": "2024-01-22",
+          "value": "+$7,696",
+          "qty": "+7,620"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2024-01-23",
+          "filing_date": "2024-01-25",
+          "value": "+$842",
+          "qty": "+834"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2024-01-31",
+          "filing_date": "2024-02-02",
+          "value": "+$101",
+          "qty": "+100"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2024-02-05",
+          "filing_date": "2024-02-06",
+          "value": "+$2,015",
+          "qty": "+1,995"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2024-02-08",
+          "filing_date": "2024-02-09",
+          "value": "+$2,212",
+          "qty": "+2,190"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2024-02-15",
+          "filing_date": "2024-02-20",
+          "value": "+$1,089",
+          "qty": "+1,078"
+        },
+        {
+          "insider_name": "Dwyer Donald",
+          "title": "Chief Business Officer",
+          "trade_date": "2024-07-30",
+          "filing_date": "2024-08-01",
+          "value": "+$11,120",
+          "qty": "+9,000"
+        },
+        {
+          "insider_name": "Dwyer Donald",
+          "title": "Chief Business Officer",
+          "trade_date": "2024-10-01",
+          "filing_date": "2024-10-03",
+          "value": "+$2,835",
+          "qty": "+2,500"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2024-11-08",
+          "filing_date": "2024-11-13",
+          "value": "+$4,999,999",
+          "qty": "+3,968,253"
+        },
+        {
+          "insider_name": "Dwyer Donald",
+          "title": "Chief Business Officer",
+          "trade_date": "2025-02-28",
+          "filing_date": "2025-03-03",
+          "value": "+$1,110",
+          "qty": "+1,000"
+        },
+        {
+          "insider_name": "Dwyer Donald",
+          "title": "Chief Business Officer",
+          "trade_date": "2025-04-01",
+          "filing_date": "2025-04-01",
+          "value": "+$4,100",
+          "qty": "+4,000"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2025-04-02",
+          "filing_date": "2025-04-04",
+          "value": "+$24,959",
+          "qty": "+24,939"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2025-04-04",
+          "filing_date": "2025-04-08",
+          "value": "+$205,258",
+          "qty": "+205,482"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2025-04-09",
+          "filing_date": "2025-04-11",
+          "value": "+$21,234",
+          "qty": "+20,840"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2025-04-21",
+          "filing_date": "2025-04-23",
+          "value": "+$1,830",
+          "qty": "+1,812"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2025-04-24",
+          "filing_date": "2025-04-28",
+          "value": "+$1,124",
+          "qty": "+1,113"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2025-05-14",
+          "filing_date": "2025-05-16",
+          "value": "+$12,867",
+          "qty": "+12,740"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2025-09-15",
+          "filing_date": "2025-09-17",
+          "value": "+$2,400,001",
+          "qty": "+2,068,453"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2025-10-15",
+          "filing_date": "2025-10-16",
+          "value": "+$1,983,333",
+          "qty": "+1,737,764"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2025-10-27",
+          "filing_date": "2025-10-28",
+          "value": "+$5,999,999",
+          "qty": "+3,703,703"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2025-11-15",
+          "filing_date": "2025-11-17",
+          "value": "+$1,983,333",
+          "qty": "+1,737,764"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2025-12-15",
+          "filing_date": "2025-12-16",
+          "value": "+$1,983,334",
+          "qty": "+1,737,765"
+        },
+        {
+          "insider_name": "Mendelsohn Aaron",
+          "title": "Dir",
+          "trade_date": "2025-12-29",
+          "filing_date": "2025-12-31",
+          "value": "+$24,600",
+          "qty": "+20,000"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2026-01-15",
+          "filing_date": "2026-01-20",
+          "value": "+$1,983,334",
+          "qty": "+1,737,765"
+        },
+        {
+          "insider_name": "Williams Gregg",
+          "title": "Dir, 10%",
+          "trade_date": "2026-01-27",
+          "filing_date": "2026-01-28",
+          "value": "+$1,999,999",
+          "qty": "+1,351,351"
+        }
+      ]
+    }
+  ],
+  "generated_at": "2026-02-14",
+  "source": "merged_full_history_and_monthly"
+}
