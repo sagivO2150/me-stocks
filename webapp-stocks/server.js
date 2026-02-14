@@ -837,13 +837,20 @@ app.get('/api/live-purchases', (req, res) => {
 
 // Endpoint to serve backtest results
 app.get('/api/backtest-results', (req, res) => {
-  const backtestCSV = path.join(__dirname, '../output CSVs/backtest_card_counting_results.csv');
+  // Default to aggressive momentum, fallback to card counting
+  const strategy = req.query.strategy || 'aggressive';
+  
+  const csvFilename = strategy === 'aggressive' 
+    ? 'backtest_aggressive_momentum_results.csv'
+    : 'backtest_card_counting_results.csv';
+  
+  const backtestCSV = path.join(__dirname, '../output CSVs/', csvFilename);
   
   try {
     if (!fs.existsSync(backtestCSV)) {
       return res.json({ 
         success: false, 
-        error: 'No backtest results found',
+        error: `No ${strategy} backtest results found`,
         trades: []
       });
     }
