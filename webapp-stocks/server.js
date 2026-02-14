@@ -20,6 +20,37 @@ app.use(express.json());
 
 const PORT = 3001;
 
+// ============ CACHING SYSTEM ============
+const cache = new Map();
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
+function getCached(key) {
+  const cached = cache.get(key);
+  if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+    console.log(`✅ Cache HIT: ${key}`);
+    return cached.data;
+  }
+  if (cached) {
+    console.log(`❌ Cache EXPIRED: ${key}`);
+    cache.delete(key);
+  }
+  return null;
+}
+
+function setCache(key, data) {
+  cache.set(key, { data, timestamp: Date.now() });
+  console.log(`💾 Cached: ${key}`);
+}
+
+// Clear cache endpoint for debugging
+app.post('/api/clear-cache', (req, res) => {
+  const size = cache.size;
+  cache.clear();
+  res.json({ success: true, message: `Cleared ${size} cache entries` });
+});
+
+// ============ END CACHING SYSTEM ============
+
 // Endpoint to run the Python scraper with custom filters
 app.post('/api/scrape', (req, res) => {
   const {
@@ -117,10 +148,153 @@ app.post('/api/scrape', (req, res) => {
   });
 });
 
+// ============ BATCH STOCK DATA ENDPOINT ============
+app.get('/api/batch-stock-data', async (req, res) => {
+  const tickers = req.query.tickers ? req.query.tickers.split(',').map(t => t.trim().toUpperCase()) : [];
+  const period = req.query.period || '1y';
+  
+  if (!tickers.length) {
+    return res.json({ success: false, error: 'No tickers provided' });
+  }
+  
+  console.log(`📦 Batch request for ${tickers.length} tickers: ${tickers.join(', ')}`);
+  
+  const cacheKey = `batch:${tickers.sort().join(',')}:${period}`;
+  const cached = getCached(cacheKey);
+  if (cached) {
+    return res.json(cached);
+  }
+  
+  try {
+    const results = {};
+    const errors = {};
+    
+    // Fetch all stocks in parallel using Promise.all
+    const promises = tickers.map(ticker => {
+      return new Promise((resolve) => {
+        const pythonScript = path.join(__dirname, '../scripts/fetch_stock_history.py');
+        const pythonProcess = spawn('/opt/homebrew/bin/python3', [pythonScript, ticker, period]);
+        
+        let output = '';
+        let errorOutput = '';
+        
+        pythonProcess.stdout.on('data', (data) => {
+          output += data.toString();
+        });
+        
+        pythonProcess.stderr.on('data', (data) => {
+          errorOutput += data.toString();
+        });
+        
+        pythonProcess.on('close', (code) => {
+          if (code === 0) {
+            try {
+              const result = JSON.parse(output);
+              if (result.success) {
+                results[ticker] = result;
+              } else {
+                errors[ticker] = result.error || 'Unknown error';
+              }
+            } catch (e) {
+              errors[ticker] = 'Failed to parse response';
+            }
+          } else {
+            errors[ticker] = errorOutput || `Exit code ${code}`;
+          }
+          resolve();
+        });
+      });
+    });
+    
+    await Promise.all(promises);
+    
+    const response = {
+      success: true,
+      results,
+      errors,
+      count: Object.keys(results).length
+    };
+    
+    setCache(cacheKey, response);
+    res.json(response);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ============ BATCH INSIDER TRADES ENDPOINT ============
+app.get('/api/batch-insider-trades', (req, res) => {
+  const tickers = req.query.tickers ? req.query.tickers.split(',').map(t => t.trim().toUpperCase()) : [];
+  
+  if (!tickers.length) {
+    return res.json({ success: false, error: 'No tickers provided' });
+  }
+  
+  console.log(`📦 Batch insider request for ${tickers.length} tickers`);
+  
+  const cacheKey = `batch-insider:${tickers.sort().join(',')}`;
+  const cached = getCached(cacheKey);
+  if (cached) {
+    return res.json(cached);
+  }
+  
+  try {
+    const jsonPath = path.join(__dirname, '../output CSVs/full_history_insider_trades.json');
+    
+    if (!fs.existsSync(jsonPath)) {
+      return res.json({ success: false, error: 'Data file not found' });
+    }
+    
+    const fileContent = fs.readFileSync(jsonPath, 'utf-8');
+    const fullData = JSON.parse(fileContent);
+    
+    const results = {};
+    
+    tickers.forEach(ticker => {
+      const stockData = fullData.data?.find(s => s.ticker === ticker);
+      
+      if (stockData && stockData.trades) {
+        const purchases = stockData.trades.filter(t => t.value.startsWith('+'));
+        const sales = stockData.trades.filter(t => t.value.startsWith('-'));
+        
+        results[ticker] = {
+          success: true,
+          ticker: ticker,
+          company: stockData.company_name,
+          purchases: purchases,
+          sales: sales,
+          total_trades: stockData.trades.length
+        };
+      } else {
+        results[ticker] = {
+          success: true,
+          ticker: ticker,
+          purchases: [],
+          sales: [],
+          total_trades: 0
+        };
+      }
+    });
+    
+    const response = { success: true, results, count: tickers.length };
+    setCache(cacheKey, response);
+    res.json(response);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // Stock history endpoint
 app.get('/api/stock-history/:ticker', (req, res) => {
   const ticker = req.params.ticker.toUpperCase();
   const period = req.query.period || '1y'; // Default to 1 year
+  
+  // Check cache first
+  const cacheKey = `stock:${ticker}:${period}`;
+  const cached = getCached(cacheKey);
+  if (cached) {
+    return res.json(cached);
+  }
   
   console.log(`Fetching stock history for ${ticker}, period: ${period}`);
   
@@ -143,6 +317,7 @@ app.get('/api/stock-history/:ticker', (req, res) => {
     if (code === 0) {
       try {
         const result = JSON.parse(output);
+        setCache(cacheKey, result); // Cache successful result
         res.json(result);
       } catch (e) {
         console.error('Failed to parse Python output:', e);
