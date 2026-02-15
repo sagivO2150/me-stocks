@@ -1012,13 +1012,8 @@ app.get('/api/live-purchases', (req, res) => {
 
 // Endpoint to serve backtest results
 app.get('/api/backtest-results', (req, res) => {
-  // Default to aggressive daily (realistic), fallback to card counting
-  const strategy = req.query.strategy || 'aggressive';
-  
-  const csvFilename = strategy === 'aggressive' 
-    ? 'backtest_aggressive_daily_results.csv'  // Use the realistic daily-checked version
-    : 'backtest_card_counting_results.csv';
-  
+  // Always serve the latest test results (whichever test ran most recently)
+  const csvFilename = 'backtest_latest_results.csv';
   const backtestCSV = path.join(__dirname, '../output CSVs/', csvFilename);
   
   try {
