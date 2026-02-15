@@ -73,8 +73,8 @@ def calculate_velocity(price_history, start_idx, end_idx):
 
 def detect_trend_reversal(position, current_date, history):
     """
-    Detect trend reversal using VELOCITY-BASED dip detection.
-    Only "violent" dips (similar slope to rise) count as real dips.
+    Detect trend reversal using SLOPE-BASED dip detection.
+    Compare the steepness/angle of dips, not arbitrary percentage thresholds.
     
     Returns: (should_exit, reason, exit_price)
     """
@@ -92,10 +92,6 @@ def detect_trend_reversal(position, current_date, history):
     # Calculate current profit from entry
     current_profit_pct = ((close_price - position['entry_price']) / position['entry_price']) * 100
     
-    # SAFETY: Hard stop loss at -5% from entry
-    if current_profit_pct < -5.0:
-        return (True, 'stop_loss', close_price)
-    
     # GRACE PERIOD: Don't exit in first 2 business days
     if position['days_held'] <= 2:
         return (False, None, None)
@@ -107,47 +103,112 @@ def detect_trend_reversal(position, current_date, history):
         position['peak_date'] = current_date_ts
         position['peak_idx'] = len(position['price_history']) - 1
         
+        # Track consecutive up days for sustained uptrend detection
+        if close_price > position.get('last_close', position['entry_price']):
+            position['consecutive_up_days'] = position.get('consecutive_up_days', 0) + 1
+        else:
+            position['consecutive_up_days'] = 1
+        
+        # Reset decline tracking on new high
+        position['consecutive_decline_days'] = 0
+        
         # Calculate upward velocity to this peak
         # Look back to find where the rise started (after previous dip/entry)
         lookback_idx = max(0, position['peak_idx'] - 20)  # Look back up to 20 days
         position['up_velocity'] = calculate_velocity(position['price_history'], lookback_idx, position['peak_idx'])
         
-        # New high reached - reset dip tracking
+        # Check if this is a SUSTAINED uptrend (not just 1-day spike)
+        # Require at least 3 consecutive days of gains
+        if position['consecutive_up_days'] >= 3 and high_price > old_peak * 1.05:
+            position['sustained_uptrend'] = True
+            print(f"      ✅ SUSTAINED UPTREND for {position['ticker']}: ${high_price:.2f} ({position['consecutive_up_days']} days up)")
+        
+        # New high reached - reset dip tracking AND days since peak
         if high_price > old_peak * 1.02:  # At least 2% higher
             position['violent_dip_count'] = 0
             position['in_violent_dip'] = False
             position['failed_recovery'] = False
+            position['days_since_peak'] = 0  # Reset - we're at a new peak!
             print(f"      ✅ NEW HIGH for {position['ticker']}: ${high_price:.2f} - trend intact, reset dip counter")
+    else:
+        # Not a new high - increment days since peak
+        position['days_since_peak'] = position.get('days_since_peak', 0) + 1
+        
+        # Track if we're going up (recovering) or down
+        if close_price < position.get('last_close', position['entry_price']):
+            position['consecutive_up_days'] = 0
+        else:
+            position['consecutive_up_days'] = position.get('consecutive_up_days', 0) + 1
+    
+    position['last_close'] = close_price
+    
+    # SAFETY STOP LOSS: Only apply if we're NOT in an active uptrend with violent dips
+    # Uptrend "expires" if we haven't made a new high in 20+ days - re-enable stop loss
+    has_sustained_uptrend = position.get('sustained_uptrend', False)
+    days_since_peak = position.get('days_since_peak', 0)
+    
+    # Expire sustained uptrend if stale
+    if has_sustained_uptrend and days_since_peak >= 20:
+        has_sustained_uptrend = False
+        print(f"      ⏰ UPTREND EXPIRED for {position['ticker']}: {days_since_peak} days since peak - re-enabling stop loss")
+    
+    in_trend_detection_mode = has_sustained_uptrend and (position['violent_dip_count'] > 0 or position['in_violent_dip'])
+    
+    # Apply normal stop loss if not in trend detection mode
+    if not in_trend_detection_mode and current_profit_pct < -5.0:
+        return (True, 'stop_loss', close_price)
     
     # Calculate drawdown from peak
     peak = position['highest_price']
     drawdown_pct = ((close_price - peak) / peak) * 100
     
-    # Detect if we're in a decline
-    if drawdown_pct < -3.0 and not position['in_violent_dip']:  # At least 3% down to start checking
-        # Calculate downward velocity
-        current_idx = len(position['price_history']) - 1
-        peak_idx = position['peak_idx']
-        
-        if current_idx > peak_idx:
-            down_velocity = calculate_velocity(position['price_history'], peak_idx, current_idx)
+    # DEBUG for GME
+    if position['ticker'] == 'GME' and '2024-07' in str(current_date_ts.date()):
+        print(f"      DEBUG GME {current_date_ts.date()}: close=${close_price:.2f}, peak=${peak:.2f}, drawdown={drawdown_pct:.1f}%, in_dip={position['in_violent_dip']}, dip_count={position.get('violent_dip_count', 0)}")
+    
+    # SLOPE-BASED DIP DETECTION: Compare the steepness/angle of drops
+    # We care about trajectory (degrees/slope)pe (last 1-2 days for responsiveness)
+        lookback = min(2, current_idx)
+        if lookback > 0:
+            lookback_idx = current_idx - lookback
+            recent_prices = position['price_history'][lookback_idx:current_idx + 1]
             
-            # Check if this is a VIOLENT dip (velocity comparison)
-            # Down velocity should be 60-80% of up velocity (in absolute terms)
-            up_vel_abs = abs(position['up_velocity'])
-            down_vel_abs = abs(down_velocity)
+            # Calculate slope: dollars per day
+            start_price = recent_prices[0][1]
+            end_price = recent_prices[-1][1]
+            days = len(recent_prices) - 1
+            recent_slope = (end_price - start_price) / days if days > 0 else 0
+            recent_slope_abs = abs(recent_slope)
             
-            velocity_ratio = down_vel_abs / up_vel_abs if up_vel_abs > 0 else 0
+            # DEBUG for GME
+            if position['ticker'] == 'GME':
+                print(f"      DEBUG GME {current_date_ts.date()}: drawdown={drawdown_pct:.1f}%, recent_slope=${recent_slope_abs:.2f}/day, dip_count={position.get('violent_dip_count', 0)}, first_dip_slope=${position.get('first_dip_slope', 0):.2f}/day, in_dip={position['in_violent_dip']}")
             
-            # VIOLENT DIP: downward slope is at least 50% as steep as upward slope
-            if velocity_ratio >= 0.5 and down_vel_abs > 0.05:  # At least $0.05/day decline
-                if not position['in_violent_dip']:
-                    position['in_violent_dip'] = True
-                    position['violent_dip_count'] += 1
-                    position['dip_start_date'] = current_date_ts
-                    position['dip_start_idx'] = current_idx
-                    print(f"      🔻 VIOLENT DIP #{position['violent_dip_count']} for {position['ticker']}")
-                    print(f"         Up velocity: ${up_vel_abs:.3f}/day | Down velocity: ${down_vel_abs:.3f}/day | Ratio: {velocity_ratio:.1%}")
+            if position.get('violent_dip_count', 0) == 0:
+                # First dip: needs to be steep enough (arbitrary minimum)
+                if recent_slope_abs > 0.50:  # At least $0.50/day drop
+                    is_violent = True
+                    position['first_dip_slope'] = recent_slope_abs  # Store for comparison!
+                    reason = f"slope ${recent_slope_abs:.2f}/day (first dip)"
+            
+            # Second dip: Compare slope to first dip's slope
+            else:
+                first_dip_slope = position.get('first_dip_slope', 0)
+                if first_dip_slope > 0:
+                    slope_ratio = recent_slope_abs / first_dip_slope
+                    
+                    # If current drop is at least 50% as steep as first dip → it's violent!
+                    if slope_ratio >= 0.5 and recent_slope_abs > 0.30:  # At least $0.30/day
+                        is_violent = True
+                        reason = f"slope ${recent_slope_abs:.2f}/day vs ${first_dip_slope:.2f}/day (ratio: {slope_ratio:.0%})"
+            
+            if is_violent:
+                position['in_violent_dip'] = True
+                position['violent_dip_count'] += 1
+                position['dip_start_date'] = current_date_ts
+                position['dip_start_idx'] = current_idx
+                print(f"      🔻 VIOLENT DIP #{position['violent_dip_count']} for {position['ticker']}")
+                print(f"         Drawdown: {drawdown_pct:.1f}% | {reason}")
     
     # Check if we're recovering from a violent dip
     if position['in_violent_dip']:
@@ -162,16 +223,19 @@ def detect_trend_reversal(position, current_date, history):
             # Recovery detected: at least 3% up from the low
             if recovery_pct > 3.0:
                 print(f"      ↗️  Recovery from violent dip for {position['ticker']}: +{recovery_pct:.1f}% from low")
-                position['in_violent_dip'] = False
                 
-                # Check if we made a NEW HIGH
+                # Check if we made a NEW HIGH before marking dip as over
+                peak = position['highest_price']
                 if close_price > peak * 0.98:  # Within 2% of old peak
                     print(f"      ✅ Recovery reached near peak - trend continues!")
-                    # Don't reset dip count yet, will reset on actual new high
+                    position['failed_recovery'] = False
                 else:
-                    # Failed to make new high - mark this
+                    # Failed to make new high - mark this BEFORE clearing in_violent_dip
                     print(f"      ⚠️  Failed recovery - didn't reach new high (peak: ${peak:.2f}, now: ${close_price:.2f})")
                     position['failed_recovery'] = True
+                
+                # Now mark dip as over
+                position['in_violent_dip'] = False
     
     # DECISION: Sell on second violent dip after failed recovery
     if position['violent_dip_count'] >= 2 and position['in_violent_dip'] and position['failed_recovery']:
@@ -306,6 +370,11 @@ def backtest_trend_following():
                 'violent_dip_count': 0,
                 'in_violent_dip': False,
                 'failed_recovery': False,
+                'sustained_uptrend': False,
+                'consecutive_up_days': 0,
+                'days_since_peak': 0,
+                'first_dip_slope': 0,  # Store slope of first dip for comparison
+                'last_close': entry_price,
                 'peak_date': actual_entry_ts,
                 'peak_idx': 0,
                 'up_velocity': 0,
