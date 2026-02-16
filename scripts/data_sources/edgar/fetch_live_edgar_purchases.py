@@ -327,7 +327,7 @@ def fetch_todays_form4s(days_back=0):
 def get_historical_purchases(ticker):
     """Fetch 2-year purchase history for a ticker using existing fetch_insider_trades"""
     try:
-        script_path = '/Users/sagiv.oron/Documents/scripts_playground/stocks/scripts/fetch_insider_trades.py'
+        script_path = '/Users/sagiv.oron/Documents/scripts_playground/stocks/scripts/core/fetch_insider_trades.py'
         result = subprocess.run(
             ['/Users/sagiv.oron/Documents/scripts_playground/stocks/.venv/bin/python', script_path, ticker],
             capture_output=True,

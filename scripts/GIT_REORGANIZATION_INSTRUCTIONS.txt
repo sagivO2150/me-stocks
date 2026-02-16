@@ -1,0 +1,222 @@
+================================================================================
+GIT INSTRUCTIONS FOR SCRIPTS FOLDER REORGANIZATION
+================================================================================
+
+Date: 2026-02-16
+Purpose: Reorganized flat scripts/ folder into organized structure by function
+
+IMPORTANT: Use 'git mv' for all file moves to preserve history!
+
+================================================================================
+STEP 1: Create New Directory Structure
+================================================================================
+
+git add analysis/ backtests/ core/ data_sources/ debug/ testing/ utils/
+git add data_sources/edgar/ data_sources/openinsider/ data_sources/quiver/ data_sources/political/
+
+================================================================================
+STEP 2: Move Core Production Scripts (used by webapp)
+================================================================================
+
+git mv scripts/fetch_insider_trades.py scripts/core/
+git mv scripts/fetch_political_trades.py scripts/core/
+git mv scripts/fetch_top_monthly_insider_trades.py scripts/core/
+git mv scripts/merge_insider_data.py scripts/core/
+
+================================================================================
+STEP 3: Move Data Source Scripts - EDGAR
+================================================================================
+
+git mv scripts/edgar_form4_analyzer.py scripts/data_sources/edgar/
+git mv scripts/edgar_scraper_prototype.py scripts/data_sources/edgar/
+git mv scripts/fetch_edgar_trades.py scripts/data_sources/edgar/
+git mv scripts/fetch_live_edgar_purchases.py scripts/data_sources/edgar/
+
+================================================================================
+STEP 4: Move Data Source Scripts - OpenInsider
+================================================================================
+
+git mv scripts/openinsider_scraper.py scripts/data_sources/openinsider/
+git mv scripts/fetch_current_political_trades.py scripts/data_sources/openinsider/
+
+================================================================================
+STEP 5: Move Data Source Scripts - Quiver
+================================================================================
+
+git mv scripts/fetch_quiver_trades.py scripts/data_sources/quiver/
+git mv scripts/fetch_quiver_stock_trades.py scripts/data_sources/quiver/
+
+================================================================================
+STEP 6: Move Data Source Scripts - Political
+================================================================================
+
+git mv scripts/fetch_political_trades_enriched.py scripts/data_sources/political/
+git mv scripts/fetch_political_trades_github.py scripts/data_sources/political/
+git mv scripts/house_stealth_fetcher.py scripts/data_sources/political/
+git mv scripts/update_political_trades.sh scripts/data_sources/political/
+
+================================================================================
+STEP 7: Move Backtest Strategy Scripts
+================================================================================
+
+git mv scripts/tests/backtest_trend_following.py scripts/backtests/
+git mv scripts/tests/backtest_adaptive_filter.py scripts/backtests/
+git mv scripts/tests/backtest_aggressive_daily_checks.py scripts/backtests/
+git mv scripts/tests/backtest_aggressive_momentum_strategy.py scripts/backtests/
+git mv scripts/tests/backtest_card_counting_strategy.py scripts/backtests/
+git mv scripts/tests/backtest_conservative_filter.py scripts/backtests/
+git mv scripts/tests/backtest_all_sec_companies.py scripts/backtests/
+
+git rm -r scripts/tests/
+
+================================================================================
+STEP 8: Move Analysis & Research Scripts
+================================================================================
+
+git mv scripts/analyze_bad_stocks.py scripts/analysis/
+git mv scripts/analyze_penny_stocks.py scripts/analysis/
+git mv scripts/analyze_ticker_split.py scripts/analysis/
+git mv scripts/compare_strategies.py scripts/analysis/
+git mv scripts/investigate_problematic_tickers.py scripts/analysis/
+git mv scripts/test_penny_stock_strategies.py scripts/analysis/
+git mv scripts/generate_backtest_pdf.py scripts/analysis/
+
+================================================================================
+STEP 9: Move Debug Scripts
+================================================================================
+
+git mv scripts/debug_gme_trade.py scripts/debug/
+git mv scripts/debug_thm_oct2025.py scripts/debug/
+git mv scripts/debug_ths.py scripts/debug/
+git mv scripts/check_gme_slopes.py scripts/debug/
+
+================================================================================
+STEP 10: Move Testing/POC Scripts
+================================================================================
+
+git mv scripts/test_asa_filters.py scripts/testing/
+git mv scripts/test_asa_quick.py scripts/testing/
+git mv scripts/test_edgar.py scripts/testing/
+git mv scripts/test_edgar_parsing.py scripts/testing/
+git mv scripts/test_openinsider_url_comparison.py scripts/testing/
+
+================================================================================
+STEP 11: Move Utility Scripts
+================================================================================
+
+git mv scripts/fetch_stock_history.py scripts/utils/
+git mv scripts/import_to_db.py scripts/utils/
+git mv scripts/regenerate_full_history.py scripts/utils/
+
+================================================================================
+STEP 12: Update Webapp Server Path References
+================================================================================
+
+# Updated files (already changed):
+# - webapp-stocks/server.js (3 path updates for core scripts)
+
+git add webapp-stocks/server.js
+
+================================================================================
+STEP 13: Commit Changes
+================================================================================
+
+git commit -m "refactor: reorganize scripts folder into logical structure
+
+- Created organized folder structure:
+  - core/: Production scripts used by webapp
+  - data_sources/: Data fetching scripts (edgar, openinsider, quiver, political)
+  - backtests/: Strategy backtest files
+  - analysis/: Analysis and research scripts
+  - debug/: Debugging specific trade issues
+  - testing/: POC and experimental tests
+  - utils/: Utility scripts
+
+- Updated webapp-stocks/server.js to reference new core/ paths
+- Improved code organization and maintainability
+- All file history preserved via git mv"
+
+================================================================================
+NEW FOLDER STRUCTURE
+================================================================================
+
+scripts/
+├── core/                          # Production scripts used by webapp
+│   ├── fetch_insider_trades.py
+│   ├── fetch_political_trades.py
+│   ├── fetch_top_monthly_insider_trades.py
+│   └── merge_insider_data.py
+│
+├── data_sources/                  # Scripts for fetching from various sources
+│   ├── edgar/
+│   │   ├── edgar_form4_analyzer.py
+│   │   ├── edgar_scraper_prototype.py
+│   │   ├── fetch_edgar_trades.py
+│   │   └── fetch_live_edgar_purchases.py
+│   ├── openinsider/
+│   │   ├── openinsider_scraper.py
+│   │   └── fetch_current_political_trades.py
+│   ├── quiver/
+│   │   ├── fetch_quiver_trades.py
+│   │   └── fetch_quiver_stock_trades.py
+│   └── political/
+│       ├── fetch_political_trades_enriched.py
+│       ├── fetch_political_trades_github.py
+│       ├── house_stealth_fetcher.py
+│       └── update_political_trades.sh
+│
+├── backtests/                     # Strategy backtest files
+│   ├── backtest_trend_following.py
+│   ├── backtest_adaptive_filter.py
+│   ├── backtest_aggressive_daily_checks.py
+│   ├── backtest_aggressive_momentum_strategy.py
+│   ├── backtest_card_counting_strategy.py
+│   ├── backtest_conservative_filter.py
+│   └── backtest_all_sec_companies.py
+│
+├── analysis/                      # Analysis and research scripts
+│   ├── analyze_bad_stocks.py
+│   ├── analyze_penny_stocks.py
+│   ├── analyze_ticker_split.py
+│   ├── compare_strategies.py
+│   ├── investigate_problematic_tickers.py
+│   ├── test_penny_stock_strategies.py
+│   └── generate_backtest_pdf.py
+│
+├── debug/                         # Debugging specific trade issues
+│   ├── debug_gme_trade.py
+│   ├── debug_thm_oct2025.py
+│   ├── debug_ths.py
+│   └── check_gme_slopes.py
+│
+├── testing/                       # POC and experimental tests
+│   ├── test_asa_filters.py
+│   ├── test_asa_quick.py
+│   ├── test_edgar.py
+│   ├── test_edgar_parsing.py
+│   └── test_openinsider_url_comparison.py
+│
+└── utils/                         # Utility scripts
+    ├── fetch_stock_history.py
+    ├── import_to_db.py
+    └── regenerate_full_history.py
+
+================================================================================
+VERIFICATION
+================================================================================
+
+After committing, verify:
+
+1. Check git status shows all moves tracked:
+   git status
+
+2. Verify file history preserved:
+   git log --follow scripts/core/fetch_insider_trades.py
+
+3. Test webapp still works with new paths:
+   cd /Users/sagiv.oron/Documents/scripts_playground/stocks
+   ./restart_webapp_stocks.sh
+
+4. Verify Python imports still work if any scripts import from others
+
+================================================================================

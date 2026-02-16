@@ -172,7 +172,7 @@ app.get('/api/batch-stock-data', async (req, res) => {
     // Fetch all stocks in parallel using Promise.all
     const promises = tickers.map(ticker => {
       return new Promise((resolve) => {
-        const pythonScript = path.join(__dirname, '../scripts/fetch_stock_history.py');
+        const pythonScript = path.join(__dirname, '../scripts/utils/fetch_stock_history.py');
         const pythonProcess = spawn('/opt/homebrew/bin/python3', [pythonScript, ticker, period]);
         
         let output = '';
@@ -298,7 +298,7 @@ app.get('/api/stock-history/:ticker', (req, res) => {
   
   console.log(`Fetching stock history for ${ticker}, period: ${period}`);
   
-  const pythonScript = path.join(__dirname, '../scripts/fetch_stock_history.py');
+  const pythonScript = path.join(__dirname, '../scripts/utils/fetch_stock_history.py');
   const pythonProcess = spawn('/opt/homebrew/bin/python3', [pythonScript, ticker, period]);
   
   let output = '';
@@ -345,7 +345,7 @@ app.get('/api/insider-trades/:ticker', (req, res) => {
   
   console.log(`Fetching insider trades for ${ticker}, days back: ${daysBack}`);
   
-  const pythonScript = path.join(__dirname, '../scripts/fetch_insider_trades.py');
+  const pythonScript = path.join(__dirname, '../scripts/core/fetch_insider_trades.py');
   const pythonProcess = spawn('/opt/homebrew/bin/python3', [pythonScript, ticker, daysBack]);
   
   let output = '';
@@ -660,7 +660,7 @@ app.post('/api/scrape-political', (req, res) => {
 
   console.log('Starting political trades scraper with params:', req.body);
 
-  const pythonScript = path.join(__dirname, '../scripts/fetch_political_trades.py');
+  const pythonScript = path.join(__dirname, '../scripts/core/fetch_political_trades.py');
   const args = [
     pythonScript,
     '--days', daysBack.toString(),
@@ -1087,7 +1087,7 @@ app.get('/api/backtest-results', (req, res) => {
 app.post('/api/scrape-top-monthly', (req, res) => {
   console.log('Starting top monthly trades scraper...');
   
-  const pythonScript = path.join(__dirname, '../scripts/fetch_top_monthly_insider_trades.py');
+  const pythonScript = path.join(__dirname, '../scripts/core/fetch_top_monthly_insider_trades.py');
   const pythonProcess = spawn('/opt/homebrew/bin/python3', [pythonScript]);
   
   let output = '';

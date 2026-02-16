@@ -19,7 +19,7 @@ def fetch_ticker_history(ticker: str) -> Dict[str, Any]:
     try:
         cmd = [
             sys.executable,
-            "scripts/fetch_insider_trades.py",
+            "scripts/core/fetch_insider_trades.py",
             ticker,
             str(DAYS_BACK)
         ]
