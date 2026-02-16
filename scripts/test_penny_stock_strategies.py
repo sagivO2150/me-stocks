@@ -1,20 +1,9 @@
 #!/usr/bin/env python3
 """
-TREND FOLLOWING STRATEGY - "Ride the Wave, Exit on Double Dip"
-================================================================
-Core Concept: After insider purchase, wait for announcement catalyst.
-Once uptrend starts, hold as long as trend continues.
-Exit on second dip that fails to recover (confirms trend reversal).
-
-Rules:
-1. Buy on insider purchase signal
-2. Grace period: 48 hours (2 business days) minimum hold
-3. Stop loss: -5% from entry (safety net)
-4. Track highest high (peak price)
-5. Detect dips: price drops >X% from recent peak
-6. First dip: HOLD and wait for recovery
-7. If recovers to new high: reset dip counter, trend continues
-8. Second dip without new high: SELL (trend reversed)
+Test different strategies for penny stocks:
+1. No penny stocks at all (filter them out)
+2. Tighter rules for penny stocks
+3. Current strategy (baseline)
 """
 
 import json
@@ -54,29 +43,13 @@ def generate_business_days(start_date, end_date):
     business_days = pd.bdate_range(start=start, end=end)
     return [d.strftime('%Y-%m-%d') for d in business_days]
 
-def calculate_velocity(price_history, start_idx, end_idx):
-    """Calculate the velocity (slope) of price movement between two points"""
-    if end_idx <= start_idx or end_idx >= len(price_history):
-        return 0
-    
-    start_date, start_price = price_history[start_idx]
-    end_date, end_price = price_history[end_idx]
-    
-    days = (end_date - start_date).days
-    if days == 0:
-        return 0
-    
-    price_change = end_price - start_price
-    velocity = price_change / days  # dollars per day
-    
-    return velocity
-
-def detect_trend_reversal(position, current_date, history):
+def detect_trend_reversal(position, current_date, history, strategy_mode='current'):
     """
-    Detect trend reversal using SLOPE-BASED dip detection.
-    Compare the steepness/angle of dips, not arbitrary percentage thresholds.
+    Detect trend reversal - strategy varies by mode
     
-    Returns: (should_exit, reason, exit_price)
+    strategy_mode:
+    - 'current': Normal rules (5%/day, 3%/day, -5% stop, 15 days)
+    - 'tight_penny': Tighter rules for penny stocks (7%/day, 4%/day, -3% stop, 10 days)
     """
     current_date_ts = pd.Timestamp(current_date)
     
@@ -96,6 +69,22 @@ def detect_trend_reversal(position, current_date, history):
     if position['days_held'] <= 2:
         return (False, None, None)
     
+    # Strategy-specific parameters
+    is_penny = position['entry_price'] < 5.0
+    
+    if strategy_mode == 'tight_penny' and is_penny:
+        stop_loss_pct = -3.0
+        catalyst_timeout_days = 10
+        catalyst_drawdown = -12.0
+        first_dip_threshold = 7.0
+        second_dip_threshold = 4.0
+    else:
+        stop_loss_pct = -5.0
+        catalyst_timeout_days = 15
+        catalyst_drawdown = -15.0
+        first_dip_threshold = 5.0
+        second_dip_threshold = 3.0
+    
     # Update highest price and track peak
     if high_price > position['highest_price']:
         old_peak = position['highest_price']
@@ -103,46 +92,35 @@ def detect_trend_reversal(position, current_date, history):
         position['peak_date'] = current_date_ts
         position['peak_idx'] = len(position['price_history']) - 1
         
-        # Track consecutive up days for sustained uptrend detection
         if close_price > position.get('last_close', position['entry_price']):
             position['consecutive_up_days'] = position.get('consecutive_up_days', 0) + 1
         else:
             position['consecutive_up_days'] = 1
         
-        # Reset decline tracking on new high
         position['consecutive_decline_days'] = 0
         
-        # EXPLOSIVE CATALYST DETECTION: Look for sharp announcement spike
-        # Check if this is an explosive move (not slow grind)
+        # EXPLOSIVE CATALYST DETECTION
         if not position.get('catalyst_detected', False):
-            # Look back 3-5 days to detect explosive rise
             lookback_window = min(5, len(position['price_history']))
             if lookback_window >= 3:
                 lookback_idx = len(position['price_history']) - lookback_window
                 lookback_price = position['price_history'][lookback_idx][1]
                 gain_pct = ((high_price - lookback_price) / lookback_price) * 100
                 
-                # Explosive: >20% gain in 3-5 days
                 if gain_pct > 20.0:
                     position['catalyst_detected'] = True
                     position['catalyst_price'] = high_price
                     position['days_since_peak'] = 0
-                    print(f"      🚀 EXPLOSIVE CATALYST DETECTED for {position['ticker']}: +{gain_pct:.1f}% in {lookback_window} days!")
-                    print(f"         NOW watching for trend reversal (double-dip pattern)")
         
-        # New high reached - reset dip tracking AND days since peak
-        if high_price > old_peak * 1.02:  # At least 2% higher
+        # New high reached - reset dip tracking
+        if high_price > old_peak * 1.02:
             position['violent_dip_count'] = 0
             position['in_violent_dip'] = False
             position['failed_recovery'] = False
-            position['days_since_peak'] = 0  # Reset - we're at a new peak!
-            if position.get('catalyst_detected', False):
-                print(f"      ✅ NEW HIGH for {position['ticker']}: ${high_price:.2f} - trend intact, reset dip counter")
+            position['days_since_peak'] = 0
     else:
-        # Not a new high - increment days since peak
         position['days_since_peak'] = position.get('days_since_peak', 0) + 1
         
-        # Track if we're going up (recovering) or down
         if close_price < position.get('last_close', position['entry_price']):
             position['consecutive_up_days'] = 0
         else:
@@ -150,45 +128,29 @@ def detect_trend_reversal(position, current_date, history):
     
     position['last_close'] = close_price
     
-    # SAFETY STOP LOSS: Active during waiting phase, disabled during trend detection
+    # SAFETY STOP LOSS
     catalyst_detected = position.get('catalyst_detected', False)
     days_since_peak = position.get('days_since_peak', 0)
-    
-    # Calculate drawdown from catalyst peak (if detected)
     peak = position['highest_price']
     drawdown_from_peak_pct = ((close_price - peak) / peak) * 100
     
-    # Expire catalyst tracking if:
-    # 1. No new high in 15+ days (fast movers reverse quickly) OR
-    # 2. Dropped 15%+ from peak (trend clearly over)
+    # Expire catalyst tracking
     catalyst_expired = False
-    if catalyst_detected and (days_since_peak >= 15 or drawdown_from_peak_pct <= -15.0):
+    if catalyst_detected and (days_since_peak >= catalyst_timeout_days or drawdown_from_peak_pct <= catalyst_drawdown):
         catalyst_expired = True
-        reason = f"{days_since_peak} days since peak" if days_since_peak >= 15 else f"{drawdown_from_peak_pct:.1f}% below peak"
-        print(f"      ⏰ CATALYST EXPIRED for {position['ticker']}: {reason} - re-enabling stop loss")
     
-    # Trend detection mode: Catalyst detected AND currently watching for dips AND not expired
-    in_trend_detection_mode = catalyst_detected and not catalyst_expired and (position['violent_dip_count'] > 0 or position['in_violent_dip'])
-    
-    # Apply stop loss if:
-    # 1. No catalyst yet (waiting phase) OR
-    # 2. Catalyst expired (trend over)
-    if (not catalyst_detected or catalyst_expired) and current_profit_pct < -5.0:
+    # Apply stop loss if no catalyst or expired
+    if (not catalyst_detected or catalyst_expired) and current_profit_pct < stop_loss_pct:
         return (True, 'stop_loss', close_price)
     
     # SLOPE-BASED DIP DETECTION: Only after catalyst detected
-    # We care about trajectory (degrees/slope)
     if not catalyst_detected:
-        return (False, None, None)  # Still waiting for explosive spike
+        return (False, None, None)
     
     # Calculate drawdown from peak
     drawdown_pct = ((close_price - peak) / peak) * 100
     
-    # DEBUG for specific tickers
-    if position['ticker'] in ['GME', 'THM']:
-        print(f"      DEBUG {position['ticker']} {current_date_ts.date()}: close=${close_price:.2f}, peak=${peak:.2f}, drawdown={drawdown_pct:.1f}%, in_dip={position['in_violent_dip']}, dip_count={position.get('violent_dip_count', 0)}")
-    
-    # Detect violent dips (last 1-2 days for responsiveness)
+    # Detect violent dips
     if drawdown_pct < -3.0 and not position['in_violent_dip']:
         is_violent = False
         reason = ""
@@ -199,13 +161,11 @@ def detect_trend_reversal(position, current_date, history):
             lookback_idx = current_idx - lookback
             recent_prices = position['price_history'][lookback_idx:current_idx + 1]
             
-            # Calculate slope: PERCENTAGE per day (universal across all stock prices)
             start_price = recent_prices[0][1]
             end_price = recent_prices[-1][1]
             days = len(recent_prices) - 1
             
             if days > 0 and start_price > 0:
-                # Percentage change per day
                 price_change_pct = ((end_price - start_price) / start_price) * 100
                 slope_pct_per_day = price_change_pct / days
                 slope_pct_abs = abs(slope_pct_per_day)
@@ -213,77 +173,63 @@ def detect_trend_reversal(position, current_date, history):
                 slope_pct_per_day = 0
                 slope_pct_abs = 0
             
-            # DEBUG for specific tickers
-            if position['ticker'] in ['GME', 'THM']:
-                print(f"      DEBUG {position['ticker']} {current_date_ts.date()}: drawdown={drawdown_pct:.1f}%, recent_slope={slope_pct_abs:.1f}%/day, dip_count={position.get('violent_dip_count', 0)}, first_dip_slope={position.get('first_dip_slope', 0):.1f}%/day, in_dip={position['in_violent_dip']}")
-            
             if position.get('violent_dip_count', 0) == 0:
-                # First dip: needs to be steep enough (at least 5% per day drop)
-                if slope_pct_abs > 5.0:
+                # First dip: strategy-specific threshold
+                if slope_pct_abs > first_dip_threshold:
                     is_violent = True
-                    position['first_dip_slope'] = slope_pct_abs  # Store for comparison!
+                    position['first_dip_slope'] = slope_pct_abs
                     reason = f"slope {slope_pct_abs:.1f}%/day (first dip)"
-            
-            # Second dip: Compare slope to first dip's slope
             else:
+                # Second dip: Compare to first dip
                 first_dip_slope = position.get('first_dip_slope', 0)
                 if first_dip_slope > 0:
                     slope_ratio = slope_pct_abs / first_dip_slope
                     
-                    # If current drop is at least 50% as steep as first dip → it's violent!
-                    # Also require minimum 3%/day to avoid tiny jiggles
-                    if slope_ratio >= 0.5 and slope_pct_abs > 3.0:
+                    if slope_ratio >= 0.5 and slope_pct_abs > second_dip_threshold:
                         is_violent = True
-                        reason = f"slope {slope_pct_abs:.1f}%/day vs {first_dip_slope:.1f}%/day (ratio: {slope_ratio:.0%})"
+                        reason = f"slope {slope_pct_abs:.1f}%/day vs {first_dip_slope:.1f}%/day"
             
             if is_violent:
                 position['in_violent_dip'] = True
                 position['violent_dip_count'] += 1
                 position['dip_start_date'] = current_date_ts
                 position['dip_start_idx'] = current_idx
-                print(f"      🔻 VIOLENT DIP #{position['violent_dip_count']} for {position['ticker']}")
-                print(f"         Drawdown: {drawdown_pct:.1f}% | {reason}")
     
-    # Check if we're recovering from a violent dip
+    # Check recovery from violent dip
     if position['in_violent_dip']:
         dip_start_idx = position['dip_start_idx']
         current_idx = len(position['price_history']) - 1
         
         if current_idx > dip_start_idx:
-            # Find the low point since dip started
             dip_low = min([p for _, p in position['price_history'][dip_start_idx:current_idx + 1]])
             recovery_pct = ((close_price - dip_low) / dip_low) * 100
             
-            # Recovery detected: at least 3% up from the low
             if recovery_pct > 3.0:
-                print(f"      ↗️  Recovery from violent dip for {position['ticker']}: +{recovery_pct:.1f}% from low")
-                
-                # Check if we made a NEW HIGH before marking dip as over
                 peak = position['highest_price']
-                if close_price > peak * 0.98:  # Within 2% of old peak
-                    print(f"      ✅ Recovery reached near peak - trend continues!")
+                if close_price > peak * 0.98:
                     position['failed_recovery'] = False
                 else:
-                    # Failed to make new high - mark this BEFORE clearing in_violent_dip
-                    print(f"      ⚠️  Failed recovery - didn't reach new high (peak: ${peak:.2f}, now: ${close_price:.2f})")
                     position['failed_recovery'] = True
                 
-                # Now mark dip as over
                 position['in_violent_dip'] = False
     
     # DECISION: Sell on second violent dip after failed recovery
     if position['violent_dip_count'] >= 2 and position['in_violent_dip'] and position['failed_recovery']:
-        print(f"      🚨 SECOND VIOLENT DIP after failed recovery - TREND REVERSED - EXITING {position['ticker']}")
         return (True, 'trend_reversal', close_price)
     
     return (False, None, None)
 
-def backtest_trend_following():
-    """Backtest the trend following strategy"""
+def run_backtest(strategy_mode='current', min_entry_price=0):
+    """
+    Run backtest with specific strategy
     
-    print(f"\n{'='*100}")
-    print("TREND FOLLOWING STRATEGY - 'RIDE THE WAVE, EXIT ON DOUBLE DIP'")
-    print(f"{'='*100}\n")
+    strategy_mode:
+    - 'current': Current rules
+    - 'tight_penny': Tighter rules for penny stocks
+    - 'no_penny': Filter out penny stocks
+    
+    min_entry_price: Minimum entry price (0 = all stocks)
+    """
     
     # Load insider trades data
     with open('/Users/sagiv.oron/Documents/scripts_playground/stocks/output CSVs/merged_insider_trades.json', 'r') as f:
@@ -291,7 +237,6 @@ def backtest_trend_following():
     
     tickers = [stock['ticker'] for stock in data['data']]
     
-    print(f"🔄 Loading stock data for {len(tickers)} tickers...")
     with Pool(cpu_count()) as pool:
         results = pool.map(fetch_ticker_data, tickers)
     
@@ -299,8 +244,6 @@ def backtest_trend_following():
     for ticker, history in results:
         if history is not None:
             price_cache[ticker] = history
-    
-    print(f"   ✅ Loaded {len(price_cache)} stocks with price data\n")
     
     # Build trading signals
     all_trades = []
@@ -337,15 +280,12 @@ def backtest_trend_following():
     all_trades.sort(key=lambda x: x['entry_date'])
     
     if not all_trades:
-        print("No trades found!")
         return []
     
     start_date = all_trades[0]['entry_date']
     end_date = '2026-02-13'
     
-    print(f"📅 Generating business day calendar ({start_date} to {end_date})...")
     all_business_days = generate_business_days(start_date, end_date)
-    print(f"   {len(all_business_days)} business days\n")
     
     open_positions = defaultdict(list)
     closed_trades = []
@@ -353,14 +293,7 @@ def backtest_trend_following():
     
     initial_position_size = 1000
     
-    print(f"{'='*100}")
-    print("RUNNING TREND FOLLOWING BACKTEST")
-    print(f"{'='*100}\n")
-    
     for day_idx, current_date in enumerate(all_business_days):
-        if day_idx % 50 == 0:
-            print(f"📆 {current_date} (Day {day_idx+1}/{len(all_business_days)}) | Open: {sum(len(v) for v in open_positions.values())} | Closed: {len(closed_trades)}")
-        
         # Open new positions
         trades_to_open = [t for t in pending_trades if t['entry_date'] == current_date]
         
@@ -386,6 +319,11 @@ def backtest_trend_following():
             actual_entry_ts = pd.Timestamp(actual_entry_date)
             entry_price = history.loc[actual_entry_ts, 'Close']
             
+            # FILTER: Skip if below minimum entry price
+            if entry_price < min_entry_price:
+                pending_trades.remove(trade)
+                continue
+            
             position_size = initial_position_size
             shares = position_size / entry_price
             
@@ -404,14 +342,14 @@ def backtest_trend_following():
                 'violent_dip_count': 0,
                 'in_violent_dip': False,
                 'failed_recovery': False,
-                'catalyst_detected': False,  # Wait for explosive spike announcement
+                'catalyst_detected': False,
                 'consecutive_up_days': 0,
                 'days_since_peak': 0,
-                'first_dip_slope': 0,  # Store slope of first dip for comparison
+                'first_dip_slope': 0,
                 'last_close': entry_price,
                 'peak_date': actual_entry_ts,
                 'peak_idx': 0,
-                'catalyst_price': 0,  # Price when catalyst detected
+                'catalyst_price': 0,
                 'dip_start_date': None,
                 'dip_start_idx': 0,
                 'price_history': [(actual_entry_ts, entry_price)]
@@ -426,13 +364,12 @@ def backtest_trend_following():
                 continue
             
             history = price_cache[ticker]
-            
             positions_to_close = []
             
             for pos in open_positions[ticker]:
                 pos['days_held'] += 1
                 
-                should_exit, reason, exit_price = detect_trend_reversal(pos, current_date, history)
+                should_exit, reason, exit_price = detect_trend_reversal(pos, current_date, history, strategy_mode)
                 
                 if should_exit:
                     return_pct = ((exit_price - pos['entry_price']) / pos['entry_price']) * 100
@@ -442,7 +379,6 @@ def backtest_trend_following():
                     closed_trades.append({
                         'ticker': ticker,
                         'company': pos['company'],
-                        'trade_date': pos['trade_date'],
                         'entry_date': pos['entry_date'],
                         'entry_price': pos['entry_price'],
                         'exit_date': current_date,
@@ -452,7 +388,6 @@ def backtest_trend_following():
                         'returned_amount': returned_amount,
                         'profit_loss': profit_loss,
                         'return_pct': return_pct,
-                        'shares': pos['shares'],
                         'days_held': pos['days_held'],
                         'highest_price': pos['highest_price'],
                         'peak_gain': ((pos['highest_price'] - pos['entry_price']) / pos['entry_price']) * 100
@@ -467,10 +402,6 @@ def backtest_trend_following():
                 del open_positions[ticker]
     
     # Close remaining positions
-    print(f"\n{'='*100}")
-    print("CLOSING REMAINING OPEN POSITIONS")
-    print(f"{'='*100}\n")
-    
     for ticker, positions in open_positions.items():
         if ticker not in price_cache:
             continue
@@ -493,7 +424,6 @@ def backtest_trend_following():
             closed_trades.append({
                 'ticker': ticker,
                 'company': pos['company'],
-                'trade_date': pos['trade_date'],
                 'entry_date': pos['entry_date'],
                 'entry_price': pos['entry_price'],
                 'exit_date': final_date.strftime('%Y-%m-%d'),
@@ -503,18 +433,20 @@ def backtest_trend_following():
                 'returned_amount': returned_amount,
                 'profit_loss': profit_loss,
                 'return_pct': return_pct,
-                'shares': pos['shares'],
                 'days_held': pos['days_held'],
                 'highest_price': pos['highest_price'],
                 'peak_gain': ((pos['highest_price'] - pos['entry_price']) / pos['entry_price']) * 100
             })
     
-    # Calculate results
-    if not closed_trades:
-        print("❌ No trades were executed!")
-        return []
+    return closed_trades
+
+def print_results(trades, strategy_name):
+    """Print backtest results"""
+    if not trades:
+        print(f"❌ No trades for {strategy_name}")
+        return
     
-    df = pd.DataFrame(closed_trades)
+    df = pd.DataFrame(trades)
     
     total_invested = df['amount_invested'].sum()
     total_returned = df['returned_amount'].sum()
@@ -527,48 +459,67 @@ def backtest_trend_following():
     win_rate = len(winning_trades) / len(df) * 100
     avg_return = df['return_pct'].mean()
     median_return = df['return_pct'].median()
-    avg_days_held = df['days_held'].mean()
-    avg_peak_gain = df['peak_gain'].mean()
     
-    print(f"\n{'='*100}")
-    print("FINAL RESULTS - TREND FOLLOWING STRATEGY")
-    print(f"{'='*100}")
+    # Count penny vs regular
+    penny_trades = df[df['entry_price'] < 5.0]
+    regular_trades = df[df['entry_price'] >= 5.0]
+    
+    print(f"\n{'='*80}")
+    print(f"{strategy_name}")
+    print(f"{'='*80}")
     print(f"Total Trades: {len(df)}")
-    print(f"  Winning: {len(winning_trades)} ({win_rate:.1f}%)")
-    print(f"  Losing: {len(losing_trades)} ({100-win_rate:.1f}%)")
-    print(f"\nAverage Return per Trade: {avg_return:+.2f}%")
-    print(f"Median Return per Trade: {median_return:+.2f}%")
-    print(f"Average Peak Gain: {avg_peak_gain:+.2f}% (how high it went)")
-    print(f"Average Days Held: {avg_days_held:.0f} days")
-    print(f"\n💰 PORTFOLIO PERFORMANCE:")
-    print(f"   Total Invested: ${total_invested:,.2f}")
-    print(f"   Total Returned: ${total_returned:,.2f}")
-    print(f"   Net Profit/Loss: ${total_profit:,.2f}")
-    print(f"   ROI: {roi:+.2f}%")
+    print(f"  Penny Stocks (<$5): {len(penny_trades)} trades")
+    print(f"  Regular Stocks (≥$5): {len(regular_trades)} trades")
+    print(f"Winning: {len(winning_trades)} ({win_rate:.1f}%)")
+    print(f"Average Return: {avg_return:+.2f}%")
+    print(f"Median Return: {median_return:+.2f}%")
+    print(f"\n💰 ROI: {roi:+.2f}%")
+    print(f"   Invested: ${total_invested:,.2f}")
+    print(f"   Returned: ${total_returned:,.2f}")
+    print(f"   Profit: ${total_profit:,.2f}")
     
     # Exit reason breakdown
-    print(f"\n📊 EXIT REASONS:")
+    print(f"\n📊 Exit Reasons:")
     for reason in df['exit_reason'].unique():
         count = len(df[df['exit_reason'] == reason])
-        avg_return = df[df['exit_reason'] == reason]['return_pct'].mean()
-        print(f"   {reason}: {count} trades (avg return: {avg_return:+.2f}%)")
-    
-    best_trade = df.loc[df['return_pct'].idxmax()]
-    print(f"\n🏆 Best Trade: {best_trade['ticker']} - {best_trade['return_pct']:+.1f}%")
-    print(f"   ${best_trade['entry_price']:.2f} → ${best_trade['exit_price']:.2f} ({int(best_trade['days_held'])} days)")
-    print(f"   Peak: ${best_trade['highest_price']:.2f} ({best_trade['peak_gain']:+.1f}%)")
-    
-    worst_trade = df.loc[df['return_pct'].idxmin()]
-    print(f"\n💀 Worst Trade: {worst_trade['ticker']} - {worst_trade['return_pct']:+.1f}%")
-    print(f"   ${worst_trade['entry_price']:.2f} → ${worst_trade['exit_price']:.2f} ({int(worst_trade['days_held'])} days)")
-    
-    print(f"\n{'='*100}\n")
-    
-    output_path = '/Users/sagiv.oron/Documents/scripts_playground/stocks/output CSVs/backtest_latest_results.csv'
-    df.to_csv(output_path, index=False)
-    print(f"✅ Results saved to: {output_path}")
-    
-    return closed_trades
+        avg_ret = df[df['exit_reason'] == reason]['return_pct'].mean()
+        print(f"   {reason}: {count} trades @ {avg_ret:+.2f}% avg")
 
 if __name__ == '__main__':
-    backtest_trend_following()
+    print(f"\n{'='*80}")
+    print("TESTING PENNY STOCK STRATEGIES")
+    print(f"{'='*80}\n")
+    
+    print("⏳ Running Strategy 1: CURRENT (baseline)...")
+    current_trades = run_backtest(strategy_mode='current', min_entry_price=0)
+    print_results(current_trades, "STRATEGY 1: CURRENT (All stocks, normal rules)")
+    
+    print("\n⏳ Running Strategy 2: NO PENNY STOCKS (filter entry_price < $5)...")
+    no_penny_trades = run_backtest(strategy_mode='current', min_entry_price=5.0)
+    print_results(no_penny_trades, "STRATEGY 2: NO PENNY STOCKS (≥$5 only)")
+    
+    print("\n⏳ Running Strategy 3: TIGHTER PENNY RULES...")
+    tight_penny_trades = run_backtest(strategy_mode='tight_penny', min_entry_price=0)
+    print_results(tight_penny_trades, "STRATEGY 3: TIGHTER PENNY RULES (7%/4% dips, -3% stop, 10 days)")
+    
+    print(f"\n{'='*80}")
+    print("COMPARISON SUMMARY")
+    print(f"{'='*80}")
+    
+    if current_trades and no_penny_trades and tight_penny_trades:
+        current_roi = sum(t['profit_loss'] for t in current_trades) / sum(t['amount_invested'] for t in current_trades) * 100
+        no_penny_roi = sum(t['profit_loss'] for t in no_penny_trades) / sum(t['amount_invested'] for t in no_penny_trades) * 100
+        tight_penny_roi = sum(t['profit_loss'] for t in tight_penny_trades) / sum(t['amount_invested'] for t in tight_penny_trades) * 100
+        
+        print(f"\nCurrent Strategy: {current_roi:+.2f}% ({len(current_trades)} trades)")
+        print(f"No Penny Stocks: {no_penny_roi:+.2f}% ({len(no_penny_trades)} trades)")
+        print(f"Tighter Penny Rules: {tight_penny_roi:+.2f}% ({len(tight_penny_trades)} trades)")
+        
+        if no_penny_roi > current_roi:
+            improvement = no_penny_roi - current_roi
+            print(f"\n✅ NO PENNY STOCKS wins by +{improvement:.2f}% ROI!")
+        elif tight_penny_roi > current_roi:
+            improvement = tight_penny_roi - current_roi
+            print(f"\n✅ TIGHTER PENNY RULES wins by +{improvement:.2f}% ROI!")
+        else:
+            print(f"\n⚠️  Current strategy is already optimal")
