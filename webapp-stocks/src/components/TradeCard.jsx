@@ -3,6 +3,7 @@ import Tooltip from './Tooltip';
 
 const TradeCard = ({ trade }) => {
   const [eventBadge, setEventBadge] = useState(null);
+  const [reputation, setReputation] = useState(null);
   
   // Parse values
   const ticker = trade.Ticker;
@@ -86,6 +87,31 @@ const TradeCard = ({ trade }) => {
     }
   }, [ticker, isSale]);
 
+  // Fetch reputation score
+  useEffect(() => {
+    const fetchReputation = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/api/reputation-scores`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.scores) {
+            const tickerRep = data.scores.find(s => s.ticker === ticker);
+            if (tickerRep) {
+              setReputation(tickerRep);
+            }
+          }
+        }
+      } catch (err) {
+        // Silently fail - reputation is optional
+        console.log(`❌ Error fetching reputation for ${ticker}:`, err);
+      }
+    };
+    
+    if (ticker && !isSale) {
+      fetchReputation();
+    }
+  }, [ticker, isSale]);
+
   // Calculate discount/upside
   let upside = 'N/A';
   if (targetMeanPrice && currentPrice && !isNaN(targetMeanPrice) && !isNaN(currentPrice)) {
@@ -130,6 +156,23 @@ const TradeCard = ({ trade }) => {
 
       {/* Badges Row */}
       <div className="flex flex-wrap gap-2 mb-4">
+        {/* Reputation Badge */}
+        {reputation && (
+          <Tooltip text={`Track Record: ${reputation.total_purchases} insider purchases tracked. Average gain: ${parseFloat(reputation.avg_gain).toFixed(1)}%. Score: ${parseFloat(reputation.avg_score).toFixed(2)}. ${reputation.category === 'excellent' ? 'Insiders have excellent timing - relaxed stop loss (-2.5%), larger positions (1.5x).' : reputation.category === 'good' ? 'Insiders show good timing - slightly relaxed stop loss (-3.5%), larger positions (1.25x).' : reputation.category === 'neutral' ? 'Average track record - standard parameters.' : 'Poor track record - tighter stop loss (-7.5%), smaller positions (0.75x).'}`}>
+            <span className={`px-3 py-1 rounded-full text-sm font-medium border ${
+              reputation.category === 'excellent' ? 'bg-purple-500/20 text-purple-400 border-purple-500/30' :
+              reputation.category === 'good' ? 'bg-green-500/20 text-green-400 border-green-500/30' :
+              reputation.category === 'poor' ? 'bg-red-500/20 text-red-400 border-red-500/30' :
+              'bg-slate-700/50 text-slate-400 border-slate-600'
+            }`}>
+              {reputation.category === 'excellent' ? '⭐ EXCELLENT' :
+               reputation.category === 'good' ? '👍 GOOD' :
+               reputation.category === 'poor' ? '⚠️ POOR' :
+               '➖ NEUTRAL'} TRACK RECORD
+            </span>
+          </Tooltip>
+        )}
+
         {/* Insiders Count with Role Breakdown */}
         <Tooltip text={isSale
           ? `Number of insiders selling this stock. Breakdown: ${roleBreakdownText}. Cluster selling (3+) can signal concerns about company outlook, though sales often happen for benign reasons (diversification, liquidity needs).`

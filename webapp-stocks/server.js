@@ -1010,6 +1010,56 @@ app.get('/api/live-purchases', (req, res) => {
   });
 });
 
+// Endpoint to serve reputation scores
+app.get('/api/reputation-scores', (req, res) => {
+  const csvFilename = 'ticker_reputation_scores.csv';
+  const reputationCSV = path.join(__dirname, '../output CSVs/', csvFilename);
+  
+  try {
+    if (!fs.existsSync(reputationCSV)) {
+      return res.json({ 
+        success: false, 
+        error: 'No reputation scores found',
+        scores: []
+      });
+    }
+    
+    const fileContent = fs.readFileSync(reputationCSV, 'utf-8');
+    const lines = fileContent.split('\n').filter(line => line.trim());
+    
+    if (lines.length <= 1) {
+      return res.json({ 
+        success: true, 
+        scores: [],
+        message: 'Reputation scores file is empty'
+      });
+    }
+    
+    const headers = lines[0].split(',');
+    const scores = lines.slice(1).map(line => {
+      const values = line.split(',');
+      const score = {};
+      headers.forEach((header, idx) => {
+        score[header] = values[idx] || '';
+      });
+      return score;
+    });
+    
+    res.json({ 
+      success: true, 
+      scores: scores,
+      count: scores.length
+    });
+  } catch (error) {
+    console.error('Error reading reputation scores:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Failed to read reputation scores',
+      message: error.message
+    });
+  }
+});
+
 // Endpoint to serve backtest results
 app.get('/api/backtest-results', (req, res) => {
   // Always serve the latest test results (whichever test ran most recently)
