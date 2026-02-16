@@ -40,3 +40,12 @@ Thumbs.db
 # Logs
 *.log
 info/share files AI/
+
+# Sensitive files
+info/API-key.txt
+info/API-key-site-info.txt
+*.db
+.env
+.env.*
+secrets/
+credentials/

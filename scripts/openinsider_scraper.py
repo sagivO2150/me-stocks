@@ -15,7 +15,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Lock
 
 # FMP API Configuration (DISABLED - too limited in free tier)
-# API_KEY = "EypEpLbJcxfRpdMBFcJppxD2YIEnGD0T"
+# API_KEY = "YOUR_API_KEY_HERE"
 # FMP_BASE_URL = "https://financialmodelingprep.com/stable"
 
 API_CALL_DELAY = 0.5  # Delay between yfinance calls (reduced for parallel processing)

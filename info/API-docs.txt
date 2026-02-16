@@ -10,11 +10,11 @@ All API requests must be authorized using an API key. Authorization can be done 
 
 Header Authorization
 
-Include your API key in the request header as: apikey: EypEpLbJcxfRpdMBFcJppxD2YIEnGD0T
+Include your API key in the request header as: apikey: YOUR_API_KEY_HERE
 
 URL Query Authorization
 
-To authorize your requests, append ?apikey=EypEpLbJcxfRpdMBFcJppxD2YIEnGD0T at the end of every request.
+To authorize your requests, append ?apikey=YOUR_API_KEY_HERE at the end of every request.
 
 Note: When adding the API key to your requests, ensure to use &apikey= if other query parameters already exist in the endpoint.
 
