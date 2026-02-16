@@ -112,16 +112,23 @@ def detect_trend_reversal(position, current_date, history):
         # Reset decline tracking on new high
         position['consecutive_decline_days'] = 0
         
-        # Calculate upward velocity to this peak
-        # Look back to find where the rise started (after previous dip/entry)
-        lookback_idx = max(0, position['peak_idx'] - 20)  # Look back up to 20 days
-        position['up_velocity'] = calculate_velocity(position['price_history'], lookback_idx, position['peak_idx'])
-        
-        # Check if this is a SUSTAINED uptrend (not just 1-day spike)
-        # Require at least 3 consecutive days of gains
-        if position['consecutive_up_days'] >= 3 and high_price > old_peak * 1.05:
-            position['sustained_uptrend'] = True
-            print(f"      ✅ SUSTAINED UPTREND for {position['ticker']}: ${high_price:.2f} ({position['consecutive_up_days']} days up)")
+        # EXPLOSIVE CATALYST DETECTION: Look for sharp announcement spike
+        # Check if this is an explosive move (not slow grind)
+        if not position.get('catalyst_detected', False):
+            # Look back 3-5 days to detect explosive rise
+            lookback_window = min(5, len(position['price_history']))
+            if lookback_window >= 3:
+                lookback_idx = len(position['price_history']) - lookback_window
+                lookback_price = position['price_history'][lookback_idx][1]
+                gain_pct = ((high_price - lookback_price) / lookback_price) * 100
+                
+                # Explosive: >20% gain in 3-5 days
+                if gain_pct > 20.0:
+                    position['catalyst_detected'] = True
+                    position['catalyst_price'] = high_price
+                    position['days_since_peak'] = 0
+                    print(f"      🚀 EXPLOSIVE CATALYST DETECTED for {position['ticker']}: +{gain_pct:.1f}% in {lookback_window} days!")
+                    print(f"         NOW watching for trend reversal (double-dip pattern)")
         
         # New high reached - reset dip tracking AND days since peak
         if high_price > old_peak * 1.02:  # At least 2% higher
@@ -129,7 +136,8 @@ def detect_trend_reversal(position, current_date, history):
             position['in_violent_dip'] = False
             position['failed_recovery'] = False
             position['days_since_peak'] = 0  # Reset - we're at a new peak!
-            print(f"      ✅ NEW HIGH for {position['ticker']}: ${high_price:.2f} - trend intact, reset dip counter")
+            if position.get('catalyst_detected', False):
+                print(f"      ✅ NEW HIGH for {position['ticker']}: ${high_price:.2f} - trend intact, reset dip counter")
     else:
         # Not a new high - increment days since peak
         position['days_since_peak'] = position.get('days_since_peak', 0) + 1
@@ -142,32 +150,50 @@ def detect_trend_reversal(position, current_date, history):
     
     position['last_close'] = close_price
     
-    # SAFETY STOP LOSS: Only apply if we're NOT in an active uptrend with violent dips
-    # Uptrend "expires" if we haven't made a new high in 20+ days - re-enable stop loss
-    has_sustained_uptrend = position.get('sustained_uptrend', False)
+    # SAFETY STOP LOSS: Active during waiting phase, disabled during trend detection
+    catalyst_detected = position.get('catalyst_detected', False)
     days_since_peak = position.get('days_since_peak', 0)
     
-    # Expire sustained uptrend if stale
-    if has_sustained_uptrend and days_since_peak >= 20:
-        has_sustained_uptrend = False
-        print(f"      ⏰ UPTREND EXPIRED for {position['ticker']}: {days_since_peak} days since peak - re-enabling stop loss")
+    # Calculate drawdown from catalyst peak (if detected)
+    peak = position['highest_price']
+    drawdown_from_peak_pct = ((close_price - peak) / peak) * 100
     
-    in_trend_detection_mode = has_sustained_uptrend and (position['violent_dip_count'] > 0 or position['in_violent_dip'])
+    # Expire catalyst tracking if:
+    # 1. No new high in 15+ days (fast movers reverse quickly) OR
+    # 2. Dropped 15%+ from peak (trend clearly over)
+    catalyst_expired = False
+    if catalyst_detected and (days_since_peak >= 15 or drawdown_from_peak_pct <= -15.0):
+        catalyst_expired = True
+        reason = f"{days_since_peak} days since peak" if days_since_peak >= 15 else f"{drawdown_from_peak_pct:.1f}% below peak"
+        print(f"      ⏰ CATALYST EXPIRED for {position['ticker']}: {reason} - re-enabling stop loss")
     
-    # Apply normal stop loss if not in trend detection mode
-    if not in_trend_detection_mode and current_profit_pct < -5.0:
+    # Trend detection mode: Catalyst detected AND currently watching for dips AND not expired
+    in_trend_detection_mode = catalyst_detected and not catalyst_expired and (position['violent_dip_count'] > 0 or position['in_violent_dip'])
+    
+    # Apply stop loss if:
+    # 1. No catalyst yet (waiting phase) OR
+    # 2. Catalyst expired (trend over)
+    if (not catalyst_detected or catalyst_expired) and current_profit_pct < -5.0:
         return (True, 'stop_loss', close_price)
     
+    # SLOPE-BASED DIP DETECTION: Only after catalyst detected
+    # We care about trajectory (degrees/slope)
+    if not catalyst_detected:
+        return (False, None, None)  # Still waiting for explosive spike
+    
     # Calculate drawdown from peak
-    peak = position['highest_price']
     drawdown_pct = ((close_price - peak) / peak) * 100
     
-    # DEBUG for GME
-    if position['ticker'] == 'GME' and '2024-07' in str(current_date_ts.date()):
-        print(f"      DEBUG GME {current_date_ts.date()}: close=${close_price:.2f}, peak=${peak:.2f}, drawdown={drawdown_pct:.1f}%, in_dip={position['in_violent_dip']}, dip_count={position.get('violent_dip_count', 0)}")
+    # DEBUG for specific tickers
+    if position['ticker'] in ['GME', 'THM']:
+        print(f"      DEBUG {position['ticker']} {current_date_ts.date()}: close=${close_price:.2f}, peak=${peak:.2f}, drawdown={drawdown_pct:.1f}%, in_dip={position['in_violent_dip']}, dip_count={position.get('violent_dip_count', 0)}")
     
-    # SLOPE-BASED DIP DETECTION: Compare the steepness/angle of drops
-    # We care about trajectory (degrees/slope)pe (last 1-2 days for responsiveness)
+    # Detect violent dips (last 1-2 days for responsiveness)
+    if drawdown_pct < -3.0 and not position['in_violent_dip']:
+        is_violent = False
+        reason = ""
+        
+        current_idx = len(position['price_history']) - 1
         lookback = min(2, current_idx)
         if lookback > 0:
             lookback_idx = current_idx - lookback
@@ -370,14 +396,14 @@ def backtest_trend_following():
                 'violent_dip_count': 0,
                 'in_violent_dip': False,
                 'failed_recovery': False,
-                'sustained_uptrend': False,
+                'catalyst_detected': False,  # Wait for explosive spike announcement
                 'consecutive_up_days': 0,
                 'days_since_peak': 0,
                 'first_dip_slope': 0,  # Store slope of first dip for comparison
                 'last_close': entry_price,
                 'peak_date': actual_entry_ts,
                 'peak_idx': 0,
-                'up_velocity': 0,
+                'catalyst_price': 0,  # Price when catalyst detected
                 'dip_start_date': None,
                 'dip_start_idx': 0,
                 'price_history': [(actual_entry_ts, entry_price)]
