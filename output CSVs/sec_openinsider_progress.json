@@ -1,0 +1,1602 @@
+{
+  "NVDA": {
+    "ticker": "NVDA",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 100,
+    "total_trades": 100,
+    "error": null
+  },
+  "AAPL": {
+    "ticker": "AAPL",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 16,
+    "total_trades": 16,
+    "error": null
+  },
+  "GOOGL": {
+    "ticker": "GOOGL",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 100,
+    "total_trades": 100,
+    "error": null
+  },
+  "MSFT": {
+    "ticker": "MSFT",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 29,
+    "total_trades": 30,
+    "error": null
+  },
+  "AMZN": {
+    "ticker": "AMZN",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 52,
+    "total_trades": 52,
+    "error": null
+  },
+  "META": {
+    "ticker": "META",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 72,
+    "total_trades": 72,
+    "error": null
+  },
+  "AVGO": {
+    "ticker": "AVGO",
+    "has_openinsider_data": true,
+    "num_purchases": 2,
+    "num_sales": 72,
+    "total_trades": 74,
+    "error": null
+  },
+  "TSLA": {
+    "ticker": "TSLA",
+    "has_openinsider_data": true,
+    "num_purchases": 2,
+    "num_sales": 6,
+    "total_trades": 8,
+    "error": null
+  },
+  "BRK-B": {
+    "ticker": "BRK-B",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 1,
+    "total_trades": 1,
+    "error": null
+  },
+  "WMT": {
+    "ticker": "WMT",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 99,
+    "total_trades": 100,
+    "error": null
+  },
+  "LLY": {
+    "ticker": "LLY",
+    "has_openinsider_data": true,
+    "num_purchases": 8,
+    "num_sales": 81,
+    "total_trades": 89,
+    "error": null
+  },
+  "JPM": {
+    "ticker": "JPM",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 56,
+    "total_trades": 56,
+    "error": null
+  },
+  "V": {
+    "ticker": "V",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 6,
+    "total_trades": 6,
+    "error": null
+  },
+  "SPY": {
+    "ticker": "SPY",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "XOM": {
+    "ticker": "XOM",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 10,
+    "total_trades": 11,
+    "error": null
+  },
+  "JNJ": {
+    "ticker": "JNJ",
+    "has_openinsider_data": true,
+    "num_purchases": 2,
+    "num_sales": 3,
+    "total_trades": 5,
+    "error": null
+  },
+  "ASML": {
+    "ticker": "ASML",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "MA": {
+    "ticker": "MA",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 68,
+    "total_trades": 68,
+    "error": null
+  },
+  "COST": {
+    "ticker": "COST",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 35,
+    "total_trades": 35,
+    "error": null
+  },
+  "MU": {
+    "ticker": "MU",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 49,
+    "total_trades": 50,
+    "error": null
+  },
+  "BAC": {
+    "ticker": "BAC",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 19,
+    "total_trades": 19,
+    "error": null
+  },
+  "ORCL": {
+    "ticker": "ORCL",
+    "has_openinsider_data": true,
+    "num_purchases": 3,
+    "num_sales": 17,
+    "total_trades": 20,
+    "error": null
+  },
+  "ABBV": {
+    "ticker": "ABBV",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 10,
+    "total_trades": 10,
+    "error": null
+  },
+  "BABA": {
+    "ticker": "BABA",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "HD": {
+    "ticker": "HD",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 11,
+    "total_trades": 12,
+    "error": null
+  },
+  "PG": {
+    "ticker": "PG",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 26,
+    "total_trades": 26,
+    "error": null
+  },
+  "CVX": {
+    "ticker": "CVX",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 4,
+    "total_trades": 4,
+    "error": null
+  },
+  "NFLX": {
+    "ticker": "NFLX",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 19,
+    "total_trades": 19,
+    "error": null
+  },
+  "AMD": {
+    "ticker": "AMD",
+    "has_openinsider_data": true,
+    "num_purchases": 2,
+    "num_sales": 13,
+    "total_trades": 15,
+    "error": null
+  },
+  "CAT": {
+    "ticker": "CAT",
+    "has_openinsider_data": true,
+    "num_purchases": 9,
+    "num_sales": 17,
+    "total_trades": 26,
+    "error": null
+  },
+  "KO": {
+    "ticker": "KO",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 4,
+    "total_trades": 5,
+    "error": null
+  },
+  "GE": {
+    "ticker": "GE",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 5,
+    "total_trades": 5,
+    "error": null
+  },
+  "CSCO": {
+    "ticker": "CSCO",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 73,
+    "total_trades": 73,
+    "error": null
+  },
+  "PLTR": {
+    "ticker": "PLTR",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 59,
+    "total_trades": 60,
+    "error": null
+  },
+  "TM": {
+    "ticker": "TM",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "HSBC": {
+    "ticker": "HSBC",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "MRK": {
+    "ticker": "MRK",
+    "has_openinsider_data": true,
+    "num_purchases": 2,
+    "num_sales": 12,
+    "total_trades": 14,
+    "error": null
+  },
+  "NVS": {
+    "ticker": "NVS",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "AZN": {
+    "ticker": "AZN",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "CYATY": {
+    "ticker": "CYATY",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "WFC": {
+    "ticker": "WFC",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 2,
+    "total_trades": 2,
+    "error": null
+  },
+  "LRCX": {
+    "ticker": "LRCX",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 18,
+    "total_trades": 19,
+    "error": null
+  },
+  "MS": {
+    "ticker": "MS",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 34,
+    "total_trades": 34,
+    "error": null
+  },
+  "PM": {
+    "ticker": "PM",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 25,
+    "total_trades": 25,
+    "error": null
+  },
+  "GS": {
+    "ticker": "GS",
+    "has_openinsider_data": true,
+    "num_purchases": 3,
+    "num_sales": 34,
+    "total_trades": 37,
+    "error": null
+  },
+  "IBM": {
+    "ticker": "IBM",
+    "has_openinsider_data": true,
+    "num_purchases": 3,
+    "num_sales": 2,
+    "total_trades": 5,
+    "error": null
+  },
+  "RTX": {
+    "ticker": "RTX",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 12,
+    "total_trades": 13,
+    "error": null
+  },
+  "AMAT": {
+    "ticker": "AMAT",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 12,
+    "total_trades": 13,
+    "error": null
+  },
+  "INTC": {
+    "ticker": "INTC",
+    "has_openinsider_data": true,
+    "num_purchases": 5,
+    "num_sales": 1,
+    "total_trades": 6,
+    "error": null
+  },
+  "UNH": {
+    "ticker": "UNH",
+    "has_openinsider_data": true,
+    "num_purchases": 6,
+    "num_sales": 7,
+    "total_trades": 13,
+    "error": null
+  },
+  "AXP": {
+    "ticker": "AXP",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 23,
+    "total_trades": 24,
+    "error": null
+  },
+  "NVO": {
+    "ticker": "NVO",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "QQQ": {
+    "ticker": "QQQ",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "RY": {
+    "ticker": "RY",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "SAP": {
+    "ticker": "SAP",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "MCD": {
+    "ticker": "MCD",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 30,
+    "total_trades": 31,
+    "error": null
+  },
+  "PEP": {
+    "ticker": "PEP",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 8,
+    "total_trades": 8,
+    "error": null
+  },
+  "TMUS": {
+    "ticker": "TMUS",
+    "has_openinsider_data": true,
+    "num_purchases": 2,
+    "num_sales": 96,
+    "total_trades": 98,
+    "error": null
+  },
+  "C": {
+    "ticker": "C",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 17,
+    "total_trades": 17,
+    "error": null
+  },
+  "MUFG": {
+    "ticker": "MUFG",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "SHEL": {
+    "ticker": "SHEL",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "GEV": {
+    "ticker": "GEV",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 2,
+    "total_trades": 2,
+    "error": null
+  },
+  "LIN": {
+    "ticker": "LIN",
+    "has_openinsider_data": true,
+    "num_purchases": 2,
+    "num_sales": 1,
+    "total_trades": 3,
+    "error": null
+  },
+  "AMGN": {
+    "ticker": "AMGN",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 8,
+    "total_trades": 8,
+    "error": null
+  },
+  "TMO": {
+    "ticker": "TMO",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 17,
+    "total_trades": 18,
+    "error": null
+  },
+  "TXN": {
+    "ticker": "TXN",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 10,
+    "total_trades": 10,
+    "error": null
+  },
+  "VZ": {
+    "ticker": "VZ",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 10,
+    "total_trades": 10,
+    "error": null
+  },
+  "DIS": {
+    "ticker": "DIS",
+    "has_openinsider_data": true,
+    "num_purchases": 3,
+    "num_sales": 8,
+    "total_trades": 11,
+    "error": null
+  },
+  "ABT": {
+    "ticker": "ABT",
+    "has_openinsider_data": true,
+    "num_purchases": 2,
+    "num_sales": 17,
+    "total_trades": 19,
+    "error": null
+  },
+  "T": {
+    "ticker": "T",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 1,
+    "total_trades": 1,
+    "error": null
+  },
+  "BA": {
+    "ticker": "BA",
+    "has_openinsider_data": true,
+    "num_purchases": 2,
+    "num_sales": 11,
+    "total_trades": 13,
+    "error": null
+  },
+  "SCHW": {
+    "ticker": "SCHW",
+    "has_openinsider_data": true,
+    "num_purchases": 2,
+    "num_sales": 58,
+    "total_trades": 60,
+    "error": null
+  },
+  "KLAC": {
+    "ticker": "KLAC",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 36,
+    "total_trades": 36,
+    "error": null
+  },
+  "GILD": {
+    "ticker": "GILD",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 37,
+    "total_trades": 37,
+    "error": null
+  },
+  "SAN": {
+    "ticker": "SAN",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 1,
+    "total_trades": 1,
+    "error": null
+  },
+  "RIO": {
+    "ticker": "RIO",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "NEE": {
+    "ticker": "NEE",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 15,
+    "total_trades": 15,
+    "error": null
+  },
+  "CRM": {
+    "ticker": "CRM",
+    "has_openinsider_data": true,
+    "num_purchases": 3,
+    "num_sales": 2,
+    "total_trades": 5,
+    "error": null
+  },
+  "RTNTF": {
+    "ticker": "RTNTF",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "DTEGY": {
+    "ticker": "DTEGY",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "BHP": {
+    "ticker": "BHP",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "HDB": {
+    "ticker": "HDB",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "TJX": {
+    "ticker": "TJX",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 27,
+    "total_trades": 28,
+    "error": null
+  },
+  "ISRG": {
+    "ticker": "ISRG",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 21,
+    "total_trades": 21,
+    "error": null
+  },
+  "ANET": {
+    "ticker": "ANET",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 67,
+    "total_trades": 67,
+    "error": null
+  },
+  "APH": {
+    "ticker": "APH",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 0,
+    "total_trades": 1,
+    "error": null
+  },
+  "BLK": {
+    "ticker": "BLK",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 9,
+    "total_trades": 9,
+    "error": null
+  },
+  "SCCO": {
+    "ticker": "SCCO",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 37,
+    "total_trades": 37,
+    "error": null
+  },
+  "TD": {
+    "ticker": "TD",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "HTHIY": {
+    "ticker": "HTHIY",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "HON": {
+    "ticker": "HON",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "BX": {
+    "ticker": "BX",
+    "has_openinsider_data": true,
+    "num_purchases": 10,
+    "num_sales": 12,
+    "total_trades": 22,
+    "error": null
+  },
+  "TTE": {
+    "ticker": "TTE",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "DE": {
+    "ticker": "DE",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "UL": {
+    "ticker": "UL",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "ADI": {
+    "ticker": "ADI",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 33,
+    "total_trades": 33,
+    "error": null
+  },
+  "LOW": {
+    "ticker": "LOW",
+    "has_openinsider_data": true,
+    "num_purchases": 2,
+    "num_sales": 6,
+    "total_trades": 8,
+    "error": null
+  },
+  "UBER": {
+    "ticker": "UBER",
+    "has_openinsider_data": true,
+    "num_purchases": 2,
+    "num_sales": 14,
+    "total_trades": 16,
+    "error": null
+  },
+  "PFE": {
+    "ticker": "PFE",
+    "has_openinsider_data": true,
+    "num_purchases": 2,
+    "num_sales": 1,
+    "total_trades": 3,
+    "error": null
+  },
+  "DHR": {
+    "ticker": "DHR",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 11,
+    "total_trades": 11,
+    "error": null
+  },
+  "UNP": {
+    "ticker": "UNP",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 1,
+    "total_trades": 1,
+    "error": null
+  },
+  "PDD": {
+    "ticker": "PDD",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "ACN": {
+    "ticker": "ACN",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 70,
+    "total_trades": 70,
+    "error": null
+  },
+  "BUD": {
+    "ticker": "BUD",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "QCOM": {
+    "ticker": "QCOM",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 56,
+    "total_trades": 56,
+    "error": null
+  },
+  "SMFG": {
+    "ticker": "SMFG",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "SHOP": {
+    "ticker": "SHOP",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "ETN": {
+    "ticker": "ETN",
+    "has_openinsider_data": true,
+    "num_purchases": 5,
+    "num_sales": 14,
+    "total_trades": 19,
+    "error": null
+  },
+  "BKNG": {
+    "ticker": "BKNG",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 40,
+    "total_trades": 40,
+    "error": null
+  },
+  "LMT": {
+    "ticker": "LMT",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 7,
+    "total_trades": 7,
+    "error": null
+  },
+  "COF": {
+    "ticker": "COF",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 31,
+    "total_trades": 31,
+    "error": null
+  },
+  "UBS": {
+    "ticker": "UBS",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "APP": {
+    "ticker": "APP",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 81,
+    "total_trades": 81,
+    "error": null
+  },
+  "BBVA": {
+    "ticker": "BBVA",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "SYK": {
+    "ticker": "SYK",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 17,
+    "total_trades": 17,
+    "error": null
+  },
+  "BTI": {
+    "ticker": "BTI",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "WELL": {
+    "ticker": "WELL",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 3,
+    "total_trades": 4,
+    "error": null
+  },
+  "SPGI": {
+    "ticker": "SPGI",
+    "has_openinsider_data": true,
+    "num_purchases": 3,
+    "num_sales": 0,
+    "total_trades": 3,
+    "error": null
+  },
+  "COP": {
+    "ticker": "COP",
+    "has_openinsider_data": true,
+    "num_purchases": 4,
+    "num_sales": 4,
+    "total_trades": 8,
+    "error": null
+  },
+  "SONY": {
+    "ticker": "SONY",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "MDT": {
+    "ticker": "MDT",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 3,
+    "total_trades": 4,
+    "error": null
+  },
+  "ARM": {
+    "ticker": "ARM",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "CB": {
+    "ticker": "CB",
+    "has_openinsider_data": true,
+    "num_purchases": 2,
+    "num_sales": 19,
+    "total_trades": 21,
+    "error": null
+  },
+  "UTX": {
+    "ticker": "UTX",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 12,
+    "total_trades": 13,
+    "error": null
+  },
+  "PLD": {
+    "ticker": "PLD",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 6,
+    "total_trades": 6,
+    "error": null
+  },
+  "IBKR": {
+    "ticker": "IBKR",
+    "has_openinsider_data": true,
+    "num_purchases": 2,
+    "num_sales": 24,
+    "total_trades": 26,
+    "error": null
+  },
+  "NEM": {
+    "ticker": "NEM",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 37,
+    "total_trades": 38,
+    "error": null
+  },
+  "BMY": {
+    "ticker": "BMY",
+    "has_openinsider_data": true,
+    "num_purchases": 4,
+    "num_sales": 3,
+    "total_trades": 7,
+    "error": null
+  },
+  "INTU": {
+    "ticker": "INTU",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 51,
+    "total_trades": 51,
+    "error": null
+  },
+  "PH": {
+    "ticker": "PH",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 25,
+    "total_trades": 25,
+    "error": null
+  },
+  "VRTX": {
+    "ticker": "VRTX",
+    "has_openinsider_data": true,
+    "num_purchases": 2,
+    "num_sales": 74,
+    "total_trades": 76,
+    "error": null
+  },
+  "ATEYY": {
+    "ticker": "ATEYY",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "GSK": {
+    "ticker": "GSK",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "PGR": {
+    "ticker": "PGR",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 75,
+    "total_trades": 75,
+    "error": null
+  },
+  "GLD": {
+    "ticker": "GLD",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "MFG": {
+    "ticker": "MFG",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "HCA": {
+    "ticker": "HCA",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 14,
+    "total_trades": 15,
+    "error": null
+  },
+  "MCK": {
+    "ticker": "MCK",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 30,
+    "total_trades": 30,
+    "error": null
+  },
+  "SNY": {
+    "ticker": "SNY",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "CMCSA": {
+    "ticker": "CMCSA",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 3,
+    "total_trades": 3,
+    "error": null
+  },
+  "SBUX": {
+    "ticker": "SBUX",
+    "has_openinsider_data": true,
+    "num_purchases": 2,
+    "num_sales": 11,
+    "total_trades": 13,
+    "error": null
+  },
+  "BSX": {
+    "ticker": "BSX",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 24,
+    "total_trades": 25,
+    "error": null
+  },
+  "IBN": {
+    "ticker": "IBN",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "ADBE": {
+    "ticker": "ADBE",
+    "has_openinsider_data": true,
+    "num_purchases": 2,
+    "num_sales": 14,
+    "total_trades": 16,
+    "error": null
+  },
+  "ENB": {
+    "ticker": "ENB",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "MO": {
+    "ticker": "MO",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 1,
+    "total_trades": 1,
+    "error": null
+  },
+  "PANW": {
+    "ticker": "PANW",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 62,
+    "total_trades": 63,
+    "error": null
+  },
+  "CME": {
+    "ticker": "CME",
+    "has_openinsider_data": true,
+    "num_purchases": 10,
+    "num_sales": 39,
+    "total_trades": 49,
+    "error": null
+  },
+  "NOW": {
+    "ticker": "NOW",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 47,
+    "total_trades": 47,
+    "error": null
+  },
+  "GLW": {
+    "ticker": "GLW",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 53,
+    "total_trades": 53,
+    "error": null
+  },
+  "BMO": {
+    "ticker": "BMO",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "BN": {
+    "ticker": "BN",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "NOC": {
+    "ticker": "NOC",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 35,
+    "total_trades": 35,
+    "error": null
+  },
+  "TT": {
+    "ticker": "TT",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 27,
+    "total_trades": 27,
+    "error": null
+  },
+  "BP": {
+    "ticker": "BP",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "MELI": {
+    "ticker": "MELI",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 2,
+    "total_trades": 2,
+    "error": null
+  },
+  "CRWD": {
+    "ticker": "CRWD",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 87,
+    "total_trades": 87,
+    "error": null
+  },
+  "UPS": {
+    "ticker": "UPS",
+    "has_openinsider_data": true,
+    "num_purchases": 4,
+    "num_sales": 3,
+    "total_trades": 7,
+    "error": null
+  },
+  "CVS": {
+    "ticker": "CVS",
+    "has_openinsider_data": true,
+    "num_purchases": 6,
+    "num_sales": 2,
+    "total_trades": 8,
+    "error": null
+  },
+  "SO": {
+    "ticker": "SO",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 22,
+    "total_trades": 22,
+    "error": null
+  },
+  "ITUB": {
+    "ticker": "ITUB",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "AEM": {
+    "ticker": "AEM",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "PNC": {
+    "ticker": "PNC",
+    "has_openinsider_data": true,
+    "num_purchases": 3,
+    "num_sales": 67,
+    "total_trades": 70,
+    "error": null
+  },
+  "GD": {
+    "ticker": "GD",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 4,
+    "total_trades": 4,
+    "error": null
+  },
+  "ICE": {
+    "ticker": "ICE",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 67,
+    "total_trades": 67,
+    "error": null
+  },
+  "WDC": {
+    "ticker": "WDC",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 37,
+    "total_trades": 37,
+    "error": null
+  },
+  "PBR": {
+    "ticker": "PBR",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "KKR": {
+    "ticker": "KKR",
+    "has_openinsider_data": true,
+    "num_purchases": 3,
+    "num_sales": 3,
+    "total_trades": 6,
+    "error": null
+  },
+  "BNS": {
+    "ticker": "BNS",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "RCL": {
+    "ticker": "RCL",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 32,
+    "total_trades": 33,
+    "error": null
+  },
+  "DUK": {
+    "ticker": "DUK",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 19,
+    "total_trades": 19,
+    "error": null
+  },
+  "CEG": {
+    "ticker": "CEG",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 2,
+    "total_trades": 3,
+    "error": null
+  },
+  "NKE": {
+    "ticker": "NKE",
+    "has_openinsider_data": true,
+    "num_purchases": 7,
+    "num_sales": 16,
+    "total_trades": 23,
+    "error": null
+  },
+  "USB": {
+    "ticker": "USB",
+    "has_openinsider_data": true,
+    "num_purchases": 2,
+    "num_sales": 7,
+    "total_trades": 9,
+    "error": null
+  },
+  "STX": {
+    "ticker": "STX",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 53,
+    "total_trades": 53,
+    "error": null
+  },
+  "ADP": {
+    "ticker": "ADP",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 32,
+    "total_trades": 32,
+    "error": null
+  },
+  "WM": {
+    "ticker": "WM",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 58,
+    "total_trades": 59,
+    "error": null
+  },
+  "BCS": {
+    "ticker": "BCS",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "MMM": {
+    "ticker": "MMM",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 6,
+    "total_trades": 6,
+    "error": null
+  },
+  "MRSH": {
+    "ticker": "MRSH",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "IAU": {
+    "ticker": "IAU",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "MAR": {
+    "ticker": "MAR",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 28,
+    "total_trades": 28,
+    "error": null
+  },
+  "SHW": {
+    "ticker": "SHW",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 2,
+    "total_trades": 2,
+    "error": null
+  },
+  "CM": {
+    "ticker": "CM",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "HWM": {
+    "ticker": "HWM",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 9,
+    "total_trades": 9,
+    "error": null
+  },
+  "EMR": {
+    "ticker": "EMR",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 11,
+    "total_trades": 11,
+    "error": null
+  },
+  "SNDK": {
+    "ticker": "SNDK",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 1,
+    "total_trades": 1,
+    "error": null
+  },
+  "MGCLY": {
+    "ticker": "MGCLY",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "ING": {
+    "ticker": "ING",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "NGG": {
+    "ticker": "NGG",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "CVNA": {
+    "ticker": "CVNA",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 75,
+    "total_trades": 75,
+    "error": null
+  },
+  "FDX": {
+    "ticker": "FDX",
+    "has_openinsider_data": true,
+    "num_purchases": 2,
+    "num_sales": 3,
+    "total_trades": 5,
+    "error": null
+  },
+  "FCX": {
+    "ticker": "FCX",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 6,
+    "total_trades": 6,
+    "error": null
+  },
+  "LYG": {
+    "ticker": "LYG",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "SPOT": {
+    "ticker": "SPOT",
+    "has_openinsider_data": false,
+    "num_purchases": 0,
+    "num_sales": 0,
+    "total_trades": 0,
+    "error": null
+  },
+  "BK": {
+    "ticker": "BK",
+    "has_openinsider_data": true,
+    "num_purchases": 0,
+    "num_sales": 11,
+    "total_trades": 11,
+    "error": null
+  },
+  "ITW": {
+    "ticker": "ITW",
+    "has_openinsider_data": true,
+    "num_purchases": 4,
+    "num_sales": 1,
+    "total_trades": 5,
+    "error": null
+  },
+  "CRH": {
+    "ticker": "CRH",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 3,
+    "total_trades": 4,
+    "error": null
+  },
+  "NU": {
+    "ticker": "NU",
+    "has_openinsider_data": true,
+    "num_purchases": 2,
+    "num_sales": 7,
+    "total_trades": 9,
+    "error": null
+  },
+  "JCI": {
+    "ticker": "JCI",
+    "has_openinsider_data": true,
+    "num_purchases": 1,
+    "num_sales": 45,
+    "total_trades": 46,
+    "error": null
+  }
+}

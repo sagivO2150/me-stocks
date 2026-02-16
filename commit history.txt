@@ -1,4 +1,381 @@
-c3a7c977dcf0cbd948eadb0b778e0c2bad5a4778
+c15d297560b2a726dff7d6193e0ca24db690c503
+Reputation system added; confirmed 17% gain accuracy
+Implemented reputation scoring system to enhance trade analysis and validate the corrected 17% gain milestone. Adjustments include new endpoint and UI integration.
+
+- Added `/api/reputation-scores` endpoint in `server.js` to serve reputation data
+- Integrated reputation scores into `TradeCard.jsx` for enhanced trade insights
+- Created `backtest_reputation_system.py` script for backtesting reputation impact
+- Updated PID files for server process tracking
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+9af5b06ae6a77899b5cd4c7e21f347082a177f51
+Refactor and clean up scripts directory structure
+Reorganized the scripts directory for better maintainability and clarity. Removed obsolete files, updated references, and added documentation for the new structure.
+
+- Deleted outdated and unused scripts from the repository
+- Created new subdirectories for analysis, backtests, core, data_sources, debug, testing, and utils
+- Moved relevant scripts to their respective subdirectories
+- Updated `node-server.pid` and `vite.pid` files
+- Added `.github/copilot-instructions.md` for guidance
+- Added `scripts/GIT_REORGANIZATION_INSTRUCTIONS.txt` for documentation on the new structure
+- Updated `webapp-stocks/server.js` to reflect the new script paths
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# general_commit
+
+---COMMIT_SEPARATOR---
+57be7011452fd3079dff76e2cd33687f2ebf565f
+Organize scripts and update trend detection logic
+Updated the trend detection logic in backtest_trend_following.py and added new scripts for analysis and debugging.
+
+- Modified trend slope calculation to use percentage change per day for consistency.
+- Enhanced debug output to include additional tickers.
+- Added new scripts:
+  - analyze_penny_stocks.py for penny stock analysis.
+  - debug_thm_oct2025.py for specific debugging tasks.
+  - test_penny_stock_strategies.py for testing penny stock strategies.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+e0d99c6498bfec77c26751fe73fcc6e997f66c60
+Explosive catalyst detection achieves 19% gain threshold
+Enhanced trend-following script to identify sharp price spikes. This new approach detects explosive catalysts with gains exceeding 19%, improving reversal tracking and decision-making.
+
+- Updated `detect_trend_reversal` function to include catalyst detection logic
+- Added checks for 20%+ price gains within a 3-5 day window
+- Introduced tracking for catalyst price and days since peak
+- Modified log messages to highlight detected explosive moves
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+965d75dfe70256c01bbe88752a19c1d7c5a13fca
+chore: remove sensitive files and update .gitignore
+
+---COMMIT_SEPARATOR---
+7c35969055e0d7d66f22ccdef17175eed2697213
+Fix slope trend issue; maintaining 12% ROI average
+Updated trend detection logic to improve accuracy and address slope-based issues, enhancing overall ROI consistency.
+
+- Changed trend reversal detection to use slope-based dip analysis
+- Removed hard stop-loss logic for more dynamic exit strategy
+- Added tracking for consecutive up days to identify sustained uptrends
+- Introduced new scripts for debugging and slope analysis (check_gme_slopes.py, debug_gme_trade.py)
+- Updated process IDs in node-server.pid and vite.pid logs
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+dc1455e27bf90c39d307b25431ed18e3f3c321a1
+Add new trend detection test and update backtest endpoint
+Updated the backtest system to include a new test for detecting up and down trends. Adjusted the server logic to serve the latest backtest results dynamically.
+
+- Added `backtest_trend_following.py` for trend detection testing
+- Introduced `backtest_all_sec_companies.py` for comprehensive SEC company testing
+- Updated `/api/backtest-results` endpoint to serve the latest test results
+- Added `all_SEC_filing_companies.json` and `sec_dataset_summary.json` for SEC data handling
+- Modified PID files for node and vite processes to reflect updated runs
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+367cf7a7a4ad04a630fbadd2cae3a3dcca8a299f
+Refine conservative scripts; 14% profit milestone reached
+Enhanced the conservative approach by adding new analysis and testing scripts to support better decision-making and improve profitability. These changes aim to build on the current 14% profit while maintaining a cautious strategy.
+
+- Added `analyze_bad_stocks.py` for identifying underperforming stocks.
+- Introduced `analyze_ticker_split.py` to analyze stock splits and their impact.
+- Created `compare_strategies.py` to evaluate and contrast various trading strategies.
+- Added `backtest_adaptive_filter.py` for testing adaptive filters in backtesting.
+- Added `backtest_conservative_filter.py` to validate conservative filters in backtesting.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+b8da52107dcc8a5de8fd79c981cb81ddc7147111
+Improve test data processing; ROI impact noted
+Enhanced test data processing by updating scripts and data files to improve accuracy and efficiency. Added new scripts for data merging and regeneration, but observed a drop in ROI.
+
+- Updated `backtest_aggressive_daily_checks.py` for better test data handling
+- Modified `full_history_insider_trades.json` to include expanded data
+- Added new scripts: `merge_insider_data.py`, `regenerate_full_history.py`, and `debug_ths.py`
+- Introduced `merged_insider_trades.json` for consolidated insider trade data
+- Adjusted `server.js` to accommodate new data processing logic
+- Updated PID files for node-server and Vite
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+1ff5a0d8df2a3ae18101a7f8019f6fda775f38d8
+Optimize AI test performance and enhance all charts section
+Enhanced the performance of AI tests and introduced optimizations to the charts section for better efficiency and usability. Added caching and batch processing for stock data retrieval.
+
+- Implemented caching system in `server.js` to reduce redundant data fetching
+- Added batch stock data endpoint for optimized data retrieval
+- Updated process IDs in `node-server.pid` and `vite.pid`
+- Introduced `backtest_aggressive_daily_checks.py` for improved AI test performance and accuracy
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+# web_app
+
+---COMMIT_SEPARATOR---
+007db0de4372371ab5cb7925faca44e4b763f460
+Add new AI test with promising results, needs further validation
+Introduced a new backtest for the aggressive momentum strategy with initial results showing significant potential. Adjusted server logic to support dynamic strategy selection for backtest results. Further validation is required to confirm the findings.
+
+- Added `backtest_aggressive_momentum_strategy.py` script for new test
+- Updated `/api/backtest-results` endpoint to support strategy selection via query parameter
+- Modified server.js to handle multiple backtest result files
+- Updated PID files for node-server and vite
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+11ae748f17c262992c2c0f222c6cc89e237661e6
+Fix ASA bug in POC charts and improve CSV parsing
+Updated the POC charts to include ASA stock, resolving the ASA bug. Enhanced CSV parsing logic in the server to handle quoted fields with commas.
+
+- Fixed ASA bug by adding ASA stock to POC charts in App.jsx
+- Improved CSV parsing in server.js to handle quoted fields with commas
+- Updated PID files for node-server and Vite
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+9c5c0a36bef61065fa45edc57bde86920e0db680
+Add new stock to POC and clean up backtest scripts
+Updated the POC by adding a new stock and performed cleanup of outdated backtest scripts. Adjusted related configurations and removed unused files.
+
+- Updated `node-server.pid` and `vite.pid` files with new process IDs
+- Deleted obsolete backtest scripts from `scripts/tests` directory
+- Modified `App.jsx` to reflect changes related to the new stock addition
+- Improved overall project structure by removing unused test files
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+a9fe2187b4afe0b0d9052d51047f2200e5dcf0a6
+Add profit/loss summary to backtest signals section
+Enhanced the AllChartsView component to include a summary of profit or loss at the top of the backtest signals section.
+
+- Added calculation for total invested amount and net profit/loss.
+- Displayed profit/loss summary with conditional formatting for profit or loss.
+- Updated the layout to include the summary alongside the backtest signals count.
+- Updated PID files for node-server and Vite.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+8e4bf5958eba345d764173c6e82363504db09e3d
+Remove insider sell events from AllChartsView component
+The insider sell events have been removed from the AllChartsView component to streamline the chart display and reduce unnecessary visual clutter.
+
+- Removed the display of insider sales data in the chart view.
+- Deleted related JSX code for rendering insider sales details.
+- Eliminated the scatter plot for insider sales from the chart.
+- Updated PID files for node-server and vite.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# general_commit
+
+---COMMIT_SEPARATOR---
+7149886b21b4332cd56185a754bac734d7da4fd2
+Ensure trade lines align with stock curve for clarity
+Updated the logic in AllChartsView.jsx to use close prices for better visual alignment of trade lines with the stock curve. Adjusted related data points to ensure consistency.
+
+- Modified trade line data to use close prices for entry and exit points.
+- Updated backtest buy and sell values to align with close prices.
+- Adjusted PID files for node-server and vite to reflect new process IDs.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# general_commit
+
+---COMMIT_SEPARATOR---
+4fb982aa1e64560660045d97d74904f16d055507
+Fix connected lines in buy and sell orders for charts
+Updated logic in AllChartsView to correctly display connected lines for buy and sell orders in backtest data. Adjusted PID files for server and Vite processes.
+
+- Modified `backtestBuy` and `backtestSell` to use entry and exit prices
+- Updated `node-server.pid` and `vite.pid` with new process IDs
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# general_commit
+
+---COMMIT_SEPARATOR---
+5309aa6a2b7ae9470550f32c72b0486866215173
+Fix stop loss bug in card counting backtest strategy
+Updated the backtest logic to address a bug in the stop loss calculation after the grace period. The trailing stop was not properly initialized using the highest price during the grace period, leading to incorrect sell triggers.
+
+Key changes:
+- Recalculated trailing stop price using the peak price from the grace period.
+- Ensured positions update their highest price if stop loss is not hit.
+- Improved comments for clarity regarding stop loss logic.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+ed7555348399e3837a893a3b60d128387710a9ca
+Improve POC calculation and update related data files
+Enhanced the calculation logic for the POC, resulting in better accuracy and updated associated data files and scripts.
+
+- Updated `full_history_insider_trades.json` with new filing dates and trade counts
+- Regenerated `backtest_simple_visual_report.pdf` for updated visuals
+- Modified PIDs in `node-server.pid` and `vite.pid` to reflect new process IDs
+- Adjusted `fetch_insider_trades.py` to include filing dates in output
+- Updated test scripts to align with new POC calculation logic
+- Minor changes to `server.js` for improved POC handling
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+97cf2cb1b0aebf61eb8fae7b2883c6e93f0d43d4
+Add from and since dates to chart trade details
+Enhanced the trade details in the AllChartsView component to include 'from' (entry) and 'since' (exit) dates for better clarity and user experience.
+
+- Added 'entry_date' and 'exit_date' fields to trade data processing logic.
+- Updated date formatting to use 'en-GB' locale for consistency.
+- Displayed 'entry_date' and 'exit_date' in the backtest buy signal details.
+- Refactored date rendering for improved readability and maintainability.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+dc658dc5752d78c9f9b89635091a9173d511ce6c
+Update tests to use actual filing dates in strategies
+Updated the test scripts to incorporate actual filing dates for insider trades, ensuring more accurate backtesting results. Adjusted related data files and logs accordingly.
+
+- Modified `backtest_card_counting_strategy.py` to use filing dates
+- Updated `backtest_peak_purchase_strategy.py` for filing date integration
+- Adjusted `backtest_simple_strategy.py` to reflect filing dates
+- Enhanced `backtest_smart_strategy.py` with filing date usage
+- Revised `backtest_trailing_stop_strategy.py` to include filing dates
+- Updated `top_monthly_insider_trades.json` with filing date entries
+- Changed `node-server.pid` and `vite.pid` logs for new process IDs
+- Updated `political_trades.db` database file
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+68c099070b5f5aeca92af3863f7fb25e9b2533d6
+Improve chart history fetch logic for better clarity
+Enhanced the logic in the `fetchStockHistory` function within `AllChartsView.jsx` to improve clarity and prevent unnecessary execution.
+
+- Added an explicit `return` statement for better readability and logic flow.
+- Ensured the function exits cleanly after handling the 'max' period case.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# general_commit
+============================================================
+  BUG LABELS
+============================================================
+
+# date_filter_bug
+
+---COMMIT_SEPARATOR---
+6b355e0f337baab98408980641c23f8ccf184af0
+Fix issue with chart breaking when switching views after filtering
+Resolved a bug in the AllChartsView component where switching views caused the chart to break after applying the first date filter. Updated the state management and rendering logic to ensure chart stability across view changes.
+
+- Fixed state handling to preserve chart data when switching views
+- Updated rendering logic in AllChartsView.jsx to handle filtered data correctly
+- Adjusted component lifecycle methods to prevent data loss during view transitions
+- Added comments for clarity in the updated sections of the code
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# general_commit
+============================================================
+  BUG LABELS
+============================================================
+
+# date_filter_bug
+
+---COMMIT_SEPARATOR---
+273bb01ece0fd6eb16c1ce135510cfd1c3dc484e
 Add POC tab for displaying specific chart view
 Introduced a new "POC Charts" tab in the application to display a proof-of-concept chart view for specific stocks. This update enhances the user interface by providing a dedicated view mode for testing and showcasing individual stock charts.
 
@@ -15,7 +392,7 @@ Introduced a new "POC Charts" tab in the application to display a proof-of-conce
 # general_commit
 
 ---COMMIT_SEPARATOR---
-11f29061d124f03f968eb0dfcd538b4db47b86e4
+83a126f86571e69aed76123a05cdaacae5c3c157
 Adjust test scripts to implement trailing stop loss logic
 Updated the backtest scripts to incorporate a trailing stop loss mechanism, enhancing the testing logic for insider trading strategies. Adjustments were also made to the PID files.
 
@@ -31,7 +408,7 @@ Updated the backtest scripts to incorporate a trailing stop loss mechanism, enha
 # general_commit
 
 ---COMMIT_SEPARATOR---
-8dadb12a12ae571d161ea1aa56496aa2e0028b74
+9e4d31c3fabcdb005b961a54f29b09dccc1ecd2e
 Fix filter reset issue when switching time ranges in charts
 Resolved an issue where the filter would reset upon changing the time range in the AllChartsView component. Added logic to preserve important dates during filtering to ensure consistency across time range changes.
 
@@ -48,7 +425,7 @@ Key changes:
 # general_commit
 
 ---COMMIT_SEPARATOR---
-3ecaf5163d1870e76dabc8ea91358eacc1ee37f1
+ca9dc0626f7a17b7ecd7ac8cc9c6e3d71ec39cdc
 Refactor: Centralized backtest data for all charts view
 Centralized the fetching and handling of backtest trade data in the AllChartsView component to improve efficiency and reduce redundant API calls. Updated the SingleStockChart component to utilize the centralized data.
 
@@ -65,7 +442,7 @@ Key changes:
 # general_commit
 
 ---COMMIT_SEPARATOR---
-7c6881912cf79d3d9fc041f6f124c594e249bd38
+e4ce4feeb3d13649570eed760f1633ebab241e6f
 Add connecting lines between buy and sell dots in charts
 Enhanced the visualization of stock charts by adding connecting lines between buy and sell order dots. Introduced new backtest strategies and updated related scripts and endpoints.
 
@@ -83,7 +460,7 @@ Enhanced the visualization of stock charts by adding connecting lines between bu
 # general_commit
 
 ---COMMIT_SEPARATOR---
-9c735d832cf801af63ad1549272bc7aa2a9d3147
+dd8db647ab071b71dab4947e9203705a59e94cdc
 Added insider events overlay to backtest PDF charts
 Enhanced the backtest PDF generation script to include insider trading events as an overlay on the stock charts. This provides better context for trade analysis.
 
@@ -99,7 +476,7 @@ Enhanced the backtest PDF generation script to include insider trading events as
 # general_commit
 
 ---COMMIT_SEPARATOR---
-1f1bfa23a14bfe2e7e4635f285f6bca11f09c6e7
+7d7074d21c566610c6c2d5ae95b9ef81b3966986
 Improved trade line visuals for better lines in the PDF
 Enhanced the appearance of trade lines and price charts in the backtest PDF for improved clarity and aesthetics.
 
@@ -115,7 +492,7 @@ Enhanced the appearance of trade lines and price charts in the backtest PDF for 
 # general_commit
 
 ---COMMIT_SEPARATOR---
-b27659ffba4a3ba222e58e027237c66bf5c0183e
+b8f79cc2bd9d5cd73075f0741b1d1f63f2a09e94
 Replaced arrows with colored lines in backtest charts
 Updated the backtest chart generation to replace arrows with colored lines for trade visualization. This improves clarity by using green lines for profitable trades and red lines for losses.
 
@@ -131,7 +508,7 @@ Updated the backtest chart generation to replace arrows with colored lines for t
 # general_commit
 
 ---COMMIT_SEPARATOR---
-246cda22db2a189e26d02cffe88274fa4cf989f3
+331c50bcad73f8d8accf462e07686ff5a7cb9bb2
 Improved PDF layout for better readability
 Enhanced the appearance and structure of the generated PDF to ensure better readability and presentation. Added a new script for backtesting with live data and updated output paths.
 
@@ -146,7 +523,7 @@ Enhanced the appearance and structure of the generated PDF to ensure better read
 # general_commit
 
 ---COMMIT_SEPARATOR---
-576973a0fcef4e850248d6d5cef148f92c8c128f
+84ed3ea746978e77f04e23ceaf307c21c2ce1755
 Improved PDF appearance in backtest visual reports
 Enhanced the visual presentation of the generated PDF reports to improve readability and aesthetics.
 
@@ -161,7 +538,7 @@ Enhanced the visual presentation of the generated PDF reports to improve readabi
 # general_commit
 
 ---COMMIT_SEPARATOR---
-fb7b7a6894ecaed30c0a7318e5a67df5a8607620
+45ffd18084780f40daad5220e7ecef3184e2ea65
 Dotted line now calculated from bottom of chart
 Updated the logic for rendering dotted lines in the stock chart to calculate their position based on the bottom of the chart using the yAxis range instead of a fixed height.
 
@@ -176,7 +553,7 @@ Updated the logic for rendering dotted lines in the stock chart to calculate the
 # web_app
 
 ---COMMIT_SEPARATOR---
-21844e851e65cf17917c3ad0e99dbba4e3a497ef
+c13337cc68f2261a87aee30d80a758858e089934
 Add dotted lines from top for new chart, nearly complete
 Updated the AllChartsView component to include dotted lines originating from the top for the new chart. Adjusted the rendering logic for insider purchase data and updated process IDs.
 
@@ -192,7 +569,7 @@ Updated the AllChartsView component to include dotted lines originating from the
 # web_app
 
 ---COMMIT_SEPARATOR---
-73eded063d6e3732c53d40c3e7b051a2cd997099
+3b3438dbdb5825bf1258fde6fad35812256abdb1
 Added "all charts" section to app interface
 Introduced a new "all charts" view mode to enhance user experience. This mode displays charts with insider overlays, accessible via a dedicated button in the navigation panel.
 
@@ -209,7 +586,7 @@ Introduced a new "all charts" view mode to enhance user experience. This mode di
 # web_app
 
 ---COMMIT_SEPARATOR---
-43bced23f4697a47034a02ca5231f5d52a3bdf99
+ce7ae1e9325d3723d0ae8915dfc3ef595d27f449
 Added multiple tests for backtesting strategies
 Created new test scripts to backtest various trading strategies and added a documentation file for recommended bot strategies.
 
@@ -226,7 +603,7 @@ Created new test scripts to backtest various trading strategies and added a docu
 # general_commit
 
 ---COMMIT_SEPARATOR---
-9ad187c5cae9e8a9638a0102f988b0549ff196b4
+cc674640532e2f1f3bcd51fbea7f1df2288d0504
 Support 4 years of buys and sells in insider trade fetch
 Updated the insider trade fetch script to include both purchase and sale transactions for a 4-year period. Adjusted PID files for server processes.
 
@@ -240,7 +617,7 @@ Updated the insider trade fetch script to include both purchase and sale transac
 # open_insider
 
 ---COMMIT_SEPARATOR---
-ec1f9e5c72e0ea23f3980dc52dbbbf030fb8bac1
+d3a4b8eb2de0e15db426b43ca4e97f2cd5d38073
 Extended purchase history to 4 years in Open Insider data
 Enhanced the Open Insider data scraping and processing to include up to 4 years of purchase history, while excluding sales data. Added new scripts and logging for improved analysis and debugging.
 
@@ -258,7 +635,7 @@ Enhanced the Open Insider data scraping and processing to include up to 4 years 
 # open_insider
 
 ---COMMIT_SEPARATOR---
-1713f1d23a55ae83bf765a22e9a1511ca20d0e8a
+2ce0e526387f50c4ba95d3127a92bb95012312d1
 Added a disqualified label and updated insider trade data
 Updated insider trade data and added a "disqualified" label to relevant entries. Removed outdated test files and introduced a new analysis report.
 
@@ -277,7 +654,7 @@ Updated insider trade data and added a "disqualified" label to relevant entries.
 # classification_events
 
 ---COMMIT_SEPARATOR---
-05ca680085414199f1daad5976aec50d954041c4
+367dea3c56c80d1817a9705b868f0cb2572c72aa
 Highlight all campaign events when hovering over badges
 Updated the application to enhance the badge hover functionality by highlighting all related events within the same campaign. This provides better visualization and context for users analyzing campaign data.
 
@@ -294,7 +671,7 @@ Updated the application to enhance the badge hover functionality by highlighting
 # classification_events
 
 ---COMMIT_SEPARATOR---
-3748bb3e6f930ef5e5bf5d390ce3ea2260f918a0
+9310ecccbc1679098a703be70189fe9f060639c2
 Added hover feature for badge dropdown menus
 Implemented a new functionality allowing users to expand dropdown menus by hovering over badges. This enhances the user experience by providing quicker access to menu options without requiring clicks.
 
@@ -312,7 +689,7 @@ Key changes:
 # web_app
 
 ---COMMIT_SEPARATOR---
-d167fdd128be969fdd2731d17314866fddd9258c
+5ee758715fa1af69d56860a8fd516cc8240ec8e7
 Implemented new badge approach by Codex (untested)
 Refactored badge functionality using the new approach provided by Codex. Updated several components and data files to align with the implementation. Added new documentation and reference files for the changes. Testing is still pending.
 
@@ -329,7 +706,7 @@ Refactored badge functionality using the new approach provided by Codex. Updated
 # classification_events
 
 ---COMMIT_SEPARATOR---
-d02198f61ece90d8c31e5231ce5dca8d25408d42
+b00fcf83f4cb98b17f7cd22085280a049c37132e
 Improved classification logic for insider trade events
 Refined the logic behind event classifications to address inaccuracies and inconsistencies. Updated related data files and components to reflect these changes.
 
@@ -345,7 +722,7 @@ Refined the logic behind event classifications to address inaccuracies and incon
 # classification_events
 
 ---COMMIT_SEPARATOR---
-755a8374887f2781d4a4f68c06d20cead250a485
+6b2bbb126c67ed7e1ef74fcd1a4ce26a4f84fb1d
 Highlight chart points when hovering over badge dates
 Added functionality to visually highlight chart points when hovering over dates in the badge dropdown. This improves the user experience by providing a clear connection between the badge dates and their corresponding data points on the chart.
 
@@ -361,7 +738,7 @@ Added functionality to visually highlight chart points when hovering over dates 
 # classification_events
 
 ---COMMIT_SEPARATOR---
-9c86b9ff703003c081abf53363fd5c884ea834e6
+8c665f24a8e9f617ab7c02d5ec2ca8c333ad7b79
 Event date click now filters results in StockDetail
 Enhanced the StockDetail component to allow users to filter data by clicking on event dates. This improves usability and provides a more intuitive way to interact with event information.
 
@@ -377,7 +754,7 @@ Enhanced the StockDetail component to allow users to filter data by clicking on 
 # classification_events
 
 ---COMMIT_SEPARATOR---
-bff077eeabfac3bee178b2b5ab5eb1fee4039e45
+f3b6227100a88aeccb5261ed70e398469c2104e9
 Added dropdown to badges for event date selection
 Enhanced the badges in the StockDetail component by adding a dropdown menu to display and select event dates. Updated related data files and server configurations to support the new functionality.
 
@@ -394,7 +771,7 @@ Enhanced the badges in the StockDetail component by adding a dropdown menu to di
 # classification_events
 
 ---COMMIT_SEPARATOR---
-821a4714bd9797c3e46909542b613975946d8f80
+db60c7d241e61f60d301dfc8d83c86debbf6eab0
 Moved badges inside chart view for better context
 Enhanced the StockDetail component to display event badges directly within the chart view, providing clearer context for users. Updated related components to pass event classification data.
 
@@ -410,7 +787,7 @@ Enhanced the StockDetail component to display event badges directly within the c
 # classification_events
 
 ---COMMIT_SEPARATOR---
-11db1ae079574fea49d9b2c9c972caa89528492d
+03d1aa02caf331fd34d941e0f8a2806c9b239448
 Updating insider trade data and adding IB info file
 Updated insider trade records and server PID files to reflect latest changes. Added a new IB info file for reference.
 
@@ -427,7 +804,7 @@ Updated insider trade records and server PID files to reflect latest changes. Ad
 # classification_events
 
 ---COMMIT_SEPARATOR---
-5ff5dbe6899d8f42eab6ed196cd6249771d589e3
+174fd69d57d93368d18c83bb955475e896aafb11
 Fixed badge display issue in TopMonthlyCard component
 Updated the application to ensure badges are displayed correctly in the TopMonthlyCard component. Adjustments were made to the data and logic to reflect accurate badge representation.
 
@@ -444,7 +821,7 @@ Updated the application to ensure badges are displayed correctly in the TopMonth
 # classification_events
 
 ---COMMIT_SEPARATOR---
-d58eefdbeb67e29a91200847261d12f124e2baaa
+dda13b77288a256b67d042c2b7fa42355a23e1b8
 Improved classification loading speed for insider trades
 Enhanced the classification system to load faster and added new event classifications for insider trades. Updated relevant files to reflect these changes.
 
@@ -461,7 +838,7 @@ Enhanced the classification system to load faster and added new event classifica
 # classification_events
 
 ---COMMIT_SEPARATOR---
-3aa9c7cf50fbb09ce2772a352f037b0cdf6a8627
+e0428730e2e25bdad88374ae85827df17630a8f5
 Removed the old badges from TopMonthlyCard component
 Updated the TopMonthlyCard component to simplify the badges section.
 
@@ -477,7 +854,7 @@ Updated the TopMonthlyCard component to simplify the badges section.
 # classification_events
 
 ---COMMIT_SEPARATOR---
-9618895c55373a568e83bb82fe779f403327d575
+0c5e633e08159e914ef40a0a2909fc87d5bd528d
 Added classification events to insider trade data
 Updated insider trade data with new classification events and adjusted related components in the web application. Enhanced data accuracy and display for top monthly insider trades.
 
@@ -495,7 +872,7 @@ Updated insider trade data with new classification events and adjusted related c
 # web_app
 
 ---COMMIT_SEPARATOR---
-be8f99e2be50567c4bc8b2c3fc3d562add86efee
+134ee7045083fbc93032b302215dc1f669996cec
 Normalized the dates displayed in the chart
 Updated the StockDetail component to ensure consistent date formatting in the chart tooltips and headers. Dates are now displayed in the DD-MM-YYYY format for better readability.
 
@@ -510,7 +887,7 @@ Updated the StockDetail component to ensure consistent date formatting in the ch
 # web_app
 
 ---COMMIT_SEPARATOR---
-0072c75ce6162c6f8c189cdd7bcc7a73742ef544
+3a5f7fa3dbbe7044149d3de5b600120c39b070bf
 Added stock date and price display in chart hover tooltips
 Enhanced the stock detail component to display the date and closing price of the stock when hovering over charts. This provides users with more contextual information directly within the tooltip.
 
@@ -525,7 +902,7 @@ Enhanced the stock detail component to display the date and closing price of the
 # web_app
 
 ---COMMIT_SEPARATOR---
-91ada7747f6a1bd90f00f54ee68387c3987c7128
+bb5c9e934f9ca6d0255f63a6131372579946efa5
 Added a script to retrieve git commit history
 Created a new script to fetch and store the git commit history for better tracking and analysis. Updated process ID files as part of the changes.
 
@@ -541,7 +918,7 @@ Created a new script to fetch and store the git commit history for better tracki
 # general_commit
 
 ---COMMIT_SEPARATOR---
-1a1ec721f304fa8cd4977ab888aff72aeedf8472
+26cbdfb7d0aab55657800803b4774dfffd1b45b1
 Improved filter view functionality for better performance
 Enhanced the filter view logic in StockDetail component to ensure smoother operation and better handling of focus dates.
 
@@ -557,7 +934,7 @@ Enhanced the filter view logic in StockDetail component to ensure smoother opera
 # web_app
 
 ---COMMIT_SEPARATOR---
-1e2f4b4ef996901fe41bfa46750d251a08c6024e
+c18de7db9e0b19258cb5f57b9aa05289b445531b
 Added focus date functionality to filter stock view
 Enhanced the StockDetail component to allow filtering stock data by a specific focus date. This ensures the stock data displayed aligns with the selected date range.
 
@@ -574,7 +951,7 @@ Enhanced the StockDetail component to allow filtering stock data by a specific f
 # web_app
 
 ---COMMIT_SEPARATOR---
-c62181779d85b129a1c2c511fdce860c36c2be06
+7777e9ec88bb09ada47059d2c9c0a147bebb8c5a
 Added filter date functionality to charts view
 Enhanced the charts view by introducing a filter date feature, allowing users to refine displayed data based on specific date ranges. Updated relevant JSON files and components to support this functionality.
 
@@ -590,7 +967,7 @@ Enhanced the charts view by introducing a filter date feature, allowing users to
 # web_app
 
 ---COMMIT_SEPARATOR---
-8508a51f155b57423e63e05a23f7c5ec58eec154
+920cb14a1887d53c3761ce8fa3e8c31cbd5ba1c4
 Added status indicator for EDGAR fetches
 Enhanced the EDGAR fetch functionality by incorporating a status indicator to improve user experience and provide real-time feedback during data retrieval. Updated related scripts and components to support this feature.
 
@@ -608,7 +985,7 @@ Enhanced the EDGAR fetch functionality by incorporating a status indicator to im
 # web_app
 
 ---COMMIT_SEPARATOR---
-40cb7d94c5f90f392b1a59d185d09483aabaf308
+260a36e2faab7a09b33187a103ea819c1bba8381
 Improved live purchases handling and ticker normalization
 Enhanced the live purchases functionality by refining ticker normalization and updating related components.
 
@@ -625,7 +1002,7 @@ Enhanced the live purchases functionality by refining ticker normalization and u
 # web_app
 
 ---COMMIT_SEPARATOR---
-d35f9ab28b9bc6be4331984c3daafc8b5bdce3fb
+7596908d769705fb62281feb756215ba64ed8e7a
 Added live EDGAR fetching and display functionality
 Implemented live fetching of EDGAR purchases and integrated the feature into the web app. This includes backend endpoints, a new Python script for scraping, and UI updates for displaying live data.
 
@@ -645,7 +1022,7 @@ Implemented live fetching of EDGAR purchases and integrated the feature into the
 # web_app
 
 ---COMMIT_SEPARATOR---
-5655aa347cc9b4a2bde6538da3d6f0fa09f7d157
+3c0cb32c468a58f84214f4118b374395590c03c7
 Optimized EDGAR fetch script for faster data retrieval
 Updated the EDGAR fetch script to improve performance and efficiency by adjusting rate limits and parallel worker settings. Minor updates were also made to PID files.
 
@@ -661,7 +1038,7 @@ Updated the EDGAR fetch script to improve performance and efficiency by adjustin
 # EDGAR
 
 ---COMMIT_SEPARATOR---
-a39483861decd4eb6d96ce65783cc30e28781c53
+a1b690d1c22124984f788f9f08b71c974d5127ca
 Removed transaction cap for extended trade data retrieval
 Updated the `fetch_edgar_trades.py` script to remove the limit on the number of transactions fetched, allowing for more comprehensive insider trade data collection. Adjusted related logic to streamline the process.
 
@@ -677,7 +1054,7 @@ Key changes:
 # EDGAR
 
 ---COMMIT_SEPARATOR---
-276117a11567035063075968f58622268b5ce2a4
+ccdd914e4cebec9847e50e5180289dd2a03aac73
 Enhanced EDGAR fetch script for more detailed data retrieval
 Updated the EDGAR trade fetching script to improve data retrieval capabilities and efficiency. Introduced multithreading and rate-limiting to handle larger volumes of data while adhering to SEC rate limits.
 
@@ -693,7 +1070,7 @@ Updated the EDGAR trade fetching script to improve data retrieval capabilities a
 # EDGAR
 
 ---COMMIT_SEPARATOR---
-0deabedc2c206b670966c8008dcbdc10cfb60975
+9dfbe0729cf7414174a6ff126deaea74d33de4a9
 Added basic EDGAR integration for extended trade history
 Enhanced server and StockDetail to support EDGAR data:
 - Added `/api/edgar-trades/:ticker` endpoint for fetching EDGAR data
@@ -708,7 +1085,7 @@ Enhanced server and StockDetail to support EDGAR data:
 # EDGAR
 
 ---COMMIT_SEPARATOR---
-b0d4c93e1575758eed3bdfbecac556ccd8942843
+d1bdb7983ed67ba47218d0b341286346a6114188
 Added stock ticker search functionality to App.jsx
 Implemented a search feature allowing users to look up stock tickers directly within the application. This enhances user experience by providing a quick and intuitive way to locate specific trades.
 
@@ -726,7 +1103,7 @@ Implemented a search feature allowing users to look up stock tickers directly wi
 # open_insider
 
 ---COMMIT_SEPARATOR---
-56a32c7c1a183bed427ddebee7b7c0587eda1156
+b246302481d230c03b416cca7ced8c865fafaf8b
 Improved date display with smarter X-axis tick calculation
 Enhanced the date display on the StockDetail component by implementing a smarter X-axis tick calculation. This ensures a more intuitive and visually appealing representation of dates across different time periods.
 
@@ -742,7 +1119,7 @@ Enhanced the date display on the StockDetail component by implementing a smarter
 # web_app
 
 ---COMMIT_SEPARATOR---
-9c0224f67484238764efa3cff9b7d45b18e94518
+34ebf1cd5b9607071373f9106be66516a7ebb0b9
 Improved chart display for years and months sorting
 Enhanced the sorting and display logic in charts to better represent years and months, alongside updates to insider trade fetching and combined role calculations.
 
@@ -759,7 +1136,7 @@ Enhanced the sorting and display logic in charts to better represent years and m
 # web_app
 
 ---COMMIT_SEPARATOR---
-e9286f69eef68a9a9e2fa95b5fda617c5986b03e
+f211fa517efe8299bab0909388c6908cd601d07a
 Simplified trade fetch logic, extended result handling
 Updated insider trade fetch script to use a simpler and more reliable URL, improving data retrieval. Enhanced result handling to support cases with no trades found.
 
@@ -775,7 +1152,7 @@ Updated insider trade fetch script to use a simpler and more reliable URL, impro
 # open_insider
 
 ---COMMIT_SEPARATOR---
-624f48b03d8385bb58a8a63eecb020fc8594bb7e
+3ccf6de2fbf084f5e181a67c0775f79160711471
 Improved clamping aggregation for better trade grouping
 Enhanced the logic for insider trade aggregation in StockDetail to improve clarity and maintain individual trade details.
 
@@ -792,7 +1169,7 @@ Enhanced the logic for insider trade aggregation in StockDetail to improve clari
 # web_app
 
 ---COMMIT_SEPARATOR---
-2100fed3bc9d25020b687974d186ad0a5d474d33
+e9f28a1251f2d6a422d41d2dd3573489ca8b242d
 Improved role classification for aggregated purchases display
 Enhanced the logic for insider role classification in StockDetail to better align with aggregated purchase displays. Adjustments ensure consistency with scraper classifications and improve grouping accuracy.
 
@@ -808,7 +1185,7 @@ Enhanced the logic for insider role classification in StockDetail to better alig
 # web_app
 
 ---COMMIT_SEPARATOR---
-526aa24609390b3a9d8549aa50c31cb7cd442f70
+d3b84e70a9f6b7c5733d5cabb30b4a1a15330126
 Updated StockDetail to display C-level and 10% owner roles
 Enhanced the display of dots cards in the StockDetail component to include role classifications for insider trades, highlighting C-level executives and 10% owners.
 
@@ -824,7 +1201,7 @@ Enhanced the display of dots cards in the StockDetail component to include role 
 # web_app
 
 ---COMMIT_SEPARATOR---
-bbceef14febedabea292430177562fd1fb5f93f1
+8d8a28539076e1dee95f0745c25f358284c4821e
 Improved max data loading, insider trading points affected
 Enhanced data handling for better performance when loading large datasets, particularly for long periods. Adjustments may impact visibility of insider trading points.
 
@@ -841,7 +1218,7 @@ Enhanced data handling for better performance when loading large datasets, parti
 # yfinance
 
 ---COMMIT_SEPARATOR---
-934fa38b46794d34c740c2e5da06b1736fa1974e
+e356e1ad99ef0676e967e2a40237f84d17118824
 Added a top purchases dashboard for insider trades
 Implemented a new dashboard to display top monthly insider trades. Added backend endpoints, frontend components, and a Python script for data scraping.
 
@@ -859,7 +1236,7 @@ Implemented a new dashboard to display top monthly insider trades. Added backend
 # web_app
 
 ---COMMIT_SEPARATOR---
-71c8e6fb84f1f51b897a881661eb613ce9fcfb3f
+64fd6ba1e53ba87e96ca78b691d0fc10629f3c5b
 Removed combined section from the web app
 The "Combined View" section and related functionality were removed from the web app to simplify the user interface and focus on individual trade categories.
 
@@ -876,7 +1253,7 @@ Key changes:
 # web_app
 
 ---COMMIT_SEPARATOR---
-63f1ba8f1cc389b537c2309f9ecc2cf6414ca57f
+a2bbfaa82618ee9b5f1df0f4d78a18300f0b74bb
 Refined StockDetail interactions, hover issues persist
 Enhanced the StockDetail component with updated interaction handling to improve user experience. Adjusted server PID files for consistency.
 
@@ -892,7 +1269,7 @@ Enhanced the StockDetail component with updated interaction handling to improve 
 # web_app
 
 ---COMMIT_SEPARATOR---
-dcdfe3569a03c09969f472bfeb790cbeb1eb85e8
+a037efc18c18ae9a5e6e9aa67d0eb604a80c3fd4
 Tooltip logic updated, hover issue persists, needs improvement
 Updated tooltip behavior in StockDetail to only display when insider or political activity is present. Adjusted styling and removed redundant elements for cleaner UI. Hover functionality remains problematic, requiring further investigation.
 
@@ -908,7 +1285,7 @@ Updated tooltip behavior in StockDetail to only display when insider or politica
 # web_app
 
 ---COMMIT_SEPARATOR---
-5ca472f583527bd6747c407ce105e087c09b31f7
+6fa2ad558fcbc2f339d571192dfb391d89e85e73
 Improved display of trade data with better hover details
 Enhanced the display of trade information in StockDetail by refining how purchase and sale amounts are presented, especially for larger values. This ensures better readability and clarity when hovering over data points.
 
@@ -923,7 +1300,7 @@ Enhanced the display of trade information in StockDetail by refining how purchas
 # web_app
 
 ---COMMIT_SEPARATOR---
-b6d44391a59926ea5c11e22463ce1bd04ffe565e
+9e157ac5dbfc95674f6c265975a5507cd43486a9
 Dotted lines look good now in StockDetail charts
 Updated the StockDetail component to replace scatter plots with dotted line charts for insider trades, enhancing visual clarity and continuity.
 
@@ -939,7 +1316,7 @@ Updated the StockDetail component to replace scatter plots with dotted line char
 # web_app
 
 ---COMMIT_SEPARATOR---
-85a611d0e64cc0179aa987d125b886034585e7ae
+e90f77ff76a8dc004f15161e2c98fa7ea38fa0f7
 Improved chart visuals and data handling in StockDetail
 Enhanced the StockDetail component to improve chart visuals and data accuracy. Added functionality to better handle date ranges and data availability for different periods.
 
@@ -955,7 +1332,7 @@ Enhanced the StockDetail component to improve chart visuals and data accuracy. A
 # web_app
 
 ---COMMIT_SEPARATOR---
-83820cd950b3c274a4f689f249ed90af73befc17
+3f1167c1c3ce4307a82ec827343509a519548b3f
 Filters operational, political trades now visible
 Enhanced functionality to ensure filters work correctly and political trades are displayed as expected.
 
@@ -974,7 +1351,7 @@ Enhanced functionality to ensure filters work correctly and political trades are
 # political_trade
 
 ---COMMIT_SEPARATOR---
-718487b0f01d60e51e35a29eb2578d9a1c09fd1d
+17cc4bad5b3ec442c0d7e3d7a30aef23e35a2818
 Extracted political stock trades, cleaned up data sources
 Updated scripts and database to refine political trading data extraction and integrate new sources. Added new scripts for fetching and debugging, ensuring comprehensive data coverage.
 
@@ -993,7 +1370,7 @@ Updated scripts and database to refine political trading data extraction and int
 # political_trade
 
 ---COMMIT_SEPARATOR---
-891b9a43f7360a680695fc827621422af2d9c38a
+7dba3f4f544c9f15f387e148711f82117f0f9586
 Improved data fetching for politicians, added new scripts
 Enhanced the system to fetch more comprehensive data for politicians. While the process is not yet perfect, significant progress has been made. Added new scripts and database integration to support enriched data handling.
 
@@ -1016,7 +1393,7 @@ Key changes:
 # political_trade
 
 ---COMMIT_SEPARATOR---
-9480a1b937d399faf8911fe74dc0255f30f9027e
+80a8c127d5fbc3ebb03d3c89dba5c946dfbe06da
 Filtering for political figures implemented successfully
 Enhanced political trade data handling and filtering functionality.
 
@@ -1035,7 +1412,7 @@ Enhanced political trade data handling and filtering functionality.
 # web_app
 
 ---COMMIT_SEPARATOR---
-df460f4edcc19e68a60700481fffe100b1402556
+f15bef711c1ee8a99ccd436f4744f018099c75d6
 Added political trading information to the app
 Enhanced the app by integrating political trading data, providing users with insights into political trades. Added new API endpoints, frontend components, and a script for data fetching.
 
@@ -1055,7 +1432,7 @@ Enhanced the app by integrating political trading data, providing users with ins
 # web_app
 
 ---COMMIT_SEPARATOR---
-9a47101ecd22b51c50e99d38081deec4c4314cff
+fc0863ae8b84bb60e35b43322cbebd6a6d16b566
 Tweaked frontend for improved chart tooltips and date format
 Enhanced the StockDetail component to refine chart tooltips and adjust date formatting for better usability and clarity.
 
@@ -1071,7 +1448,7 @@ Enhanced the StockDetail component to refine chart tooltips and adjust date form
 # web_app
 
 ---COMMIT_SEPARATOR---
-09b709ba1e13da41893b724b8545266bb253f459
+ea68ca0437d99a277341cc9057b6f82c8ea4db66
 Fixed insider trade data issues affecting web app display
 Updated the insider trade fetching script to resolve inaccuracies in the displayed information and ensure comprehensive transaction data is retrieved. Adjusted process IDs for server logs.
 
@@ -1087,7 +1464,7 @@ Key changes:
 # web_app
 
 ---COMMIT_SEPARATOR---
-c8ad544eac1605cb9fe4a16e9c207ac99842748a
+034a870962023e72176c7c6318478dad46b85977
 Fixed the scraping to also show sells
 Updated the OpenInsider scraper to include sales data alongside purchases. Adjusted filtering logic and parameters to differentiate between trade types. Added tests to validate the new functionality.
 
@@ -1105,7 +1482,7 @@ Updated the OpenInsider scraper to include sales data alongside purchases. Adjus
 # open_insider
 
 ---COMMIT_SEPARATOR---
-f6716c8b007c8c0bc211686930d7d9461d716670
+7d9a6fc6c7536695c6a4ec8b3c4df32d6fe9651c
 Added overlay to stocks graph for purchases and sales
 Enhanced the stock detail component to include an overlay on the graph that displays insider purchase and sale data. Added a new API endpoint to fetch insider trades and integrated it with the frontend.
 
@@ -1122,7 +1499,7 @@ Enhanced the stock detail component to include an overlay on the graph that disp
 # web_app
 
 ---COMMIT_SEPARATOR---
-a0814e962f37ac14ef7b0f5266ea2c6a56087fbc
+ff0046e099f347ebfe7fb7a48baded6d954b1570
 Added support for displaying day trading data in charts
 Enhanced functionality to include intraday data for day trading. Updated scripts and components to handle finer intervals and display time-specific details.
 
@@ -1139,7 +1516,7 @@ Enhanced functionality to include intraday data for day trading. Updated scripts
 # open_insider
 
 ---COMMIT_SEPARATOR---
-5a090929ed9d85e1e9ce70264a8488465cfb42b7
+57182bc07732400f91ccfc829575708671a109c3
 Added clickable stock cards to display detailed information
 Enhanced the stock viewing experience by allowing users to click on stock cards to access detailed information. Introduced new components and updated existing ones to support this functionality.
 
@@ -1160,7 +1537,7 @@ Enhanced the stock viewing experience by allowing users to click on stock cards 
 # yfinance
 
 ---COMMIT_SEPARATOR---
-1a61161f836c981e1587f18b98ee216d6da4e1ad
+eaeb683de8a8aed5cd981d48af39b90692f95d6c
 Excluded funds from OpenInsider scraper search results
 Updated the OpenInsider scraper to exclude funds from search results by adjusting SIC code filters and ensuring relevant roles are included in the query parameters.
 
@@ -1175,7 +1552,7 @@ Updated the OpenInsider scraper to exclude funds from search results by adjustin
 # open_insider
 
 ---COMMIT_SEPARATOR---
-5254e0d86c822f5741e6102fd7ee44e374165ea4
+e5288329cd15b3f79df4c3f35390876c681005cc
 Improved insider data fetching and role breakdown accuracy
 Enhanced the OpenInsider scraper to provide more detailed and accurate information about insiders and their roles. This update improves the clarity and reliability of insider data displayed in the application.
 
@@ -1193,7 +1570,7 @@ Enhanced the OpenInsider scraper to provide more detailed and accurate informati
 # open_insider
 
 ---COMMIT_SEPARATOR---
-0e37def58de8a24dbfd52a84d8a6b078fe56c740
+2798a3ca00171e173224ab572977d3848e7db45c
 Fixed duplicate counting for insiders with multiple titles
 Enhanced the OpenInsider scraper to address an issue where insiders with multiple titles were being counted multiple times in role-based aggregations. Introduced logic to prioritize roles and deduplicate trades.
 
@@ -1209,7 +1586,7 @@ Enhanced the OpenInsider scraper to address an issue where insiders with multipl
 # open_insider
 
 ---COMMIT_SEPARATOR---
-d96f6844112e08c07cbbf63d627fb4dca4dc0917
+574d91490c232db3e29dc91626a7d07e06edfe60
 Added breakdown of insider roles in stock purchase data
 Enhanced the OpenInsider scraper to include specific insider roles for better data granularity. Updated relevant components and logs to support the changes.
 
@@ -1226,7 +1603,7 @@ Enhanced the OpenInsider scraper to include specific insider roles for better da
 # open_insider
 
 ---COMMIT_SEPARATOR---
-dbdfbf433f10cb51ecbc62198f602890d6e4c0b6
+22979cfed12ede1da4aed0d4b79dbe180a3c23f7
 Updated API documentation and integrated new backup system
 Enhanced the API documentation with detailed usage examples and added a new backup system for improved data security. Minor updates were also made to scripts and server files.
 
@@ -1244,7 +1621,7 @@ Enhanced the API documentation with detailed usage examples and added a new back
 # open_insider
 
 ---COMMIT_SEPARATOR---
-e8fc165fcefbceb77ef147f8e6542517e250726d
+3741f1b85f3b04734128dcc81747718e0cf99e16
 Fixed fetching mechanism in OpenInsider scraper
 Updated the OpenInsider scraper to improve data fetching logic and ensure compatibility with broader sector filtering options. Adjusted query parameters for better flexibility and accuracy.
 
@@ -1259,7 +1636,7 @@ Updated the OpenInsider scraper to improve data fetching logic and ensure compat
 # open_insider
 
 ---COMMIT_SEPARATOR---
-be4319d1bf367e7439c54f7036330aaeee36cfdf
+8c2904f38ff0ec07dd781be05052e748178898c8
 Optimized OpenInsider scraper for faster data processing
 Enhanced the OpenInsider scraper script to improve performance and reduce data processing time by implementing parallel processing for financial data enrichment.
 
@@ -1277,7 +1654,7 @@ Enhanced the OpenInsider scraper script to improve performance and reduce data p
 # open_insider
 
 ---COMMIT_SEPARATOR---
-4f830a379d0ae459e12103e7726551c93cb5fb0d
+153c76b4396dd54f245014e764fb55c5a1f36ae4
 Fixed Node.js server handling in restart script
 Updated the restart script to properly manage the Node.js backend server alongside the Vite frontend. Added logic to stop and start the Node.js server, ensuring smoother restarts and better process management.
 
@@ -1293,7 +1670,7 @@ Updated the restart script to properly manage the Node.js backend server alongsi
 # web_app
 
 ---COMMIT_SEPARATOR---
-82d2725e64d26e127ce6020460876601bf30ee01
+72735339e07e7f75c3cfb0bd5b545c5c9a206efb
 Added tooltips to display detailed info on filter labels
 Enhanced the user interface by introducing tooltips to provide additional context for filter labels in the FilterPanel component.
 
@@ -1313,7 +1690,7 @@ Enhanced the user interface by introducing tooltips to provide additional contex
 # web_app
 
 ---COMMIT_SEPARATOR---
-d2953327630f77a920d87334cae346a116f1da88
+8967b7171018bf5daa68878b4e25dd49729bd318
 Added filter options for OpenInsider data customization
 Enhanced the OpenInsider scraper and web app to support customizable filters for more tailored data retrieval and display.
 
@@ -1332,7 +1709,7 @@ Enhanced the OpenInsider scraper and web app to support customizable filters for
 # open_insider
 
 ---COMMIT_SEPARATOR---
-f9d48b17fac25b51295cbbb04027279db7875ab0
+b3da5a47184f15a4d1acb8ef6cb92643cff2a1b0
 Added a restart script for the web app
 Introduced a new script to streamline the process of restarting the web application. This helps in managing the app lifecycle more efficiently and ensures smoother operations.
 
@@ -1347,7 +1724,7 @@ Introduced a new script to streamline the process of restarting the web applicat
 # web_app
 
 ---COMMIT_SEPARATOR---
-ad5994a2c4a56cecb8eb8ac701f1c54c902a3b8b
+73e2428a82b91f1016b43358a4c3a4a07fe98a86
 Fixed a couple more small errors in App.jsx
 Corrected minor issues in the App.jsx file related to CSS class names. These changes ensure proper styling and alignment with the intended design.
 
@@ -1361,7 +1738,7 @@ Corrected minor issues in the App.jsx file related to CSS class names. These cha
 # web_app
 
 ---COMMIT_SEPARATOR---
-6a304189286bba1f6956b84f24489ddc09e0daa2
+c58f5894b89b35ecc22541d3977e5bc67adf6522
 Simplified Tailwind import in web app styles
 Replaced multiple Tailwind directives with a single import statement in the CSS file to streamline the stylesheet and resolve potential build issues.
 
@@ -1375,7 +1752,7 @@ Replaced multiple Tailwind directives with a single import statement in the CSS 
 # web_app
 
 ---COMMIT_SEPARATOR---
-7a57393b2d3206b7fc2620c129553c5bef152b75
+f2fc71cc5b8dddc5995bb262f44621a49d13167a
 Website is live but needs design improvements
 Set up the initial structure for the web application. The website is functional but requires significant styling and design enhancements.
 
@@ -1395,7 +1772,7 @@ Set up the initial structure for the web application. The website is functional 
 # web_app
 
 ---COMMIT_SEPARATOR---
-1e2edf2a344b7ed6929c16191964b467a9242b42
+a975169f2ec767e65599d5c1460044e9c81cdf59
 Enhance yfinance data retrieval with new metrics
 Expanded the yfinance data fetching function to include additional metrics and implemented a new scoring system for evaluating stocks.
 
@@ -1411,7 +1788,7 @@ Expanded the yfinance data fetching function to include additional metrics and i
 # yfinance
 
 ---COMMIT_SEPARATOR---
-4061001f4156a99e33c0f8b09544c7dcec40396f
+639938c99f58a616d26db3df14eaeff68079d2d1
 Moved files to 'info' dir, added yfinance info to CSV
 Reorganized project structure and added new information to support yfinance integration. Updated file paths and included additional documentation.
 
