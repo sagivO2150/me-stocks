@@ -25,6 +25,8 @@ from datetime import datetime, timedelta
 from collections import defaultdict
 from multiprocessing import Pool, cpu_count
 import threading
+import time
+import random
 
 # Global progress counter with lock
 progress_counter = 0
@@ -178,33 +180,38 @@ class ReputationTracker:
 # ===== HELPER FUNCTIONS (from original backtest) =====
 
 def fetch_ticker_data(args):
-    """Fetch historical data for a ticker with progress tracking"""
+    """Fetch historical data for a ticker with progress tracking and retry logic"""
     ticker, total = args
     global progress_counter
     
-    try:
-        stock = yf.Ticker(ticker)
-        history = stock.history(start='2022-03-16', end='2026-02-14')
-        
-        # Update progress counter
-        with progress_lock:
-            progress_counter += 1
-            if progress_counter % 10 == 0 or progress_counter == total:
-                print(f"\rProgress: {progress_counter}/{total}", end='', flush=True)
-        
-        if not history.empty:
-            history.index = history.index.tz_localize(None)
-            return (ticker, history)
-    except:
-        pass
+    result = (ticker, None)
+    max_retries = 2
     
-    # Still update progress even on failure
+    for attempt in range(max_retries):
+        try:
+            stock = yf.Ticker(ticker)
+            history = stock.history(start='2022-03-16', end='2026-02-14')
+            
+            if not history.empty:
+                history.index = history.index.tz_localize(None)
+                result = (ticker, history)
+                break  # Success, exit retry loop
+        except yf.exceptions.YFRateLimitError:
+            if attempt < max_retries - 1:
+                # Wait and retry on rate limit
+                time.sleep(1)
+            else:
+                pass  # Give up after max retries
+        except:
+            break  # Other errors, don't retry
+    
+    # Update progress counter once per ticker
     with progress_lock:
         progress_counter += 1
         if progress_counter % 10 == 0 or progress_counter == total:
             print(f"\rProgress: {progress_counter}/{total}", end='', flush=True)
     
-    return (ticker, None)
+    return result
 
 def parse_value(value_str):
     """Parse value string like '+$8,783,283' to float"""
@@ -460,7 +467,9 @@ def backtest_with_reputation():
     # Prepare args: (ticker, total_count)
     ticker_args = [(t, len(tickers)) for t in tickers]
     
-    with Pool(cpu_count()) as pool:
+    # Use 8 workers - good balance between speed and rate limits
+    num_workers = min(8, cpu_count())
+    with Pool(num_workers) as pool:
         results = pool.map(fetch_ticker_data, ticker_args)
     
     print()  # New line after progress
@@ -474,13 +483,21 @@ def backtest_with_reputation():
     
     # Build all trades list
     all_trades = []
+    skipped_pre_ipo = 0
+    skipped_within_3mo = 0
+    
     for stock_data in data['data']:
         ticker = stock_data['ticker']
         
         if ticker not in price_cache:
             continue
         
+        history = price_cache[ticker]
         company = stock_data['company_name']
+        
+        # Get IPO date (first trading date)
+        ipo_date = history.index[0]
+        three_months_after_ipo = ipo_date + timedelta(days=90)
         
         for trade in stock_data['trades']:
             if trade.get('value', '').startswith('+'):
@@ -492,7 +509,18 @@ def backtest_with_reputation():
                     filing_date = trade_date
                 
                 entry_date = filing_date
+                entry_date_ts = pd.Timestamp(entry_date)
                 trade_value = parse_value(trade['value'])
+                
+                # FILTER 1: Skip trades before IPO (pre-IPO insider purchases)
+                if entry_date_ts < ipo_date:
+                    skipped_pre_ipo += 1
+                    continue
+                
+                # FILTER 2: Skip trades within first 3 months of IPO
+                if entry_date_ts < three_months_after_ipo:
+                    skipped_within_3mo += 1
+                    continue
                 
                 all_trades.append({
                     'ticker': ticker,
@@ -503,6 +531,10 @@ def backtest_with_reputation():
                     'role': trade.get('role', ''),
                     'value': trade_value
                 })
+    
+    print(f"   ⚠️  Filtered out {skipped_pre_ipo:,} pre-IPO trades")
+    print(f"   ⚠️  Filtered out {skipped_within_3mo:,} trades within 3 months of IPO")
+    print(f"   ✅ {len(all_trades):,} trades remaining for analysis\n")
     
     all_trades.sort(key=lambda x: x['entry_date'])
     
