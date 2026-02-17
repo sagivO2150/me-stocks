@@ -7,6 +7,7 @@ import LivePurchasesCard from './components/LivePurchasesCard';
 import FilterPanel from './components/FilterPanel';
 import StockDetail from './components/StockDetail';
 import AllChartsView from './components/AllChartsView';
+import GrovPocView from './components/GrovPocView';
 
 function App() {
   const [trades, setTrades] = useState([]);
@@ -20,14 +21,7 @@ function App() {
   
   // DEBUG: Watch state changes
   useEffect(() => {
-    console.log('📊 [App.jsx] bestPerformers state changed:', bestPerformers.length, 'performers');
-    console.log('📊 [App.jsx] bestTrades state changed:', bestTrades.length, 'trades');
-    if (bestPerformers.length > 0) {
-      console.log('📊 [App.jsx] First 5 bestPerformers:', bestPerformers.slice(0, 5));
-    }
-    if (bestTrades.length > 0) {
-      console.log('📊 [App.jsx] First bestTrade:', bestTrades[0]);
-    }
+    // Removed excessive logging
   }, [bestPerformers, bestTrades]);
   
   const [politicalPagination, setPoliticalPagination] = useState({
@@ -162,11 +156,9 @@ function App() {
   };
 
   const loadBestWorstPerformers = async () => {
-    console.log('🎯 [App.jsx] loadBestWorstPerformers() called');
     try {
       const cacheBuster = new Date().getTime();
       const url = `http://localhost:3001/api/best-worst-performers?_=${cacheBuster}`;
-      console.log('📡 [App.jsx] Fetching from:', url);
       
       const response = await fetch(url, {
         cache: 'no-store',
@@ -176,30 +168,16 @@ function App() {
         }
       });
       
-      console.log('📡 [App.jsx] Response status:', response.status);
       const data = await response.json();
-      console.log('📡 [App.jsx] Response data:', {
-        success: data.success,
-        bestPerformersCount: data.bestPerformers?.length,
-        worstPerformersCount: data.worstPerformers?.length,
-        bestTradesCount: data.bestTrades?.length,
-        worstTradesCount: data.worstTrades?.length
-      });
-      console.log('📡 [App.jsx] First 3 best performers:', data.bestPerformers?.slice(0, 3));
-      console.log('📡 [App.jsx] First best trade:', data.bestTrades?.[0]);
       
       if (data.success) {
-        console.log('✅ [App.jsx] Setting state...');
         setBestPerformers(data.bestPerformers || []);
         setWorstPerformers(data.worstPerformers || []);
         setBestTrades(data.bestTrades || []);
         setWorstTrades(data.worstTrades || []);
-        console.log('✅ [App.jsx] State updated successfully');
-      } else {
-        console.warn('⚠️ [App.jsx] Response not successful');
       }
-    } catch (err) {
-      console.error('❌ [App.jsx] Error loading best/worst performers:', err);
+    } catch (error) {
+      console.error('Failed to load best/worst performers:', error);
     }
   };
 
@@ -311,7 +289,6 @@ function App() {
   };
 
   useEffect(() => {
-    console.log('🚀 [App.jsx] Initial useEffect - Loading all data...');
     loadCSV();
     loadPoliticalTrades();
     loadTopMonthlyTrades();
@@ -487,9 +464,9 @@ function App() {
             )}
             {viewMode === 'all-charts-poc' && (
               <>
-                <span className="text-slate-400">Showing </span>
-                <span className="text-amber-400 font-bold text-xl">2</span>
-                <span className="text-slate-400"> POC charts (GME, HYMC)</span>
+                <span className="text-slate-400">POC: </span>
+                <span className="text-amber-400 font-bold text-xl">GROV</span>
+                <span className="text-slate-400"> Rise Explosion Strategy</span>
               </>
             )}
           </div>
@@ -732,9 +709,9 @@ function App() {
           </div>
         )}
 
-        {/* POC Charts View (GME + HYMC + ASA) */}
+        {/* POC Charts View (GROV Rise Explosion Strategy) */}
         {viewMode === 'all-charts-poc' && (
-          <AllChartsView stocks={[{ ticker: 'GME' }, { ticker: 'HYMC' }, { ticker: 'ASA' }]} />
+          <GrovPocView />
         )}
 
         {/* Load More Button for Political Trades */}

@@ -19,25 +19,16 @@ const AllChartsView = ({ stocks, backtestTrades }) => {
   
   // Fetch backtest results ONCE for all stocks (unless provided via prop)
   useEffect(() => {
-    console.log('🔍 [AllChartsView] useEffect triggered');
-    console.log('🔍 [AllChartsView] backtestTrades prop:', backtestTrades);
-    
     if (backtestTrades) {
-      // Use provided backtest trades (for Best/Worst performers)
-      console.log('✅ [AllChartsView] Using provided backtestTrades:', backtestTrades.length, 'trades');
-      console.log('✅ [AllChartsView] First 3 trades:', backtestTrades.slice(0, 3));
       setAllBacktestTrades(backtestTrades);
       return;
     }
     
     // Otherwise fetch from default endpoint
     const fetchBacktestResults = async () => {
-      console.log('📡 [AllChartsView] Fetching backtest results from API...');
       try {
-        // Add cache buster to force fresh data
         const cacheBuster = new Date().getTime();
         const url = `http://localhost:3001/api/backtest-results?_=${cacheBuster}`;
-        console.log('📡 [AllChartsView] URL:', url);
         
         const response = await fetch(url, {
           cache: 'no-store',
@@ -47,19 +38,13 @@ const AllChartsView = ({ stocks, backtestTrades }) => {
           }
         });
         
-        console.log('📡 [AllChartsView] Response status:', response.status);
         const data = await response.json();
-        console.log('📡 [AllChartsView] Response data:', { success: data.success, tradesCount: data.trades?.length });
-        console.log('📡 [AllChartsView] First 3 trades:', data.trades?.slice(0, 3));
         
         if (data.success && data.trades) {
-          console.log('✅ [AllChartsView] Setting allBacktestTrades:', data.trades.length, 'trades');
           setAllBacktestTrades(data.trades);
-        } else {
-          console.warn('⚠️ [AllChartsView] No trades in response');
         }
       } catch (err) {
-        console.error('❌ [AllChartsView] Failed to fetch backtest results:', err);
+        console.error('Failed to fetch backtest results:', err);
       }
     };
     
@@ -91,23 +76,23 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
   // Filter backtest trades for this ticker
   const backtestTrades = allBacktestTrades ? allBacktestTrades.filter(trade => trade.ticker === ticker) : null;
   
-  // DEBUG: Log backtest trades count for ALL tickers
+  // DEBUG: GROV-specific debugging
   useEffect(() => {
-    if (allBacktestTrades) {
-      console.log(`🔍 [${ticker}] allBacktestTrades available:`, allBacktestTrades.length, 'total trades');
-      console.log(`🔍 [${ticker}] backtestTrades filtered:`, backtestTrades?.length || 0, 'trades for this ticker');
-      if (backtestTrades && backtestTrades.length > 0) {
-        console.log(`✅ [${ticker}] Sample trade:`, {
-          entry_date: backtestTrades[0].entry_date,
-          entry_price: backtestTrades[0].entry_price,
-          exit_price: backtestTrades[0].exit_price,
-          return_pct: backtestTrades[0].return_pct
+    if (ticker === 'GROV' && allBacktestTrades) {
+      console.log('🔍 GROV DEBUG:');
+      console.log('  Total trades in allBacktestTrades:', allBacktestTrades.length);
+      const grovTrades = allBacktestTrades.filter(t => t.ticker === 'GROV');
+      console.log('  GROV trades found:', grovTrades.length);
+      grovTrades.forEach((trade, idx) => {
+        console.log(`  Trade ${idx + 1}:`, {
+          entry_date: trade.entry_date,
+          entry_price: trade.entry_price,
+          exit_date: trade.exit_date,
+          return_pct: trade.return_pct
         });
-      }
-    } else {
-      console.log(`⚠️ [${ticker}] allBacktestTrades is NULL`);
+      });
     }
-  }, [allBacktestTrades, backtestTrades, ticker]);
+  }, [allBacktestTrades, ticker]);
 
   useEffect(() => {
     if (focusDate) {

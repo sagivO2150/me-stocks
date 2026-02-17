@@ -51,6 +51,28 @@ app.post('/api/clear-cache', (req, res) => {
 
 // ============ END CACHING SYSTEM ============
 
+// GROV POC endpoint - load rise explosion strategy results
+app.get('/api/grov-poc', (req, res) => {
+  try {
+    const pocFilePath = path.join(__dirname, '../output CSVs/grov_rise_explosion_poc.json');
+    
+    if (!fs.existsSync(pocFilePath)) {
+      return res.status(404).json({
+        success: false,
+        error: 'GROV POC results not found',
+        message: 'Please run: .venv/bin/python scripts/backtests/backtest_grov_poc.py'
+      });
+    }
+    
+    const pocData = JSON.parse(fs.readFileSync(pocFilePath, 'utf-8'));
+    res.json({ success: true, data: pocData });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ============ END CACHING SYSTEM ============
+
 // Endpoint to run the Python scraper with custom filters
 app.post('/api/scrape', (req, res) => {
   const {
@@ -1267,12 +1289,18 @@ app.get('/api/best-worst-performers', (req, res) => {
     const bestTickers = [...new Set(bestTrades.map(t => t.ticker))];
     const worstTickers = [...new Set(worstTrades.map(t => t.ticker))];
     
+    // Get ALL trades for these tickers (not just the top 25 trades)
+    const allTickersToInclude = [...new Set([...bestTickers, ...worstTickers])];
+    const allTradesForTickers = trades.filter(trade => 
+      allTickersToInclude.includes(trade.ticker)
+    );
+    
     res.json({ 
       success: true, 
       bestPerformers: bestTickers,
       worstPerformers: worstTickers,
-      bestTrades,        // Include full trade data
-      worstTrades,       // Include full trade data
+      bestTrades: allTradesForTickers,        // ALL trades for best/worst tickers
+      worstTrades: allTradesForTickers,       // ALL trades for best/worst tickers
       bestCount: bestTrades.length,
       worstCount: worstTrades.length
     });
