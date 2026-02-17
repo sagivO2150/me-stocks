@@ -11,6 +11,68 @@ from datetime import datetime
 from typing import List, Dict
 from openpyxl import Workbook
 from openpyxl.styles import PatternFill, Font
+import json
+
+
+def load_ftai_insider_trades():
+    """Load FTAI insider trades from expanded_insider_trades.json."""
+    try:
+        with open('output CSVs/expanded_insider_trades.json', 'r') as f:
+            data = json.load(f)
+        
+        # Find FTAI entries
+        for stock in data.get('data', []):
+            if stock.get('ticker') == 'FTAI':
+                # Extract trade dates and convert to DD/MM/YYYY format
+                trades = []
+                for trade in stock.get('trades', []):
+                    trade_date = trade.get('trade_date', '')
+                    if trade_date:
+                        # Convert from YYYY-MM-DD to DD/MM/YYYY
+                        try:
+                            dt = datetime.strptime(trade_date, '%Y-%m-%d')
+                            formatted_date = dt.strftime('%d/%m/%Y')
+                            trades.append({
+                                'date': formatted_date,
+                                'insider_name': trade.get('insider_name', ''),
+                                'value': trade.get('value', '')
+                            })
+                        except:
+                            continue
+                return trades
+        return []
+    except Exception as e:
+        print(f"Warning: Could not load insider trades: {e}")
+        return []
+
+
+def find_insider_purchases_in_range(start_date: str, end_date: str, insider_trades: List[Dict]) -> str:
+    """Find insider purchase dates that fall within the given date range.
+    
+    Args:
+        start_date: Start date in DD/MM/YYYY format
+        end_date: End date in DD/MM/YYYY format
+        insider_trades: List of insider trade dictionaries with 'date' key
+        
+    Returns:
+        Comma-separated string of purchase dates, or empty string if none found
+    """
+    try:
+        # Parse dates
+        start_dt = datetime.strptime(start_date, '%d/%m/%Y')
+        end_dt = datetime.strptime(end_date, '%d/%m/%Y')
+        
+        # Find matching trades
+        matching_dates = []
+        for trade in insider_trades:
+            trade_dt = datetime.strptime(trade['date'], '%d/%m/%Y')
+            if start_dt <= trade_dt <= end_dt:
+                matching_dates.append(trade['date'])
+        
+        # Return unique dates, comma-separated
+        return ', '.join(sorted(set(matching_dates)))
+    except Exception as e:
+        return ''
 
 
 def identify_rise_events(df: pd.DataFrame, min_days: int = 4, min_growth_pct: float = 2.0, min_decline_pct: float = 1.5, min_recovery_pct: float = 2.0) -> List[Dict]:
@@ -109,8 +171,8 @@ def identify_rise_events(df: pd.DataFrame, min_days: int = 4, min_growth_pct: fl
                 # Only add if meets minimum thresholds
                 if days_duration >= min_days and growth_pct >= min_growth_pct:
                     rise_events.append({
-                        'start_date': start_date.strftime('%Y-%m-%d'),
-                        'end_date': end_date.strftime('%Y-%m-%d'),
+                        'start_date': start_date.strftime('%d/%m/%Y'),
+                        'end_date': end_date.strftime('%d/%m/%Y'),
                         'days': days_duration,
                         'growth_pct': round(growth_pct, 2)
                     })
@@ -136,8 +198,8 @@ def identify_rise_events(df: pd.DataFrame, min_days: int = 4, min_growth_pct: fl
         # Only add if meets minimum thresholds
         if days_duration >= min_days and growth_pct >= min_growth_pct:
             rise_events.append({
-                'start_date': start_date.strftime('%Y-%m-%d'),
-                'end_date': end_date.strftime('%Y-%m-%d'),
+                'start_date': start_date.strftime('%d/%m/%Y'),
+                'end_date': end_date.strftime('%d/%m/%Y'),
                 'days': days_duration,
                 'growth_pct': round(growth_pct, 2)
             })
@@ -148,12 +210,17 @@ def identify_rise_events(df: pd.DataFrame, min_days: int = 4, min_growth_pct: fl
 def main():
     """Main function to analyze FTAI stock and identify rise events."""
     ticker = "FTAI"
-    start_date = "2024-06-04"
-    end_date = "2025-01-27"
+    start_date = "2015-05-14"
+    end_date = "2026-02-17"
     
     print(f"Fetching {ticker} data from {start_date} to {end_date}...")
     
     try:
+        # Load insider trades
+        insider_trades = load_ftai_insider_trades()
+        print(f"Loaded {len(insider_trades)} insider trades for {ticker}")
+        print()
+        
         # Fetch stock data
         stock = yf.Ticker(ticker)
         df = stock.history(start=start_date, end=end_date)
@@ -175,15 +242,24 @@ def main():
         
         # Create combined list with rise events and down periods
         combined_events = []
+        cumulative_pct = 0.0
         
         for i, rise_event in enumerate(rise_events):
             # Add the rise event
+            cumulative_pct += rise_event['growth_pct']
+            insider_purchases = find_insider_purchases_in_range(
+                rise_event['start_date'], 
+                rise_event['end_date'], 
+                insider_trades
+            )
             combined_events.append({
                 'event_type': 'RISE',
                 'start_date': rise_event['start_date'],
                 'end_date': rise_event['end_date'],
                 'days': rise_event['days'],
-                'change_pct': rise_event['growth_pct']
+                'change_pct': rise_event['growth_pct'],
+                'cumulative_pct': round(cumulative_pct, 2),
+                'insider_purchases': insider_purchases
             })
             
             # Calculate down period to next rise (if not the last rise event)
@@ -193,11 +269,11 @@ def main():
                 next_start_str = rise_events[i + 1]['start_date']
                 
                 # Get the peak price at end of current rise
-                peak_mask = df.index.strftime('%Y-%m-%d') == current_end_str
+                peak_mask = df.index.strftime('%d/%m/%Y') == current_end_str
                 peak_price = df.loc[peak_mask, 'Close'].iloc[0]
                 
                 # Get the bottom price at start of next rise
-                bottom_mask = df.index.strftime('%Y-%m-%d') == next_start_str
+                bottom_mask = df.index.strftime('%d/%m/%Y') == next_start_str
                 bottom_price = df.loc[bottom_mask, 'Close'].iloc[0]
                 
                 # Calculate decline percentage
@@ -210,24 +286,69 @@ def main():
                 down_days = len(down_period_df) - 1  # Exclude the start date since it's the peak
                 
                 if down_days > 0:
+                    cumulative_pct += (-decline_pct)
+                    insider_purchases = find_insider_purchases_in_range(
+                        rise_event['end_date'],
+                        rise_events[i + 1]['start_date'],
+                        insider_trades
+                    )
                     combined_events.append({
                         'event_type': 'DOWN',
                         'start_date': rise_event['end_date'],
                         'end_date': rise_events[i + 1]['start_date'],
                         'days': down_days,
-                        'change_pct': -round(decline_pct, 2)
+                        'change_pct': -round(decline_pct, 2),
+                        'cumulative_pct': round(cumulative_pct, 2),
+                        'insider_purchases': insider_purchases
                     })
         
         # Create DataFrame from combined events
+        results_df = pd.DataFrame(combined_events)
+        
+        # Calculate ranks within each event type based on total percentage
+        # For RISE events: lower % = worse rank (1 is worst)
+        # For DOWN events: larger decline % = worse rank (1 is worst)
+        rise_events_df = results_df[results_df['event_type'] == 'RISE'].copy()
+        down_events_df = results_df[results_df['event_type'] == 'DOWN'].copy()
+        
+        rise_count = len(rise_events_df)
+        down_count = len(down_events_df)
+        
+        if not rise_events_df.empty:
+            # For rises, ascending=False means higher % gets rank 1 (best), lower % gets higher rank (worst)
+            rise_events_df['rank'] = rise_events_df['change_pct'].rank(ascending=False, method='min').astype(int)
+            rise_events_df['rank_display'] = rise_events_df['rank'].apply(lambda x: f"{x}/{rise_count}")
+        
+        if not down_events_df.empty:
+            # For downs, ascending=False means less negative gets rank 1 (best), more negative gets higher rank (worst)
+            down_events_df['rank'] = down_events_df['change_pct'].rank(ascending=False, method='min').astype(int)
+            down_events_df['rank_display'] = down_events_df['rank'].apply(lambda x: f"{x}/{down_count}")
+        
+        # Merge back into combined_events
+        for i, event in enumerate(combined_events):
+            if event['event_type'] == 'RISE':
+                idx = rise_events_df[
+                    (rise_events_df['start_date'] == event['start_date']) & 
+                    (rise_events_df['end_date'] == event['end_date'])
+                ].index[0]
+                event['rank'] = rise_events_df.loc[idx, 'rank_display']
+            else:
+                idx = down_events_df[
+                    (down_events_df['start_date'] == event['start_date']) & 
+                    (down_events_df['end_date'] == event['end_date'])
+                ].index[0]
+                event['rank'] = down_events_df.loc[idx, 'rank_display']
+        
+        # Recreate DataFrame with ranks
         results_df = pd.DataFrame(combined_events)
         
         if not results_df.empty:
             # Print results
             for idx, event in enumerate(combined_events, 1):
                 if event['event_type'] == 'RISE':
-                    print(f"{idx}. RISE: {event['start_date']} → {event['end_date']} ({event['days']} days): +{event['change_pct']}%")
+                    print(f"{idx}. RISE: {event['start_date']} → {event['end_date']} ({event['days']} days): +{event['change_pct']}% | Rank: {event['rank']} | Cumulative: {event['cumulative_pct']}%")
                 else:
-                    print(f"{idx}. DOWN: {event['start_date']} → {event['end_date']} ({event['days']} days): {event['change_pct']}%")
+                    print(f"{idx}. DOWN: {event['start_date']} → {event['end_date']} ({event['days']} days): {event['change_pct']}% | Rank: {event['rank']} | Cumulative: {event['cumulative_pct']}%")
             
             # Save to CSV
             output_file = "output CSVs/ftai_rise_events.csv"
@@ -248,7 +369,7 @@ def main():
             bold_font = Font(bold=True)
             
             # Write headers
-            headers = ['Event Type', 'Start Date', 'End Date', 'Days', 'Change %']
+            headers = ['Event Type', 'Start Date', 'End Date', 'Days', 'Change %', 'Rank', 'Cumulative %', 'Insider Purchases']
             for col_idx, header in enumerate(headers, 1):
                 cell = ws.cell(row=1, column=col_idx, value=header)
                 cell.fill = header_fill
@@ -261,10 +382,13 @@ def main():
                 ws.cell(row=row_idx, column=3, value=event['end_date'])
                 ws.cell(row=row_idx, column=4, value=event['days'])
                 ws.cell(row=row_idx, column=5, value=event['change_pct'])
+                ws.cell(row=row_idx, column=6, value=event['rank'])
+                ws.cell(row=row_idx, column=7, value=event['cumulative_pct'])
+                ws.cell(row=row_idx, column=8, value=event.get('insider_purchases', ''))
                 
                 # Apply color to entire row
                 fill = green_fill if event['event_type'] == 'RISE' else red_fill
-                for col_idx in range(1, 6):
+                for col_idx in range(1, 9):
                     ws.cell(row=row_idx, column=col_idx).fill = fill
             
             # Adjust column widths
@@ -273,6 +397,9 @@ def main():
             ws.column_dimensions['C'].width = 12
             ws.column_dimensions['D'].width = 8
             ws.column_dimensions['E'].width = 10
+            ws.column_dimensions['F'].width = 8
+            ws.column_dimensions['G'].width = 14
+            ws.column_dimensions['H'].width = 20
             
             wb.save(excel_file)
             print(f"Colored Excel file saved to: {excel_file}")
