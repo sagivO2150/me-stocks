@@ -109,6 +109,7 @@ def identify_rise_events(df: pd.DataFrame, min_days: int = 4, min_growth_pct: fl
                     rise_events.append({
                         'start_date': start_date.strftime('%Y-%m-%d'),
                         'end_date': end_date.strftime('%Y-%m-%d'),
+                        'days': days_duration,
                         'growth_pct': round(growth_pct, 2)
                     })
                 
@@ -135,6 +136,7 @@ def identify_rise_events(df: pd.DataFrame, min_days: int = 4, min_growth_pct: fl
             rise_events.append({
                 'start_date': start_date.strftime('%Y-%m-%d'),
                 'end_date': end_date.strftime('%Y-%m-%d'),
+                'days': days_duration,
                 'growth_pct': round(growth_pct, 2)
             })
     
@@ -145,7 +147,7 @@ def main():
     """Main function to analyze FTAI stock and identify rise events."""
     ticker = "FTAI"
     start_date = "2024-06-04"
-    end_date = "2024-11-21"
+    end_date = "2024-12-04"
     
     print(f"Fetching {ticker} data from {start_date} to {end_date}...")
     
@@ -175,7 +177,7 @@ def main():
         if not results_df.empty:
             # Print results
             for idx, event in enumerate(rise_events, 1):
-                print(f"{idx}. {event['start_date']} → {event['end_date']}: +{event['growth_pct']}%")
+                print(f"{idx}. {event['start_date']} → {event['end_date']} ({event['days']} days): +{event['growth_pct']}%")
             
             # Save to CSV
             output_file = "output CSVs/ftai_rise_events.csv"
