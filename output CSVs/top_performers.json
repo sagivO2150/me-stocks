@@ -1,0 +1,506 @@
+{
+  "best_performers": [
+    {
+      "ticker": "BSAI",
+      "reputation_category": "excellent",
+      "return_pct": 1314.622542479488,
+      "entry_price": 0.4199000000953674,
+      "exit_price": 5.940000057220459,
+      "days_held": 137,
+      "peak_gain": 4179.590214163647,
+      "exit_reason": "trend_reversal"
+    },
+    {
+      "ticker": "FTAI",
+      "reputation_category": "excellent",
+      "return_pct": 1154.5796621146303,
+      "entry_price": 22.306276321411133,
+      "exit_price": 279.8500061035156,
+      "days_held": 763,
+      "peak_gain": 1289.7433867186528,
+      "exit_reason": "end_of_period"
+    },
+    {
+      "ticker": "TERN",
+      "reputation_category": "excellent",
+      "return_pct": 1079.892710361569,
+      "entry_price": 3.7300000190734863,
+      "exit_price": 44.0099983215332,
+      "days_held": 121,
+      "peak_gain": 1193.8337285456837,
+      "exit_reason": "trend_reversal"
+    },
+    {
+      "ticker": "XCUR",
+      "reputation_category": "excellent",
+      "return_pct": 915.4867637072484,
+      "entry_price": 2.259999990463257,
+      "exit_price": 22.950000762939453,
+      "days_held": 59,
+      "peak_gain": 1492.920360704103,
+      "exit_reason": "trend_reversal"
+    },
+    {
+      "ticker": "TOGI",
+      "reputation_category": "excellent",
+      "return_pct": 864.2857228386765,
+      "entry_price": 0.0070000002160668,
+      "exit_price": 0.067500002682209,
+      "days_held": 20,
+      "peak_gain": 1042.8570820360785,
+      "exit_reason": "trend_reversal"
+    },
+    {
+      "ticker": "NRIS",
+      "reputation_category": "good",
+      "return_pct": 502.40965694003086,
+      "entry_price": 0.0165999997407197,
+      "exit_price": 0.1000000014901161,
+      "days_held": 27,
+      "peak_gain": 803.0120880061696,
+      "exit_reason": "trend_reversal"
+    },
+    {
+      "ticker": "BLTH",
+      "reputation_category": "excellent",
+      "return_pct": 500.0,
+      "entry_price": 1.25,
+      "exit_price": 7.5,
+      "days_held": 33,
+      "peak_gain": 699.1999816894531,
+      "exit_reason": "trend_reversal"
+    },
+    {
+      "ticker": "BLTH",
+      "reputation_category": "excellent",
+      "return_pct": 500.0,
+      "entry_price": 1.25,
+      "exit_price": 7.5,
+      "days_held": 33,
+      "peak_gain": 699.1999816894531,
+      "exit_reason": "trend_reversal"
+    },
+    {
+      "ticker": "ASA",
+      "reputation_category": "good",
+      "return_pct": 484.8301186020764,
+      "entry_price": 12.227482795715332,
+      "exit_price": 71.51000213623047,
+      "days_held": 883,
+      "peak_gain": 539.6246912886963,
+      "exit_reason": "end_of_period"
+    },
+    {
+      "ticker": "EMMA",
+      "reputation_category": "good",
+      "return_pct": 462.49999767169345,
+      "entry_price": 0.0799999982118606,
+      "exit_price": 0.449999988079071,
+      "days_held": 17,
+      "peak_gain": 501.250021187589,
+      "exit_reason": "trend_reversal"
+    },
+    {
+      "ticker": "ASA",
+      "reputation_category": "good",
+      "return_pct": 459.48394498493246,
+      "entry_price": 12.781421661376951,
+      "exit_price": 71.51000213623047,
+      "days_held": 590,
+      "peak_gain": 511.9037549696723,
+      "exit_reason": "end_of_period"
+    },
+    {
+      "ticker": "CABA",
+      "reputation_category": "excellent",
+      "return_pct": 441.8768823053657,
+      "entry_price": 0.99099999666214,
+      "exit_price": 5.369999885559082,
+      "days_held": 41,
+      "peak_gain": 522.6034406736203,
+      "exit_reason": "trend_reversal"
+    },
+    {
+      "ticker": "CABA",
+      "reputation_category": "excellent",
+      "return_pct": 441.8768823053657,
+      "entry_price": 0.99099999666214,
+      "exit_price": 5.369999885559082,
+      "days_held": 41,
+      "peak_gain": 522.6034406736203,
+      "exit_reason": "trend_reversal"
+    },
+    {
+      "ticker": "CABA",
+      "reputation_category": "excellent",
+      "return_pct": 441.8768823053657,
+      "entry_price": 0.99099999666214,
+      "exit_price": 5.369999885559082,
+      "days_held": 41,
+      "peak_gain": 522.6034406736203,
+      "exit_reason": "trend_reversal"
+    },
+    {
+      "ticker": "CABA",
+      "reputation_category": "excellent",
+      "return_pct": 441.8768823053657,
+      "entry_price": 0.99099999666214,
+      "exit_price": 5.369999885559082,
+      "days_held": 41,
+      "peak_gain": 522.6034406736203,
+      "exit_reason": "trend_reversal"
+    },
+    {
+      "ticker": "CABA",
+      "reputation_category": "excellent",
+      "return_pct": 441.8768823053657,
+      "entry_price": 0.99099999666214,
+      "exit_price": 5.369999885559082,
+      "days_held": 41,
+      "peak_gain": 522.6034406736203,
+      "exit_reason": "trend_reversal"
+    },
+    {
+      "ticker": "ASA",
+      "reputation_category": "good",
+      "return_pct": 439.72749774776656,
+      "entry_price": 13.249279022216797,
+      "exit_price": 71.51000213623047,
+      "days_held": 592,
+      "peak_gain": 490.2962640708806,
+      "exit_reason": "end_of_period"
+    },
+    {
+      "ticker": "PAPL",
+      "reputation_category": "excellent",
+      "return_pct": 438.7499848194422,
+      "entry_price": 0.800000011920929,
+      "exit_price": 4.309999942779541,
+      "days_held": 46,
+      "peak_gain": 1091.249948870391,
+      "exit_reason": "trend_reversal"
+    },
+    {
+      "ticker": "BKKT",
+      "reputation_category": "good",
+      "return_pct": 437.4701706496604,
+      "entry_price": 8.380000114440918,
+      "exit_price": 45.040000915527344,
+      "days_held": 37,
+      "peak_gain": 494.15274744121103,
+      "exit_reason": "trend_reversal"
+    },
+    {
+      "ticker": "ASA",
+      "reputation_category": "good",
+      "return_pct": 423.5725056200291,
+      "entry_price": 13.658089637756348,
+      "exit_price": 71.51000213623047,
+      "days_held": 586,
+      "peak_gain": 472.6276599347347,
+      "exit_reason": "end_of_period"
+    },
+    {
+      "ticker": "PHAT",
+      "reputation_category": "excellent",
+      "return_pct": 416.1572005119024,
+      "entry_price": 2.2899999618530273,
+      "exit_price": 11.81999969482422,
+      "days_held": 112,
+      "peak_gain": 467.6855989761952,
+      "exit_reason": "trend_reversal"
+    },
+    {
+      "ticker": "TAYD",
+      "reputation_category": "good",
+      "return_pct": 389.8550617805864,
+      "entry_price": 10.350000381469728,
+      "exit_price": 50.70000076293945,
+      "days_held": 404,
+      "peak_gain": 496.13525110013467,
+      "exit_reason": "trend_reversal"
+    },
+    {
+      "ticker": "BSPK",
+      "reputation_category": "good",
+      "return_pct": 385.4369177839875,
+      "entry_price": 0.0308999996632337,
+      "exit_price": 0.1500000059604644,
+      "days_held": 51,
+      "peak_gain": 712.2329854446638,
+      "exit_reason": "trend_reversal"
+    },
+    {
+      "ticker": "ALMS",
+      "reputation_category": "excellent",
+      "return_pct": 385.0224545405249,
+      "entry_price": 5.574999809265137,
+      "exit_price": 27.040000915527344,
+      "days_held": 57,
+      "peak_gain": 407.4439799712991,
+      "exit_reason": "trend_reversal"
+    },
+    {
+      "ticker": "BOF",
+      "reputation_category": "good",
+      "return_pct": 372.4292188185098,
+      "entry_price": 0.6710000038146973,
+      "exit_price": 3.1700000762939453,
+      "days_held": 384,
+      "peak_gain": 512.5186453276709,
+      "exit_reason": "end_of_period"
+    }
+  ],
+  "worst_performers": [
+    {
+      "ticker": "APHD",
+      "reputation_category": "excellent",
+      "return_pct": -99.71751412719682,
+      "entry_price": 0.0353999994695186,
+      "exit_price": 9.999999747378752e-05,
+      "days_held": 27,
+      "peak_gain": 50.84745620021436,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "ticker": "APHD",
+      "reputation_category": "excellent",
+      "return_pct": -91.79999977350236,
+      "entry_price": 0.5,
+      "exit_price": 0.0410000011324882,
+      "days_held": 7,
+      "peak_gain": 0.0,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "ticker": "TECX",
+      "reputation_category": "good",
+      "return_pct": -91.48418533650374,
+      "entry_price": 16.440000534057617,
+      "exit_price": 1.399999976158142,
+      "days_held": 28,
+      "peak_gain": 12.408752688009866,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "ticker": "AVTX",
+      "reputation_category": "excellent",
+      "return_pct": -87.7149875614624,
+      "entry_price": 976.7999877929688,
+      "exit_price": 120.0,
+      "days_held": 5,
+      "peak_gain": 15.724819670416402,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "ticker": "AVTX",
+      "reputation_category": "excellent",
+      "return_pct": -86.48648648648648,
+      "entry_price": 888.0,
+      "exit_price": 120.0,
+      "days_held": 10,
+      "peak_gain": 27.29730004662866,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "ticker": "AVTX",
+      "reputation_category": "excellent",
+      "return_pct": -86.48648648648648,
+      "entry_price": 888.0,
+      "exit_price": 120.0,
+      "days_held": 10,
+      "peak_gain": 27.29730004662866,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "ticker": "KDOZF",
+      "reputation_category": "good",
+      "return_pct": -85.71428558757516,
+      "entry_price": 0.209999993443489,
+      "exit_price": 0.0299999993294477,
+      "days_held": 10,
+      "peak_gain": 80.95238433132917,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "ticker": "KDOZF",
+      "reputation_category": "good",
+      "return_pct": -85.71428558757516,
+      "entry_price": 0.209999993443489,
+      "exit_price": 0.0299999993294477,
+      "days_held": 10,
+      "peak_gain": 80.95238433132917,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "ticker": "KDOZF",
+      "reputation_category": "good",
+      "return_pct": -85.71428558757516,
+      "entry_price": 0.209999993443489,
+      "exit_price": 0.0299999993294477,
+      "days_held": 7,
+      "peak_gain": 0.0,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "ticker": "AVTX",
+      "reputation_category": "excellent",
+      "return_pct": -83.55263102858129,
+      "entry_price": 729.5999755859375,
+      "exit_price": 120.0,
+      "days_held": 9,
+      "peak_gain": 54.934219056990074,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "ticker": "JBIO",
+      "reputation_category": "excellent",
+      "return_pct": -79.63550043691728,
+      "entry_price": 49.79253387451172,
+      "exit_price": 10.140000343322754,
+      "days_held": 224,
+      "peak_gain": 105.4794640059834,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "ticker": "BLTH",
+      "reputation_category": "excellent",
+      "return_pct": -78.07807700304545,
+      "entry_price": 3.3299999237060547,
+      "exit_price": 0.7300000190734863,
+      "days_held": 3,
+      "peak_gain": 0.0,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "ticker": "SYRS",
+      "reputation_category": "excellent",
+      "return_pct": -77.13375889276594,
+      "entry_price": 1.5700000524520874,
+      "exit_price": 0.3589999973773956,
+      "days_held": 45,
+      "peak_gain": 116.56050839343467,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "ticker": "SYRS",
+      "reputation_category": "excellent",
+      "return_pct": -77.13375889276594,
+      "entry_price": 1.5700000524520874,
+      "exit_price": 0.3589999973773956,
+      "days_held": 45,
+      "peak_gain": 116.56050839343467,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "ticker": "KDOZF",
+      "reputation_category": "good",
+      "return_pct": -76.92307659242984,
+      "entry_price": 0.1299999952316284,
+      "exit_price": 0.0299999993294477,
+      "days_held": 6,
+      "peak_gain": 7.692312100935427,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "ticker": "CLIK",
+      "reputation_category": "excellent",
+      "return_pct": -76.85810976258321,
+      "entry_price": 88.80000305175781,
+      "exit_price": 20.549999237060547,
+      "days_held": 3,
+      "peak_gain": 0.0,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "ticker": "STME",
+      "reputation_category": "good",
+      "return_pct": -76.19047664100262,
+      "entry_price": 0.4724999964237213,
+      "exit_price": 0.1124999970197677,
+      "days_held": 5,
+      "peak_gain": 0.0,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "ticker": "AMLX",
+      "reputation_category": "excellent",
+      "return_pct": -75.96566519945436,
+      "entry_price": 13.979999542236328,
+      "exit_price": 3.359999895095825,
+      "days_held": 59,
+      "peak_gain": 42.69671000086499,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "ticker": "CLIK",
+      "reputation_category": "excellent",
+      "return_pct": -75.27075858676436,
+      "entry_price": 83.0999984741211,
+      "exit_price": 20.549999237060547,
+      "days_held": 9,
+      "peak_gain": 15.16245331586254,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "ticker": "NMGX",
+      "reputation_category": "good",
+      "return_pct": -75.0,
+      "entry_price": 0.2000000029802322,
+      "exit_price": 0.050000000745058,
+      "days_held": 75,
+      "peak_gain": 175.00000186264512,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "ticker": "CLIK",
+      "reputation_category": "excellent",
+      "return_pct": -74.05303026654138,
+      "entry_price": 79.19999694824219,
+      "exit_price": 20.549999237060547,
+      "days_held": 10,
+      "peak_gain": 20.833334136089523,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "ticker": "BSAI",
+      "reputation_category": "excellent",
+      "return_pct": -73.45132626664882,
+      "entry_price": 0.5649999976158142,
+      "exit_price": 0.1500000059604644,
+      "days_held": 7,
+      "peak_gain": 1.5486763707248568,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "ticker": "BSAI",
+      "reputation_category": "excellent",
+      "return_pct": -72.72727223467237,
+      "entry_price": 0.550000011920929,
+      "exit_price": 0.1500000059604644,
+      "days_held": 8,
+      "peak_gain": 4.318183025052699,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "ticker": "OVID",
+      "reputation_category": "good",
+      "return_pct": -71.68458665737832,
+      "entry_price": 2.7899999618530273,
+      "exit_price": 0.7900000214576721,
+      "days_held": 64,
+      "peak_gain": 23.65591737830483,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "ticker": "BLTH",
+      "reputation_category": "excellent",
+      "return_pct": -71.65532781744814,
+      "entry_price": 4.409999847412109,
+      "exit_price": 1.25,
+      "days_held": 12,
+      "peak_gain": 70.06803309531121,
+      "exit_reason": "stop_loss"
+    }
+  ]
+}

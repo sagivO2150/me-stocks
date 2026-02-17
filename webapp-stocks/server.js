@@ -284,7 +284,7 @@ app.get('/api/batch-insider-trades', (req, res) => {
   }
 });
 
-// Stock history endpoint
+// Stock history endpoint - reads from local yfinance cache
 app.get('/api/stock-history/:ticker', (req, res) => {
   const ticker = req.params.ticker.toUpperCase();
   const period = req.query.period || '1y'; // Default to 1 year
@@ -296,46 +296,83 @@ app.get('/api/stock-history/:ticker', (req, res) => {
     return res.json(cached);
   }
   
-  console.log(`Fetching stock history for ${ticker}, period: ${period}`);
+  console.log(`Fetching stock history for ${ticker} from local cache, period: ${period}`);
   
-  const pythonScript = path.join(__dirname, '../scripts/utils/fetch_stock_history.py');
-  const pythonProcess = spawn('/opt/homebrew/bin/python3', [pythonScript, ticker, period]);
-  
-  let output = '';
-  let errorOutput = '';
-  
-  pythonProcess.stdout.on('data', (data) => {
-    output += data.toString();
-  });
-  
-  pythonProcess.stderr.on('data', (data) => {
-    errorOutput += data.toString();
-    console.error(data.toString());
-  });
-  
-  pythonProcess.on('close', (code) => {
-    if (code === 0) {
-      try {
-        const result = JSON.parse(output);
-        setCache(cacheKey, result); // Cache successful result
-        res.json(result);
-      } catch (e) {
-        console.error('Failed to parse Python output:', e);
-        res.status(500).json({
-          success: false,
-          error: 'Failed to parse stock data',
-          details: e.message
-        });
-      }
-    } else {
-      console.error(`Python script exited with code ${code}`);
-      res.status(500).json({
+  try {
+    // Use smaller cache file with only top performers (28 stocks vs 3,171)
+    const cacheFilePath = path.join(__dirname, '../output CSVs/yfinance_cache_top_performers.json');
+    
+    if (!fs.existsSync(cacheFilePath)) {
+      return res.status(404).json({
         success: false,
-        error: `Failed to fetch stock data (exit code ${code})`,
-        details: errorOutput
+        error: 'Top performers cache file not found',
+        message: 'Please run: .venv/bin/python scripts/utils/extract_top_performers_cache.py'
       });
     }
-  });
+    
+    // File is small (12MB) so we can parse it as JSON
+    const cacheData = JSON.parse(fs.readFileSync(cacheFilePath, 'utf-8'));
+    
+    if (!cacheData.data || !cacheData.data[ticker]) {
+      return res.status(404).json({
+        success: false,
+        error: 'Ticker not found in top performers cache',
+        ticker,
+        message: `Only top 25 best/worst performers are cached`
+      });
+    }
+    
+    const stockData = cacheData.data[ticker];
+    
+    // Convert to expected format
+    const historyData = stockData.dates.map((date, idx) => ({
+      date,
+      open: stockData.open[idx],
+      high: stockData.high[idx],
+      low: stockData.low[idx],
+      close: stockData.close[idx],
+      volume: stockData.volume[idx]
+    }));
+    
+    // Filter by period if needed
+    let filteredData = historyData;
+    if (period !== 'max') {
+      const periodMap = {
+        '1mo': 30,
+        '3mo': 90,
+        '6mo': 180,
+        '1y': 365,
+        '2y': 730,
+        '5y': 1825
+      };
+      
+      const daysBack = periodMap[period] || 365;
+      const cutoffDate = new Date();
+      cutoffDate.setDate(cutoffDate.getDate() - daysBack);
+      
+      filteredData = historyData.filter(item => {
+        const itemDate = new Date(item.date);
+        return itemDate >= cutoffDate;
+      });
+    }
+    
+    const result = {
+      success: true,
+      ticker,
+      history: filteredData  // Use 'history' key to match frontend expectation
+    };
+    
+    setCache(cacheKey, result); // Cache successful result
+    res.json(result);
+    
+  } catch (error) {
+    console.error('Error reading from local cache:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to read stock data from cache',
+      details: error.message
+    });
+  }
 });
 
 // Insider trades endpoint
