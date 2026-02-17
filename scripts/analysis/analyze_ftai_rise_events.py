@@ -20,9 +20,9 @@ def load_ftai_insider_trades():
         with open('output CSVs/expanded_insider_trades.json', 'r') as f:
             data = json.load(f)
         
-        # Find FTAI entries
+        # Find BSAI entries
         for stock in data.get('data', []):
-            if stock.get('ticker') == 'FTAI':
+            if stock.get('ticker') == 'BSAI':
                 # Extract trade dates and convert to DD/MM/YYYY format
                 trades = []
                 for trade in stock.get('trades', []):
@@ -209,9 +209,9 @@ def identify_rise_events(df: pd.DataFrame, min_days: int = 4, min_growth_pct: fl
 
 def main():
     """Main function to analyze FTAI stock and identify rise events."""
-    ticker = "FTAI"
-    start_date = "2015-05-14"
-    end_date = "2026-02-17"
+    ticker = "BSAI"
+    start_date = "2015-10-05"
+    end_date = "2026-02-12"
     
     print(f"Fetching {ticker} data from {start_date} to {end_date}...")
     
@@ -242,11 +242,13 @@ def main():
         
         # Create combined list with rise events and down periods
         combined_events = []
-        cumulative_pct = 0.0
+        cumulative_multiplier = 1.0  # Track actual price multiplier from start
         
         for i, rise_event in enumerate(rise_events):
             # Add the rise event
-            cumulative_pct += rise_event['growth_pct']
+            cumulative_multiplier *= (1 + rise_event['growth_pct'] / 100)
+            cumulative_pct = (cumulative_multiplier - 1) * 100
+            
             insider_purchases = find_insider_purchases_in_range(
                 rise_event['start_date'], 
                 rise_event['end_date'], 
@@ -286,7 +288,9 @@ def main():
                 down_days = len(down_period_df) - 1  # Exclude the start date since it's the peak
                 
                 if down_days > 0:
-                    cumulative_pct += (-decline_pct)
+                    cumulative_multiplier *= (1 - decline_pct / 100)
+                    cumulative_pct = (cumulative_multiplier - 1) * 100
+                    
                     insider_purchases = find_insider_purchases_in_range(
                         rise_event['end_date'],
                         rise_events[i + 1]['start_date'],
