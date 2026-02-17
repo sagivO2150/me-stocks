@@ -1143,7 +1143,9 @@ app.get('/api/best-worst-performers', (req, res) => {
         success: false, 
         error: 'Backtest results not found',
         bestPerformers: [],
-        worstPerformers: []
+        worstPerformers: [],
+        bestTrades: [],
+        worstTrades: []
       });
     }
     
@@ -1155,6 +1157,8 @@ app.get('/api/best-worst-performers', (req, res) => {
         success: true, 
         bestPerformers: [],
         worstPerformers: [],
+        bestTrades: [],
+        worstTrades: [],
         message: 'Backtest results file is empty'
       });
     }
@@ -1195,21 +1199,21 @@ app.get('/api/best-worst-performers', (req, res) => {
       parseFloat(b.return_pct) - parseFloat(a.return_pct)
     );
     
-    const bestPerformers = sortedByReturn.slice(0, 25);
-    const worstPerformers = sortedByReturn.slice(-25).reverse();
+    const bestTrades = sortedByReturn.slice(0, 25);
+    const worstTrades = sortedByReturn.slice(-25).reverse();
     
     // Get unique tickers for both lists
-    const bestTickers = [...new Set(bestPerformers.map(t => t.ticker))];
-    const worstTickers = [...new Set(worstPerformers.map(t => t.ticker))];
+    const bestTickers = [...new Set(bestTrades.map(t => t.ticker))];
+    const worstTickers = [...new Set(worstTrades.map(t => t.ticker))];
     
     res.json({ 
       success: true, 
-      bestPerformers,
-      worstPerformers,
-      bestTickers,
-      worstTickers,
-      bestCount: bestPerformers.length,
-      worstCount: worstPerformers.length
+      bestPerformers: bestTickers,
+      worstPerformers: worstTickers,
+      bestTrades,        // Include full trade data
+      worstTrades,       // Include full trade data
+      bestCount: bestTrades.length,
+      worstCount: worstTrades.length
     });
   } catch (error) {
     console.error('Error reading best/worst performers:', error);

@@ -15,6 +15,8 @@ function App() {
   const [livePurchases, setLivePurchases] = useState([]);
   const [bestPerformers, setBestPerformers] = useState([]);
   const [worstPerformers, setWorstPerformers] = useState([]);
+  const [bestTrades, setBestTrades] = useState([]);
+  const [worstTrades, setWorstTrades] = useState([]);
   const [politicalPagination, setPoliticalPagination] = useState({
     page: 1,
     limit: 50,
@@ -152,8 +154,10 @@ function App() {
       const data = await response.json();
       
       if (data.success) {
-        setBestPerformers(data.bestTickers || []);
-        setWorstPerformers(data.worstTickers || []);
+        setBestPerformers(data.bestPerformers || []);
+        setWorstPerformers(data.worstPerformers || []);
+        setBestTrades(data.bestTrades || []);
+        setWorstTrades(data.worstTrades || []);
       }
     } catch (err) {
       console.error('Error loading best/worst performers:', err.message);
@@ -659,7 +663,10 @@ function App() {
                   </div>
                 </div>
               ) : (
-                <AllChartsView stocks={bestPerformers.map(ticker => ({ ticker }))} />
+                <AllChartsView 
+                  stocks={bestPerformers.map(ticker => ({ ticker }))} 
+                  backtestTrades={bestTrades}
+                />
               )}
             </div>
 
@@ -676,7 +683,10 @@ function App() {
                   </div>
                 </div>
               ) : (
-                <AllChartsView stocks={worstPerformers.map(ticker => ({ ticker }))} />
+                <AllChartsView 
+                  stocks={worstPerformers.map(ticker => ({ ticker }))} 
+                  backtestTrades={worstTrades}
+                />
               )}
             </div>
           </div>

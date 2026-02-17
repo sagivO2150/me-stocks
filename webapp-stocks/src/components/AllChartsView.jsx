@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as ChartTooltip, ResponsiveContainer, Area, AreaChart, ComposedChart, Scatter, ReferenceDot, Customized } from 'recharts';
 
-const AllChartsView = ({ stocks }) => {
+const AllChartsView = ({ stocks, backtestTrades }) => {
   const [allBacktestTrades, setAllBacktestTrades] = useState(null);
   
-  // Fetch backtest results ONCE for all stocks
+  // Fetch backtest results ONCE for all stocks (unless provided via prop)
   useEffect(() => {
+    if (backtestTrades) {
+      // Use provided backtest trades (for Best/Worst performers)
+      setAllBacktestTrades(backtestTrades);
+      return;
+    }
+    
+    // Otherwise fetch from default endpoint
     const fetchBacktestResults = async () => {
       try {
         const response = await fetch(`http://localhost:3001/api/backtest-results`);
@@ -20,7 +27,7 @@ const AllChartsView = ({ stocks }) => {
     };
     
     fetchBacktestResults();
-  }, []);
+  }, [backtestTrades]);
   
   return (
     <div className="grid grid-cols-1 gap-8">
