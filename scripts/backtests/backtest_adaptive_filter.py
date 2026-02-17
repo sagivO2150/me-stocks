@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+#testcommit
 """
 Adaptive Filter Backtest: Learn which stocks are bad by tracking performance
 - 3 consecutive stop losses in <10 days → blacklist for 90 days
