@@ -26,6 +26,11 @@ wheels/
 # CSV output files
 *.csv
 
+# Large cache files (1.3GB+ data files)
+output CSVs/yfinance_cache_full.json
+output CSVs/yfinance_cache_batch1.json
+output CSVs/expanded_insider_trades.json
+
 # IDE
 .vscode/
 .idea/
