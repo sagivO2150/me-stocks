@@ -9,6 +9,8 @@ import yfinance as yf
 import pandas as pd
 from datetime import datetime
 from typing import List, Dict
+from openpyxl import Workbook
+from openpyxl.styles import PatternFill, Font
 
 
 def identify_rise_events(df: pd.DataFrame, min_days: int = 4, min_growth_pct: float = 2.0, min_decline_pct: float = 1.5, min_recovery_pct: float = 2.0) -> List[Dict]:
@@ -147,7 +149,7 @@ def main():
     """Main function to analyze FTAI stock and identify rise events."""
     ticker = "FTAI"
     start_date = "2024-06-04"
-    end_date = "2024-12-04"
+    end_date = "2025-01-27"
     
     print(f"Fetching {ticker} data from {start_date} to {end_date}...")
     
@@ -171,13 +173,61 @@ def main():
         print(f"Found {len(rise_events)} rise events:")
         print()
         
-        # Create DataFrame from rise events
-        results_df = pd.DataFrame(rise_events)
+        # Create combined list with rise events and down periods
+        combined_events = []
+        
+        for i, rise_event in enumerate(rise_events):
+            # Add the rise event
+            combined_events.append({
+                'event_type': 'RISE',
+                'start_date': rise_event['start_date'],
+                'end_date': rise_event['end_date'],
+                'days': rise_event['days'],
+                'change_pct': rise_event['growth_pct']
+            })
+            
+            # Calculate down period to next rise (if not the last rise event)
+            if i < len(rise_events) - 1:
+                # Find the dates in the dataframe
+                current_end_str = rise_event['end_date']
+                next_start_str = rise_events[i + 1]['start_date']
+                
+                # Get the peak price at end of current rise
+                peak_mask = df.index.strftime('%Y-%m-%d') == current_end_str
+                peak_price = df.loc[peak_mask, 'Close'].iloc[0]
+                
+                # Get the bottom price at start of next rise
+                bottom_mask = df.index.strftime('%Y-%m-%d') == next_start_str
+                bottom_price = df.loc[bottom_mask, 'Close'].iloc[0]
+                
+                # Calculate decline percentage
+                decline_pct = ((peak_price - bottom_price) / peak_price) * 100
+                
+                # Calculate number of trading days
+                peak_idx = df.index[peak_mask][0]
+                bottom_idx = df.index[bottom_mask][0]
+                down_period_df = df.loc[peak_idx:bottom_idx]
+                down_days = len(down_period_df) - 1  # Exclude the start date since it's the peak
+                
+                if down_days > 0:
+                    combined_events.append({
+                        'event_type': 'DOWN',
+                        'start_date': rise_event['end_date'],
+                        'end_date': rise_events[i + 1]['start_date'],
+                        'days': down_days,
+                        'change_pct': -round(decline_pct, 2)
+                    })
+        
+        # Create DataFrame from combined events
+        results_df = pd.DataFrame(combined_events)
         
         if not results_df.empty:
             # Print results
-            for idx, event in enumerate(rise_events, 1):
-                print(f"{idx}. {event['start_date']} → {event['end_date']} ({event['days']} days): +{event['growth_pct']}%")
+            for idx, event in enumerate(combined_events, 1):
+                if event['event_type'] == 'RISE':
+                    print(f"{idx}. RISE: {event['start_date']} → {event['end_date']} ({event['days']} days): +{event['change_pct']}%")
+                else:
+                    print(f"{idx}. DOWN: {event['start_date']} → {event['end_date']} ({event['days']} days): {event['change_pct']}%")
             
             # Save to CSV
             output_file = "output CSVs/ftai_rise_events.csv"
@@ -185,10 +235,53 @@ def main():
             print()
             print(f"Results saved to: {output_file}")
             
-            # Summary statistics
-            total_growth = results_df['growth_pct'].sum()
-            avg_growth = results_df['growth_pct'].mean()
-            max_growth = results_df['growth_pct'].max()
+            # Save to Excel with colors
+            excel_file = "output CSVs/ftai_rise_events.xlsx"
+            wb = Workbook()
+            ws = wb.active
+            ws.title = "FTAI Rise Events"
+            
+            # Define colors
+            green_fill = PatternFill(start_color="90EE90", end_color="90EE90", fill_type="solid")
+            red_fill = PatternFill(start_color="FFB6C1", end_color="FFB6C1", fill_type="solid")
+            header_fill = PatternFill(start_color="D3D3D3", end_color="D3D3D3", fill_type="solid")
+            bold_font = Font(bold=True)
+            
+            # Write headers
+            headers = ['Event Type', 'Start Date', 'End Date', 'Days', 'Change %']
+            for col_idx, header in enumerate(headers, 1):
+                cell = ws.cell(row=1, column=col_idx, value=header)
+                cell.fill = header_fill
+                cell.font = bold_font
+            
+            # Write data with colors
+            for row_idx, event in enumerate(combined_events, 2):
+                ws.cell(row=row_idx, column=1, value=event['event_type'])
+                ws.cell(row=row_idx, column=2, value=event['start_date'])
+                ws.cell(row=row_idx, column=3, value=event['end_date'])
+                ws.cell(row=row_idx, column=4, value=event['days'])
+                ws.cell(row=row_idx, column=5, value=event['change_pct'])
+                
+                # Apply color to entire row
+                fill = green_fill if event['event_type'] == 'RISE' else red_fill
+                for col_idx in range(1, 6):
+                    ws.cell(row=row_idx, column=col_idx).fill = fill
+            
+            # Adjust column widths
+            ws.column_dimensions['A'].width = 12
+            ws.column_dimensions['B'].width = 12
+            ws.column_dimensions['C'].width = 12
+            ws.column_dimensions['D'].width = 8
+            ws.column_dimensions['E'].width = 10
+            
+            wb.save(excel_file)
+            print(f"Colored Excel file saved to: {excel_file}")
+            
+            # Summary statistics for rise events only
+            rise_only = [e for e in combined_events if e['event_type'] == 'RISE']
+            total_growth = sum([e['change_pct'] for e in rise_only])
+            avg_growth = total_growth / len(rise_only) if rise_only else 0
+            max_growth = max([e['change_pct'] for e in rise_only]) if rise_only else 0
             
             print()
             print("Summary:")
