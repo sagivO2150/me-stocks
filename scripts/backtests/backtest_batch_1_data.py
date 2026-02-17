@@ -647,18 +647,18 @@ def backtest_with_reputation():
             # Get reputation for this ticker
             reputation = reputation_tracker.get_reputation(ticker)
             
-            # FILTER: Skip neutral/poor reputation stocks entirely
+            # SIMPLE RULE: Good reputation = buy it
             if reputation['position_multiplier'] == 0.0:
                 print(f"   ⏭️  SKIPPING {ticker} [{reputation['category']}] - poor track record")
                 pending_trades.remove(trade)
                 continue
             
-            # Adjust position size based on reputation
+            # Always place NEW $1000 buy order
             position_size = base_position_size * reputation['position_multiplier']
             shares = position_size / entry_price
             
             if reputation['category'] != 'unknown':
-                print(f"   📊 Opening {ticker} [{reputation['category']}]: Size=${position_size:.0f}")
+                print(f"   📊 BUY {ticker} [{reputation['category']}]: Size=${position_size:.0f}")
             
             position = {
                 'ticker': ticker,
@@ -857,9 +857,15 @@ def backtest_with_reputation():
     
     print(f"\n{'='*120}\n")
     
+    # Save to primary file
     output_path = '/Users/sagiv.oron/Documents/scripts_playground/stocks/output CSVs/backtest_reputation_results.csv'
     df.to_csv(output_path, index=False)
     print(f"✅ Results saved to: {output_path}")
+    
+    # ALSO save to latest file for UI display
+    latest_path = '/Users/sagiv.oron/Documents/scripts_playground/stocks/output CSVs/backtest_latest_results.csv'
+    df.to_csv(latest_path, index=False)
+    print(f"✅ UI file updated: {latest_path}")
     
     # Also save reputation data
     rep_data = []

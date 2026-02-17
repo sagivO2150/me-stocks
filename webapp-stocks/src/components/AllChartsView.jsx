@@ -15,7 +15,15 @@ const AllChartsView = ({ stocks, backtestTrades }) => {
     // Otherwise fetch from default endpoint
     const fetchBacktestResults = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/api/backtest-results`);
+        // Add cache buster to force fresh data
+        const cacheBuster = new Date().getTime();
+        const response = await fetch(`http://localhost:3001/api/backtest-results?_=${cacheBuster}`, {
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache'
+          }
+        });
         const data = await response.json();
         
         if (data.success && data.trades) {
@@ -53,6 +61,16 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
   
   // Filter backtest trades for this ticker
   const backtestTrades = allBacktestTrades ? allBacktestTrades.filter(trade => trade.ticker === ticker) : null;
+  
+  // DEBUG: Log backtest trades count
+  if (ticker === 'FTAI' && backtestTrades) {
+    console.log(`[DEBUG] FTAI backtestTrades count: ${backtestTrades.length}`);
+    console.log('[DEBUG] FTAI backtestTrades:', backtestTrades.map(t => ({
+      entry_date: t.entry_date,
+      entry_price: t.entry_price,
+      profit: t.profit_loss
+    })));
+  }
 
   useEffect(() => {
     if (focusDate) {
@@ -321,7 +339,11 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
         purchaseTrades: purchaseData?.trades || [],
         sales: saleData?.totalValue || null,
         saleTrades: saleData?.trades || [],
-        backtestBuy: backtestBuys.length > 0 ? point.close : null,
+        // Create individual data keys for each backtest buy signal
+        ...(backtestBuys.length > 0 ? backtestBuys.reduce((acc, buy, idx) => {
+          acc[`backtestBuy${idx}`] = point.close;
+          return acc;
+        }, {}) : {}),
         backtestBuyData: backtestBuys,
         backtestSell: backtestSells.length > 0 ? point.close : null,
         backtestSellData: backtestSells,
@@ -341,6 +363,9 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
       <div className="bg-slate-800 border-2 border-slate-600 rounded-lg p-3 shadow-xl">
         <p className="text-white font-bold text-sm mb-2">
           {formattedDate}
+        </p>
+        <p className="text-slate-300 text-xs">
+          Price: ${data.close?.toFixed(2)}
         </p>
         
         {data.purchaseTrades && data.purchaseTrades.length > 0 && (
@@ -628,27 +653,32 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
                   })}
                   
                   {/* Buy dots (yellow circles) - render on top */}
-                  <Scatter
-                    yAxisId="price"
-                    dataKey="backtestBuy"
-                    fill="#fbbf24"
-                    isAnimationActive={false}
-                    shape={(props) => {
-                      const { cx, cy, payload } = props;
-                      if (!payload || !payload.backtestBuy) return null;
-                      
-                      return (
-                        <circle
-                          cx={cx}
-                          cy={cy}
-                          r={8}
-                          fill="#fbbf24"
-                          stroke="#fff"
-                          strokeWidth={2}
-                        />
-                      );
-                    }}
-                  />
+                  {/* Create separate scatter for each backtest buy signal to show multiple on same date */}
+                  {backtestTrades && backtestTrades.map((trade, idx) => (
+                    <Scatter
+                      key={`backtest-buy-${idx}`}
+                      yAxisId="price"
+                      dataKey={`backtestBuy${idx}`}
+                      fill="#fbbf24"
+                      isAnimationActive={false}
+                      shape={(props) => {
+                        const { cx, cy, payload } = props;
+                        const dataKey = `backtestBuy${idx}`;
+                        if (!payload || !payload[dataKey]) return null;
+                        
+                        return (
+                          <circle
+                            cx={cx}
+                            cy={cy}
+                            r={8}
+                            fill="#fbbf24"
+                            stroke="#fff"
+                            strokeWidth={2}
+                          />
+                        );
+                      }}
+                    />
+                  ))}
                   
                   {/* Sell dots (colored squares) - render on top */}
                   <Scatter

@@ -1115,6 +1115,13 @@ app.get('/api/reputation-scores', (req, res) => {
 
 // Endpoint to serve backtest results
 app.get('/api/backtest-results', (req, res) => {
+  // Prevent browser caching - always get fresh data
+  res.set({
+    'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+    'Pragma': 'no-cache',
+    'Expires': '0'
+  });
+  
   // Always serve the latest test results (whichever test ran most recently)
   const csvFilename = 'backtest_latest_results.csv';
   const backtestCSV = path.join(__dirname, '../output CSVs/', csvFilename);
