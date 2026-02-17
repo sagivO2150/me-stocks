@@ -32,6 +32,36 @@ import random
 progress_counter = 0
 progress_lock = threading.Lock()
 
+# ===== LOAD CACHE DATA =====
+
+def load_cache_data():
+    """Load cached yfinance data from JSON file"""
+    cache_file = '/Users/sagiv.oron/Documents/scripts_playground/stocks/output CSVs/yfinance_cache_full.json'
+    
+    print(f"📦 Loading cached data from {cache_file.split('/')[-1]}...")
+    
+    with open(cache_file, 'r') as f:
+        cache = json.load(f)
+    
+    print(f"   ✅ Loaded cache with {len(cache['data'])} stocks")
+    print(f"   📅 Cache created: {cache['metadata']['created']}")
+    
+    # Convert cache data to pandas DataFrames
+    price_cache = {}
+    
+    for ticker, ticker_data in cache['data'].items():
+        df = pd.DataFrame({
+            'Open': ticker_data['open'],
+            'High': ticker_data['high'],
+            'Low': ticker_data['low'],
+            'Close': ticker_data['close'],
+            'Volume': ticker_data['volume']
+        }, index=pd.to_datetime(ticker_data['dates']))
+        
+        price_cache[ticker] = df
+    
+    return price_cache
+
 # ===== REPUTATION SYSTEM =====
 
 class ReputationTracker:
@@ -458,27 +488,8 @@ def backtest_with_reputation():
     with open('/Users/sagiv.oron/Documents/scripts_playground/stocks/output CSVs/expanded_insider_trades.json', 'r') as f:
         data = json.load(f)
     
-    tickers = [stock['ticker'] for stock in data['data']]
-    
-    global progress_counter
-    progress_counter = 0
-    
-    print(f"🔄 Loading stock data for {len(tickers)} tickers...")
-    # Prepare args: (ticker, total_count)
-    ticker_args = [(t, len(tickers)) for t in tickers]
-    
-    # Use 8 workers - good balance between speed and rate limits
-    num_workers = min(8, cpu_count())
-    with Pool(num_workers) as pool:
-        results = pool.map(fetch_ticker_data, ticker_args)
-    
-    print()  # New line after progress
-    
-    price_cache = {}
-    for ticker, history in results:
-        if history is not None:
-            price_cache[ticker] = history
-    
+    # Load cached price data (NO INTERNET FETCHING)
+    price_cache = load_cache_data()
     print(f"   ✅ Loaded {len(price_cache)} stocks with price data\n")
     
     # Build all trades list
