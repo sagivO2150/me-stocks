@@ -232,9 +232,47 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
     const insiderPurchasesByDate = {};
     const insiderSalesByDate = {};
     
+    // Helper function to find nearest trading day
+    const findNearestTradingDay = (targetDateKey) => {
+      const availableDates = data.map(point => point.date.split('T')[0].split(' ')[0]);
+      
+      // If the target date exists, use it
+      if (availableDates.includes(targetDateKey)) {
+        return targetDateKey;
+      }
+      
+      // Otherwise, find the nearest date (prefer the next trading day after)
+      const targetTime = new Date(targetDateKey).getTime();
+      let nearestDate = null;
+      let nearestDiff = Infinity;
+      
+      for (const dateKey of availableDates) {
+        const dateTime = new Date(dateKey).getTime();
+        const diff = Math.abs(dateTime - targetTime);
+        
+        // Prefer dates after the trade date (next trading day)
+        if (dateTime >= targetTime) {
+          if (diff < nearestDiff) {
+            nearestDiff = diff;
+            nearestDate = dateKey;
+          }
+        } else if (nearestDate === null || diff < nearestDiff) {
+          // Only use date before if no date after found
+          nearestDiff = diff;
+          nearestDate = dateKey;
+        }
+      }
+      
+      return nearestDate;
+    };
+    
     if (insiderTrades) {
       insiderTrades.purchases?.forEach(trade => {
-        const dateKey = trade.date.split('T')[0].split(' ')[0];
+        const originalDateKey = trade.date.split('T')[0].split(' ')[0];
+        const dateKey = findNearestTradingDay(originalDateKey);
+        
+        if (!dateKey) return; // Skip if no nearby trading day found
+        
         if (!insiderPurchasesByDate[dateKey]) {
           insiderPurchasesByDate[dateKey] = { trades: [], totalValue: 0, count: 0 };
         }
@@ -243,14 +281,19 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
           title: trade.title,
           role: classifyInsiderRole(trade.title),
           shares: trade.shares,
-          value: trade.value
+          value: trade.value,
+          originalDate: originalDateKey !== dateKey ? originalDateKey : null
         });
         insiderPurchasesByDate[dateKey].totalValue += trade.value;
         insiderPurchasesByDate[dateKey].count += 1;
       });
       
       insiderTrades.sales?.forEach(trade => {
-        const dateKey = trade.date.split('T')[0].split(' ')[0];
+        const originalDateKey = trade.date.split('T')[0].split(' ')[0];
+        const dateKey = findNearestTradingDay(originalDateKey);
+        
+        if (!dateKey) return; // Skip if no nearby trading day found
+        
         if (!insiderSalesByDate[dateKey]) {
           insiderSalesByDate[dateKey] = { trades: [], totalValue: 0, count: 0 };
         }
@@ -259,7 +302,8 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
           title: trade.title,
           role: classifyInsiderRole(trade.title),
           shares: trade.shares,
-          value: trade.value
+          value: trade.value,
+          originalDate: originalDateKey !== dateKey ? originalDateKey : null
         });
         insiderSalesByDate[dateKey].totalValue += trade.value;
         insiderSalesByDate[dateKey].count += 1;
@@ -373,11 +417,20 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
             <p className="text-green-400 text-xs font-bold mb-1">
               🟢 Insider Purchases ({data.purchaseTrades.length})
             </p>
-            {data.purchaseTrades.map((trade, idx) => (
-              <div key={idx} className="text-xs text-slate-300 ml-2">
-                • {trade.insider} ({trade.role}): ${(trade.value / 1000).toFixed(0)}K
-              </div>
-            ))}
+            {data.purchaseTrades.map((trade, idx) => {
+              const formattedOriginalDate = trade.originalDate 
+                ? new Date(trade.originalDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })
+                : null;
+              
+              return (
+                <div key={idx} className="text-xs text-slate-300 ml-2">
+                  • {trade.insider} ({trade.role}): ${trade.value >= 1000 ? `${(trade.value / 1000).toFixed(1)}K` : trade.value.toFixed(0)}
+                  {formattedOriginalDate && (
+                    <span className="text-slate-500 text-xxs ml-1">(filed {formattedOriginalDate})</span>
+                  )}
+                </div>
+              );
+            })}
           </div>
         )}
         
