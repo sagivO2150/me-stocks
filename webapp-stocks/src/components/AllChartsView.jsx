@@ -1,6 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as ChartTooltip, ResponsiveContainer, Area, AreaChart, ComposedChart, Scatter, ReferenceDot, Customized } from 'recharts';
 
+// Utility function to format amounts with K/M notation
+const formatAmount = (amount) => {
+  if (amount === null || amount === undefined || isNaN(amount)) return 'N/A';
+  const num = parseFloat(amount);
+  if (num >= 1000000) {
+    return `$${(num / 1000000).toFixed(1)}M`;
+  } else if (num >= 1000) {
+    return `$${(num / 1000).toFixed(1)}K`;
+  } else {
+    return `$${num.toFixed(0)}`;
+  }
+};
+
 const AllChartsView = ({ stocks, backtestTrades }) => {
   const [allBacktestTrades, setAllBacktestTrades] = useState(null);
   
@@ -306,7 +319,7 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
           role: classifyInsiderRole(trade.title),
           shares: trade.shares,
           value: trade.value,
-          originalDate: originalDateKey !== dateKey ? originalDateKey : null
+          originalDate: originalDateKey  // Always include the filing date
         });
         insiderPurchasesByDate[dateKey].totalValue += trade.value;
         insiderPurchasesByDate[dateKey].count += 1;
@@ -327,7 +340,7 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
           role: classifyInsiderRole(trade.title),
           shares: trade.shares,
           value: trade.value,
-          originalDate: originalDateKey !== dateKey ? originalDateKey : null
+          originalDate: originalDateKey  // Always include the filing date
         });
         insiderSalesByDate[dateKey].totalValue += trade.value;
         insiderSalesByDate[dateKey].count += 1;
@@ -349,11 +362,12 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
           }
           backtestBuysByDate[entryDateKey].push({
             entry_price: parseFloat(trade.entry_price),
-            amount_invested: parseFloat(trade.amount_invested),
+            position_size: parseFloat(trade.position_size),
             return_pct: parseFloat(trade.return_pct),
             profit_loss: parseFloat(trade.profit_loss),
             exit_reason: trade.exit_reason,
-            exit_date: exitDateKey
+            exit_date: exitDateKey,
+            insider_purchase_date: trade.insider_purchase_date
           });
         }
         
@@ -448,7 +462,7 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
               
               return (
                 <div key={idx} className="text-xs text-slate-300 ml-2">
-                  • {trade.insider} ({trade.role}): ${trade.value >= 1000 ? `${(trade.value / 1000).toFixed(1)}K` : trade.value.toFixed(0)}
+                  • {trade.insider} ({trade.role}): {formatAmount(trade.value)}
                   {formattedOriginalDate && (
                     <span className="text-slate-500 text-xxs ml-1">(filed {formattedOriginalDate})</span>
                   )}
@@ -465,11 +479,14 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
             </p>
             {data.backtestBuyData.map((trade, idx) => {
               const exitDate = trade.exit_date ? new Date(trade.exit_date).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }) : 'N/A';
+              const insiderDate = trade.insider_purchase_date ? new Date(trade.insider_purchase_date).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }) : 'N/A';
               return (
                 <div key={idx} className="text-xs text-yellow-200 ml-2">
-                  • Entry: ${trade.entry_price?.toFixed(2)} | Invested: ${trade.amount_invested?.toFixed(0)}
+                  • Entry: ${trade.entry_price?.toFixed(2)} | Invested: {formatAmount(trade.position_size)}
                   <br />
-                  • Till {exitDate} | Return: {trade.return_pct?.toFixed(1)}% | P/L: ${trade.profit_loss?.toFixed(2)}
+                  • Based on insider buy: {insiderDate}
+                  <br />
+                  • Till {exitDate} | Return: {trade.return_pct?.toFixed(1)}% | P/L: {formatAmount(trade.profit_loss)}
                 </div>
               );
             })}

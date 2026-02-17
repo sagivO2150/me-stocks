@@ -456,48 +456,50 @@ def backtest_ipo_conviction_bot():
         # Track state
         had_massive_rise = False
         last_rise_event = None
+        peak_price = entry_price
+        peak_date = entry_date
+        grace_period_end = entry_date + timedelta(days=2)
         
         exit_date = None
         exit_price = None
         exit_reason = None
         
-        events_from_entry = [e for e in events if e['start_date'] >= entry_date]
+        # Get all daily prices from entry forward
+        history_from_entry = history[history.index >= entry_date]
         
-        for i, event in enumerate(events_from_entry):
-            # Track rises
-            if event['type'] == 'RISE':
-                last_rise_event = event
-                
-                # Check if this is a massive rise (>500%)
-                if event['change_pct'] > 500:
-                    had_massive_rise = True
+        for current_date in history_from_entry.index:
+            current_price = history_from_entry.loc[current_date, 'Close']
             
-            # Check downs
-            elif event['type'] == 'DOWN':
-                # If we just had a massive rise, hold through next drop
-                if had_massive_rise and i > 0 and events_from_entry[i-1]['type'] == 'RISE':
-                    if events_from_entry[i-1]['change_pct'] > 500:
-                        # Hold through this drop
-                        had_massive_rise = False  # Reset flag
-                        continue
-                
-                # Check if this is an acceptable correction
-                if last_rise_event is not None:
-                    if is_acceptable_correction(event, last_rise_event):
-                        continue
-                
-                # Check if this is a bleedout
-                prev_events = events_from_entry[:i]
-                if should_sell_on_bleedout(event, prev_events):
-                    exit_date = event['end_date']
-                    exit_price = event['end_price']
-                    exit_reason = 'bleedout_sell'
+            # Update peak
+            if current_price > peak_price:
+                peak_price = current_price
+                peak_date = current_date
+            
+            # Skip stop loss during 2-day grace period
+            if current_date > grace_period_end:
+                # EXIT 1: Stop loss (-5% from entry)
+                loss_pct = ((current_price - entry_price) / entry_price) * 100
+                if loss_pct <= -5:
+                    exit_date = current_date
+                    exit_price = current_price
+                    exit_reason = 'stop_loss'
                     break
+                
+                # EXIT 2: Catalyst expiration (15% drawdown from peak OR 15 days since peak)
+                if peak_price > entry_price:
+                    drawdown_from_peak = ((current_price - peak_price) / peak_price) * 100
+                    days_since_peak = (current_date - peak_date).days
+                    
+                    if drawdown_from_peak <= -15 or days_since_peak >= 15:
+                        exit_date = current_date
+                        exit_price = current_price
+                        exit_reason = 'catalyst_expiration'
+                        break
         
         # If no exit triggered, hold until end of data
         if exit_date is None:
-            exit_date = history_from_trade.index[-1]
-            exit_price = history_from_trade['Close'].iloc[-1]
+            exit_date = history_from_entry.index[-1]
+            exit_price = history_from_entry['Close'].iloc[-1]
             exit_reason = 'end_of_data'
         
         # Calculate returns
