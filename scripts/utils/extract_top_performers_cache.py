@@ -6,7 +6,7 @@ import pandas as pd
 
 def main():
     print("Loading backtest results...")
-    df = pd.read_csv('output CSVs/backtest_reputation_results.csv')
+    df = pd.read_csv('output CSVs/backtest_latest_results.csv')
     
     # Get top 25 best and worst
     top_25_best = df.nlargest(25, 'return_pct')['ticker'].unique()

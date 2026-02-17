@@ -1195,7 +1195,8 @@ app.get('/api/backtest-results', (req, res) => {
 
 // Endpoint to get top 25 best and worst performers from backtest
 app.get('/api/best-worst-performers', (req, res) => {
-  const backtestCSV = path.join(__dirname, '../output CSVs/backtest_reputation_results.csv');
+  // ALWAYS use backtest_latest_results.csv to show the most recent backtest
+  const backtestCSV = path.join(__dirname, '../output CSVs/backtest_latest_results.csv');
   
   try {
     if (!fs.existsSync(backtestCSV)) {

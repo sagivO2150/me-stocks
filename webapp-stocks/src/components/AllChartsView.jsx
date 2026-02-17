@@ -6,31 +6,47 @@ const AllChartsView = ({ stocks, backtestTrades }) => {
   
   // Fetch backtest results ONCE for all stocks (unless provided via prop)
   useEffect(() => {
+    console.log('🔍 [AllChartsView] useEffect triggered');
+    console.log('🔍 [AllChartsView] backtestTrades prop:', backtestTrades);
+    
     if (backtestTrades) {
       // Use provided backtest trades (for Best/Worst performers)
+      console.log('✅ [AllChartsView] Using provided backtestTrades:', backtestTrades.length, 'trades');
+      console.log('✅ [AllChartsView] First 3 trades:', backtestTrades.slice(0, 3));
       setAllBacktestTrades(backtestTrades);
       return;
     }
     
     // Otherwise fetch from default endpoint
     const fetchBacktestResults = async () => {
+      console.log('📡 [AllChartsView] Fetching backtest results from API...');
       try {
         // Add cache buster to force fresh data
         const cacheBuster = new Date().getTime();
-        const response = await fetch(`http://localhost:3001/api/backtest-results?_=${cacheBuster}`, {
+        const url = `http://localhost:3001/api/backtest-results?_=${cacheBuster}`;
+        console.log('📡 [AllChartsView] URL:', url);
+        
+        const response = await fetch(url, {
           cache: 'no-store',
           headers: {
             'Cache-Control': 'no-cache',
             'Pragma': 'no-cache'
           }
         });
+        
+        console.log('📡 [AllChartsView] Response status:', response.status);
         const data = await response.json();
+        console.log('📡 [AllChartsView] Response data:', { success: data.success, tradesCount: data.trades?.length });
+        console.log('📡 [AllChartsView] First 3 trades:', data.trades?.slice(0, 3));
         
         if (data.success && data.trades) {
+          console.log('✅ [AllChartsView] Setting allBacktestTrades:', data.trades.length, 'trades');
           setAllBacktestTrades(data.trades);
+        } else {
+          console.warn('⚠️ [AllChartsView] No trades in response');
         }
       } catch (err) {
-        console.error('Failed to fetch backtest results:', err);
+        console.error('❌ [AllChartsView] Failed to fetch backtest results:', err);
       }
     };
     
@@ -62,15 +78,23 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
   // Filter backtest trades for this ticker
   const backtestTrades = allBacktestTrades ? allBacktestTrades.filter(trade => trade.ticker === ticker) : null;
   
-  // DEBUG: Log backtest trades count
-  if (ticker === 'FTAI' && backtestTrades) {
-    console.log(`[DEBUG] FTAI backtestTrades count: ${backtestTrades.length}`);
-    console.log('[DEBUG] FTAI backtestTrades:', backtestTrades.map(t => ({
-      entry_date: t.entry_date,
-      entry_price: t.entry_price,
-      profit: t.profit_loss
-    })));
-  }
+  // DEBUG: Log backtest trades count for ALL tickers
+  useEffect(() => {
+    if (allBacktestTrades) {
+      console.log(`🔍 [${ticker}] allBacktestTrades available:`, allBacktestTrades.length, 'total trades');
+      console.log(`🔍 [${ticker}] backtestTrades filtered:`, backtestTrades?.length || 0, 'trades for this ticker');
+      if (backtestTrades && backtestTrades.length > 0) {
+        console.log(`✅ [${ticker}] Sample trade:`, {
+          entry_date: backtestTrades[0].entry_date,
+          entry_price: backtestTrades[0].entry_price,
+          exit_price: backtestTrades[0].exit_price,
+          return_pct: backtestTrades[0].return_pct
+        });
+      }
+    } else {
+      console.log(`⚠️ [${ticker}] allBacktestTrades is NULL`);
+    }
+  }, [allBacktestTrades, backtestTrades, ticker]);
 
   useEffect(() => {
     if (focusDate) {
@@ -562,7 +586,7 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
       {/* Backtest Legend */}
       {backtestTrades && backtestTrades.length > 0 && (() => {
         // Calculate statistics
-        const totalInvested = backtestTrades.reduce((sum, trade) => sum + parseFloat(trade.amount_invested || 0), 0);
+        const totalInvested = backtestTrades.reduce((sum, trade) => sum + parseFloat(trade.position_size || 0), 0);
         const totalProfitLoss = backtestTrades.reduce((sum, trade) => sum + parseFloat(trade.profit_loss || 0), 0);
         const winRate = totalProfitLoss / totalInvested * 100;
         const isProfit = totalProfitLoss >= 0;

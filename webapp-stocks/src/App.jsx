@@ -17,6 +17,19 @@ function App() {
   const [worstPerformers, setWorstPerformers] = useState([]);
   const [bestTrades, setBestTrades] = useState([]);
   const [worstTrades, setWorstTrades] = useState([]);
+  
+  // DEBUG: Watch state changes
+  useEffect(() => {
+    console.log('📊 [App.jsx] bestPerformers state changed:', bestPerformers.length, 'performers');
+    console.log('📊 [App.jsx] bestTrades state changed:', bestTrades.length, 'trades');
+    if (bestPerformers.length > 0) {
+      console.log('📊 [App.jsx] First 5 bestPerformers:', bestPerformers.slice(0, 5));
+    }
+    if (bestTrades.length > 0) {
+      console.log('📊 [App.jsx] First bestTrade:', bestTrades[0]);
+    }
+  }, [bestPerformers, bestTrades]);
+  
   const [politicalPagination, setPoliticalPagination] = useState({
     page: 1,
     limit: 50,
@@ -149,18 +162,44 @@ function App() {
   };
 
   const loadBestWorstPerformers = async () => {
+    console.log('🎯 [App.jsx] loadBestWorstPerformers() called');
     try {
-      const response = await fetch('http://localhost:3001/api/best-worst-performers');
+      const cacheBuster = new Date().getTime();
+      const url = `http://localhost:3001/api/best-worst-performers?_=${cacheBuster}`;
+      console.log('📡 [App.jsx] Fetching from:', url);
+      
+      const response = await fetch(url, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
+        }
+      });
+      
+      console.log('📡 [App.jsx] Response status:', response.status);
       const data = await response.json();
+      console.log('📡 [App.jsx] Response data:', {
+        success: data.success,
+        bestPerformersCount: data.bestPerformers?.length,
+        worstPerformersCount: data.worstPerformers?.length,
+        bestTradesCount: data.bestTrades?.length,
+        worstTradesCount: data.worstTrades?.length
+      });
+      console.log('📡 [App.jsx] First 3 best performers:', data.bestPerformers?.slice(0, 3));
+      console.log('📡 [App.jsx] First best trade:', data.bestTrades?.[0]);
       
       if (data.success) {
+        console.log('✅ [App.jsx] Setting state...');
         setBestPerformers(data.bestPerformers || []);
         setWorstPerformers(data.worstPerformers || []);
         setBestTrades(data.bestTrades || []);
         setWorstTrades(data.worstTrades || []);
+        console.log('✅ [App.jsx] State updated successfully');
+      } else {
+        console.warn('⚠️ [App.jsx] Response not successful');
       }
     } catch (err) {
-      console.error('Error loading best/worst performers:', err.message);
+      console.error('❌ [App.jsx] Error loading best/worst performers:', err);
     }
   };
 
@@ -272,6 +311,7 @@ function App() {
   };
 
   useEffect(() => {
+    console.log('🚀 [App.jsx] Initial useEffect - Loading all data...');
     loadCSV();
     loadPoliticalTrades();
     loadTopMonthlyTrades();
