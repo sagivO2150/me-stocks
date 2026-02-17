@@ -356,10 +356,26 @@ app.get('/api/stock-history/:ticker', (req, res) => {
       });
     }
     
+    // Calculate current price and change percentage
+    let current_price = null;
+    let change_percent = 0;
+    
+    if (filteredData.length > 0) {
+      const lastPoint = filteredData[filteredData.length - 1];
+      const firstPoint = filteredData[0];
+      
+      current_price = lastPoint.close;
+      if (firstPoint.close && firstPoint.close !== 0) {
+        change_percent = ((lastPoint.close - firstPoint.close) / firstPoint.close) * 100;
+      }
+    }
+    
     const result = {
       success: true,
       ticker,
-      history: filteredData  // Use 'history' key to match frontend expectation
+      history: filteredData,  // Use 'history' key to match frontend expectation
+      current_price,
+      change_percent
     };
     
     setCache(cacheKey, result); // Cache successful result
