@@ -59,6 +59,14 @@ These files are split into chunks due to size limitations:
 - Use existing tests in `scripts/testing/` rather than creating new standalone tests
 - Incorporate new web UI tests into `webapp-react/__tests__/interactive_tests.py`
 
+### Running Long Scripts
+- **NEVER** use `tail`, `grep`, or `head` on long-running scripts (10+ minutes)
+- Long scripts MUST be run normally so the user can see real-time progress
+- Short scripts/quick commands: `tail` and `grep` are fine for output filtering
+- **ALWAYS** add progress indicators to scripts processing 100+ items
+- Progress format: `0/2500`, `1/2500`, `2/2500` (current/total counter)
+- Update progress every item or every N items depending on speed
+
 ### Debugging
 - When debugging trades, create files in `scripts/debug/` folder
 - Use descriptive filenames like `debug_<ticker>_<date>.py`

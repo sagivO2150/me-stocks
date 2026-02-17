@@ -1133,6 +1133,94 @@ app.get('/api/backtest-results', (req, res) => {
   }
 });
 
+// Endpoint to get top 25 best and worst performers from backtest
+app.get('/api/best-worst-performers', (req, res) => {
+  const backtestCSV = path.join(__dirname, '../output CSVs/backtest_reputation_results.csv');
+  
+  try {
+    if (!fs.existsSync(backtestCSV)) {
+      return res.json({ 
+        success: false, 
+        error: 'Backtest results not found',
+        bestPerformers: [],
+        worstPerformers: []
+      });
+    }
+    
+    const fileContent = fs.readFileSync(backtestCSV, 'utf-8');
+    const lines = fileContent.split('\n').filter(line => line.trim());
+    
+    if (lines.length <= 1) {
+      return res.json({ 
+        success: true, 
+        bestPerformers: [],
+        worstPerformers: [],
+        message: 'Backtest results file is empty'
+      });
+    }
+    
+    // Parse CSV
+    const parseCSVLine = (line) => {
+      const result = [];
+      let current = '';
+      let inQuotes = false;
+      
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        if (char === '"') {
+          inQuotes = !inQuotes;
+        } else if (char === ',' && !inQuotes) {
+          result.push(current.trim());
+          current = '';
+        } else {
+          current += char;
+        }
+      }
+      result.push(current.trim());
+      return result;
+    };
+    
+    const headers = parseCSVLine(lines[0]);
+    const trades = lines.slice(1).map(line => {
+      const values = parseCSVLine(line);
+      const trade = {};
+      headers.forEach((header, idx) => {
+        trade[header] = values[idx] || '';
+      });
+      return trade;
+    }).filter(trade => trade.ticker && trade.return_pct);
+    
+    // Sort by return_pct and get top/bottom 25
+    const sortedByReturn = trades.sort((a, b) => 
+      parseFloat(b.return_pct) - parseFloat(a.return_pct)
+    );
+    
+    const bestPerformers = sortedByReturn.slice(0, 25);
+    const worstPerformers = sortedByReturn.slice(-25).reverse();
+    
+    // Get unique tickers for both lists
+    const bestTickers = [...new Set(bestPerformers.map(t => t.ticker))];
+    const worstTickers = [...new Set(worstPerformers.map(t => t.ticker))];
+    
+    res.json({ 
+      success: true, 
+      bestPerformers,
+      worstPerformers,
+      bestTickers,
+      worstTickers,
+      bestCount: bestPerformers.length,
+      worstCount: worstPerformers.length
+    });
+  } catch (error) {
+    console.error('Error reading best/worst performers:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Failed to read best/worst performers',
+      message: error.message
+    });
+  }
+});
+
 // Endpoint to run the top monthly trades scraper
 app.post('/api/scrape-top-monthly', (req, res) => {
   console.log('Starting top monthly trades scraper...');

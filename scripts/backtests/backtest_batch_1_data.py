@@ -24,6 +24,11 @@ import pandas as pd
 from datetime import datetime, timedelta
 from collections import defaultdict
 from multiprocessing import Pool, cpu_count
+import threading
+
+# Global progress counter with lock
+progress_counter = 0
+progress_lock = threading.Lock()
 
 # ===== REPUTATION SYSTEM =====
 
@@ -172,17 +177,33 @@ class ReputationTracker:
 
 # ===== HELPER FUNCTIONS (from original backtest) =====
 
-def fetch_ticker_data(ticker):
-    """Fetch historical data for a ticker"""
+def fetch_ticker_data(args):
+    """Fetch historical data for a ticker with progress tracking"""
+    ticker, total = args
+    global progress_counter
+    
     try:
         stock = yf.Ticker(ticker)
         history = stock.history(start='2022-03-16', end='2026-02-14')
+        
+        # Update progress counter
+        with progress_lock:
+            progress_counter += 1
+            if progress_counter % 10 == 0 or progress_counter == total:
+                print(f"\rProgress: {progress_counter}/{total}", end='', flush=True)
         
         if not history.empty:
             history.index = history.index.tz_localize(None)
             return (ticker, history)
     except:
         pass
+    
+    # Still update progress even on failure
+    with progress_lock:
+        progress_counter += 1
+        if progress_counter % 10 == 0 or progress_counter == total:
+            print(f"\rProgress: {progress_counter}/{total}", end='', flush=True)
+    
     return (ticker, None)
 
 def parse_value(value_str):
@@ -427,14 +448,22 @@ def backtest_with_reputation():
     print(f"{'='*120}\n")
     
     # Load insider trades data
-    with open('/Users/sagiv.oron/Documents/scripts_playground/stocks/output CSVs/batch_1_insider_trades.json', 'r') as f:
+    with open('/Users/sagiv.oron/Documents/scripts_playground/stocks/output CSVs/expanded_insider_trades.json', 'r') as f:
         data = json.load(f)
     
     tickers = [stock['ticker'] for stock in data['data']]
     
+    global progress_counter
+    progress_counter = 0
+    
     print(f"🔄 Loading stock data for {len(tickers)} tickers...")
+    # Prepare args: (ticker, total_count)
+    ticker_args = [(t, len(tickers)) for t in tickers]
+    
     with Pool(cpu_count()) as pool:
-        results = pool.map(fetch_ticker_data, tickers)
+        results = pool.map(fetch_ticker_data, ticker_args)
+    
+    print()  # New line after progress
     
     price_cache = {}
     for ticker, history in results:

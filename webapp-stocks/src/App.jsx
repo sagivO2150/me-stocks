@@ -13,6 +13,8 @@ function App() {
   const [politicalTrades, setPoliticalTrades] = useState([]);
   const [topMonthlyTrades, setTopMonthlyTrades] = useState([]);
   const [livePurchases, setLivePurchases] = useState([]);
+  const [bestPerformers, setBestPerformers] = useState([]);
+  const [worstPerformers, setWorstPerformers] = useState([]);
   const [politicalPagination, setPoliticalPagination] = useState({
     page: 1,
     limit: 50,
@@ -26,7 +28,7 @@ function App() {
     chamber: 'all',
     days: 0              // No time limit - show all trades
   });
-  const [viewMode, setViewMode] = useState('insider'); // 'insider', 'political', 'monthly', 'live', 'all-charts'
+  const [viewMode, setViewMode] = useState('insider'); // 'insider', 'political', 'monthly', 'live', 'all-charts', 'best-worst'
   const [monthlySortType, setMonthlySortType] = useState('amount'); // 'amount', 'c-level', '10-percent'
   const [loading, setLoading] = useState(true);
   const [politicalLoading, setPoliticalLoading] = useState(false);
@@ -144,6 +146,20 @@ function App() {
     }
   };
 
+  const loadBestWorstPerformers = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/api/best-worst-performers');
+      const data = await response.json();
+      
+      if (data.success) {
+        setBestPerformers(data.bestTickers || []);
+        setWorstPerformers(data.worstTickers || []);
+      }
+    } catch (err) {
+      console.error('Error loading best/worst performers:', err.message);
+    }
+  };
+
   const handleSearch = (e) => {
     e.preventDefault();
     const ticker = searchTicker.trim().toUpperCase();
@@ -256,6 +272,7 @@ function App() {
     loadPoliticalTrades();
     loadTopMonthlyTrades();
     loadLivePurchases();
+    loadBestWorstPerformers();
   }, []);
 
   if (loading) {
@@ -358,6 +375,16 @@ function App() {
               📈 All Charts
             </button>
             <button
+              onClick={() => setViewMode('best-worst')}
+              className={`px-6 py-2 rounded-md font-medium transition ${
+                viewMode === 'best-worst'
+                  ? 'bg-green-600 text-white'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              🏆 Best/Worst
+            </button>
+            <button
               onClick={() => setViewMode('all-charts-poc')}
               className={`px-6 py-2 rounded-md font-medium transition ${
                 viewMode === 'all-charts-poc'
@@ -403,6 +430,15 @@ function App() {
                 <span className="text-slate-400">Showing </span>
                 <span className="text-orange-400 font-bold text-xl">{topMonthlyTrades.length}</span>
                 <span className="text-slate-400"> charts with insider overlays</span>
+              </>
+            )}
+            {viewMode === 'best-worst' && (
+              <>
+                <span className="text-slate-400">Showing top </span>
+                <span className="text-green-400 font-bold text-xl">25</span>
+                <span className="text-slate-400"> winners & </span>
+                <span className="text-red-400 font-bold text-xl">25</span>
+                <span className="text-slate-400"> losers from backtest</span>
               </>
             )}
             {viewMode === 'all-charts-poc' && (
@@ -605,6 +641,45 @@ function App() {
               <AllChartsView stocks={topMonthlyTrades} />
             )}
           </>
+        )}
+
+        {/* Best/Worst Performers View */}
+        {viewMode === 'best-worst' && (
+          <div className="space-y-8">
+            {/* Best Performers Section */}
+            <div>
+              <h2 className="text-2xl font-bold text-green-400 mb-4 flex items-center gap-2">
+                🏆 Top 25 Best Performers
+              </h2>
+              {bestPerformers.length === 0 ? (
+                <div className="bg-yellow-900/30 border border-yellow-700 rounded-lg p-8 text-center">
+                  <div className="text-yellow-300 text-xl mb-2">⚠️ No backtest data available</div>
+                  <div className="text-yellow-200 text-sm">
+                    Run the backtest to see best/worst performers
+                  </div>
+                </div>
+              ) : (
+                <AllChartsView stocks={bestPerformers.map(ticker => ({ ticker }))} />
+              )}
+            </div>
+
+            {/* Worst Performers Section */}
+            <div>
+              <h2 className="text-2xl font-bold text-red-400 mb-4 flex items-center gap-2">
+                💀 Top 25 Worst Performers
+              </h2>
+              {worstPerformers.length === 0 ? (
+                <div className="bg-yellow-900/30 border border-yellow-700 rounded-lg p-8 text-center">
+                  <div className="text-yellow-300 text-xl mb-2">⚠️ No backtest data available</div>
+                  <div className="text-yellow-200 text-sm">
+                    Run the backtest to see best/worst performers
+                  </div>
+                </div>
+              ) : (
+                <AllChartsView stocks={worstPerformers.map(ticker => ({ ticker }))} />
+              )}
+            </div>
+          </div>
         )}
 
         {/* POC Charts View (GME + HYMC + ASA) */}
