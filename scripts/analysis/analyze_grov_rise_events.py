@@ -105,11 +105,15 @@ def identify_rise_events(df: pd.DataFrame, min_days: int = 4, min_growth_pct: fl
     peak_idx = None
     peak_price = None
     consecutive_dips = 0
+    last_peak_idx = None  # Track the last peak to avoid starting new rises too soon
     
     # Track bottom hunting - finding the local minimum after a decline
     hunting_bottom = True
     potential_bottom_idx = 0
     potential_bottom_price = df['Close'].iloc[0]
+    
+    # Minimum days gap between peak and new rise start (to avoid false rises during volatility)
+    min_gap_after_peak = 15
     
     for i in range(len(df)):
         current_price = df['Close'].iloc[i]
@@ -121,16 +125,25 @@ def identify_rise_events(df: pd.DataFrame, min_days: int = 4, min_growth_pct: fl
                 potential_bottom_idx = i
                 potential_bottom_price = current_price
             
-            # If price starts going up, we found the bottom
-            if i > 0 and current_price > df['Close'].iloc[i - 1]:
-                # Start a rise event from the bottom
-                in_rise_event = True
-                hunting_bottom = False
-                current_start_idx = potential_bottom_idx
-                current_start_price = potential_bottom_price
-                peak_idx = i
-                peak_price = current_price
-                consecutive_dips = 0
+            # Check if we have a meaningful recovery from the bottom (≥2% gain)
+            if i > 0 and potential_bottom_price < current_price:
+                recovery_from_bottom = ((current_price - potential_bottom_price) / potential_bottom_price) * 100
+                
+                # Only start a new rise if:
+                # 1. Recovery is ≥2%
+                # 2. We're far enough from the last peak (or no previous peak)
+                if recovery_from_bottom >= 2.0:
+                    days_since_last_peak = i - last_peak_idx if last_peak_idx is not None else 999
+                    
+                    if days_since_last_peak >= min_gap_after_peak:
+                        # Start a rise event from the bottom
+                        in_rise_event = True
+                        hunting_bottom = False
+                        current_start_idx = potential_bottom_idx
+                        current_start_price = potential_bottom_price
+                        peak_idx = i
+                        peak_price = current_price
+                        consecutive_dips = 0
             continue
         
         # We're in a rise event - check if price went up or down compared to previous day
@@ -176,6 +189,8 @@ def identify_rise_events(df: pd.DataFrame, min_days: int = 4, min_growth_pct: fl
                         'days': days_duration,
                         'growth_pct': round(growth_pct, 2)
                     })
+                    # Remember this peak to avoid starting new rises too soon
+                    last_peak_idx = peak_idx
                 
                 # Start hunting for the next bottom
                 in_rise_event = False
@@ -205,6 +220,149 @@ def identify_rise_events(df: pd.DataFrame, min_days: int = 4, min_growth_pct: fl
             })
     
     return rise_events
+
+
+def analyze_rise_volatility(df: pd.DataFrame, rise_event: Dict, next_rise_start_date: str = None) -> Dict:
+    """
+    Analyze the volatility pattern during and after a rise event.
+    Tracks mid-rises, mid-falls during the rise, and post-rise behavior.
+    
+    Args:
+        df: DataFrame with Date index and Close prices
+        rise_event: Dictionary containing start_date, end_date, and growth_pct
+        next_rise_start_date: Optional start date of the next rise event to avoid overlap
+        
+    Returns:
+        Dictionary with detailed volatility metrics
+    """
+    # Parse dates and make them timezone-aware to match DataFrame index
+    start_date = pd.to_datetime(rise_event['start_date'], format='%d/%m/%Y')
+    end_date = pd.to_datetime(rise_event['end_date'], format='%d/%m/%Y')
+    
+    # Make dates timezone-aware if DataFrame index is timezone-aware
+    if df.index.tz is not None:
+        start_date = start_date.tz_localize(df.index.tz)
+        end_date = end_date.tz_localize(df.index.tz)
+    
+    # Get price data for the rise period
+    rise_df = df.loc[start_date:end_date]
+    
+    # Get post-rise data - track for up to 30 trading days to capture full pattern
+    # (first_dip -> first_recovery -> second_dip may take longer than 15 days)
+    end_idx = df.index.get_loc(end_date)
+    post_rise_end_idx = min(end_idx + 31, len(df))  # +31 to include 30 days after
+    
+    post_rise_df = df.iloc[end_idx:post_rise_end_idx]
+    
+    result = {
+        'rise_start_date': rise_event['start_date'],
+        'rise_end_date': rise_event['end_date'],
+        'rise_days': rise_event['days'],
+        'rise_percentage': rise_event.get('change_pct', rise_event.get('growth_pct', 0)),
+        'mid_rises': [],
+        'mid_falls': [],
+        'first_dip': None,
+        'first_recovery': None,
+        'second_dip': None
+    }
+    
+    # Track daily movements during the rise
+    if len(rise_df) > 1:
+        for i in range(1, len(rise_df)):
+            prev_price = rise_df['Close'].iloc[i-1]
+            current_price = rise_df['Close'].iloc[i]
+            current_date = rise_df.index[i]
+            
+            # Calculate daily change percentage
+            daily_change_pct = ((current_price - prev_price) / prev_price) * 100
+            
+            # Record rises ≥1%
+            if daily_change_pct >= 1.0:
+                result['mid_rises'].append({
+                    'date': current_date.strftime('%d/%m/%Y'),
+                    'percentage': round(daily_change_pct, 2)
+                })
+            # Record falls ≥1%
+            elif daily_change_pct <= -1.0:
+                result['mid_falls'].append({
+                    'date': current_date.strftime('%d/%m/%Y'),
+                    'percentage': round(daily_change_pct, 2)
+                })
+    
+    # Analyze post-rise behavior: Track first dip -> first recovery -> second dip pattern
+    if len(post_rise_df) > 1:
+        peak_price = post_rise_df['Close'].iloc[0]
+        
+        # State tracking
+        first_dip_found = False
+        first_dip_low = peak_price
+        first_dip_low_idx = 0
+        
+        first_recovery_found = False
+        recovery_high = peak_price
+        recovery_high_idx = 0
+        
+        for i in range(1, len(post_rise_df)):
+            current_price = post_rise_df['Close'].iloc[i]
+            current_date = post_rise_df.index[i]
+            
+            if not first_dip_found:
+                # Looking for the first dip - track the lowest point
+                if current_price < first_dip_low:
+                    first_dip_low = current_price
+                    first_dip_low_idx = i
+                    fall_pct = ((peak_price - current_price) / peak_price) * 100
+                    if fall_pct >= 1.0:  # Meaningful dip
+                        result['first_dip'] = {
+                            'date': current_date.strftime('%d/%m/%Y'),
+                            'percentage': round(-fall_pct, 2),
+                            'days_after_peak': i
+                        }
+                # Check if price is recovering (meaningful rise from the low)
+                elif current_price > first_dip_low and result['first_dip'] is not None:
+                    recovery_from_low = ((current_price - first_dip_low) / first_dip_low) * 100
+                    if recovery_from_low >= 1.0:  # Meaningful recovery (≥1%)
+                        first_dip_found = True
+                        recovery_high = current_price
+                        recovery_high_idx = i
+                        # Calculate and record the recovery immediately
+                        result['first_recovery'] = {
+                            'date': current_date.strftime('%d/%m/%Y'),
+                            'percentage': round(recovery_from_low, 2),
+                            'days_after_peak': i
+                        }
+                    
+            elif not first_recovery_found:
+                # Looking for the first recovery - track the highest point during recovery
+                if current_price > recovery_high:
+                    recovery_high = current_price
+                    recovery_high_idx = i
+                    recovery_pct = ((current_price - first_dip_low) / first_dip_low) * 100
+                    if recovery_pct >= 1.0:  # Meaningful recovery
+                        result['first_recovery'] = {
+                            'date': current_date.strftime('%d/%m/%Y'),
+                            'percentage': round(recovery_pct, 2),
+                            'days_after_peak': i
+                        }
+                # Check if price is declining again (second dip starting)
+                elif current_price < recovery_high and result['first_recovery'] is not None:
+                    first_recovery_found = True
+                    
+            else:
+                # Looking for the second dip after recovery - track the lowest point
+                second_dip_pct = ((recovery_high - current_price) / recovery_high) * 100
+                if second_dip_pct >= 1.0:  # Meaningful second dip
+                    days_since_recovery = i - recovery_high_idx
+                    # Keep updating to track the deepest dip
+                    if result['second_dip'] is None or second_dip_pct > abs(result['second_dip']['percentage']):
+                        result['second_dip'] = {
+                            'date': current_date.strftime('%d/%m/%Y'),
+                            'percentage': round(-second_dip_pct, 2),
+                            'days_after_peak': i,
+                            'days_since_recovery': days_since_recovery
+                        }
+    
+    return result
 
 
 def main():
@@ -407,6 +565,37 @@ def main():
             
             wb.save(excel_file)
             print(f"Colored Excel file saved to: {excel_file}")
+            
+            # Generate detailed volatility JSON for rise events only
+            print()
+            print("Analyzing volatility patterns for each rise event...")
+            volatility_analysis = {}
+            
+            # Get list of rise events only
+            rise_events = [e for e in combined_events if e['event_type'] == 'RISE']
+            
+            for idx, event in enumerate(rise_events):
+                # Find the next rise event's start date to avoid overlap
+                next_rise_start = None
+                if idx + 1 < len(rise_events):
+                    next_rise_start = rise_events[idx + 1]['start_date']
+                
+                rise_volatility = analyze_rise_volatility(df, event, next_rise_start)
+                # Use rise percentage as key
+                percentage_key = str(event['change_pct'])
+                volatility_analysis[percentage_key] = rise_volatility
+            
+            # Save volatility analysis to JSON
+            json_file = "output CSVs/grov_rise_volatility_analysis.json"
+            with open(json_file, 'w') as f:
+                json.dump({
+                    'ticker': ticker,
+                    'analysis_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                    'total_rise_events': len(volatility_analysis),
+                    'rise_events': volatility_analysis
+                }, f, indent=2)
+            
+            print(f"Volatility analysis JSON saved to: {json_file}")
             
             # Summary statistics for rise events only
             rise_only = [e for e in combined_events if e['event_type'] == 'RISE']

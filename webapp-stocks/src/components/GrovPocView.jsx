@@ -100,21 +100,9 @@ export default function GrovPocView() {
 
       {/* Chart */}
       <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-6">
-        <h3 className="text-xl font-bold text-white mb-4">📈 Price Chart with Signals</h3>
+        <h3 className="text-xl font-bold text-white mb-4">📈 Price Chart</h3>
         <AllChartsView 
           stocks={[{ ticker: 'GROV' }]} 
-          backtestTrades={pocData.trades.map(trade => ({
-            ticker: 'GROV',
-            entry_date: trade.entry_date,
-            entry_price: trade.entry_price.toString(),
-            exit_date: trade.exit_date,
-            exit_price: trade.exit_price.toString(),
-            return_pct: trade.return_pct.toString(),
-            profit_loss: trade.profit_loss,
-            position_size: trade.position_size,
-            insider_purchase_date: trade.insider_date,
-            is_explosion: trade.is_explosion
-          }))}
         />
       </div>
     </div>
