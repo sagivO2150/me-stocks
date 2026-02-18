@@ -140,13 +140,16 @@ class TradingState:
         RISE detection: 2 consecutive up days
         FALL detection: First dip → recovery → second dip (trace back to peak for fall start)
         """
-        # Track price history (keep last 3 days for rise start detection)
+        # Track price history (keep last 4 days for rise start detection with hot stock)
         self.price_history.append((date, current_price))
-        if len(self.price_history) > 3:
+        if len(self.price_history) > 4:
             self.price_history.pop(0)
         
-        is_up = current_price > prev_price
-        is_down = current_price < prev_price
+        # Treat ±$0.01 as plateau (negligible movement)
+        price_diff = abs(current_price - prev_price)
+        is_plateau = price_diff <= 0.01
+        is_up = current_price > prev_price and not is_plateau
+        is_down = current_price < prev_price and not is_plateau
         
         # Track consecutive up days for rise detection
         if is_up:
@@ -154,7 +157,7 @@ class TradingState:
         else:
             self.consecutive_up_days = 0
         
-        if date.year >= 2025 and date.month == 5 and date.day >= 20:
+        if date.year >= 2025 and ((date.month == 5 and date.day >= 20) or date.month == 6):
             print(f"  🐛 {date.strftime('%Y-%m-%d')}: phase={self.phase}, is_up={is_up}, consecutive_up={self.consecutive_up_days}, ${prev_price:.2f}→${current_price:.2f}")
         
         # Debug for Sept 2022 to see why we get stuck
@@ -162,13 +165,17 @@ class TradingState:
             print(f"  🐛 {date.strftime('%Y-%m-%d')}: phase={self.phase}, is_up={is_up}, is_down={is_down}, consecutive_up={self.consecutive_up_days}, ${prev_price:.2f}→${current_price:.2f}")
         
         if self.phase == MarketPhase.UNKNOWN or self.phase == MarketPhase.FALLING:
-            # HUNTING FOR RISE START: Need 2 consecutive up days
-            if self.consecutive_up_days >= 2:
+            # HUNTING FOR RISE START: Need 2 consecutive up days (or 3 for hot stocks)
+            # Check if we're in a hot stock situation (shopping spree)
+            is_hot_stock = bool(self.insiders_bought_in_rise and self.insiders_bought_in_fall)
+            required_up_days = 3 if is_hot_stock else 2
+            
+            if self.consecutive_up_days >= required_up_days:
                 # Temporarily disable 15-day gap to test
                 days_since_last_peak = 999
                 
                 if date.year >= 2025:
-                    print(f"  🔍 2 consecutive up days on {date.strftime('%Y-%m-%d')}, days_since_last_peak: {days_since_last_peak}")
+                    print(f"  🔍 {required_up_days} consecutive up days on {date.strftime('%Y-%m-%d')}, days_since_last_peak: {days_since_last_peak}, hot_stock: {is_hot_stock}")
                 
                 if days_since_last_peak >= 0:  # Always allow (testing)
                     # Clear old insider data only if there hasn't been recent activity (30+ days)
@@ -187,10 +194,12 @@ class TradingState:
                             self.shopping_spree_peak_price = None
                     
                     # Find the actual rise start (the bottom before the climb)
-                    # We detected 2 up days now, so the bottom was 3 days ago
-                    # price_history: [-3]=bottom, [-2]=day1 up, [-1]=day2 up (today)
-                    if len(self.price_history) >= 3:
-                        bottom_date, bottom_price = self.price_history[-3]  # 3 days ago = the bottom
+                    # For 2-day detection: bottom is 3 days ago
+                    # For 3-day detection (hot stock): bottom is 4 days ago
+                    lookback = 4 if is_hot_stock else 3
+                    
+                    if len(self.price_history) >= lookback:
+                        bottom_date, bottom_price = self.price_history[-lookback]
                         actual_start_date = bottom_date
                         actual_start_price = bottom_price
                     else:
@@ -257,11 +266,14 @@ class TradingState:
                 
                 if self.first_dip_date is None:
                     # This is the FIRST DIP - remember it
+                    # Also remember the day BEFORE the dip (yesterday) as the actual end of the rise
                     if decline_from_peak >= 1.0:  # Meaningful dip (≥1%)
                         self.first_dip_date = date
                         self.first_dip_price = current_price
                         self.dip_low_price = current_price  # Start tracking lowest point
                         self.in_recovery = False
+                        # The rise actually ended yesterday (the last day before this dip)
+                        # We'll update trend_peak_date to yesterday when we confirm the fall
                         if date.year >= 2025:
                             print(f"  🔍 First dip detected on {date.strftime('%Y-%m-%d')}: ${self.trend_peak_price:.2f} → ${current_price:.2f} (-{decline_from_peak:.1f}%)")
                 elif not self.in_recovery:
@@ -271,59 +283,83 @@ class TradingState:
                         if date.year >= 2025:
                             print(f"  🔍 New dip low on {date.strftime('%Y-%m-%d')}: ${current_price:.2f}")
                 elif self.in_recovery:
-                    # We had first dip, then recovery, NOW SECOND DIP
-                    # ANY down day after recovery = fall confirmed immediately (no -1% threshold!)
-                    if date.year >= 2025:
-                        print(f"  🔍 Second dip detected on {date.strftime('%Y-%m-%d')} - FALL CONFIRMED")
-                    self.prev_rise_pct = ((self.trend_peak_price - self.trend_start_price) / 
-                                         self.trend_start_price) * 100
-                    self.prev_rise_start_price = self.trend_start_price
-                    self.prev_rise_peak_price = self.trend_peak_price
-                    self.last_peak_date = self.trend_peak_date
-                    
-                    # Transition to FALLING (started at first dip date)
-                    self.phase = MarketPhase.FALLING
-                    
-                    # Record the completed RISE event before transitioning
-                    rise_days = (self.trend_peak_date - self.trend_start_date).days
-                    rise_pct = self.prev_rise_pct
-                    
-                    # Filter insiders who bought during THIS rise only
-                    # Make dates tz-naive for comparison
-                    rise_start_naive = self.trend_start_date.tz_localize(None) if hasattr(self.trend_start_date, 'tz_localize') else self.trend_start_date
-                    rise_end_naive = self.trend_peak_date.tz_localize(None) if hasattr(self.trend_peak_date, 'tz_localize') else self.trend_peak_date
-                    
-                    rise_insiders = [
-                        i for i in self.insiders_bought_in_rise 
-                        if rise_start_naive <= pd.to_datetime(i['date']).tz_localize(None) <= rise_end_naive
-                    ]
-                    
-                    self.all_events.append({
-                        'event_type': 'RISE',
-                        'start_date': self.trend_start_date,
-                        'end_date': self.trend_peak_date,
-                        'days': rise_days,
-                        'change_pct': rise_pct,
-                        'start_price': self.trend_start_price,
-                        'end_price': self.trend_peak_price,
-                        'insiders': rise_insiders
-                    })
-                    
-                    self.trend_start_date = self.trend_peak_date  # Fall starts from peak
-                    self.trend_start_price = self.trend_peak_price
-                    self.trend_low_price = current_price
-                    self.trend_low_date = date
-                    self.consecutive_up_days = 0
-                    print(f"📉 FALL STARTED on {self.trend_peak_date.strftime('%Y-%m-%d')} (detected on {date.strftime('%Y-%m-%d')} via dip→recovery→dip)")
-                    
-                    # Reset fall detection
-                    self.first_dip_date = None
-                    self.first_dip_price = None
-                    self.dip_low_price = None
-                    self.in_recovery = False
+                    # We had first dip, then recovery, now checking for SECOND DIP
+                    # Require meaningful dip (>1% from recovery high), not just $0.01 movement
+                    decline_from_recovery = ((self.recovery_high - current_price) / self.recovery_high) * 100
+                    if decline_from_recovery >= 1.0:
+                        # Meaningful second dip - FALL CONFIRMED
+                        if date.year >= 2025:
+                            print(f"  🔍 Second dip detected on {date.strftime('%Y-%m-%d')}: ${self.recovery_high:.2f} → ${current_price:.2f} (-{decline_from_recovery:.1f}%) - FALL CONFIRMED")
+                        self.prev_rise_pct = ((self.trend_peak_price - self.trend_start_price) / 
+                                             self.trend_start_price) * 100
+                        self.prev_rise_start_price = self.trend_start_price
+                        self.prev_rise_peak_price = self.trend_peak_price
+                        self.last_peak_date = self.trend_peak_date
+                        
+                        # Transition to FALLING
+                        self.phase = MarketPhase.FALLING
+                        
+                        # The rise actually ended the day BEFORE the first dip
+                        # Use business day offset to get previous trading day
+                        from pandas.tseries.offsets import BDay
+                        actual_rise_end = self.first_dip_date - BDay(1)
+                        
+                        # Record the completed RISE event before transitioning
+                        rise_days = (actual_rise_end - self.trend_start_date).days
+                        rise_pct = self.prev_rise_pct
+                        
+                        # Filter insiders who bought during THIS rise only
+                        # Make dates tz-naive for comparison
+                        rise_start_naive = self.trend_start_date.tz_localize(None) if hasattr(self.trend_start_date, 'tz_localize') else self.trend_start_date
+                        rise_end_naive = actual_rise_end.tz_localize(None) if hasattr(actual_rise_end, 'tz_localize') else actual_rise_end
+                        
+                        rise_insiders = [
+                            i for i in self.insiders_bought_in_rise 
+                            if rise_start_naive <= pd.to_datetime(i['date']).tz_localize(None) <= rise_end_naive
+                        ]
+                        
+                        self.all_events.append({
+                            'event_type': 'RISE',
+                            'start_date': self.trend_start_date,
+                            'end_date': actual_rise_end,
+                            'days': rise_days,
+                            'change_pct': rise_pct,
+                            'start_price': self.trend_start_price,
+                            'end_price': self.trend_peak_price,
+                            'insiders': rise_insiders
+                        })
+                        
+                        self.trend_start_date = self.first_dip_date  # Fall starts from first dip day
+                        self.trend_start_price = self.trend_peak_price
+                        self.trend_low_price = current_price
+                        self.trend_low_date = date
+                        self.consecutive_up_days = 0
+                        print(f"📉 FALL STARTED on {self.trend_peak_date.strftime('%Y-%m-%d')} (detected on {date.strftime('%Y-%m-%d')} via dip→recovery→dip)")
+                        
+                        # Reset fall detection
+                        self.first_dip_date = None
+                        self.first_dip_price = None
+                        self.dip_low_price = None
+                        self.in_recovery = False
+                    else:
+                        # Not meaningful enough - ignore this tiny dip
+                        if date.year >= 2025:
+                            print(f"  🔍 Tiny dip ignored on {date.strftime('%Y-%m-%d')}: only -{decline_from_recovery:.2f}%")
+            
+            # If stock goes UP after recovery, reset fall detection (rise continues!)
+            elif is_up and self.in_recovery:
+                if date.year >= 2025:
+                    print(f"  🔍 Stock went up after recovery on {date.strftime('%Y-%m-%d')}: ${prev_price:.2f} → ${current_price:.2f} - resetting fall detection, rise continues!")
+                # Reset fall detection
+                self.first_dip_date = None
+                self.first_dip_price = None
+                self.dip_low_price = None
+                self.in_recovery = False
+                # Update recovery high
+                self.recovery_high = current_price
             
             # RECOVERY DETECTION (up day OR plateau after first dip)
-            elif (is_up or current_price == prev_price) and self.first_dip_date is not None and not self.in_recovery:
+            elif (is_up or is_plateau) and self.first_dip_date is not None and not self.in_recovery:
                 # Price going up OR plateau (same price) after first dip - this is RECOVERY!
                 recovery_from_dip = ((current_price - self.dip_low_price) / self.dip_low_price) * 100
                 if recovery_from_dip >= 0.0:  # Any non-decline is recovery (plateau counts!)
