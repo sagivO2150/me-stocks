@@ -1,0 +1,28 @@
+{
+  "ticker": "GROV",
+  "strategy": "Insider Conviction (No Hindsight)",
+  "total_trades": 1,
+  "total_profit": 591.3,
+  "total_invested": 2000,
+  "roi": 29.56,
+  "win_rate": 100.0,
+  "target_rate": 100.0,
+  "trades": [
+    {
+      "ticker": "GROV",
+      "entry_date": "2025-06-25",
+      "entry_price": 1.15,
+      "exit_date": "2025-07-14",
+      "exit_price": 1.49,
+      "target_price": 1.43,
+      "days_held": 19,
+      "return_pct": 29.57,
+      "position_size": 2000,
+      "profit_loss": 591.3,
+      "sell_reason": "target_reached_first_dip",
+      "target_reached": "yes",
+      "peak_gain": 33.04,
+      "buy_type": "shopping_spree"
+    }
+  ]
+}

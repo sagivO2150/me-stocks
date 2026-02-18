@@ -51,21 +51,30 @@ app.post('/api/clear-cache', (req, res) => {
 
 // ============ END CACHING SYSTEM ============
 
-// GROV POC endpoint - load rise explosion strategy results
+// GROV POC endpoint - load Insider Conviction strategy results
 app.get('/api/grov-poc', (req, res) => {
   try {
-    const pocFilePath = path.join(__dirname, '../output CSVs/grov_rise_explosion_poc.json');
+    // Try new insider conviction strategy first
+    const insiderConvictionPath = path.join(__dirname, '../output CSVs/grov_insider_conviction_poc.json');
     
-    if (!fs.existsSync(pocFilePath)) {
-      return res.status(404).json({
-        success: false,
-        error: 'GROV POC results not found',
-        message: 'Please run: .venv/bin/python scripts/backtests/backtest_grov_poc.py'
-      });
+    if (fs.existsSync(insiderConvictionPath)) {
+      const pocData = JSON.parse(fs.readFileSync(insiderConvictionPath, 'utf-8'));
+      return res.json({ success: true, data: pocData });
     }
     
-    const pocData = JSON.parse(fs.readFileSync(pocFilePath, 'utf-8'));
-    res.json({ success: true, data: pocData });
+    // Fall back to old rise explosion strategy
+    const riseExplosionPath = path.join(__dirname, '../output CSVs/grov_rise_explosion_poc.json');
+    
+    if (fs.existsSync(riseExplosionPath)) {
+      const pocData = JSON.parse(fs.readFileSync(riseExplosionPath, 'utf-8'));
+      return res.json({ success: true, data: pocData });
+    }
+    
+    return res.status(404).json({
+      success: false,
+      error: 'GROV POC results not found',
+      message: 'Please run: .venv/bin/python scripts/backtests/backtest_insider_conviction_strategy.py'
+    });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }

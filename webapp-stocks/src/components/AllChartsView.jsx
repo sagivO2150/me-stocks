@@ -369,6 +369,12 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
           });
         }
       });
+      
+      // DEBUG: Log what dates have buy/sell signals
+      if (ticker === 'GROV') {
+        console.log('📍 Buy dates:', Object.keys(backtestBuysByDate));
+        console.log('📍 Sell dates:', Object.keys(backtestSellsByDate));
+      }
     }
     
     // Merge into chart data
@@ -409,6 +415,9 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
         // Create individual data keys for each backtest buy signal
         ...(backtestBuys.length > 0 ? backtestBuys.reduce((acc, buy, idx) => {
           acc[`backtestBuy${idx}`] = point.close;
+          if (ticker === 'GROV') {
+            console.log(`  ✅ Adding backtestBuy${idx} at ${dateKey}: ${point.close}`);
+          }
           return acc;
         }, {}) : {}),
         backtestBuyData: backtestBuys,
@@ -743,6 +752,16 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
                       shape={(props) => {
                         const { cx, cy, payload } = props;
                         const dataKey = `backtestBuy${idx}`;
+                        
+                        if (ticker === 'GROV') {
+                          console.log(`🔴 Buy marker shape called for ${dataKey}:`, {
+                            cx, cy, 
+                            hasPayload: !!payload,
+                            hasDataKey: payload?.[dataKey] !== undefined,
+                            value: payload?.[dataKey]
+                          });
+                        }
+                        
                         if (!payload || !payload[dataKey]) return null;
                         
                         return (
@@ -766,6 +785,16 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
                     isAnimationActive={false}
                     shape={(props) => {
                       const { cx, cy, payload } = props;
+                      
+                      if (ticker === 'GROV') {
+                        console.log(`🟢 Sell marker shape called:`, {
+                          cx, cy,
+                          hasPayload: !!payload,
+                          hasDataKey: payload?.backtestSell !== undefined,
+                          value: payload?.backtestSell
+                        });
+                      }
+                      
                       if (!payload || !payload.backtestSell) return null;
                       
                       // Determine color based on profit/loss from the sell data

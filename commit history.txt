@@ -1,3 +1,376 @@
+3f7ccbf11c6aa072c304a047a3f04cc8dff9fb3f
+Improve JSON structure for Grov rise events analysis
+Refactored the JSON output for Grov rise events to enhance readability and maintain consistency. Updated related files and components to align with the new structure.
+
+- Adjusted `mid_rises` and `mid_falls` in JSON to use key-value pairs instead of arrays
+- Updated `analyze_grov_rise_events.py` to generate the revised JSON format
+- Modified `grov_rise_volatility_analysis.json` with the new structure
+- Updated `grov_rise_events.xlsx` to reflect changes in the analysis
+- Adjusted `AllChartsView.jsx` and `StockDetail.jsx` to handle the updated JSON format
+- Updated PID files for node-server and vite
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+a76926ecf84b48ec21f1e28f2f4268901b3a2ac2
+Improve Grov analysis and add JSON output for volatility
+Enhanced Grov analysis by refining rise event logic and adding a new JSON output for volatility analysis. Removed unused debug and test scripts.
+
+- Deleted `debug_grov.py` and `test_grov_logic.py` as they are no longer needed
+- Updated `analyze_grov_rise_events.py` with improved rise event detection logic
+- Modified `GrovPocView.jsx` to reflect updated analysis output
+- Added `grov_rise_volatility_analysis.json` for detailed volatility insights
+- Updated `grov_rise_events.xlsx` with new analysis data
+- Adjusted process IDs in `node-server.pid` and `vite.pid` logs
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+956be25c88ccab34c187186abb541aeb7d830911
+Refactor Grov POC to address issues with current approach
+Revised the Grov proof-of-concept to address limitations in the existing methodology and improve accuracy in rise event analysis. Adjustments were made to the data model, backtest logic, and UI components. A new debugging script was also introduced to identify potential lookahead bias.
+
+Key changes:
+- Updated `grov_rise_explosion_poc.json` with revised trade data and metrics.
+- Modified `backtest_grov_poc.py` to align with the new approach and calculations.
+- Adjusted `GrovPocView.jsx` to reflect changes in data structure and display logic.
+- Added `debug_lookahead_bias.py` script to identify and mitigate lookahead bias in backtests.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+4f0956b4a2bb4d8a01443ca243a1739b48d70955
+Add Grov rise event analysis and buy/sell sequence logic
+Enhanced the application with new Grov rise event analysis and integrated buy/sell sequence functionality. Updated existing files and added new scripts and components to support the Grov analysis.
+
+- Updated `node-server.pid` and `vite.pid` logs for server process tracking
+- Modified `yfinance_cache_top_performers.json` with updated stock data
+- Deleted outdated `ftai_rise_events.xlsx` file
+- Added new Grov analysis scripts and output files:
+  - `debug_grov.py`
+  - `grov_rise_events.xlsx`
+  - `grov_rise_explosion_poc.json`
+  - `~$grov_rise_events.xlsx`
+  - `analyze_grov_rise_events.py`
+  - `backtest_grov_poc.py`
+  - `backtest_rise_event_strategy.py`
+  - `backtest_rise_explosion_strategy.py`
+  - `test_grov_logic.py`
+- Updated web application:
+  - Modified `server.js` and `App.jsx` for Grov integration
+  - Enhanced `AllChartsView.jsx` with buy/sell sequence visualization
+  - Added `GrovPocView.jsx` for Grov-specific data display
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+1cbe200159abf4a069728758bb0e1d3ccdcb00cb
+Fix floating information and update related data files
+Updated various files to correct and refine floating information across the project. Adjustments were made to ensure consistency and accuracy in data and functionality.
+
+- Updated process ID files for node-server and vite
+- Refined yfinance cache JSON to reflect updated top performers data
+- Adjusted backtest script for IPO conviction bot to improve logic
+- Modified AllChartsView component in the web app for better data handling and display
+- Reduced total tickers in yfinance cache from 32 to 29 and updated ticker data
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+c25dc793c680f21cd2cd81cfc7ad47a184efd337
+Improve stock analysis: focus on faster ROI strategies
+Updated several components to enhance stock analysis and introduce new scripts aimed at identifying faster ROI opportunities. Changes include updates to cache data, server logic, and chart views, alongside new backtesting and testing scripts.
+
+- Updated `yfinance_cache_top_performers.json` with expanded ticker data for better analysis.
+- Modified `extract_top_performers_cache.py` to process new cache structure.
+- Adjusted `server.js` and `App.jsx` to support updated data flow.
+- Enhanced `AllChartsView.jsx` for improved visualization of performance metrics.
+- Added `backtest_ipo_conviction_bot.py` for IPO conviction strategy testing.
+- Introduced `test_bsai_bot.py` for validating BSAI bot logic.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+c6a94e54842c8d663e5ee8a9fca81af45da40528
+Update purchase display logic with nearest trading day support
+Enhanced the purchase display logic to account for nearest trading day when original trade dates do not match available data. Added new debugging scripts for BSAI chart data and trades.
+
+- Modified `AllChartsView.jsx` to include a helper function for finding the nearest trading day.
+- Updated insider purchases logic to use nearest trading day if original trade date is unavailable.
+- Added `originalDate` field to purchases for tracking discrepancies between trade and nearest trading day.
+- Updated process IDs in `node-server.pid` and `vite.pid` logs.
+- Introduced new debugging scripts: `debug_bsai_chart_data.py` and `debug_bsai_trades.py`.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# web_app
+
+---COMMIT_SEPARATOR---
+18b1a0dab89ec26a909583717fce496ab2880112
+Finalize CSV script: BSAI rise events analysis update
+Updated the analysis script to focus on BSAI instead of FTAI and adjusted relevant data processing logic. The output CSV has been regenerated to reflect these changes.
+
+Key changes:
+- Switched ticker from FTAI to BSAI in analysis logic.
+- Updated date range for BSAI data processing.
+- Refactored cumulative percentage calculation to use a multiplier approach.
+- Regenerated `ftai_rise_events.xlsx` to reflect BSAI analysis results.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# rise_events
+
+---COMMIT_SEPARATOR---
+1906e71ed23faf3db3bca9ba90d2974cd433072e
+Enhance FTAI analysis with insider trade integration
+Added functionality to analyze FTAI insider trades and integrate relevant data into the analysis process. Updated the Excel output to reflect these changes.
+
+- Implemented `load_ftai_insider_trades` to parse insider trade data from JSON
+- Added `find_insider_purchases_in_range` to identify trades within a date range
+- Updated `ftai_rise_events.xlsx` to include insider trade insights
+- Improved data formatting and error handling for trade date parsing
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# rise_events
+
+---COMMIT_SEPARATOR---
+23d330030d7d79d25799828c43ec118c83dfb2e8
+Add colors to rise and fall events in Excel output
+Enhanced the analysis script to include color-coded formatting for rise and fall events in the Excel output. This improves readability and makes it easier to distinguish between event types.
+
+- Integrated `openpyxl` for Excel file creation and styling.
+- Added color-coded formatting for rise (green) and fall (red) events.
+- Updated the analysis logic to include both rise and fall events in the output.
+- Extended the date range for data fetching to include more recent events.
+- Generated a new Excel file (`ftai_rise_events.xlsx`) with the updated results.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# rise_events
+
+---COMMIT_SEPARATOR---
+8b134996e2ecaa75331280678da8035290dfba03
+Improve rise events analysis output formatting
+Enhanced the analysis script for FTAI rise events to include the duration of each event in days, making the output more informative and visually appealing.
+
+- Added 'days' field to rise events data structure.
+- Updated output formatting to display event duration alongside growth percentage.
+- Extended analysis date range to include more recent data (end date updated to 2024-12-04).
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# rise_events
+
+---COMMIT_SEPARATOR---
+9850e88d18db4bd5dbf4119d1b7212077bb15a2f
+Add classification logic for analyzing rise events
+Added a new script to analyze and classify rise events, enhancing the ability to understand and categorize significant occurrences in financial data.
+
+Key changes:
+- Created `analyze_ftai_rise_events.py` script for event classification.
+- Implemented logic to identify and categorize rise events based on predefined criteria.
+- Improved analysis capabilities for financial trend evaluation.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# rise_events
+
+---COMMIT_SEPARATOR---
+b926ac24e19a973bd3efccb511218d4e2912f925
+Add stock price hover info for best/worst performers charts
+Enhanced functionality to display stock price when hovering over charts in the best and worst performers section. Additional debugging tools and updates were implemented.
+
+- Updated AllChartsView.jsx to include stock price hover functionality.
+- Modified server.js to prevent caching for backtest results API.
+- Adjusted backtest_batch_1_data.py to save results for UI display.
+- Added new debugging scripts for FTAI analysis and pyramid strategy implementation.
+- Updated PID files for node-server and Vite.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+96f0b68a2747fe0c4db8287aa4afae6735b22ebc
+Display current stock price and change percentage in API
+Updated the stock history API to include the current stock price and percentage change.
+
+- Added `current_price` and `change_percent` fields to the API response.
+- Calculated the current price from the latest data point in the stock history.
+- Computed the percentage change based on the first and last data points.
+- Updated server.js to handle the new fields in the API response.
+- Updated PID files for node-server and vite processes.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+f1b7c6c300e2ce59d9eff2dea7edddf7c5b450d0
+Add top performers cache for stock info in UI
+Enhanced stock history endpoint to utilize a smaller, optimized cache file for top-performing stocks, improving data retrieval efficiency and enabling stock information display in the UI.
+
+Key changes:
+- Updated `webapp-stocks/server.js` to read stock data from a local top performers cache.
+- Added new scripts: `extract_top_performers_cache.py` and `get_top_performers.py` for cache generation.
+- Introduced new output files: `yfinance_cache_top_performers.json` and `top_performers.json`.
+- Modified PID files for node-server and vite.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+bb4620e5709e9dce404e562eb07a9f2ea1afbb07
+Add local data independence: backtest uses cached data, no internet required
+- Modified backtest_batch_1_data.py to load from yfinance_cache_full.json instead of API calls
+- Updated fetch_yfinance_cache.py to fetch 100% of data (was 10% batch)
+- Added fetch_yfinance_cache_ALL.py for slower, more reliable fetching
+- Added check_data_coverage.py utility to verify data completeness
+- Recovered 1.3GB yfinance cache with 3,171 stocks (99.28% coverage)
+- All 43,131 insider trades across 3,194 tickers now testable offline
+
+---COMMIT_SEPARATOR---
+97a303ce6313ff7580372c78d5f20ebfabcd6417
+Add testcommit marker to adaptive filter backtest script
+Added a testcommit marker to the backtest_adaptive_filter.py script for testing purposes. This change is intended to facilitate identification and debugging during development.
+
+- Inserted `#testcommit` comment at the top of the script.
+- No functional changes to the script's logic or behavior.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# general_commit
+
+---COMMIT_SEPARATOR---
+6bd0a3348cc742d9a90c9462cea7c938aae62317
+Update .gitignore for local test independence
+Added entries to .gitignore to exclude large cache files generated during local testing. This ensures a cleaner repository and prevents unnecessary file tracking.
+
+- Ignored large cache files related to yfinance and insider trades
+- Enhanced .gitignore to support local test independence
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+b8e1367469730fd72fa7838bdef316c0dba54276
+Enable local independence for tests with caching and retries
+Enhanced the backtest script and added new utilities to ensure tests can run locally without external dependencies. Introduced caching mechanisms and improved data fetching reliability.
+
+- Modified `backtest_batch_1_data.py` to include retry logic and optimized worker pool
+- Added `fetch_yfinance_cache.py` and `fetch_yfinance_cache_full.py` for local caching
+- Introduced `check_cache_status.py` to verify cache integrity
+- Added output files for cached data: `yfinance_cache_batch1.json` and `yfinance_cache_full.json`
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+529e2365c811e6ef3ae703d5a9ba7791e3f20c4a
+Display buy/sell orders on charts; enhance trade data handling
+Enhanced the application to display buy and sell orders directly on the charts, improving user visibility and decision-making. Updated server and frontend logic to support detailed trade data.
+
+- Added `bestTrades` and `worstTrades` fields in API responses
+- Updated server logic to handle and return full trade data
+- Modified frontend components to display buy/sell orders on charts
+- Introduced new state variables in `App.jsx` for trade data management
+- Adjusted `node-server.pid` and `vite.pid` files for updated processes
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+bbe56f89070c9594beff4e28f6ef5ebacd7dc4de
+Add worst/best performance tab; refine diagnostics scripts
+Refined diagnostics scripts and added a new worst/best performance tab based on stock analysis results. Updated datasets and scripts to improve accuracy, but issues persist with functionality.
+
+- Updated `.github/copilot-instructions.md` with guidelines for long-running scripts and progress indicators.
+- Adjusted `node-server.pid` and `vite.pid` in logs for updated server processes.
+- Modified `expanded_insider_trades.json` with corrected trade values and prices.
+- Enhanced `backtest_batch_1_data.py` for better batch processing.
+- Added `merge_all_batches.py` to consolidate batch data.
+- Introduced `backtest_expanded_dataset.py` for testing expanded datasets.
+- Updated `server.js` and `App.jsx` in `webapp-stocks` for UI integration of new tab.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+ad9c02e90d04a12b907ad87348aa29af96661d84
+SEC data scrapped; new analysis and datasets added
+Enhanced the repository with comprehensive SEC data scraping and analysis tools. Added scripts and datasets to process insider trades and expand coverage.
+
+- Scrapped insider trade data from SEC and generated multiple JSON datasets
+- Added scripts for analyzing SEC data and building expanded datasets
+- Implemented tools for batch processing and missing ticker identification
+- Introduced backtesting and testing scripts for data validation and ADR analysis
+- Updated commit history with new changes and progress tracking
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
 c15d297560b2a726dff7d6193e0ca24db690c503
 Reputation system added; confirmed 17% gain accuracy
 Implemented reputation scoring system to enhance trade analysis and validate the corrected 17% gain milestone. Adjustments include new endpoint and UI integration.
