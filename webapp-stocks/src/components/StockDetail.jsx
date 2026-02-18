@@ -35,9 +35,9 @@ const StockDetail = ({ trade, onClose }) => {
         return;
       }
       
-      const firstAvailableDate = new Date(stockHistory.history[0].date.split('T')[0].split(' ')[0]);
-      const lastAvailableDate = new Date(stockHistory.history[stockHistory.history.length - 1].date.split('T')[0].split(' ')[0]);
-      const targetDate = new Date(focusDate + 'T00:00:00');
+      const firstAvailableDate = new Date(stockHistory.history[0].date.split('T')[0].split(' ')[0] + 'T12:00:00Z');
+      const lastAvailableDate = new Date(stockHistory.history[stockHistory.history.length - 1].date.split('T')[0].split(' ')[0] + 'T12:00:00Z');
+      const targetDate = new Date(focusDate + 'T12:00:00Z');
       
       console.log('Focus date:', targetDate.toISOString().split('T')[0]);
       console.log('Available range:', firstAvailableDate.toISOString().split('T')[0], 'to', lastAvailableDate.toISOString().split('T')[0]);

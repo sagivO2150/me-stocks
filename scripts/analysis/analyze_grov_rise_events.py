@@ -259,8 +259,8 @@ def analyze_rise_volatility(df: pd.DataFrame, rise_event: Dict, next_rise_start_
         'rise_end_date': rise_event['end_date'],
         'rise_days': rise_event['days'],
         'rise_percentage': rise_event.get('change_pct', rise_event.get('growth_pct', 0)),
-        'mid_rises': [],
-        'mid_falls': [],
+        'mid_rises': {},
+        'mid_falls': {},
         'first_dip': None,
         'first_recovery': None,
         'second_dip': None
@@ -278,16 +278,16 @@ def analyze_rise_volatility(df: pd.DataFrame, rise_event: Dict, next_rise_start_
             
             # Record rises ≥1%
             if daily_change_pct >= 1.0:
-                result['mid_rises'].append({
-                    'date': current_date.strftime('%d/%m/%Y'),
-                    'percentage': round(daily_change_pct, 2)
-                })
+                pct_key = str(round(daily_change_pct, 2))
+                result['mid_rises'][pct_key] = {
+                    'date': current_date.strftime('%d/%m/%Y')
+                }
             # Record falls ≥1%
             elif daily_change_pct <= -1.0:
-                result['mid_falls'].append({
-                    'date': current_date.strftime('%d/%m/%Y'),
-                    'percentage': round(daily_change_pct, 2)
-                })
+                pct_key = str(round(daily_change_pct, 2))
+                result['mid_falls'][pct_key] = {
+                    'date': current_date.strftime('%d/%m/%Y')
+                }
     
     # Analyze post-rise behavior: Track first dip -> first recovery -> second dip pattern
     if len(post_rise_df) > 1:

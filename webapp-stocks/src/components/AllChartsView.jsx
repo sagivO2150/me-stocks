@@ -101,9 +101,9 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
         return;
       }
       
-      const firstAvailableDate = new Date(stockHistory.history[0].date.split('T')[0].split(' ')[0]);
-      const lastAvailableDate = new Date(stockHistory.history[stockHistory.history.length - 1].date.split('T')[0].split(' ')[0]);
-      const targetDate = new Date(focusDate + 'T00:00:00');
+      const firstAvailableDate = new Date(stockHistory.history[0].date.split('T')[0].split(' ')[0] + 'T12:00:00Z');
+      const lastAvailableDate = new Date(stockHistory.history[stockHistory.history.length - 1].date.split('T')[0].split(' ')[0] + 'T12:00:00Z');
+      const targetDate = new Date(focusDate + 'T12:00:00Z');
       
       if (targetDate < firstAvailableDate || targetDate > lastAvailableDate) {
         fetchStockHistory('max');
@@ -210,7 +210,7 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
     
     // Apply date-based filtering if focusDate is set
     if (focusDate) {
-      const centerDate = new Date(focusDate + 'T00:00:00');
+      const centerDate = new Date(focusDate + 'T12:00:00Z');
       const rangeInDays = {
         '1d': 0,
         '5d': 5,
@@ -227,7 +227,7 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
         if (period === '1d') {
           data = data.filter(point => {
             const dateStr = point.date.split('T')[0].split(' ')[0];
-            const pointDate = new Date(dateStr + 'T00:00:00');
+            const pointDate = new Date(dateStr + 'T12:00:00Z'); // Parse in UTC with midday to avoid timezone shifts
             const isSameDay = pointDate.getFullYear() === centerDate.getFullYear() &&
                               pointDate.getMonth() === centerDate.getMonth() &&
                               pointDate.getDate() === centerDate.getDate();
@@ -242,7 +242,7 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
           
           data = data.filter(point => {
             const dateStr = point.date.split('T')[0].split(' ')[0];
-            const pointDate = new Date(dateStr + 'T00:00:00');
+            const pointDate = new Date(dateStr + 'T12:00:00Z'); // Parse in UTC with midday to avoid timezone shifts
             const isInRange = pointDate >= startDate && pointDate <= endDate;
                 return isInRange;
           });
