@@ -128,90 +128,44 @@ print(f"GROV data: {len(df)} days from {df.index[0].date()} to {df.index[-1].dat
 rise_events = identify_rise_events(df)
 print(f"Found {len(rise_events)} rise events")
 
-# Insider trades for GROV (hardcoded key ones)
-insider_trades = [
-    {'date': datetime(2022, 6, 16), 'value': 66715240, 'insider': 'Virgin Group', 'title': '10% Owner'},
-    {'date': datetime(2022, 11, 22), 'value': 103288, 'insider': 'Replogle John B', 'title': 'CEO'},
-    {'date': datetime(2022, 12, 5), 'value': 58740, 'insider': 'Cleary Kevin Michael', 'title': 'CFO'},
-]
-
-# Run strategy
+# Create a trade for EVERY rise event (simulate entering at start, exiting at end)
 all_trades = []
 
-for purchase in insider_trades:
-    insider_date = purchase['date']
-    rises_seen = []
-    explosion_found = False
+for idx, event in enumerate(rise_events, 1):
+    entry_date = event['start_date']
+    entry_price = event['start_price']
+    exit_date = event['end_date']
+    exit_price = event['end_price']
     
-    for event in rise_events:
-        event_start = event['start_date']
-        event_end = event['end_date']
-        
-        # Skip events before insider purchase
-        if event_end.date() < insider_date.date():
-            rises_seen.append(event['pct'])
-            continue
-        
-        if explosion_found:
-            break
-        
-        # Determine entry
-        if event_start.date() <= insider_date.date() <= event_end.date():
-            # Bought during this rise
-            buy_dates = df[(df.index >= insider_date) & (df.index <= event_end)]
-            if buy_dates.empty:
-                rises_seen.append(event['pct'])
-                continue
-            buy_date = buy_dates.index[0]
-            buy_price = buy_dates.iloc[0]['Close']
-        elif insider_date.date() < event_start.date():
-            # Enter at start of rise
-            buy_date = event_start
-            buy_price = event['start_price']
-        else:
-            rises_seen.append(event['pct'])
-            continue
-        
-        # Exit at end of rise
-        sell_date = event_end
-        sell_price = event['end_price']
-        
-        # Position size
-        c_level = any(t in purchase.get('title', '') for t in ['CEO', 'CFO', 'President', 'Chief', 'Owner'])
-        position_size = 4000 if c_level else 2000
-        
-        # Calculate return
-        return_pct = ((sell_price - buy_price) / buy_price) * 100
-        profit_loss = position_size * (return_pct / 100)
-        
-        # Check for explosion
-        is_explosion = False
-        if len(rises_seen) >= 2:
-            sorted_rises = sorted(rises_seen, reverse=True)
-            threshold = sorted_rises[max(0, len(sorted_rises) // 4)]
-            is_explosion = event['pct'] >= threshold
-        
-        all_trades.append({
-            'ticker': 'GROV',
-            'insider_date': insider_date.strftime('%Y-%m-%d'),
-            'insider_value': int(purchase['value']),
-            'insider_name': purchase['insider'],
-            'entry_date': buy_date.strftime('%Y-%m-%d'),
-            'entry_price': round(buy_price, 2),
-            'exit_date': sell_date.strftime('%Y-%m-%d'),
-            'exit_price': round(sell_price, 2),
-            'days_held': int((sell_date - buy_date).days),
-            'return_pct': round(return_pct, 2),
-            'position_size': int(position_size),
-            'profit_loss': round(profit_loss, 2),
-            'rise_pct': event['pct'],
-            'is_explosion': 'yes' if is_explosion else 'no'
-        })
-        
-        if is_explosion:
-            explosion_found = True
-        
-        rises_seen.append(event['pct'])
+    # Use $2000 position size for all (standard non-C-level)
+    position_size = 2000
+    
+    # Calculate return
+    return_pct = ((exit_price - entry_price) / entry_price) * 100
+    profit_loss = position_size * (return_pct / 100)
+    
+    # Check if this is a top-tier rise (top 25%)
+    all_rise_pcts = [e['pct'] for e in rise_events]
+    sorted_rises = sorted(all_rise_pcts, reverse=True)
+    top_25_threshold = sorted_rises[max(0, len(sorted_rises) // 4)]
+    is_explosion = event['pct'] >= top_25_threshold
+    
+    all_trades.append({
+        'ticker': 'GROV',
+        'insider_date': entry_date.strftime('%Y-%m-%d'),
+        'insider_value': 0,
+        'insider_name': f'Rise Event #{idx}',
+        'entry_date': entry_date.strftime('%Y-%m-%d'),
+        'entry_price': round(entry_price, 2),
+        'exit_date': exit_date.strftime('%Y-%m-%d'),
+        'exit_price': round(exit_price, 2),
+        'days_held': int((exit_date - entry_date).days),
+        'return_pct': round(return_pct, 2),
+        'position_size': int(position_size),
+        'profit_loss': round(profit_loss, 2),
+        'rise_pct': event['pct'],
+        'is_explosion': 'yes' if is_explosion else 'no'
+    })
 
 # Save results
 output = {

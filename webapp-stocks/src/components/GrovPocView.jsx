@@ -98,58 +98,6 @@ export default function GrovPocView() {
         </div>
       </div>
 
-      {/* Trades List */}
-      <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-6">
-        <h3 className="text-xl font-bold text-white mb-4">📊 Trade Details</h3>
-        <div className="space-y-3">
-          {pocData.trades.map((trade, idx) => (
-            <div
-              key={idx}
-              className={`p-4 rounded-lg border ${
-                trade.return_pct > 0
-                  ? 'bg-green-900/20 border-green-700/50'
-                  : 'bg-red-900/20 border-red-700/50'
-              }`}
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-slate-400">#{idx + 1}</span>
-                    <span className="font-mono text-white">
-                      {trade.entry_date} → {trade.exit_date}
-                    </span>
-                    {trade.is_explosion === 'yes' && (
-                      <span className="px-2 py-1 bg-amber-600 text-white text-xs font-bold rounded">
-                        💥 EXPLOSION
-                      </span>
-                    )}
-                  </div>
-                  <div className="text-sm text-slate-400 mt-1">
-                    Insider: {trade.insider_name} (${(trade.insider_value / 1000).toFixed(0)}K) • 
-                    Rise: +{trade.rise_pct}%
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className={`text-2xl font-bold ${
-                    trade.return_pct > 0 ? 'text-green-400' : 'text-red-400'
-                  }`}>
-                    {trade.return_pct > 0 ? '+' : ''}{trade.return_pct.toFixed(1)}%
-                  </div>
-                  <div className="text-sm text-slate-400">
-                    ${trade.entry_price.toFixed(2)} → ${trade.exit_price.toFixed(2)}
-                  </div>
-                  <div className={`text-lg font-bold ${
-                    trade.profit_loss > 0 ? 'text-green-400' : 'text-red-400'
-                  }`}>
-                    {trade.profit_loss > 0 ? '+' : ''}${trade.profit_loss.toFixed(0)}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* Chart */}
       <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-6">
         <h3 className="text-xl font-bold text-white mb-4">📈 Price Chart with Signals</h3>
