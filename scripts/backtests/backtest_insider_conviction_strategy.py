@@ -89,6 +89,9 @@ class TradingState:
         self.phase = MarketPhase.UNKNOWN
         self.last_peak_date = None  # Track last peak to enforce 15-day gap before new rises
         
+        # Price history for rise start detection (need 2 days back)
+        self.price_history = []  # List of (date, price) tuples
+        
         # Dip-recovery-dip tracking for fall detection
         self.first_dip_date = None
         self.first_dip_price = None
@@ -104,6 +107,9 @@ class TradingState:
         self.trend_peak_date = None
         self.trend_low_price = float('inf')  # Start with very high value for bottom hunting
         self.trend_low_date = None
+        
+        # Event tracking for CSV/Excel output
+        self.all_events = []  # List of all rise/fall events
         
         # Previous trend memory (for evaluating buy conditions)
         self.prev_fall_pct = 0
@@ -132,8 +138,13 @@ class TradingState:
         """Update market phase using FIRST DIP → RECOVERY → SECOND DIP pattern for fall detection.
         
         RISE detection: 2 consecutive up days
-        FALL detection: First dip → recovery → second dip (trace back to first dip for rise end date)
+        FALL detection: First dip → recovery → second dip (trace back to peak for fall start)
         """
+        # Track price history (keep last 3 days for rise start detection)
+        self.price_history.append((date, current_price))
+        if len(self.price_history) > 3:
+            self.price_history.pop(0)
+        
         is_up = current_price > prev_price
         is_down = current_price < prev_price
         
@@ -175,16 +186,54 @@ class TradingState:
                             self.insiders_bought_in_fall = []
                             self.shopping_spree_peak_price = None
                     
+                    # Find the actual rise start (the bottom before the climb)
+                    # We detected 2 up days now, so the bottom was 3 days ago
+                    # price_history: [-3]=bottom, [-2]=day1 up, [-1]=day2 up (today)
+                    if len(self.price_history) >= 3:
+                        bottom_date, bottom_price = self.price_history[-3]  # 3 days ago = the bottom
+                        actual_start_date = bottom_date
+                        actual_start_price = bottom_price
+                    else:
+                        # Fallback if not enough history
+                        actual_start_date = date
+                        actual_start_price = prev_price
+                    
+                    # Record the completed FALL event if we were falling before
+                    if self.phase == MarketPhase.FALLING and self.trend_start_date:
+                        fall_days = (actual_start_date - self.trend_start_date).days
+                        fall_pct = ((self.trend_low_price - self.trend_start_price) / self.trend_start_price) * 100
+                        
+                        # Filter insiders who bought during THIS fall only
+                        # Make dates tz-naive for comparison
+                        fall_start_naive = self.trend_start_date.tz_localize(None) if hasattr(self.trend_start_date, 'tz_localize') else self.trend_start_date
+                        fall_end_naive = actual_start_date.tz_localize(None) if hasattr(actual_start_date, 'tz_localize') else actual_start_date
+                        
+                        fall_insiders = [
+                            i for i in self.insiders_bought_in_fall 
+                            if fall_start_naive <= pd.to_datetime(i['date']).tz_localize(None) < fall_end_naive
+                        ]
+                        
+                        self.all_events.append({
+                            'event_type': 'DOWN',
+                            'start_date': self.trend_start_date,
+                            'end_date': actual_start_date,
+                            'days': fall_days,
+                            'change_pct': fall_pct,
+                            'start_price': self.trend_start_price,
+                            'end_price': self.trend_low_price,
+                            'insiders': fall_insiders
+                        })
+                    
                     # Start rise: Reset peak tracking for this NEW rise cycle
                     self.phase = MarketPhase.RISING
-                    self.trend_start_date = date
-                    self.trend_start_price = prev_price
+                    self.trend_start_date = actual_start_date  # Rise started at the bottom
+                    self.trend_start_price = actual_start_price
                     self.trend_peak_price = current_price  # Peak for THIS rise starts here
                     self.trend_peak_date = date
                     self.first_dip_date = None  # Reset fall detection
                     self.first_dip_price = None
                     self.in_recovery = False
-                    print(f"📈 RISE STARTED (detected on {date.strftime('%Y-%m-%d')}): peak tracking reset to ${current_price:.2f}")
+                    print(f"📈 RISE STARTED on {actual_start_date.strftime('%Y-%m-%d')} at ${actual_start_price:.2f} (detected on {date.strftime('%Y-%m-%d')}): peak tracking reset to ${current_price:.2f}")
         
         elif self.phase == MarketPhase.RISING:
             # Update peak if new high
@@ -223,7 +272,7 @@ class TradingState:
                             print(f"  🔍 New dip low on {date.strftime('%Y-%m-%d')}: ${current_price:.2f}")
                 elif self.in_recovery:
                     # We had first dip, then recovery, NOW SECOND DIP
-                    # FALL CONFIRMED - trace back to first dip for rise end date
+                    # ANY down day after recovery = fall confirmed immediately (no -1% threshold!)
                     if date.year >= 2025:
                         print(f"  🔍 Second dip detected on {date.strftime('%Y-%m-%d')} - FALL CONFIRMED")
                     self.prev_rise_pct = ((self.trend_peak_price - self.trend_start_price) / 
@@ -234,6 +283,32 @@ class TradingState:
                     
                     # Transition to FALLING (started at first dip date)
                     self.phase = MarketPhase.FALLING
+                    
+                    # Record the completed RISE event before transitioning
+                    rise_days = (self.trend_peak_date - self.trend_start_date).days
+                    rise_pct = self.prev_rise_pct
+                    
+                    # Filter insiders who bought during THIS rise only
+                    # Make dates tz-naive for comparison
+                    rise_start_naive = self.trend_start_date.tz_localize(None) if hasattr(self.trend_start_date, 'tz_localize') else self.trend_start_date
+                    rise_end_naive = self.trend_peak_date.tz_localize(None) if hasattr(self.trend_peak_date, 'tz_localize') else self.trend_peak_date
+                    
+                    rise_insiders = [
+                        i for i in self.insiders_bought_in_rise 
+                        if rise_start_naive <= pd.to_datetime(i['date']).tz_localize(None) <= rise_end_naive
+                    ]
+                    
+                    self.all_events.append({
+                        'event_type': 'RISE',
+                        'start_date': self.trend_start_date,
+                        'end_date': self.trend_peak_date,
+                        'days': rise_days,
+                        'change_pct': rise_pct,
+                        'start_price': self.trend_start_price,
+                        'end_price': self.trend_peak_price,
+                        'insiders': rise_insiders
+                    })
+                    
                     self.trend_start_date = self.trend_peak_date  # Fall starts from peak
                     self.trend_start_price = self.trend_peak_price
                     self.trend_low_price = current_price
@@ -247,10 +322,11 @@ class TradingState:
                     self.dip_low_price = None
                     self.in_recovery = False
             
-            elif is_up and self.first_dip_date is not None:
-                # Price going up after first dip - this is RECOVERY
+            # RECOVERY DETECTION (up day OR plateau after first dip)
+            elif (is_up or current_price == prev_price) and self.first_dip_date is not None and not self.in_recovery:
+                # Price going up OR plateau (same price) after first dip - this is RECOVERY!
                 recovery_from_dip = ((current_price - self.dip_low_price) / self.dip_low_price) * 100
-                if recovery_from_dip >= 1.0:  # Meaningful recovery (≥1%)
+                if recovery_from_dip >= 0.0:  # Any non-decline is recovery (plateau counts!)
                     self.in_recovery = True
                     self.recovery_high = current_price
                     if date.year >= 2025:
@@ -549,7 +625,112 @@ def simulate_live_trading(insider_trades: Dict, price_df: pd.DataFrame) -> List[
         print(f"  💰 SELL {final_date.strftime('%Y-%m-%d')}: {return_pct:+.1f}% - end_of_period")
     
     print("=" * 80)
-    return completed_trades
+    return completed_trades, state  # Return state to access all_events
+
+
+def generate_event_files(events: List[Dict], price_df: pd.DataFrame):
+    """Generate CSV and Excel files for rise/fall events with proper formatting."""
+    from openpyxl import Workbook
+    from openpyxl.styles import PatternFill, Font
+    from datetime import datetime
+    
+    if not events:
+        print("⚠️ No events to export")
+        return
+    
+    # Calculate cumulative percentages and ranks
+    cumulative_pct = 0
+    rise_events = [e for e in events if e['event_type'] == 'RISE']
+    fall_events = [e for e in events if e['event_type'] == 'DOWN']
+    
+    # Rank rises and falls by change_pct
+    rise_events_sorted = sorted(rise_events, key=lambda x: abs(x['change_pct']), reverse=True)
+    fall_events_sorted = sorted(fall_events, key=lambda x: abs(x['change_pct']), reverse=True)
+    
+    rise_ranks = {id(e): f"{i+1}/{len(rise_events)}" for i, e in enumerate(rise_events_sorted)}
+    fall_ranks = {id(e): f"{i+1}/{len(fall_events)}" for i, e in enumerate(fall_events_sorted)}
+    
+    # Prepare data for export
+    export_data = []
+    for event in events:
+        cumulative_pct += event['change_pct']
+        
+        # Format insider purchases
+        insiders_str = ""
+        if event['insiders']:
+            insider_dates = sorted(set([i['date'] for i in event['insiders']]))
+            insiders_str = ", ".join([datetime.strptime(d, '%Y-%m-%d').strftime('%d/%m/%Y') for d in insider_dates])
+        
+        # Get rank
+        rank = rise_ranks.get(id(event)) if event['event_type'] == 'RISE' else fall_ranks.get(id(event))
+        
+        export_data.append({
+            'event_type': event['event_type'],
+            'start_date': event['start_date'].strftime('%d/%m/%Y'),
+            'end_date': event['end_date'].strftime('%d/%m/%Y'),
+            'days': event['days'],
+            'change_pct': round(event['change_pct'], 2),
+            'cumulative_pct': round(cumulative_pct, 2),
+            'insider_purchases': insiders_str if insiders_str else None,
+            'rank': rank
+        })
+    
+    # Save to CSV
+    csv_file = 'output CSVs/grov_rise_events.csv'
+    df = pd.DataFrame(export_data)
+    df.to_csv(csv_file, index=False)
+    print(f"✓ CSV saved to: {csv_file}")
+    
+    # Create Excel with colors
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "GROV Rise-Fall Events"
+    
+    # Colors
+    header_fill = PatternFill(start_color="D3D3D3", end_color="D3D3D3", fill_type="solid")  # Gray
+    rise_fill = PatternFill(start_color="90EE90", end_color="90EE90", fill_type="solid")    # Light green
+    fall_fill = PatternFill(start_color="FFB6C1", end_color="FFB6C1", fill_type="solid")    # Light pink
+    
+    # Headers
+    headers = ['Event Type', 'Start Date', 'End Date', 'Days', 'Change %', 'Rank', 'Cumulative %', 'Insider Purchases']
+    ws.append(headers)
+    for cell in ws[1]:
+        cell.fill = header_fill
+        cell.font = Font(bold=True)
+    
+    # Data rows
+    for row_data in export_data:
+        ws.append([
+            row_data['event_type'],
+            row_data['start_date'],
+            row_data['end_date'],
+            row_data['days'],
+            row_data['change_pct'],
+            row_data['rank'],
+            row_data['cumulative_pct'],
+            row_data['insider_purchases']
+        ])
+        
+        # Apply color based on event type
+        fill = rise_fill if row_data['event_type'] == 'RISE' else fall_fill
+        for cell in ws[ws.max_row]:
+            cell.fill = fill
+    
+    # Adjust column widths
+    ws.column_dimensions['A'].width = 12
+    ws.column_dimensions['B'].width = 12
+    ws.column_dimensions['C'].width = 12
+    ws.column_dimensions['D'].width = 8
+    ws.column_dimensions['E'].width = 10
+    ws.column_dimensions['F'].width = 8
+    ws.column_dimensions['G'].width = 13
+    ws.column_dimensions['H'].width = 30
+    
+    # Save Excel
+    excel_file = 'output CSVs/grov_rise_events.xlsx'
+    wb.save(excel_file)
+    print(f"✓ Excel saved to: {excel_file}")
+
 
 
 
@@ -570,7 +751,15 @@ def main():
     print()
     
     # Run live simulation
-    trades = simulate_live_trading(insider_trades, price_df)
+    trades, state = simulate_live_trading(insider_trades, price_df)
+    
+    # Generate event files
+    print()
+    print("=" * 80)
+    print("GENERATING RISE/FALL EVENT FILES")
+    print("=" * 80)
+    generate_event_files(state.all_events, price_df)
+    print()
     
     if not trades:
         print("\n❌ No trades executed.")
