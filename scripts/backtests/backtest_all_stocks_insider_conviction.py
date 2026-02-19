@@ -216,6 +216,10 @@ class TradingState:
                     self.first_dip_date = None
                     self.first_dip_price = None
                     self.in_recovery = False
+                    
+                    # Clear rise insiders when starting new rise from a fall
+                    # (Shopping Spree only counts if insiders bought BEFORE the fall)
+                    self.insiders_bought_in_rise = []
         
         elif self.phase == MarketPhase.RISING:
             # Update peak if new high
@@ -342,17 +346,21 @@ class TradingState:
         }
         
         # DEBUG
-        if '2025-03' in date_str or '2025-04' in date_str:
-            print(f"  [INSIDER {date_str}] Added to {self.phase.value} list (fall={len(self.insiders_bought_in_fall)}, rise={len(self.insiders_bought_in_rise)})")
+        if '2025-03' in date_str or '2025-04' in date_str or '2025-08' in date_str or '2025-09' in date_str:
+            print(f"  [INSIDER {date_str}] Phase={self.phase.value}, fall={len(self.insiders_bought_in_fall)}, rise={len(self.insiders_bought_in_rise)}")
         
-        if self.phase == MarketPhase.RISING:
-            self.insiders_bought_in_rise.append(trade_data)
-            if self.shopping_spree_peak_price is None or trade_data['stock_price'] > self.shopping_spree_peak_price:
-                self.shopping_spree_peak_price = trade_data['stock_price']
-        elif self.phase == MarketPhase.FALLING:
+        # Simple rule: Classify by CURRENT phase when insider actually buys
+        # - FALLING phase → fall list (absorption buying)
+        # - RISING phase → rise list (potential shopping spree)
+        
+        if self.phase == MarketPhase.FALLING:
             self.insiders_bought_in_fall.append(trade_data)
-            if self.shopping_spree_peak_price is None or trade_data['stock_price'] > self.shopping_spree_peak_price:
-                self.shopping_spree_peak_price = trade_data['stock_price']
+        elif self.phase == MarketPhase.RISING:
+            self.insiders_bought_in_rise.append(trade_data)
+        
+        # Track peak price for shopping spree target
+        if self.shopping_spree_peak_price is None or trade_data['stock_price'] > self.shopping_spree_peak_price:
+            self.shopping_spree_peak_price = trade_data['stock_price']
     
     def check_buy_signal(self, current_date: datetime, current_price: float) -> Optional[Dict]:
         """Check if we should buy based on current state (NO HINDSIGHT)."""
@@ -416,6 +424,8 @@ class TradingState:
                 self.peak_since_entry = 0
                 self.rise_start_price = self.trend_start_price if self.trend_start_price else current_price
                 self.in_mid_rise = False
+                self.cumulative_mid_rises_pct = 0.0  # RESET cumulative counter for new trade
+                self.mid_rise_start_price = None
                 
                 # Clear insider data only when buy actually happens
                 self.insiders_bought_in_rise = []
@@ -448,13 +458,18 @@ class TradingState:
         
         # ABSORPTION BUY has different sell logic
         if self.buy_type == 'absorption_buy':
+            # DEBUG for BLNE Sept 2025
+            if current_date.year == 2025 and current_date.month == 9 and current_date.day >= 8 and current_date.day <= 15:
+                print(f"  [SEPT DEBUG {current_date.strftime('%Y-%m-%d')}] Phase={self.phase.value}, price=${current_price:.2f}, gain={current_gain_pct:.2f}%, target_reached={self.target_reached}, cumulative_mid_rises={self.cumulative_mid_rises_pct:.2f}%")
+            
             if self.phase == MarketPhase.RISING:
                 # Track MID-RISES within the current rise event
                 # Accumulate all mid-rise percentages and check if cumulative >= fall_pct
                 daily_change_pct = ((current_price - prev_price) / prev_price) * 100
                 
-                # DEBUG for BSFC
+                # DEBUG for BSFC and BLNE Sept 2025
                 is_bsfc_debug = (current_date.year == 2022 and current_date.month == 1 and current_date.day >= 19)
+                is_blne_sept_debug = (current_date.year == 2025 and current_date.month == 9 and current_date.day >= 8 and current_date.day <= 15)
                 
                 # Start a new mid-rise when going up
                 if daily_change_pct > 0:
@@ -462,7 +477,7 @@ class TradingState:
                         # Starting a new mid-rise
                         self.in_mid_rise = True
                         self.mid_rise_start_price = prev_price
-                        if is_bsfc_debug:
+                        if is_bsfc_debug or is_blne_sept_debug:
                             print(f"  📈 {current_date.strftime('%Y-%m-%d')}: Mid-rise started at ${prev_price:.2f}")
                 # End mid-rise when going down
                 elif daily_change_pct < -1.0 and self.in_mid_rise:
@@ -470,7 +485,7 @@ class TradingState:
                     mid_rise_pct = ((prev_price - self.mid_rise_start_price) / self.mid_rise_start_price) * 100
                     if mid_rise_pct >= 1.0:  # Only count meaningful mid-rises
                         self.cumulative_mid_rises_pct += mid_rise_pct
-                        if is_bsfc_debug:
+                        if is_bsfc_debug or is_blne_sept_debug:
                             print(f"  📈 {current_date.strftime('%Y-%m-%d')}: Mid-rise ended: +{mid_rise_pct:.2f}%, cumulative: {self.cumulative_mid_rises_pct:.2f}%")
                     self.in_mid_rise = False
                     self.mid_rise_start_price = None
@@ -479,13 +494,13 @@ class TradingState:
                 target_gain_pct = abs(self.prev_fall_pct)
                 if not self.target_reached and self.cumulative_mid_rises_pct >= target_gain_pct:
                     self.target_reached = True
-                    if is_bsfc_debug:
+                    if is_bsfc_debug or is_blne_sept_debug:
                         print(f"  🎯 {current_date.strftime('%Y-%m-%d')}: Target reached! Cumulative: {self.cumulative_mid_rises_pct:.2f}% >= {target_gain_pct:.2f}%")
                 
                 # After target reached, sell on first dip
                 if self.target_reached and daily_change_pct < -1.0:
                     self.in_position = False
-                    if is_bsfc_debug:
+                    if is_bsfc_debug or is_blne_sept_debug:
                         print(f"  💰 {current_date.strftime('%Y-%m-%d')}: SELL! Dip: {daily_change_pct:.2f}%")
                     return ('absorption_target_reached', current_price)
             
@@ -493,10 +508,7 @@ class TradingState:
             return None
         
         # SHOPPING SPREE sell logic
-        # Emergency stop loss: -15%
-        if current_gain_pct <= -15:
-            self.in_position = False
-            return ('stop_loss', current_price)
+        # No stop loss - wait for target to be reached
         
         if not self.target_reached and current_price >= self.target_price:
             self.target_reached = True

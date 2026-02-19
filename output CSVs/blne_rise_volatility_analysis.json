@@ -1,6 +1,6 @@
 {
   "ticker": "BLNE",
-  "analysis_date": "2026-02-20 01:13:44",
+  "analysis_date": "2026-02-20 01:41:56",
   "total_rise_events": 117,
   "rise_events": {
     "35.14": {
@@ -4110,7 +4110,15 @@
         "days_after_peak": 15,
         "days_since_recovery": 6
       },
-      "insiders": []
+      "insiders": [
+        {
+          "date": "2025-11-26",
+          "price": 1.85,
+          "insider_name": "Freedman Joseph David",
+          "value": 1850.0,
+          "stock_price": 1.8200000524520874
+        }
+      ]
     },
     "10.53": {
       "rise_start_date": "17/12/2025",
