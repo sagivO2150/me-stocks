@@ -1,0 +1,44 @@
+{
+  "ticker": "BLNE",
+  "strategy": "Insider Conviction (No Hindsight)",
+  "total_trades": 2,
+  "total_profit": 8580.08,
+  "total_invested": 4000,
+  "roi": 214.5,
+  "win_rate": 100.0,
+  "target_rate": 50.0,
+  "trades": [
+    {
+      "ticker": "BLNE",
+      "entry_date": "2025-06-18",
+      "entry_price": 0.77,
+      "exit_date": "2025-09-17",
+      "exit_price": 3.56,
+      "target_price": 2.9,
+      "days_held": 91,
+      "return_pct": 362.34,
+      "position_size": 2000,
+      "profit_loss": 7246.75,
+      "sell_reason": "target_reached_first_dip",
+      "target_reached": "yes",
+      "peak_gain": 402.6,
+      "buy_type": "shopping_spree"
+    },
+    {
+      "ticker": "BLNE",
+      "entry_date": "2025-11-25",
+      "entry_price": 1.77,
+      "exit_date": "2026-02-17",
+      "exit_price": 2.95,
+      "target_price": 4.35,
+      "days_held": 84,
+      "return_pct": 66.67,
+      "position_size": 2000,
+      "profit_loss": 1333.33,
+      "sell_reason": "end_of_period",
+      "target_reached": "no",
+      "peak_gain": 102.82,
+      "buy_type": "shopping_spree"
+    }
+  ]
+}

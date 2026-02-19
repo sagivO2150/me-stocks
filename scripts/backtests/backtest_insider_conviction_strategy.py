@@ -10,14 +10,10 @@ Strategy Rules (as if trading live):
       - Buy when we detect stock recovering (2+ days of rise after insider buying)
       - Target: Peak price during the shopping spree period
    
-   b) Absorption Event: Insiders buy during massive fall (>60%)
-      - Calculate average insider purchase price, round down
-      - Buy when we detect recovery starting
-      - Target: Rounded-down average price
-   
-   c) Fall-Only Buy (<60% drop): Insiders buy only during fall
-      - Target: Recover to the price when fall started
-      - Buy when recovery is detected
+   b) Absorption Buy: Insiders buy ONLY during fall (not during rise)
+      - Require minimum $5K total insider investment during the fall
+      - Buy when we detect recovery starting (2+ consecutive up days)
+      - Target: Recover the fall magnitude (cumulative mid-rises >= fall percentage)
 
 2. SELL CONDITIONS (real-time detection):
    - Never sell during continuous rises
@@ -534,55 +530,6 @@ class TradingState:
                     'rise_start_price': self.rise_start_price  # Debug
                 }
         
-        # # SCENARIO 3: Old absorption code (>60% fall) - COMMENTED OUT
-        # elif self.insiders_bought_in_fall and self.prev_fall_pct >= 60:
-        #     # Average insider purchase price, rounded down
-        #     insider_prices = [t['price'] for t in self.insiders_bought_in_fall if t['price'] > 0]
-        #     if insider_prices:
-        #         avg_price = sum(insider_prices) / len(insider_prices)
-        #         target = int(avg_price)  # Round down
-        #         
-        #         if target > current_price:
-        #             self.in_position = True
-        #             self.entry_date = current_date
-        #             self.entry_price = current_price
-        #             self.target_price = target
-        #             self.buy_type = 'absorption'
-        #             self.target_reached = False
-        #             self.peak_since_entry = 0
-        #             
-        #             return {
-        #                 'buy_date': current_date,
-        #                 'entry_price': current_price,
-        #                 'target_price': target,
-        #                 'buy_type': 'absorption',
-        #                 'num_insiders': len(self.insiders_bought_in_fall),
-        #                 'fall_pct': self.prev_fall_pct
-        #             }
-        # 
-        # # SCENARIO 4: Fall-Only Buy (<60% fall) - COMMENTED OUT
-        # elif self.insiders_bought_in_fall and self.prev_fall_pct < 60 and self.prev_fall_start_price:
-        #     # Target is to recover what was lost
-        #     target = self.prev_fall_start_price
-        #     
-        #     if target > current_price:
-        #         self.in_position = True
-        #         self.entry_date = current_date
-        #         self.entry_price = current_price
-        #         self.target_price = target
-        #         self.buy_type = 'fall_only'
-        #         self.target_reached = False
-        #         self.peak_since_entry = 0
-        #         
-        #         return {
-        #             'buy_date': current_date,
-        #             'entry_price': current_price,
-        #             'target_price': target,
-        #             'buy_type': 'fall_only',
-        #             'num_insiders': len(self.insiders_bought_in_fall),
-        #             'fall_pct': self.prev_fall_pct
-        #         }
-        
         # Clear insider data after checking - we've evaluated this rise+fall cycle
         # This prevents stale data from affecting future signals
         # ALWAYS clear after checking (whether we bought or not)
@@ -669,7 +616,7 @@ class TradingState:
         return None
 
 
-def simulate_live_trading(insider_trades: Dict, price_df: pd.DataFrame) -> List[Dict]:
+def simulate_live_trading(insider_trades: Dict, price_df: pd.DataFrame, ticker: str = 'UNKNOWN') -> List[Dict]:
     """
     Simulate live trading day-by-day with NO HINDSIGHT.
     
@@ -712,7 +659,7 @@ def simulate_live_trading(insider_trades: Dict, price_df: pd.DataFrame) -> List[
                 profit = state.position_size * (return_pct / 100)
                 
                 trade = {
-                    'ticker': 'BSFC',
+                    'ticker': ticker,
                     'entry_date': state.entry_date.strftime('%Y-%m-%d'),
                     'entry_price': round(state.entry_price, 2),
                     'exit_date': current_date.strftime('%Y-%m-%d'),
@@ -755,7 +702,7 @@ def simulate_live_trading(insider_trades: Dict, price_df: pd.DataFrame) -> List[
         profit = state.position_size * (return_pct / 100)
         
         trade = {
-            'ticker': 'BSFC',
+            'ticker': ticker,
             'entry_date': state.entry_date.strftime('%Y-%m-%d'),
             'entry_price': round(state.entry_price, 2),
             'exit_date': final_date.strftime('%Y-%m-%d'),
@@ -778,7 +725,7 @@ def simulate_live_trading(insider_trades: Dict, price_df: pd.DataFrame) -> List[
     return completed_trades, state  # Return state to access all_events
 
 
-def generate_event_files(events: List[Dict], price_df: pd.DataFrame):
+def generate_event_files(events: List[Dict], price_df: pd.DataFrame, ticker: str = 'BSFC'):
     """Generate CSV and Excel files for rise/fall events with proper formatting."""
     from openpyxl import Workbook
     from openpyxl.styles import PatternFill, Font
@@ -837,7 +784,7 @@ def generate_event_files(events: List[Dict], price_df: pd.DataFrame):
         })
     
     # Save to CSV
-    csv_file = 'output CSVs/bsfc_rise_events.csv'
+    csv_file = f'output CSVs/{ticker.lower()}_rise_events.csv'
     df = pd.DataFrame(export_data)
     df.to_csv(csv_file, index=False)
     print(f"✓ CSV saved to: {csv_file}")
@@ -845,7 +792,7 @@ def generate_event_files(events: List[Dict], price_df: pd.DataFrame):
     # Create Excel with colors
     wb = Workbook()
     ws = wb.active
-    ws.title = "BSFC Rise-Fall Events"
+    ws.title = f"{ticker} Rise-Fall Events"
     
     # Colors
     header_fill = PatternFill(start_color="D3D3D3", end_color="D3D3D3", fill_type="solid")  # Gray
@@ -888,7 +835,7 @@ def generate_event_files(events: List[Dict], price_df: pd.DataFrame):
     ws.column_dimensions['H'].width = 30
     
     # Save Excel
-    excel_file = 'output CSVs/bsfc_rise_events.xlsx'
+    excel_file = f'output CSVs/{ticker.lower()}_rise_events.xlsx'
     wb.save(excel_file)
     print(f"✓ Excel saved to: {excel_file}")
 
@@ -1071,7 +1018,7 @@ def analyze_rise_volatility(df: pd.DataFrame, rise_event: Dict) -> Dict:
     return result
 
 
-def generate_volatility_json(events: List[Dict], df: pd.DataFrame):
+def generate_volatility_json(events: List[Dict], df: pd.DataFrame, ticker: str = 'BSFC'):
     """Generate JSON with volatility analysis for all rise events."""
     from datetime import datetime
     
@@ -1093,14 +1040,14 @@ def generate_volatility_json(events: List[Dict], df: pd.DataFrame):
     
     # Build final JSON structure
     json_output = {
-        'ticker': 'BSFC',
+        'ticker': ticker,
         'analysis_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         'total_rise_events': len(rise_events),
         'rise_events': volatility_analysis
     }
     
     # Save to file
-    json_file = 'output CSVs/bsfc_rise_volatility_analysis.json'
+    json_file = f'output CSVs/{ticker.lower()}_rise_volatility_analysis.json'
     with open(json_file, 'w') as f:
         json.dump(json_output, f, indent=2)
     
@@ -1108,140 +1055,328 @@ def generate_volatility_json(events: List[Dict], df: pd.DataFrame):
 
 
 def main():
-    """Run the live trading simulation."""
+    """Run the live trading simulation for all stocks."""
+    # Load cached yfinance data
+    print("📦 Loading cached price data...")
+    cache_file = 'output CSVs/yfinance_cache_full.json'
+    with open(cache_file, 'r') as f:
+        cache = json.load(f)
+    
+    print(f"   ✅ Loaded cache with {len(cache['data'])} stocks")
+    print(f"   📅 Cache created: {cache['metadata']['created']}")
+    
+    # Convert cache data to pandas DataFrames
+    price_cache = {}
+    for ticker, ticker_data in cache['data'].items():
+        df = pd.DataFrame({
+            'Open': ticker_data['open'],
+            'High': ticker_data['high'],
+            'Low': ticker_data['low'],
+            'Close': ticker_data['close'],
+            'Volume': ticker_data['volume']
+        }, index=pd.to_datetime(ticker_data['dates']))
+        price_cache[ticker] = df
+    
+    # Load all insider trades
+    with open('output CSVs/expanded_insider_trades.json', 'r') as f:
+        trades_file = json.load(f)
+    
+    # Extract the data array - it's already grouped by ticker
+    stocks_data = trades_file['data']
+    
+    print()
     print("=" * 80)
     print("INSIDER CONVICTION STRATEGY - LIVE SIMULATION (No Hindsight)")
     print("=" * 80)
-    print()
-    
-    print("Loading BSFC data and insider trades...")
-    insider_trades, price_df = load_grov_data()
-    
-    print(f"✓ Loaded {len(insider_trades)} insider trades")
-    print(f"✓ Price data: {price_df.index[0].strftime('%Y-%m-%d')} to {price_df.index[-1].strftime('%Y-%m-%d')} ({len(price_df)} days)")
-    print()
-    
-    # Run live simulation
-    trades, state = simulate_live_trading(insider_trades, price_df)
-    
-    # Generate event files
-    print()
+    print(f"\n📊 Processing {len(stocks_data)} stocks\n")
     print("=" * 80)
-    print("GENERATING RISE/FALL EVENT FILES")
-    print("=" * 80)
-    generate_event_files(state.all_events, price_df)
-    generate_volatility_json(state.all_events, price_df)
-    print()
     
-    if not trades:
-        print("\n❌ No trades executed.")
-        return
+    all_results = []
+    processed = 0
     
-    # Calculate statistics
-    print()
-    print("=" * 80)
-    print("BACKTEST RESULTS")
-    print("=" * 80)
-    print()
+    # Filter to only GROV to regenerate results with correct ticker
+    stocks_data = [s for s in stocks_data if s['ticker'] == 'GROV']
     
-    total_trades = len(trades)
-    winning_trades = [t for t in trades if t['return_pct'] > 0]
-    losing_trades = [t for t in trades if t['return_pct'] <= 0]
-    target_reached_trades = [t for t in trades if t['target_reached'] == 'yes']
-    
-    win_rate = len(winning_trades) / total_trades * 100 if total_trades > 0 else 0
-    target_rate = len(target_reached_trades) / total_trades * 100 if total_trades > 0 else 0
-    
-    total_profit = sum(t['profit_loss'] for t in trades)
-    total_invested = sum(t['position_size'] for t in trades)
-    roi = (total_profit / total_invested * 100) if total_invested > 0 else 0
-    
-    avg_return = sum(t['return_pct'] for t in trades) / total_trades
-    avg_win = sum(t['return_pct'] for t in winning_trades) / len(winning_trades) if winning_trades else 0
-    avg_loss = sum(t['return_pct'] for t in losing_trades) / len(losing_trades) if losing_trades else 0
-    
-    median_return = sorted([t['return_pct'] for t in trades])[len(trades) // 2]
-    max_return = max(t['return_pct'] for t in trades)
-    min_return = min(t['return_pct'] for t in trades)
-    
-    avg_days = sum(t['days_held'] for t in trades) / total_trades
-    avg_peak_gain = sum(t['peak_gain'] for t in trades) / total_trades
-    
-    print(f"Total Trades:              {total_trades}")
-    print(f"Winning Trades:            {len(winning_trades)} ({win_rate:.1f}%)")
-    print(f"Losing Trades:             {len(losing_trades)} ({100-win_rate:.1f}%)")
-    print(f"Target Reached:            {len(target_reached_trades)} ({target_rate:.1f}%)")
-    print()
-    print(f"Total Profit:              ${total_profit:,.2f}")
-    print(f"Total Invested:            ${total_invested:,.2f}")
-    print(f"ROI:                       {roi:+.2f}%")
-    print()
-    print(f"Average Return:            {avg_return:+.2f}%")
-    print(f"Median Return:             {median_return:+.2f}%")
-    print(f"Average Win:               {avg_win:+.2f}%")
-    print(f"Average Loss:              {avg_loss:+.2f}%")
-    print(f"Best Trade:                {max_return:+.2f}%")
-    print(f"Worst Trade:               {min_return:+.2f}%")
-    print()
-    print(f"Average Days Held:         {avg_days:.1f}")
-    print(f"Average Peak Gain:         {avg_peak_gain:.1f}%")
-    print()
-    
-    # Breakdown by strategy type
-    print("BREAKDOWN BY STRATEGY TYPE:")
-    print("-" * 80)
-    for strategy_type in ['shopping_spree', 'absorption', 'fall_only']:
-        strategy_trades = [t for t in trades if t['buy_type'] == strategy_type]
-        if strategy_trades:
-            strategy_wins = [t for t in strategy_trades if t['return_pct'] > 0]
-            strategy_avg = sum(t['return_pct'] for t in strategy_trades) / len(strategy_trades)
-            strategy_win_rate = len(strategy_wins) / len(strategy_trades) * 100
-            strategy_target_rate = len([t for t in strategy_trades if t['target_reached'] == 'yes']) / len(strategy_trades) * 100
+    for stock_data in stocks_data:
+        ticker = stock_data['ticker']
+        trades_list = stock_data['trades']
+        
+        processed += 1
+        
+        print(f"\n\n{'='*80}")
+        print(f"Processing {ticker}...")
+        print('='*80)
+        
+        if not trades_list:
+            print(f"⚠️  No trades found for {ticker}, skipping")
+            continue
+        
+        # Try to get cached price data
+        try:
+            if ticker not in price_cache:
+                print(f"⚠️  No cached price data for {ticker}, skipping")
+                continue
             
-            print(f"{strategy_type.replace('_', ' ').title():20} | Trades: {len(strategy_trades):2} | Win Rate: {strategy_win_rate:5.1f}% | Avg Return: {strategy_avg:+6.2f}% | Target Hit: {strategy_target_rate:5.1f}%")
-    print()
+            price_df = price_cache[ticker][['Close']].copy()
+            
+            if price_df.empty:
+                print(f"⚠️  Empty price data for {ticker}, skipping")
+                continue
+            
+            # Convert insider trades to date-indexed dictionary format
+            insider_trades = {}  # date -> list of trade info
+            for trade in trades_list:
+                trade_date = trade['trade_date']
+                if trade_date:
+                    try:
+                        # Parse price (remove $ and commas)
+                        price_str = str(trade.get('price', '0')).replace('$', '').replace(',', '')
+                        price = float(price_str) if price_str else 0.0
+                        
+                        # Parse value (remove $, +, commas and convert to float)
+                        value_str = str(trade.get('value', '0')).replace('$', '').replace('+', '').replace(',', '')
+                        value = float(value_str) if value_str else 0.0
+                        
+                        trade_info = {
+                            'price': price,
+                            'insider_name': trade.get('insider_name', ''),
+                            'value': value,  # Now numeric
+                            'title': trade.get('title', '')
+                        }
+                        
+                        # Store as list to handle multiple insiders on same date
+                        if trade_date not in insider_trades:
+                            insider_trades[trade_date] = []
+                        insider_trades[trade_date].append(trade_info)
+                    except:
+                        continue
+            
+            print(f"✓ Loaded {sum(len(v) for v in insider_trades.values())} insider trades")
+            print(f"✓ Price data: {price_df.index[0].strftime('%Y-%m-%d')} to {price_df.index[-1].strftime('%Y-%m-%d')} ({len(price_df)} days)")
+            
+            # Run live simulation
+            trades, state = simulate_live_trading(insider_trades, price_df, ticker)
+            
+            print(f"✓ Simulation complete: {len(trades)} trades executed")
+            
+            # Generate event files (only for stocks with trades)
+            if trades:
+                generate_event_files(state.all_events, price_df, ticker)
+                generate_volatility_json(state.all_events, price_df, ticker)
+            
+        except Exception as e:
+            # Silently skip errors to keep processing
+            continue
+        
+        if not trades:
+            print(f"\n❌ No trades executed for {ticker}.")
+            all_results.append({
+                'ticker': ticker,
+                'trade_count': 0,
+                'winning_trades': 0,
+                'losing_trades': 0,
+                'roi': 0,
+                'win_rate': 0,
+                'target_rate': 0,
+                'total_profit': 0,
+                'total_invested': 0,
+                'avg_return': 0,
+                'median_return': 0,
+                'avg_win': 0,
+                'avg_loss': 0,
+                'best_trade': 0,
+                'worst_trade': 0,
+                'avg_days_held': 0,
+                'avg_peak_gain': 0,
+                'trades': []
+            })
+            continue
+        
+        # Calculate statistics
+        print()
+        print("=" * 80)
+        print(f"BACKTEST RESULTS - {ticker}")
+        print("=" * 80)
+        print()
+        
+        total_trades = len(trades)
+        winning_trades = [t for t in trades if t['return_pct'] > 0]
+        losing_trades = [t for t in trades if t['return_pct'] <= 0]
+        target_reached_trades = [t for t in trades if t['target_reached'] == 'yes']
+        
+        win_rate = len(winning_trades) / total_trades * 100 if total_trades > 0 else 0
+        target_rate = len(target_reached_trades) / total_trades * 100 if total_trades > 0 else 0
+        
+        total_profit = sum(t['profit_loss'] for t in trades)
+        total_invested = sum(t['position_size'] for t in trades)
+        roi = (total_profit / total_invested * 100) if total_invested > 0 else 0
+        
+        avg_return = sum(t['return_pct'] for t in trades) / total_trades
+        avg_win = sum(t['return_pct'] for t in winning_trades) / len(winning_trades) if winning_trades else 0
+        avg_loss = sum(t['return_pct'] for t in losing_trades) / len(losing_trades) if losing_trades else 0
+        
+        median_return = sorted([t['return_pct'] for t in trades])[len(trades) // 2]
+        max_return = max(t['return_pct'] for t in trades)
+        min_return = min(t['return_pct'] for t in trades)
+        
+        avg_days = sum(t['days_held'] for t in trades) / total_trades
+        avg_peak_gain = sum(t['peak_gain'] for t in trades) / total_trades
+        
+        print(f"Total Trades:              {total_trades}")
+        print(f"Winning Trades:            {len(winning_trades)} ({win_rate:.1f}%)")
+        print(f"Losing Trades:             {len(losing_trades)} ({100-win_rate:.1f}%)")
+        print(f"Target Reached:            {len(target_reached_trades)} ({target_rate:.1f}%)")
+        print()
+        print(f"Total Profit:              ${total_profit:,.2f}")
+        print(f"Total Invested:            ${total_invested:,.2f}")
+        print(f"ROI:                       {roi:+.2f}%")
+        print()
+        print(f"Average Return:            {avg_return:+.2f}%")
+        print(f"Median Return:             {median_return:+.2f}%")
+        print(f"Average Win:               {avg_win:+.2f}%")
+        print(f"Average Loss:              {avg_loss:+.2f}%")
+        print(f"Best Trade:                {max_return:+.2f}%")
+        print(f"Worst Trade:               {min_return:+.2f}%")
+        print()
+        print(f"Average Days Held:         {avg_days:.1f}")
+        print(f"Average Peak Gain:         {avg_peak_gain:.1f}%")
+        print()
+        
+        # Exit reason breakdown
+        print("EXIT REASONS:")
+        print("-" * 80)
+        exit_reasons = {}
+        for trade in trades:
+            reason = trade['sell_reason']
+            if reason not in exit_reasons:
+                exit_reasons[reason] = []
+            exit_reasons[reason].append(trade)
+        
+        for reason, reason_trades in sorted(exit_reasons.items(), key=lambda x: len(x[1]), reverse=True):
+            count = len(reason_trades)
+            avg_ret = sum(t['return_pct'] for t in reason_trades) / count
+            print(f"{reason:35} | Count: {count:2} | Avg Return: {avg_ret:+6.2f}%")
+        print()
+        
+        # Save results in POC format for UI display
+        output = {
+            'ticker': ticker,
+            'strategy': 'Insider Conviction (No Hindsight)',
+            'total_trades': total_trades,
+            'total_profit': round(total_profit, 2),
+            'total_invested': total_invested,
+            'roi': round(roi, 2),
+            'win_rate': round(win_rate, 1),
+            'target_rate': round(target_rate, 1),
+            'trades': trades
+        }
+        
+        # Save to POC file for UI
+        poc_file = f'output CSVs/{ticker.lower()}_insider_conviction_poc.json'
+        with open(poc_file, 'w') as f:
+            json.dump(output, f, indent=2)
+        print(f"✓ Results saved to: {poc_file}")
+        print("=" * 80)
+        
+        # Add to all results
+        all_results.append({
+            'ticker': ticker,
+            'trade_count': total_trades,  # Number of trades
+            'trades': trades,  # Array of trade details (for UI)
+            'winning_trades': len(winning_trades),
+            'losing_trades': len(losing_trades),
+            'roi': round(roi, 2),
+            'win_rate': round(win_rate, 1),
+            'target_rate': round(target_rate, 1),
+            'total_profit': round(total_profit, 2),
+            'total_invested': total_invested,
+            'avg_return': round(avg_return, 2),
+            'median_return': round(median_return, 2),
+            'avg_win': round(avg_win, 2),
+            'avg_loss': round(avg_loss, 2),
+            'best_trade': round(max_return, 2),
+            'worst_trade': round(min_return, 2),
+            'avg_days_held': round(avg_days, 1),
+            'avg_peak_gain': round(avg_peak_gain, 1)
+        })
     
-    # Exit reason breakdown
-    print("EXIT REASONS:")
+    # Print summary of all tickers
+    print("\n\n" + "=" * 80)
+    print("SUMMARY - ALL TICKERS")
+    print("=" * 80)
+    
+    # Calculate overall statistics
+    total_profit_all = sum(r['total_profit'] for r in all_results)
+    total_invested_all = sum(r.get('total_invested', 0) for r in all_results)
+    overall_roi = (total_profit_all / total_invested_all * 100) if total_invested_all > 0 else 0
+    total_trades_all = sum(r['trade_count'] for r in all_results)
+    total_winners = sum(r.get('winning_trades', 0) for r in all_results)
+    overall_win_rate = (total_winners / total_trades_all * 100) if total_trades_all > 0 else 0
+    
+    print(f"OVERALL STATISTICS")
     print("-" * 80)
-    exit_reasons = {}
-    for trade in trades:
-        reason = trade['sell_reason']
-        if reason not in exit_reasons:
-            exit_reasons[reason] = []
-        exit_reasons[reason].append(trade)
-    
-    for reason, reason_trades in sorted(exit_reasons.items(), key=lambda x: len(x[1]), reverse=True):
-        count = len(reason_trades)
-        avg_ret = sum(t['return_pct'] for t in reason_trades) / count
-        print(f"{reason:35} | Count: {count:2} | Avg Return: {avg_ret:+6.2f}%")
+    print(f"Stocks Analyzed:           {len(all_results)}")
+    print(f"Total Trades:              {total_trades_all}")
+    print(f"Winning Trades:            {total_winners} ({overall_win_rate:.1f}%)")
+    print(f"Total Profit:              ${total_profit_all:,.2f}")
+    print(f"Total Invested:            ${total_invested_all:,.2f}")
+    print(f"Overall ROI:               {overall_roi:+.2f}%")
     print()
     
-    # Save results in POC format for UI display
+    # Sort by ROI
+    results_sorted = sorted(all_results, key=lambda x: x['roi'], reverse=True)
+    
+    # Get top 25 best and worst
+    top_25_best = results_sorted[:25]
+    top_25_worst = results_sorted[-25:]
+    
+    print("TOP 25 BEST PERFORMERS:")
+    print("-" * 80)
+    for result in top_25_best:
+        print(f"{result['ticker']:6} | Trades: {result['trade_count']:3} | ROI: {result['roi']:+7.2f}% | Win Rate: {result['win_rate']:5.1f}% | P/L: ${result.get('total_profit', 0):,.2f}")
+    
+    print()
+    print("TOP 25 WORST PERFORMERS:")
+    print("-" * 80)
+    for result in reversed(top_25_worst):
+        print(f"{result['ticker']:6} | Trades: {result['trade_count']:3} | ROI: {result['roi']:+7.2f}% | Win Rate: {result['win_rate']:5.1f}% | P/L: ${result.get('total_profit', 0):,.2f}")
+    
+    # Get tickers of top/worst performers (for filtering detailed trades)
+    top_worst_tickers = set([r['ticker'] for r in top_25_best] + [r['ticker'] for r in top_25_worst])
+    
+    # Remove individual trades from all_results (except top/worst performers)
+    # This saves file size - we only need detailed trades for stocks shown in UI
+    all_results_lite = []
+    for r in results_sorted:
+        result_copy = r.copy()
+        if result_copy['ticker'] not in top_worst_tickers:
+            # Remove trades array for stocks not in top/worst
+            result_copy.pop('trades', None)
+        all_results_lite.append(result_copy)
+    
+    # Save results to JSON for UI
     output = {
-        'ticker': 'BSFC',
+        'analysis_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         'strategy': 'Insider Conviction (No Hindsight)',
-        'total_trades': total_trades,
-        'total_profit': round(total_profit, 2),
-        'total_invested': total_invested,
-        'roi': round(roi, 2),
-        'win_rate': round(win_rate, 1),
-        'target_rate': round(target_rate, 1),
-        'trades': trades
+        'overall_stats': {
+            'stocks_analyzed': len(all_results),
+            'total_trades': total_trades_all,
+            'winning_trades': total_winners,
+            'overall_win_rate': round(overall_win_rate, 1),
+            'total_profit': round(total_profit_all, 2),
+            'total_invested': total_invested_all,
+            'overall_roi': round(overall_roi, 2)
+        },
+        'top_25_best': top_25_best,
+        'top_25_worst': list(reversed(top_25_worst)),
+        'all_results': all_results_lite
     }
     
-    # Save to POC file for UI
-    poc_file = 'output CSVs/bsfc_insider_conviction_poc.json'
-    with open(poc_file, 'w') as f:
+    output_file = 'output CSVs/insider_conviction_all_stocks_results.json'
+    with open(output_file, 'w') as f:
         json.dump(output, f, indent=2)
-    print(f"✓ Results saved to: {poc_file}")
     
-    # Also save to CSV for analysis
-    trades_df = pd.DataFrame(trades)
-    csv_file = 'output CSVs/backtest_insider_conviction_strategy_results.csv'
-    trades_df.to_csv(csv_file, index=False)
-    print(f"✓ CSV saved to: {csv_file}")
-    print()
+    print(f"\n✓ Results saved to: {output_file}")
     print("=" * 80)
 
 
