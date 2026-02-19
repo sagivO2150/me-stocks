@@ -1101,8 +1101,21 @@ def main():
             events = result['events']
             price_df = result['price_df']
             
-            generate_event_files(events, price_df, single_ticker)
-            generate_volatility_json(events, price_df, single_ticker)
+            # Apply corrections to rise events based on declining mid-rises pattern
+            corrected_events = []
+            for event in events:
+                if event['event_type'] == 'RISE':
+                    # Analyze this rise event to detect and correct declining mid-rises
+                    analysis = analyze_rise_volatility(price_df, event)
+                    if analysis:
+                        # Update the event with corrected data
+                        event['end_date'] = pd.to_datetime(analysis['rise_end_date'], format='%d/%m/%Y')
+                        event['days'] = analysis['rise_days']
+                        event['change_pct'] = analysis['rise_percentage']
+                corrected_events.append(event)
+            
+            generate_event_files(corrected_events, price_df, single_ticker)
+            generate_volatility_json(corrected_events, price_df, single_ticker)
             print()
         
         # Remove events and price_df from result before saving to JSON
