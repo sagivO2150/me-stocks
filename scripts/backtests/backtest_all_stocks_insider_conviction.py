@@ -284,7 +284,7 @@ class TradingState:
                             'insiders': rise_insiders
                         })
                         
-                        self.trend_start_date = self.first_dip_date
+                        self.trend_start_date = self.trend_peak_date  # Fall starts from the peak
                         self.trend_start_price = self.trend_peak_price
                         self.trend_low_price = current_price
                         self.trend_low_date = date
