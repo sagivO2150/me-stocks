@@ -103,6 +103,7 @@ class TradingState:
         self.prev_rise_start_price = None
         self.prev_rise_peak_price = None
         self.prev_fall_start_price = None
+        self.prev_fall_had_insiders = False  # Track if previous fall had insider support
         
         # Insider activity tracking
         self.insiders_bought_in_rise = []
@@ -149,31 +150,18 @@ class TradingState:
             self.consecutive_up_days = 0
         
         if self.phase == MarketPhase.UNKNOWN or self.phase == MarketPhase.FALLING:
-            # HUNTING FOR RISE START: Need 2 consecutive up days (or 3 for hot stocks)
-            is_hot_stock = bool(self.insiders_bought_in_rise and self.insiders_bought_in_fall)
-            required_up_days = 3 if is_hot_stock else 2
+            # HUNTING FOR RISE START: Need 2 consecutive up days (or 3 if insiders bought recently)
+            # Check BOTH lists in case phase detection was wrong and insiders went to wrong list
+            has_insider_support = bool(self.insiders_bought_in_fall or self.insiders_bought_in_rise)
+            required_up_days = 3 if has_insider_support else 2
             
             if self.consecutive_up_days >= required_up_days:
                 days_since_last_peak = 999  # Temporarily disable 15-day gap
                 
                 if days_since_last_peak >= 0:
-                    # Clear old insider data if no recent activity (30+ days)
-                    if not self.in_position:
-                        days_since_last_purchase = 999
-                        for purchase_list in [self.insiders_bought_in_rise, self.insiders_bought_in_fall]:
-                            for purchase in purchase_list:
-                                purchase_date = pd.to_datetime(purchase['date']).tz_localize(None)
-                                current_date_naive = date.tz_localize(None) if hasattr(date, 'tz_localize') else date
-                                days_diff = (current_date_naive - purchase_date).days
-                                days_since_last_purchase = min(days_since_last_purchase, days_diff)
-                        
-                        if days_since_last_purchase > 30:
-                            self.insiders_bought_in_rise = []
-                            self.insiders_bought_in_fall = []
-                            self.shopping_spree_peak_price = None
                     
                     # Find the actual rise start
-                    lookback = 4 if is_hot_stock else 3
+                    lookback = 4 if has_insider_support else 3
                     
                     if len(self.price_history) >= lookback:
                         bottom_date, bottom_price = self.price_history[-lookback]
@@ -200,6 +188,9 @@ class TradingState:
                             i for i in self.insiders_bought_in_fall 
                             if fall_start_naive <= pd.to_datetime(i['date']).tz_localize(None) <= fall_end_naive
                         ]
+                        
+                        # Remember if this fall had insider support
+                        self.prev_fall_had_insiders = len(fall_insiders) > 0
                         
                         self.all_events.append({
                             'event_type': 'DOWN',
@@ -283,6 +274,14 @@ class TradingState:
                             'peak_price': self.trend_peak_price,
                             'insiders': rise_insiders
                         })
+                        
+                        # Move ALL remaining insiders from rise list to fall list
+                        # (the "rise" was actually part of a longer fall, so treat all insider buys as fall buys)
+                        remaining_insiders = [
+                            i for i in self.insiders_bought_in_rise 
+                            if i not in rise_insiders
+                        ]
+                        self.insiders_bought_in_fall.extend(remaining_insiders)
                         
                         self.trend_start_date = self.trend_peak_date  # Fall starts from the peak
                         self.trend_start_price = self.trend_peak_price
@@ -368,6 +367,12 @@ class TradingState:
                 self.peak_since_entry = 0
                 
                 all_insider_purchases = self.insiders_bought_in_rise + self.insiders_bought_in_fall
+                
+                # Clear insider data only when buy actually happens
+                self.insiders_bought_in_rise = []
+                self.insiders_bought_in_fall = []
+                self.shopping_spree_peak_price = None
+                
                 return {
                     'buy_date': current_date,
                     'entry_price': current_price,
@@ -394,6 +399,11 @@ class TradingState:
                 self.rise_start_price = self.trend_start_price if self.trend_start_price else current_price
                 self.in_mid_rise = False
                 
+                # Clear insider data only when buy actually happens
+                self.insiders_bought_in_rise = []
+                self.insiders_bought_in_fall = []
+                self.shopping_spree_peak_price = None
+                
                 return {
                     'buy_date': current_date,
                     'entry_price': current_price,
@@ -405,11 +415,7 @@ class TradingState:
                     'rise_start_price': self.rise_start_price
                 }
         
-        # Clear insider data after checking
-        self.insiders_bought_in_rise = []
-        self.insiders_bought_in_fall = []
-        self.shopping_spree_peak_price = None
-        
+        # Don't clear insider data - let it persist until a buy happens
         return None
     
     def check_sell_signal(self, current_date: datetime, current_price: float, 
