@@ -171,6 +171,15 @@ function App() {
       const data = await response.json();
       
       if (data.success) {
+        console.log('🔵 [BEST/WORST] API Response received');
+        console.log('🔵 [BEST/WORST] bestPerformers:', data.bestPerformers?.length || 0, 'tickers');
+        console.log('🔵 [BEST/WORST] worstPerformers:', data.worstPerformers?.length || 0, 'tickers');
+        console.log('🔵 [BEST/WORST] bestTrades:', data.bestTrades?.length || 0, 'trades');
+        console.log('🔵 [BEST/WORST] worstTrades:', data.worstTrades?.length || 0, 'trades');
+        if (data.bestTrades?.length > 0) {
+          console.log('🔵 [BEST/WORST] Sample bestTrade:', data.bestTrades[0]);
+        }
+        
         setBestPerformers(data.bestPerformers || []);
         setWorstPerformers(data.worstPerformers || []);
         setBestTrades(data.bestTrades || []);

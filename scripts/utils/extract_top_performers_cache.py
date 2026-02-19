@@ -5,15 +5,16 @@ import json
 import pandas as pd
 
 def main():
-    print("Loading backtest results...")
-    df = pd.read_csv('output CSVs/backtest_latest_results.csv')
+    print("Loading insider conviction backtest results...")
+    with open('output CSVs/insider_conviction_all_stocks_results.json', 'r') as f:
+        results = json.load(f)
     
-    # Get top 25 best and worst
-    top_25_best = df.nlargest(25, 'return_pct')['ticker'].unique()
-    top_25_worst = df.nsmallest(25, 'return_pct')['ticker'].unique()
+    # Get top 25 best and worst from the JSON
+    top_25_best = [stock['ticker'] for stock in results['top_25_best']]
+    top_25_worst = [stock['ticker'] for stock in results['top_25_worst']]
     
     # Combine into single list of unique tickers
-    target_tickers = set(list(top_25_best) + list(top_25_worst))
+    target_tickers = set(top_25_best + top_25_worst)
     print(f"Target tickers: {len(target_tickers)} unique stocks")
     print(f"Tickers: {sorted(target_tickers)}")
     

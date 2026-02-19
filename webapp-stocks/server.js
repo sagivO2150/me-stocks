@@ -1226,14 +1226,14 @@ app.get('/api/backtest-results', (req, res) => {
 
 // Endpoint to get top 25 best and worst performers from backtest
 app.get('/api/best-worst-performers', (req, res) => {
-  // ALWAYS use backtest_latest_results.csv to show the most recent backtest
-  const backtestCSV = path.join(__dirname, '../output CSVs/backtest_latest_results.csv');
+  // Load insider conviction results (new strategy)
+  const insiderConvictionJSON = path.join(__dirname, '../output CSVs/insider_conviction_all_stocks_results.json');
   
   try {
-    if (!fs.existsSync(backtestCSV)) {
+    if (!fs.existsSync(insiderConvictionJSON)) {
       return res.json({ 
         success: false, 
-        error: 'Backtest results not found',
+        error: 'Insider conviction results not found',
         bestPerformers: [],
         worstPerformers: [],
         bestTrades: [],
@@ -1241,77 +1241,52 @@ app.get('/api/best-worst-performers', (req, res) => {
       });
     }
     
-    const fileContent = fs.readFileSync(backtestCSV, 'utf-8');
-    const lines = fileContent.split('\n').filter(line => line.trim());
+    const jsonData = JSON.parse(fs.readFileSync(insiderConvictionJSON, 'utf-8'));
     
-    if (lines.length <= 1) {
-      return res.json({ 
-        success: true, 
-        bestPerformers: [],
-        worstPerformers: [],
-        bestTrades: [],
-        worstTrades: [],
-        message: 'Backtest results file is empty'
-      });
-    }
+    // Extract top 25 best and worst performers (these have trades array included)
+    const bestPerformers = jsonData.top_25_best || [];
+    const worstPerformers = jsonData.top_25_worst || [];
     
-    // Parse CSV
-    const parseCSVLine = (line) => {
-      const result = [];
-      let current = '';
-      let inQuotes = false;
-      
-      for (let i = 0; i < line.length; i++) {
-        const char = line[i];
-        if (char === '"') {
-          inQuotes = !inQuotes;
-        } else if (char === ',' && !inQuotes) {
-          result.push(current.trim());
-          current = '';
-        } else {
-          current += char;
-        }
+    // Get tickers
+    const bestTickers = bestPerformers.map(p => p.ticker);
+    const worstTickers = worstPerformers.map(p => p.ticker);
+    
+    // Extract individual trades from each stock for the charts
+    const bestTrades = [];
+    const worstTrades = [];
+    
+    bestPerformers.forEach(stock => {
+      if (stock.trades && Array.isArray(stock.trades)) {
+        // Add ticker to each trade
+        stock.trades.forEach(trade => {
+          bestTrades.push({ ...trade, ticker: stock.ticker });
+        });
       }
-      result.push(current.trim());
-      return result;
-    };
+    });
     
-    const headers = parseCSVLine(lines[0]);
-    const trades = lines.slice(1).map(line => {
-      const values = parseCSVLine(line);
-      const trade = {};
-      headers.forEach((header, idx) => {
-        trade[header] = values[idx] || '';
-      });
-      return trade;
-    }).filter(trade => trade.ticker && trade.return_pct);
+    worstPerformers.forEach(stock => {
+      if (stock.trades && Array.isArray(stock.trades)) {
+        // Add ticker to each trade
+        stock.trades.forEach(trade => {
+          worstTrades.push({ ...trade, ticker: stock.ticker });
+        });
+      }
+    });
     
-    // Sort by return_pct and get top/bottom 25
-    const sortedByReturn = trades.sort((a, b) => 
-      parseFloat(b.return_pct) - parseFloat(a.return_pct)
-    );
-    
-    const bestTrades = sortedByReturn.slice(0, 25);
-    const worstTrades = sortedByReturn.slice(-25).reverse();
-    
-    // Get unique tickers for both lists
-    const bestTickers = [...new Set(bestTrades.map(t => t.ticker))];
-    const worstTickers = [...new Set(worstTrades.map(t => t.ticker))];
-    
-    // Get ALL trades for these tickers (not just the top 25 trades)
-    const allTickersToInclude = [...new Set([...bestTickers, ...worstTickers])];
-    const allTradesForTickers = trades.filter(trade => 
-      allTickersToInclude.includes(trade.ticker)
-    );
+    // Build a map of ticker -> stock data (for easy lookup by frontend)
+    const stockDataMap = {};
+    [...bestPerformers, ...worstPerformers].forEach(stock => {
+      stockDataMap[stock.ticker] = stock;
+    });
     
     res.json({ 
       success: true, 
       bestPerformers: bestTickers,
       worstPerformers: worstTickers,
-      bestTrades: allTradesForTickers,        // ALL trades for best/worst tickers
-      worstTrades: allTradesForTickers,       // ALL trades for best/worst tickers
-      bestCount: bestTrades.length,
-      worstCount: worstTrades.length
+      bestTrades: bestTrades,            // Flat array of all trades from best performers
+      worstTrades: worstTrades,          // Flat array of all trades from worst performers
+      stockData: stockDataMap,           // Map of ticker -> full stock data with trades
+      overall_stats: jsonData.overall_stats || {}
     });
   } catch (error) {
     console.error('Error reading best/worst performers:', error);

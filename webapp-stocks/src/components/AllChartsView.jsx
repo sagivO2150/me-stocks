@@ -15,6 +15,13 @@ const formatAmount = (amount) => {
 };
 
 const AllChartsView = ({ stocks, backtestTrades }) => {
+  console.log('🟢 [AllChartsView] Component rendered');
+  console.log('🟢 [AllChartsView] stocks prop:', stocks?.length || 0, 'stocks');
+  console.log('🟢 [AllChartsView] backtestTrades prop:', backtestTrades?.length || 0, 'trades');
+  if (backtestTrades?.length > 0) {
+    console.log('🟢 [AllChartsView] Sample backtestTrade:', backtestTrades[0]);
+  }
+  
   const [allBacktestTrades, setAllBacktestTrades] = useState(null);
   
   // Fetch backtest results ONCE for all stocks (unless provided via prop)
@@ -75,6 +82,15 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
   
   // Filter backtest trades for this ticker
   const backtestTrades = allBacktestTrades ? allBacktestTrades.filter(trade => trade.ticker === ticker) : null;
+  
+  // DEBUG: Log trade filtering (once per ticker)
+  useEffect(() => {
+    console.log(`🟢 [StockChart] ${ticker}: Filtering trades from allBacktestTrades (${allBacktestTrades?.length || 0} total)`);
+    console.log(`🟢 [StockChart] ${ticker}: Found ${backtestTrades?.length || 0} trades for this ticker`);
+    if (backtestTrades?.length > 0) {
+      console.log(`🟢 [StockChart] ${ticker}: Sample trade:`, backtestTrades[0]);
+    }
+  }, [ticker, allBacktestTrades]);
   
   // DEBUG: GROV-specific debugging
   useEffect(() => {

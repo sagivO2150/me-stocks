@@ -238,7 +238,7 @@ class TradingState:
                         
                         fall_insiders = [
                             i for i in self.insiders_bought_in_fall 
-                            if fall_start_naive <= pd.to_datetime(i['date']).tz_localize(None) < fall_end_naive
+                            if fall_start_naive <= pd.to_datetime(i['date']).tz_localize(None) <= fall_end_naive
                         ]
                         
                         self.all_events.append({
@@ -599,10 +599,10 @@ class TradingState:
             # Check if we've reached the target cumulative rise
             target_gain_pct = abs(self.prev_fall_pct)
             
-            # Debug output for the June-Aug period
-            if current_date.year == 2023 and current_date.month >= 6 and current_date.month <= 8:
+            # Debug output for the March-April and June-Aug periods
+            if current_date.year == 2023 and ((current_date.month >= 3 and current_date.month <= 4) or (current_date.month >= 6 and current_date.month <= 8)):
                 if cumulative_rise_pct >= target_gain_pct - 5:  # Within 5% of target
-                    print(f"  📊 {current_date.strftime('%Y-%m-%d')}: cumulative={cumulative_rise_pct:.2f}% (from ${self.rise_start_price:.2f} to ${current_price:.2f}), target={target_gain_pct:.2f}%, in_mid_rise={self.in_mid_rise}")
+                    print(f"  📊 {current_date.strftime('%Y-%m-%d')}: cumulative={cumulative_rise_pct:.2f}% (from ${self.rise_start_price:.2f} to ${current_price:.2f}), target={target_gain_pct:.2f}%, in_mid_rise={self.in_mid_rise}, phase={self.phase.name}")
             
             if cumulative_rise_pct >= target_gain_pct:
                 self.target_reached = True

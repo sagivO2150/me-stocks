@@ -58,32 +58,20 @@ const TradeCard = ({ trade }) => {
   useEffect(() => {
     const fetchEventClassification = async () => {
       try {
-        console.log(`🔍 Fetching event classification for ${ticker}`);
         const response = await fetch(`http://localhost:3001/api/event-classification/${ticker}`);
-        console.log(`📡 Response status for ${ticker}:`, response.status);
         if (response.ok) {
           const data = await response.json();
-          console.log(`📊 Event data for ${ticker}:`, data);
           if (data.success && data.primaryEvent) {
-            console.log(`✅ Setting event badge for ${ticker}:`, data.primaryEvent);
             setEventBadge(data.primaryEvent);
-          } else {
-            console.log(`❌ No primary event for ${ticker}`);
           }
-        } else {
-          console.log(`⚠️ Failed to fetch events for ${ticker}:`, response.status);
         }
       } catch (err) {
         // Silently fail - events are optional enhancement
-        console.log(`❌ Error fetching events for ${ticker}:`, err);
       }
     };
     
     if (ticker && !isSale) { // Only for purchases
-      console.log(`🎯 TradeCard for ${ticker} - will fetch events (isSale: ${isSale})`);
       fetchEventClassification();
-    } else {
-      console.log(`⏭️ Skipping events for ${ticker} (isSale: ${isSale})`);
     }
   }, [ticker, isSale]);
 
@@ -103,7 +91,6 @@ const TradeCard = ({ trade }) => {
         }
       } catch (err) {
         // Silently fail - reputation is optional
-        console.log(`❌ Error fetching reputation for ${ticker}:`, err);
       }
     };
     
