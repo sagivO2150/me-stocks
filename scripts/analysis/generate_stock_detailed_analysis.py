@@ -377,6 +377,66 @@ def analyze_rise_volatility(df: pd.DataFrame, rise_event: Dict) -> Dict:
             else:
                 i += 1
     
+    # NEW LOGIC: Check for 2 consecutive declining mid-rises (indicates this should be a DOWN event)
+    # If we detect: mid_rise at price X, mid_rise at price Y (Y < X), mid_rise at price Z (Z < Y)
+    # Then this is actually a DOWN event starting from the first mid_rise
+    if len(result['mid_rises']) >= 2:
+        # Get mid-rises sorted by date
+        mid_rises_with_prices = []
+        for pct_key, rise_info in result['mid_rises'].items():
+            date_str = rise_info['date']
+            rise_date = pd.to_datetime(date_str, format='%d/%m/%Y')
+            # Find the price at this date
+            try:
+                price_at_date = rise_df.loc[rise_date, 'Close']
+                mid_rises_with_prices.append({
+                    'date': rise_date,
+                    'date_str': date_str,
+                    'price': price_at_date,
+                    'pct': pct_key
+                })
+            except:
+                pass
+        
+        # Sort by date
+        mid_rises_with_prices.sort(key=lambda x: x['date'])
+        
+        # Check for 2 consecutive declines
+        detected_fall_start = None
+        for i in range(len(mid_rises_with_prices) - 2):
+            price1 = mid_rises_with_prices[i]['price']
+            price2 = mid_rises_with_prices[i + 1]['price']
+            price3 = mid_rises_with_prices[i + 2]['price']
+            
+            # Check if we have 2 consecutive declines: price2 < price1 AND price3 < price2
+            if price2 < price1 and price3 < price2:
+                # This is a fall event starting from the first mid-rise
+                detected_fall_start = mid_rises_with_prices[i]
+                print(f"  ⚠️  DETECTED FALL PATTERN: {price1:.2f} -> {price2:.2f} -> {price3:.2f}")
+                print(f"  ⚠️  Reclassifying as DOWN event starting from {detected_fall_start['date_str']}")
+                
+                # Reclassify this as a DOWN event
+                # The rise actually ended at the first mid-rise where the decline started
+                result['rise_end_date'] = detected_fall_start['date_str']
+                
+                # Recalculate rise percentage using the corrected end date
+                try:
+                    corrected_end_date = detected_fall_start['date']
+                    rise_start_price = rise_df['Close'].iloc[0]
+                    corrected_end_price = rise_df.loc[corrected_end_date, 'Close']
+                    corrected_rise_pct = ((corrected_end_price - rise_start_price) / rise_start_price) * 100
+                    result['rise_percentage'] = corrected_rise_pct
+                    
+                    # Recalculate days
+                    corrected_rise_days = (corrected_end_date - start_date).days
+                    result['rise_days'] = corrected_rise_days
+                    
+                    print(f"  ✓ Corrected: {result['rise_start_date']} to {result['rise_end_date']} = {corrected_rise_pct:.2f}% over {corrected_rise_days} days")
+                except Exception as e:
+                    print(f"  ✗ Error correcting rise event: {e}")
+                
+                break
+    
     # Analyze post-rise behavior
     if len(post_rise_df) > 1:
         peak_price = post_rise_df['Close'].iloc[0]

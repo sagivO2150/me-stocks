@@ -1,13 +1,13 @@
 {
   "ticker": "GROV",
-  "analysis_date": "2026-02-19 21:04:18",
+  "analysis_date": "2026-02-19 22:58:42",
   "total_rise_events": 40,
   "rise_events": {
-    "2.25": {
+    "-6.16": {
       "rise_start_date": "08/06/2021",
-      "rise_end_date": "20/06/2022",
-      "rise_days": 377,
-      "rise_percentage": 2.249485561956376,
+      "rise_end_date": "10/06/2021",
+      "rise_days": 2,
+      "rise_percentage": 1.2269907063368126,
       "mid_rises": {
         "1.23": {
           "date": "10/06/2021"
@@ -62,11 +62,11 @@
         }
       ]
     },
-    "4.91": {
+    "-1.42": {
       "rise_start_date": "20/07/2022",
       "rise_end_date": "01/08/2022",
       "rise_days": 12,
-      "rise_percentage": 4.910716072333133,
+      "rise_percentage": -1.4239225316587798,
       "mid_rises": {
         "2.9": {
           "date": "25/07/2022"
@@ -98,11 +98,11 @@
       },
       "insiders": []
     },
-    "69.01": {
+    "24.21": {
       "rise_start_date": "08/08/2022",
       "rise_end_date": "18/08/2022",
       "rise_days": 10,
-      "rise_percentage": 69.00727443385227,
+      "rise_percentage": 24.21306712566408,
       "mid_rises": {
         "36.32": {
           "date": "11/08/2022"
@@ -140,11 +140,11 @@
       },
       "insiders": []
     },
-    "44.19": {
+    "-25.83": {
       "rise_start_date": "01/09/2022",
       "rise_end_date": "16/09/2022",
       "rise_days": 15,
-      "rise_percentage": 44.19086908695222,
+      "rise_percentage": -25.832952924752906,
       "mid_rises": {
         "25.1": {
           "date": "07/09/2022"
@@ -176,11 +176,11 @@
       },
       "insiders": []
     },
-    "-27.93": {
+    "-38.28": {
       "rise_start_date": "03/10/2022",
       "rise_end_date": "19/10/2022",
       "rise_days": 16,
-      "rise_percentage": -27.927930404802943,
+      "rise_percentage": -38.276908602491716,
       "mid_rises": {
         "4.95": {
           "date": "05/10/2022"
@@ -218,11 +218,11 @@
       },
       "insiders": []
     },
-    "17.76": {
+    "12.36": {
       "rise_start_date": "03/11/2022",
       "rise_end_date": "09/11/2022",
       "rise_days": 6,
-      "rise_percentage": 17.75701501003185,
+      "rise_percentage": 12.35910814499951,
       "mid_rises": {
         "12.15": {
           "date": "07/11/2022"
@@ -254,11 +254,11 @@
       },
       "insiders": []
     },
-    "197.56": {
+    "101.96": {
       "rise_start_date": "20/12/2022",
       "rise_end_date": "17/01/2023",
       "rise_days": 28,
-      "rise_percentage": 197.5609778790585,
+      "rise_percentage": 101.96119882816883,
       "mid_rises": {
         "128.78": {
           "date": "04/01/2023"
@@ -296,11 +296,11 @@
       },
       "insiders": []
     },
-    "21.86": {
+    "8.76": {
       "rise_start_date": "30/01/2023",
       "rise_end_date": "06/02/2023",
       "rise_days": 7,
-      "rise_percentage": 21.86045438808821,
+      "rise_percentage": 8.76149540663074,
       "mid_rises": {
         "9.3": {
           "date": "02/02/2023"
@@ -332,11 +332,11 @@
       },
       "insiders": []
     },
-    "29.93": {
+    "-3.43": {
       "rise_start_date": "01/03/2023",
       "rise_end_date": "07/03/2023",
       "rise_days": 6,
-      "rise_percentage": 29.930393943836105,
+      "rise_percentage": -3.431603514194789,
       "mid_rises": {
         "29.93": {
           "date": "07/03/2023"
@@ -361,11 +361,11 @@
       },
       "insiders": []
     },
-    "52.42": {
+    "36.07": {
       "rise_start_date": "20/03/2023",
       "rise_end_date": "04/04/2023",
       "rise_days": 15,
-      "rise_percentage": 52.42425098454231,
+      "rise_percentage": 36.066564744054965,
       "mid_rises": {
         "27.27": {
           "date": "24/03/2023"
@@ -403,40 +403,40 @@
       },
       "insiders": []
     },
-    "11.11": {
-      "rise_start_date": "13/04/2023",
-      "rise_end_date": "19/04/2023",
+    "6.0": {
+      "rise_start_date": "06/02/2024",
+      "rise_end_date": "12/02/2024",
       "rise_days": 6,
-      "rise_percentage": 11.11111111111111,
+      "rise_percentage": 5.996133236523201,
       "mid_rises": {
-        "11.56": {
-          "date": "18/04/2023"
+        "10.3": {
+          "date": "08/02/2024"
         }
       },
       "mid_falls": {},
       "first_dip": {
-        "date": "20/04/2023",
-        "percentage": -3.4,
+        "date": "13/02/2024",
+        "percentage": -5.49,
         "days_after_peak": 1
       },
       "first_recovery": {
-        "date": "21/04/2023",
-        "percentage": 2.48,
+        "date": "14/02/2024",
+        "percentage": 3.49,
         "days_after_peak": 2
       },
       "second_dip": {
-        "date": "01/06/2023",
-        "percentage": -17.78,
-        "days_after_peak": 30,
-        "days_since_recovery": 28
+        "date": "20/02/2024",
+        "percentage": -6.74,
+        "days_after_peak": 5,
+        "days_since_recovery": 3
       },
       "insiders": []
     },
-    "8.89": {
+    "2.32": {
       "rise_start_date": "26/04/2023",
       "rise_end_date": "28/04/2023",
       "rise_days": 2,
-      "rise_percentage": 8.888891008165148,
+      "rise_percentage": 2.321751750430305,
       "mid_rises": {
         "8.89": {
           "date": "28/04/2023"
@@ -461,11 +461,11 @@
       },
       "insiders": []
     },
-    "17.88": {
+    "8.69": {
       "rise_start_date": "09/06/2023",
       "rise_end_date": "14/06/2023",
       "rise_days": 5,
-      "rise_percentage": 17.877091623595927,
+      "rise_percentage": 8.688021680364622,
       "mid_rises": {
         "18.44": {
           "date": "13/06/2023"
@@ -485,11 +485,11 @@
       "second_dip": null,
       "insiders": []
     },
-    "19.66": {
+    "13.74": {
       "rise_start_date": "03/07/2023",
       "rise_end_date": "21/07/2023",
       "rise_days": 18,
-      "rise_percentage": 19.662929700941394,
+      "rise_percentage": 13.737000546297935,
       "mid_rises": {
         "3.37": {
           "date": "06/07/2023"
@@ -530,11 +530,11 @@
       },
       "insiders": []
     },
-    "46.07": {
+    "34.29": {
       "rise_start_date": "03/08/2023",
       "rise_end_date": "28/09/2023",
       "rise_days": 56,
-      "rise_percentage": 46.073298984829904,
+      "rise_percentage": 34.292885190715154,
       "mid_rises": {
         "15.71": {
           "date": "10/08/2023"
@@ -596,11 +596,11 @@
       },
       "insiders": []
     },
-    "16.67": {
+    "4.83": {
       "rise_start_date": "13/10/2023",
       "rise_end_date": "19/10/2023",
       "rise_days": 6,
-      "rise_percentage": 16.66666544023365,
+      "rise_percentage": 4.831324895861581,
       "mid_rises": {
         "12.96": {
           "date": "17/10/2023"
@@ -628,11 +628,11 @@
       },
       "insiders": []
     },
-    "50.0": {
+    "25.98": {
       "rise_start_date": "03/11/2023",
       "rise_end_date": "23/11/2023",
       "rise_days": 20,
-      "rise_percentage": 50.0,
+      "rise_percentage": 25.979939378781765,
       "mid_rises": {
         "24.36": {
           "date": "07/11/2023"
@@ -676,11 +676,11 @@
       },
       "insiders": []
     },
-    "24.71": {
+    "18.91": {
       "rise_start_date": "12/12/2023",
       "rise_end_date": "08/01/2024",
       "rise_days": 27,
-      "rise_percentage": 24.705872123216963,
+      "rise_percentage": 18.908419291897925,
       "mid_rises": {
         "12.35": {
           "date": "14/12/2023"
@@ -751,40 +751,11 @@
         }
       ]
     },
-    "10.3": {
-      "rise_start_date": "06/02/2024",
-      "rise_end_date": "12/02/2024",
-      "rise_days": 6,
-      "rise_percentage": 10.303035075780624,
-      "mid_rises": {
-        "10.3": {
-          "date": "08/02/2024"
-        }
-      },
-      "mid_falls": {},
-      "first_dip": {
-        "date": "13/02/2024",
-        "percentage": -5.49,
-        "days_after_peak": 1
-      },
-      "first_recovery": {
-        "date": "14/02/2024",
-        "percentage": 3.49,
-        "days_after_peak": 2
-      },
-      "second_dip": {
-        "date": "20/02/2024",
-        "percentage": -6.74,
-        "days_after_peak": 5,
-        "days_since_recovery": 3
-      },
-      "insiders": []
-    },
-    "14.88": {
+    "6.81": {
       "rise_start_date": "22/02/2024",
       "rise_end_date": "15/03/2024",
-      "rise_days": 21,
-      "rise_percentage": 14.880952845557763,
+      "rise_days": 22,
+      "rise_percentage": 6.808699151997425,
       "mid_rises": {
         "14.29": {
           "date": "27/02/2024"
@@ -854,11 +825,11 @@
         }
       ]
     },
-    "9.68": {
+    "3.28": {
       "rise_start_date": "03/04/2024",
       "rise_end_date": "08/04/2024",
       "rise_days": 5,
-      "rise_percentage": 9.67742580528954,
+      "rise_percentage": 3.281032450951271,
       "mid_rises": {
         "9.68": {
           "date": "08/04/2024"
@@ -883,11 +854,11 @@
       },
       "insiders": []
     },
-    "7.89": {
+    "0.03": {
       "rise_start_date": "17/04/2024",
       "rise_end_date": "22/04/2024",
       "rise_days": 5,
-      "rise_percentage": 7.894737254879816,
+      "rise_percentage": 0.031607308916001386,
       "mid_rises": {
         "7.89": {
           "date": "22/04/2024"
@@ -912,11 +883,11 @@
       },
       "insiders": []
     },
-    "14.0": {
+    "2.77": {
       "rise_start_date": "30/04/2024",
       "rise_end_date": "09/05/2024",
       "rise_days": 9,
-      "rise_percentage": 14.00000254313151,
+      "rise_percentage": 2.767417127235343,
       "mid_rises": {
         "6.0": {
           "date": "02/05/2024"
@@ -954,11 +925,11 @@
       },
       "insiders": []
     },
-    "23.49": {
+    "9.04": {
       "rise_start_date": "16/05/2024",
       "rise_end_date": "04/07/2024",
       "rise_days": 49,
-      "rise_percentage": 23.489934335683436,
+      "rise_percentage": 9.037317552650094,
       "mid_rises": {
         "3.36": {
           "date": "20/05/2024"
@@ -1031,11 +1002,11 @@
         }
       ]
     },
-    "5.15": {
+    "-5.88": {
       "rise_start_date": "06/08/2024",
       "rise_end_date": "08/08/2024",
       "rise_days": 2,
-      "rise_percentage": 5.147053860772492,
+      "rise_percentage": -5.878745740657598,
       "mid_rises": {
         "5.15": {
           "date": "08/08/2024"
@@ -1060,11 +1031,11 @@
       },
       "insiders": []
     },
-    "7.09": {
+    "1.68": {
       "rise_start_date": "14/08/2024",
       "rise_end_date": "16/08/2024",
       "rise_days": 2,
-      "rise_percentage": 7.086616907894959,
+      "rise_percentage": 1.6760236177893817,
       "mid_rises": {
         "7.09": {
           "date": "16/08/2024"
@@ -1089,11 +1060,11 @@
       },
       "insiders": []
     },
-    "9.02": {
+    "2.17": {
       "rise_start_date": "11/09/2024",
       "rise_end_date": "19/09/2024",
       "rise_days": 8,
-      "rise_percentage": 9.022556458369206,
+      "rise_percentage": 2.168520980571689,
       "mid_rises": {
         "6.02": {
           "date": "13/09/2024"
@@ -1125,11 +1096,11 @@
       },
       "insiders": []
     },
-    "17.56": {
+    "16.35": {
       "rise_start_date": "07/11/2024",
       "rise_end_date": "02/12/2024",
       "rise_days": 25,
-      "rise_percentage": 17.55725413128456,
+      "rise_percentage": 16.345574744279308,
       "mid_rises": {
         "16.03": {
           "date": "12/11/2024"
@@ -1181,11 +1152,11 @@
         }
       ]
     },
-    "26.62": {
+    "-1.17": {
       "rise_start_date": "31/12/2024",
       "rise_end_date": "09/01/2025",
       "rise_days": 9,
-      "rise_percentage": 26.618705652964604,
+      "rise_percentage": -1.1738369522807384,
       "mid_rises": {
         "26.62": {
           "date": "08/01/2025"
@@ -1205,11 +1176,11 @@
       "second_dip": null,
       "insiders": []
     },
-    "23.02": {
+    "15.63": {
       "rise_start_date": "30/01/2025",
       "rise_end_date": "05/02/2025",
       "rise_days": 6,
-      "rise_percentage": 23.021586744269914,
+      "rise_percentage": 15.62531345756549,
       "mid_rises": {
         "23.02": {
           "date": "05/02/2025"
@@ -1234,11 +1205,11 @@
       },
       "insiders": []
     },
-    "3.73": {
+    "-19.12": {
       "rise_start_date": "01/04/2025",
       "rise_end_date": "03/04/2025",
       "rise_days": 2,
-      "rise_percentage": 3.7313396321503887,
+      "rise_percentage": -19.117467126838513,
       "mid_rises": {
         "3.73": {
           "date": "03/04/2025"
@@ -1263,11 +1234,11 @@
       },
       "insiders": []
     },
-    "6.67": {
+    "0.23": {
       "rise_start_date": "11/04/2025",
       "rise_end_date": "15/04/2025",
       "rise_days": 4,
-      "rise_percentage": 6.666671964857554,
+      "rise_percentage": 0.22951571335781296,
       "mid_rises": {
         "6.67": {
           "date": "15/04/2025"
@@ -1292,11 +1263,11 @@
       },
       "insiders": []
     },
-    "8.57": {
+    "5.12": {
       "rise_start_date": "22/04/2025",
       "rise_end_date": "29/04/2025",
       "rise_days": 7,
-      "rise_percentage": 8.571432139597944,
+      "rise_percentage": 5.1163602763237535,
       "mid_rises": {
         "5.71": {
           "date": "24/04/2025"
@@ -1324,11 +1295,11 @@
       },
       "insiders": []
     },
-    "12.96": {
+    "5.11": {
       "rise_start_date": "06/05/2025",
       "rise_end_date": "12/05/2025",
       "rise_days": 6,
-      "rise_percentage": 12.962961123313507,
+      "rise_percentage": 5.105799834362469,
       "mid_rises": {
         "9.26": {
           "date": "08/05/2025"
@@ -1356,11 +1327,11 @@
       },
       "insiders": []
     },
-    "30.0": {
+    "23.1": {
       "rise_start_date": "19/05/2025",
       "rise_end_date": "27/05/2025",
       "rise_days": 8,
-      "rise_percentage": 29.99999241395447,
+      "rise_percentage": 23.09811311785729,
       "mid_rises": {
         "30.0": {
           "date": "27/05/2025"
@@ -1400,11 +1371,11 @@
         }
       ]
     },
-    "48.54": {
+    "40.5": {
       "rise_start_date": "20/06/2025",
       "rise_end_date": "11/07/2025",
       "rise_days": 21,
-      "rise_percentage": 48.54369066878265,
+      "rise_percentage": 40.49735074416148,
       "mid_rises": {
         "11.65": {
           "date": "26/06/2025"
@@ -1445,11 +1416,11 @@
       },
       "insiders": []
     },
-    "5.44": {
+    "3.53": {
       "rise_start_date": "13/08/2025",
       "rise_end_date": "25/08/2025",
       "rise_days": 12,
-      "rise_percentage": 5.442171574764416,
+      "rise_percentage": 3.5275679147707524,
       "mid_rises": {
         "6.8": {
           "date": "15/08/2025"
@@ -1481,11 +1452,11 @@
       },
       "insiders": []
     },
-    "3.38": {
+    "2.08": {
       "rise_start_date": "29/09/2025",
       "rise_end_date": "06/10/2025",
       "rise_days": 7,
-      "rise_percentage": 3.3783751129669097,
+      "rise_percentage": 2.0835544161743655,
       "mid_rises": {
         "2.7": {
           "date": "01/10/2025"
@@ -1513,11 +1484,11 @@
       },
       "insiders": []
     },
-    "6.52": {
+    "-1.63": {
       "rise_start_date": "10/11/2025",
       "rise_end_date": "14/11/2025",
       "rise_days": 4,
-      "rise_percentage": 6.521741571708836,
+      "rise_percentage": -1.6334238988177139,
       "mid_rises": {
         "6.52": {
           "date": "14/11/2025"
@@ -1542,11 +1513,11 @@
       },
       "insiders": []
     },
-    "39.09": {
+    "32.96": {
       "rise_start_date": "31/12/2025",
       "rise_end_date": "03/02/2026",
       "rise_days": 34,
-      "rise_percentage": 39.090903475264994,
+      "rise_percentage": 32.95543708411193,
       "mid_rises": {
         "10.0": {
           "date": "06/01/2026"

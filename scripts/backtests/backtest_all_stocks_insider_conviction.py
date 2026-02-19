@@ -125,6 +125,9 @@ class TradingState:
         self.cumulative_mid_rises_pct = 0  # Sum of all mid-rise percentages in current rise event
         self.mid_rise_start_price = None  # Track start of current mid-rise
         self.in_mid_rise = False
+        
+        # Event tracking
+        self.all_events = []  # List of all rise/fall events
     
     def update_phase(self, current_price: float, prev_price: float, date: datetime):
         """Update market phase using FIRST DIP → RECOVERY → SECOND DIP pattern for fall detection."""
@@ -182,11 +185,32 @@ class TradingState:
                     
                     # Record the completed FALL event if we were falling before
                     if self.phase == MarketPhase.FALLING and self.trend_start_date:
+                        fall_days = (actual_start_date - self.trend_start_date).days
                         fall_pct = ((self.trend_low_price - self.trend_start_price) / self.trend_start_price) * 100
                         
                         if not self.in_position:
                             self.prev_fall_pct = abs(fall_pct)
                             self.prev_fall_start_price = self.trend_start_price
+                        
+                        # Record fall event
+                        fall_start_naive = self.trend_start_date.tz_localize(None) if hasattr(self.trend_start_date, 'tz_localize') else self.trend_start_date
+                        fall_end_naive = actual_start_date.tz_localize(None) if hasattr(actual_start_date, 'tz_localize') else actual_start_date
+                        
+                        fall_insiders = [
+                            i for i in self.insiders_bought_in_fall 
+                            if fall_start_naive <= pd.to_datetime(i['date']).tz_localize(None) <= fall_end_naive
+                        ]
+                        
+                        self.all_events.append({
+                            'event_type': 'DOWN',
+                            'start_date': self.trend_start_date,
+                            'end_date': actual_start_date,
+                            'days': fall_days,
+                            'change_pct': fall_pct,
+                            'start_price': self.trend_start_price,
+                            'end_price': self.trend_low_price,
+                            'insiders': fall_insiders
+                        })
                     
                     # Start rise
                     self.phase = MarketPhase.RISING
@@ -235,6 +259,30 @@ class TradingState:
                         
                         from pandas.tseries.offsets import BDay
                         actual_rise_end = self.first_dip_date - BDay(1)
+                        
+                        # Record completed RISE event
+                        rise_days = (actual_rise_end - self.trend_start_date).days
+                        rise_pct = ((self.trend_peak_price - self.trend_start_price) / self.trend_start_price) * 100
+                        
+                        rise_start_naive = self.trend_start_date.tz_localize(None) if hasattr(self.trend_start_date, 'tz_localize') else self.trend_start_date
+                        rise_end_naive = actual_rise_end.tz_localize(None) if hasattr(actual_rise_end, 'tz_localize') else actual_rise_end
+                        
+                        rise_insiders = [
+                            i for i in self.insiders_bought_in_rise 
+                            if rise_start_naive <= pd.to_datetime(i['date']).tz_localize(None) <= rise_end_naive
+                        ]
+                        
+                        self.all_events.append({
+                            'event_type': 'RISE',
+                            'start_date': self.trend_start_date,
+                            'end_date': actual_rise_end,
+                            'days': rise_days,
+                            'change_pct': rise_pct,
+                            'start_price': self.trend_start_price,
+                            'end_price': None,
+                            'peak_price': self.trend_peak_price,
+                            'insiders': rise_insiders
+                        })
                         
                         self.trend_start_date = self.first_dip_date
                         self.trend_start_price = self.trend_peak_price
@@ -442,7 +490,349 @@ class TradingState:
         return None
 
 
-def process_single_stock(ticker: str, stock_data: Dict, price_cache: Dict) -> Optional[Dict]:
+def generate_event_files(events: List[Dict], price_df: pd.DataFrame, ticker: str):
+    """Generate CSV and Excel files for rise/fall events with proper formatting."""
+    from openpyxl import Workbook
+    from openpyxl.styles import PatternFill, Font
+    from datetime import datetime
+    
+    if not events:
+        print("⚠️ No events to export")
+        return
+    
+    # Look up actual end prices for RISE events (FALL events already have end_price)
+    for event in events:
+        if event['end_price'] is None:
+            try:
+                end_date = event['end_date']
+                end_price = price_df.loc[end_date]['Close']
+                event['end_price'] = end_price
+            except:
+                # Fallback: use peak price if date not found
+                event['end_price'] = event.get('peak_price', event['start_price'])
+    
+    # Calculate cumulative percentages and ranks
+    cumulative_pct = 0
+    rise_events = [e for e in events if e['event_type'] == 'RISE']
+    fall_events = [e for e in events if e['event_type'] == 'DOWN']
+    
+    # Rank rises and falls by change_pct
+    rise_events_sorted = sorted(rise_events, key=lambda x: abs(x['change_pct']), reverse=True)
+    fall_events_sorted = sorted(fall_events, key=lambda x: abs(x['change_pct']), reverse=True)
+    
+    rise_ranks = {id(e): f"{i+1}/{len(rise_events)}" for i, e in enumerate(rise_events_sorted)}
+    fall_ranks = {id(e): f"{i+1}/{len(fall_events)}" for i, e in enumerate(fall_events_sorted)}
+    
+    # Prepare data for export
+    export_data = []
+    for event in events:
+        cumulative_pct += event['change_pct']
+        
+        # Format insider purchases
+        insiders_str = ""
+        if event['insiders']:
+            insider_dates = sorted(set([i['date'] for i in event['insiders']]))
+            insiders_str = ", ".join([datetime.strptime(d, '%Y-%m-%d').strftime('%d/%m/%Y') for d in insider_dates])
+        
+        # Get rank
+        rank = rise_ranks.get(id(event)) if event['event_type'] == 'RISE' else fall_ranks.get(id(event))
+        
+        export_data.append({
+            'event_type': event['event_type'],
+            'start_date': event['start_date'].strftime('%d/%m/%Y'),
+            'end_date': event['end_date'].strftime('%d/%m/%Y'),
+            'days': event['days'],
+            'change_pct': round(event['change_pct'], 2),
+            'cumulative_pct': round(cumulative_pct, 2),
+            'insider_purchases': insiders_str if insiders_str else None,
+            'rank': rank
+        })
+    
+    # Save to CSV
+    csv_file = f'output CSVs/{ticker.lower()}_rise_events.csv'
+    df = pd.DataFrame(export_data)
+    df.to_csv(csv_file, index=False)
+    print(f"✓ CSV saved to: {csv_file}")
+    
+    # Create Excel with colors
+    wb = Workbook()
+    ws = wb.active
+    ws.title = f"{ticker} Rise-Fall Events"
+    
+    # Colors
+    header_fill = PatternFill(start_color="D3D3D3", end_color="D3D3D3", fill_type="solid")
+    rise_fill = PatternFill(start_color="90EE90", end_color="90EE90", fill_type="solid")
+    fall_fill = PatternFill(start_color="FFB6C1", end_color="FFB6C1", fill_type="solid")
+    
+    # Headers
+    headers = ['Event Type', 'Start Date', 'End Date', 'Days', 'Change %', 'Rank', 'Cumulative %', 'Insider Purchases']
+    ws.append(headers)
+    for cell in ws[1]:
+        cell.fill = header_fill
+        cell.font = Font(bold=True)
+    
+    # Data rows
+    for row_data in export_data:
+        ws.append([
+            row_data['event_type'],
+            row_data['start_date'],
+            row_data['end_date'],
+            row_data['days'],
+            row_data['change_pct'],
+            row_data['rank'],
+            row_data['cumulative_pct'],
+            row_data['insider_purchases']
+        ])
+        
+        # Apply color based on event type
+        fill = rise_fill if row_data['event_type'] == 'RISE' else fall_fill
+        for cell in ws[ws.max_row]:
+            cell.fill = fill
+    
+    # Adjust column widths
+    ws.column_dimensions['A'].width = 12
+    ws.column_dimensions['B'].width = 12
+    ws.column_dimensions['C'].width = 12
+    ws.column_dimensions['D'].width = 8
+    ws.column_dimensions['E'].width = 10
+    ws.column_dimensions['F'].width = 8
+    ws.column_dimensions['G'].width = 13
+    ws.column_dimensions['H'].width = 30
+    
+    # Save Excel
+    excel_file = f'output CSVs/{ticker.lower()}_rise_events.xlsx'
+    wb.save(excel_file)
+    print(f"✓ Excel saved to: {excel_file}")
+
+
+def analyze_rise_volatility(df: pd.DataFrame, rise_event: Dict) -> Dict:
+    """
+    Analyze the volatility pattern during and after a rise event.
+    Tracks mid-rises, mid-falls during the rise, and post-rise behavior.
+    """
+    start_date = rise_event['start_date']
+    end_date = rise_event['end_date']
+    
+    rise_df = df.loc[start_date:end_date]
+    
+    try:
+        end_idx = df.index.get_indexer([end_date], method='nearest')[0]
+    except:
+        return None
+        
+    post_rise_end_idx = min(end_idx + 31, len(df))
+    post_rise_df = df.iloc[end_idx:post_rise_end_idx]
+    
+    result = {
+        'rise_start_date': start_date.strftime('%d/%m/%Y'),
+        'rise_end_date': end_date.strftime('%d/%m/%Y'),
+        'rise_days': rise_event['days'],
+        'rise_percentage': rise_event['change_pct'],
+        'mid_rises': {},
+        'mid_falls': {},
+        'first_dip': None,
+        'first_recovery': None,
+        'second_dip': None,
+        'insiders': rise_event.get('insiders', [])
+    }
+    
+    # Track consecutive movements during the rise
+    if len(rise_df) > 1:
+        i = 0
+        while i < len(rise_df) - 1:
+            movement_start_price = rise_df['Close'].iloc[i]
+            current_direction = None
+            
+            j = i + 1
+            while j < len(rise_df):
+                prev_price = rise_df['Close'].iloc[j-1]
+                current_price = rise_df['Close'].iloc[j]
+                
+                if current_price > prev_price:
+                    day_direction = 'up'
+                elif current_price < prev_price:
+                    day_direction = 'down'
+                else:
+                    j += 1
+                    continue
+                
+                if current_direction is None:
+                    current_direction = day_direction
+                    j += 1
+                    continue
+                
+                if day_direction != current_direction:
+                    break
+                    
+                j += 1
+            
+            if current_direction is not None and j > i + 1:
+                movement_end_price = rise_df['Close'].iloc[j-1]
+                movement_end_date = rise_df.index[j-1]
+                total_change_pct = ((movement_end_price - movement_start_price) / movement_start_price) * 100
+                
+                if current_direction == 'up' and total_change_pct >= 1.0:
+                    pct_key = str(round(total_change_pct, 2))
+                    result['mid_rises'][pct_key] = {
+                        'date': movement_end_date.strftime('%d/%m/%Y')
+                    }
+                elif current_direction == 'down' and total_change_pct <= -1.0:
+                    pct_key = str(round(total_change_pct, 2))
+                    result['mid_falls'][pct_key] = {
+                        'date': movement_end_date.strftime('%d/%m/%Y')
+                    }
+                
+                i = j - 1
+            else:
+                i += 1
+    
+    # NEW LOGIC: Check for 2 consecutive declining mid-rises
+    if len(result['mid_rises']) >= 2:
+        mid_rises_with_prices = []
+        for pct_key, rise_info in result['mid_rises'].items():
+            date_str = rise_info['date']
+            rise_date = pd.to_datetime(date_str, format='%d/%m/%Y')
+            try:
+                price_at_date = rise_df.loc[rise_date, 'Close']
+                mid_rises_with_prices.append({
+                    'date': rise_date,
+                    'date_str': date_str,
+                    'price': price_at_date,
+                    'pct': pct_key
+                })
+            except:
+                pass
+        
+        mid_rises_with_prices.sort(key=lambda x: x['date'])
+        
+        detected_fall_start = None
+        for i in range(len(mid_rises_with_prices) - 2):
+            price1 = mid_rises_with_prices[i]['price']
+            price2 = mid_rises_with_prices[i + 1]['price']
+            price3 = mid_rises_with_prices[i + 2]['price']
+            
+            if price2 < price1 and price3 < price2:
+                detected_fall_start = mid_rises_with_prices[i]
+                print(f"  ⚠️  DETECTED FALL PATTERN: {price1:.2f} -> {price2:.2f} -> {price3:.2f}")
+                print(f"  ⚠️  Reclassifying as DOWN event starting from {detected_fall_start['date_str']}")
+                
+                result['rise_end_date'] = detected_fall_start['date_str']
+                
+                try:
+                    corrected_end_date = detected_fall_start['date']
+                    rise_start_price = rise_df['Close'].iloc[0]
+                    corrected_end_price = rise_df.loc[corrected_end_date, 'Close']
+                    corrected_rise_pct = ((corrected_end_price - rise_start_price) / rise_start_price) * 100
+                    result['rise_percentage'] = corrected_rise_pct
+                    
+                    corrected_rise_days = (corrected_end_date - start_date).days
+                    result['rise_days'] = corrected_rise_days
+                    
+                    print(f"  ✓ Corrected: {result['rise_start_date']} to {result['rise_end_date']} = {corrected_rise_pct:.2f}% over {corrected_rise_days} days")
+                except Exception as e:
+                    print(f"  ✗ Error correcting rise event: {e}")
+                
+                break
+    
+    # Analyze post-rise behavior
+    if len(post_rise_df) > 1:
+        peak_price = post_rise_df['Close'].iloc[0]
+        
+        first_dip_found = False
+        first_dip_low = peak_price
+        first_dip_low_idx = 0
+        
+        first_recovery_found = False
+        recovery_high = peak_price
+        recovery_high_idx = 0
+        
+        for i in range(1, len(post_rise_df)):
+            current_price = post_rise_df['Close'].iloc[i]
+            current_date = post_rise_df.index[i]
+            
+            if not first_dip_found:
+                if current_price < first_dip_low:
+                    first_dip_low = current_price
+                    first_dip_low_idx = i
+                    fall_pct = ((peak_price - current_price) / peak_price) * 100
+                    if fall_pct >= 1.0:
+                        result['first_dip'] = {
+                            'date': current_date.strftime('%d/%m/%Y'),
+                            'percentage': round(-fall_pct, 2),
+                            'days_after_peak': i
+                        }
+                elif current_price > first_dip_low and result['first_dip'] is not None:
+                    recovery_from_low = ((current_price - first_dip_low) / first_dip_low) * 100
+                    if recovery_from_low >= 1.0:
+                        first_dip_found = True
+                        recovery_high = current_price
+                        recovery_high_idx = i
+                        result['first_recovery'] = {
+                            'date': current_date.strftime('%d/%m/%Y'),
+                            'percentage': round(recovery_from_low, 2),
+                            'days_after_peak': i
+                        }
+                    
+            elif not first_recovery_found:
+                if current_price > recovery_high:
+                    recovery_high = current_price
+                    recovery_high_idx = i
+                    recovery_pct = ((current_price - first_dip_low) / first_dip_low) * 100
+                    if recovery_pct >= 1.0:
+                        result['first_recovery'] = {
+                            'date': current_date.strftime('%d/%m/%Y'),
+                            'percentage': round(recovery_pct, 2),
+                            'days_after_peak': i
+                        }
+                elif current_price < recovery_high and result['first_recovery'] is not None:
+                    first_recovery_found = True
+                    
+            else:
+                second_dip_pct = ((recovery_high - current_price) / recovery_high) * 100
+                if second_dip_pct >= 1.0:
+                    days_since_recovery = i - recovery_high_idx
+                    if result['second_dip'] is None or second_dip_pct > abs(result['second_dip']['percentage']):
+                        result['second_dip'] = {
+                            'date': current_date.strftime('%d/%m/%Y'),
+                            'percentage': round(-second_dip_pct, 2),
+                            'days_after_peak': i,
+                            'days_since_recovery': days_since_recovery
+                        }
+    
+    return result
+
+
+def generate_volatility_json(events: List[Dict], df: pd.DataFrame, ticker: str):
+    """Generate JSON with volatility analysis for all rise events."""
+    from datetime import datetime
+    
+    rise_events = [e for e in events if e['event_type'] == 'RISE']
+    
+    volatility_analysis = {}
+    for rise_event in rise_events:
+        analysis = analyze_rise_volatility(df, rise_event)
+        
+        if analysis is None:
+            continue
+        
+        pct_key = str(round(rise_event['change_pct'], 2))
+        volatility_analysis[pct_key] = analysis
+    
+    json_output = {
+        'ticker': ticker,
+        'analysis_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'total_rise_events': len(rise_events),
+        'rise_events': volatility_analysis
+    }
+    
+    json_file = f'output CSVs/{ticker.lower()}_rise_volatility_analysis.json'
+    with open(json_file, 'w') as f:
+        json.dump(json_output, f, indent=2)
+    
+    print(f"✓ Volatility JSON saved to: {json_file}")
+
+
+def process_single_stock(ticker: str, stock_data: Dict, price_cache: Dict, generate_detailed_files: bool = False) -> Optional[Dict]:
     """
     Run the insider conviction strategy on a single stock.
     Returns summary statistics only (no detailed files).
@@ -451,6 +841,7 @@ def process_single_stock(ticker: str, stock_data: Dict, price_cache: Dict) -> Op
         ticker: Stock ticker symbol
         stock_data: Insider trades data for this stock
         price_cache: Pre-loaded price data from cache
+        generate_detailed_files: If True, return events for file generation
     """
     try:
         # Check if we have price data in cache
@@ -615,7 +1006,7 @@ def process_single_stock(ticker: str, stock_data: Dict, price_cache: Dict) -> Op
         
         avg_days = sum(t['days_held'] for t in completed_trades) / total_trades
         
-        return {
+        result = {
             'ticker': ticker,
             'company_name': stock_data.get('company_name', ticker),
             'total_trades': total_trades,
@@ -633,6 +1024,13 @@ def process_single_stock(ticker: str, stock_data: Dict, price_cache: Dict) -> Op
             'avg_days_held': round(avg_days, 1),
             'trades': completed_trades  # Include individual trades for charts
         }
+        
+        # Add events if requested (for single-ticker detailed file generation)
+        if generate_detailed_files:
+            result['events'] = state.all_events
+            result['price_df'] = price_df
+        
+        return result
         
     except Exception as e:
         print(f"❌ Error processing {ticker}: {str(e)}")
@@ -688,13 +1086,28 @@ def main():
             sys.exit(1)
         
         print(f"🔍 Testing {single_ticker}...")
-        result = process_single_stock(single_ticker, stock_data, price_cache)
+        result = process_single_stock(single_ticker, stock_data, price_cache, generate_detailed_files=True)
         
         if not result:
             print(f"⚠️  {single_ticker}: No trades generated")
             sys.exit(0)
         
         print(f"✅ {single_ticker}: {result['total_trades']} trades, {result['roi']:+.2f}% ROI")
+        print()
+        
+        # Generate detailed XLSX and JSON files
+        if 'events' in result and result['events']:
+            print("📝 Generating detailed files...")
+            events = result['events']
+            price_df = result['price_df']
+            
+            generate_event_files(events, price_df, single_ticker)
+            generate_volatility_json(events, price_df, single_ticker)
+            print()
+        
+        # Remove events and price_df from result before saving to JSON
+        result.pop('events', None)
+        result.pop('price_df', None)
         
         # Load existing results file
         output_file = 'output CSVs/insider_conviction_all_stocks_results.json'

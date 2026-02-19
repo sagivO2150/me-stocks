@@ -1,5 +1,5 @@
 {
-  "analysis_date": "2026-02-19 22:27:56",
+  "analysis_date": "2026-02-19 23:24:31",
   "strategy": "Insider Conviction (No Hindsight)",
   "overall_stats": {
     "stocks_analyzed": 1,
@@ -13,10 +13,22 @@
   "top_25_best": [
     {
       "ticker": "BLNE",
-      "trade_count": 2,
+      "company_name": "X",
+      "total_trades": 2,
+      "winning_trades": 2,
+      "losing_trades": 0,
+      "win_rate": 100.0,
+      "target_rate": 50.0,
+      "total_profit": 8580.08,
+      "total_invested": 4000,
+      "roi": 214.5,
+      "avg_return": 214.5,
+      "median_return": 362.34,
+      "max_return": 362.34,
+      "min_return": 66.67,
+      "avg_days_held": 87.5,
       "trades": [
         {
-          "ticker": "BLNE",
           "entry_date": "2025-06-18",
           "entry_price": 0.77,
           "exit_date": "2025-09-17",
@@ -32,7 +44,6 @@
           "buy_type": "shopping_spree"
         },
         {
-          "ticker": "BLNE",
           "entry_date": "2025-11-25",
           "entry_price": 1.77,
           "exit_date": "2026-02-17",
@@ -47,31 +58,28 @@
           "peak_gain": 102.82,
           "buy_type": "shopping_spree"
         }
-      ],
-      "winning_trades": 2,
-      "losing_trades": 0,
-      "roi": 214.5,
-      "win_rate": 100.0,
-      "target_rate": 50.0,
-      "total_profit": 8580.08,
-      "total_invested": 4000,
-      "avg_return": 214.5,
-      "median_return": 362.34,
-      "avg_win": 214.5,
-      "avg_loss": 0,
-      "best_trade": 362.34,
-      "worst_trade": 66.67,
-      "avg_days_held": 87.5,
-      "avg_peak_gain": 252.7
+      ]
     }
   ],
   "top_25_worst": [
     {
       "ticker": "BLNE",
-      "trade_count": 2,
+      "company_name": "X",
+      "total_trades": 2,
+      "winning_trades": 2,
+      "losing_trades": 0,
+      "win_rate": 100.0,
+      "target_rate": 50.0,
+      "total_profit": 8580.08,
+      "total_invested": 4000,
+      "roi": 214.5,
+      "avg_return": 214.5,
+      "median_return": 362.34,
+      "max_return": 362.34,
+      "min_return": 66.67,
+      "avg_days_held": 87.5,
       "trades": [
         {
-          "ticker": "BLNE",
           "entry_date": "2025-06-18",
           "entry_price": 0.77,
           "exit_date": "2025-09-17",
@@ -87,7 +95,6 @@
           "buy_type": "shopping_spree"
         },
         {
-          "ticker": "BLNE",
           "entry_date": "2025-11-25",
           "entry_price": 1.77,
           "exit_date": "2026-02-17",
@@ -102,31 +109,28 @@
           "peak_gain": 102.82,
           "buy_type": "shopping_spree"
         }
-      ],
-      "winning_trades": 2,
-      "losing_trades": 0,
-      "roi": 214.5,
-      "win_rate": 100.0,
-      "target_rate": 50.0,
-      "total_profit": 8580.08,
-      "total_invested": 4000,
-      "avg_return": 214.5,
-      "median_return": 362.34,
-      "avg_win": 214.5,
-      "avg_loss": 0,
-      "best_trade": 362.34,
-      "worst_trade": 66.67,
-      "avg_days_held": 87.5,
-      "avg_peak_gain": 252.7
+      ]
     }
   ],
   "all_results": [
     {
       "ticker": "BLNE",
-      "trade_count": 2,
+      "company_name": "X",
+      "total_trades": 2,
+      "winning_trades": 2,
+      "losing_trades": 0,
+      "win_rate": 100.0,
+      "target_rate": 50.0,
+      "total_profit": 8580.08,
+      "total_invested": 4000,
+      "roi": 214.5,
+      "avg_return": 214.5,
+      "median_return": 362.34,
+      "max_return": 362.34,
+      "min_return": 66.67,
+      "avg_days_held": 87.5,
       "trades": [
         {
-          "ticker": "BLNE",
           "entry_date": "2025-06-18",
           "entry_price": 0.77,
           "exit_date": "2025-09-17",
@@ -142,7 +146,6 @@
           "buy_type": "shopping_spree"
         },
         {
-          "ticker": "BLNE",
           "entry_date": "2025-11-25",
           "entry_price": 1.77,
           "exit_date": "2026-02-17",
@@ -157,22 +160,7 @@
           "peak_gain": 102.82,
           "buy_type": "shopping_spree"
         }
-      ],
-      "winning_trades": 2,
-      "losing_trades": 0,
-      "roi": 214.5,
-      "win_rate": 100.0,
-      "target_rate": 50.0,
-      "total_profit": 8580.08,
-      "total_invested": 4000,
-      "avg_return": 214.5,
-      "median_return": 362.34,
-      "avg_win": 214.5,
-      "avg_loss": 0,
-      "best_trade": 362.34,
-      "worst_trade": 66.67,
-      "avg_days_held": 87.5,
-      "avg_peak_gain": 252.7
+      ]
     }
   ]
 }
