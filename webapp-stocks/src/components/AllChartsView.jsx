@@ -474,12 +474,11 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
             {data.backtestBuyData.map((trade, idx) => {
               const exitDate = trade.exit_date ? new Date(trade.exit_date).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }) : 'N/A';
               const insiderDate = trade.insider_purchase_date ? new Date(trade.insider_purchase_date).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }) : 'N/A';
-              const insiderName = trade.insider_name || 'N/A';
               return (
                 <div key={idx} className="text-xs text-yellow-200 ml-2">
                   • Entry: ${trade.entry_price?.toFixed(2)} | Invested: {formatAmount(trade.position_size)}
                   <br />
-                  • Based on insider: {insiderName} on {insiderDate}
+                  • Based on insider buy: {insiderDate}
                   <br />
                   • Till {exitDate} | Return: {trade.return_pct?.toFixed(1)}% | P/L: {formatAmount(trade.profit_loss)}
                 </div>
