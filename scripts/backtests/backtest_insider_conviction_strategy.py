@@ -15,7 +15,14 @@ Strategy Rules (as if trading live):
       - Buy when we detect recovery starting
       - Target: Rounded-down average price
    
-   c) Fall-Only Buy (<60% drop): Insiders buy only during fall
+   c) Absorption Buy: Insiders buy ONLY during a fall (no rise purchases)
+      - Wait for fall to end and rise to start
+      - Buy when recovery is detected (2+ consecutive up days)
+      - Sell when cumulative RISE events >= fall magnitude
+      - Example: -26.94% fall requires +26.94% rise to sell
+      - Don't sell mid-rise, wait for rise event to complete
+   
+   d) Fall-Only Buy (<60% drop): Insiders buy only during fall
       - Target: Recover to the price when fall started
       - Buy when recovery is detected
 
@@ -24,11 +31,13 @@ Strategy Rules (as if trading live):
    - After target reached: Sell on first significant dip
    - Significant = larger than largest dip seen before hitting target
    - Emergency stop: -15% from entry
+   - Absorption buy: Sell when fall ends after cumulative rise >= fall magnitude
 
 3. LIVE DETECTION LOGIC:
    - Track daily price movements
    - Detect when we transition from fall to rise
    - Track insider purchases as they occur
+   - Track RISE/FALL events for absorption buy strategy
    - Make buy/sell decisions based only on past data
 """
 
@@ -134,6 +143,13 @@ class TradingState:
         self.target_reached = False
         self.peak_since_entry = 0
         
+        # Absorption buy tracking (buy after fall when insiders only bought during fall)
+        self.absorption_fall_magnitude = 0  # The % fall that needs to be recovered
+        self.cumulative_rise_since_entry = 0  # Track cumulative rises after entry
+        
+        # Track insider info for current position (for UI display)
+        self.position_insider_info = []  # List of insider trades that triggered this position
+        
     def update_phase(self, current_price: float, prev_price: float, date: datetime):
         """Update market phase using FIRST DIP → RECOVERY → SECOND DIP pattern for fall detection.
         
@@ -211,6 +227,10 @@ class TradingState:
                     if self.phase == MarketPhase.FALLING and self.trend_start_date:
                         fall_days = (actual_start_date - self.trend_start_date).days
                         fall_pct = ((self.trend_low_price - self.trend_start_price) / self.trend_start_price) * 100
+                        
+                        # Store the fall percentage for buy signal logic
+                        self.prev_fall_pct = abs(fall_pct)
+                        self.prev_fall_start_price = self.trend_start_price
                         
                         # Filter insiders who bought during THIS fall only
                         # Make dates tz-naive for comparison
@@ -329,6 +349,11 @@ class TradingState:
                             'insiders': rise_insiders
                         })
                         
+                        # Track cumulative rise for absorption_buy positions
+                        if self.in_position and self.buy_type == 'absorption_buy':
+                            self.cumulative_rise_since_entry += abs(rise_pct)
+                            print(f"    📊 Absorption buy: RISE event +{rise_pct:.2f}% completed. Cumulative: {self.cumulative_rise_since_entry:.2f}% / {self.absorption_fall_magnitude:.2f}% target")
+                        
                         self.trend_start_date = self.first_dip_date  # Fall starts from first dip day
                         self.trend_start_price = self.trend_peak_price
                         self.trend_low_price = current_price
@@ -446,69 +471,48 @@ class TradingState:
                 self.peak_since_entry = 0
                 
                 all_insider_purchases = self.insiders_bought_in_rise + self.insiders_bought_in_fall
+                self.position_insider_info = all_insider_purchases.copy()  # Store insider info
                 return {
                     'buy_date': current_date,
                     'entry_price': current_price,
                     'target_price': target,
                     'buy_type': 'shopping_spree',
                     'num_insiders': len(all_insider_purchases),
-                    'prev_fall_pct': self.prev_fall_pct
+                    'prev_fall_pct': self.prev_fall_pct,
+                    'insider_info': all_insider_purchases
                 }
         
-        # SCENARIO 2: Absorption Event (>60% fall)
-        elif self.insiders_bought_in_fall and self.prev_fall_pct >= 60:
-            # Average insider purchase price, rounded down
-            insider_prices = [t['price'] for t in self.insiders_bought_in_fall if t['price'] > 0]
-            if insider_prices:
-                avg_price = sum(insider_prices) / len(insider_prices)
-                target = int(avg_price)  # Round down
-                
-                if target > current_price:
-                    self.in_position = True
-                    self.entry_date = current_date
-                    self.entry_price = current_price
-                    self.target_price = target
-                    self.buy_type = 'absorption'
-                    self.target_reached = False
-                    self.peak_since_entry = 0
-                    
-                    return {
-                        'buy_date': current_date,
-                        'entry_price': current_price,
-                        'target_price': target,
-                        'buy_type': 'absorption',
-                        'num_insiders': len(self.insiders_bought_in_fall),
-                        'fall_pct': self.prev_fall_pct
-                    }
-        
-        # SCENARIO 3: Fall-Only Buy (<60% fall)
-        elif self.insiders_bought_in_fall and self.prev_fall_pct < 60 and self.prev_fall_start_price:
-            # Target is to recover what was lost
-            target = self.prev_fall_start_price
+        # SCENARIO 2: Absorption Buy (insiders bought ONLY during fall)
+        # Buy after fall ends, sell when cumulative RISE events reach fall magnitude
+        if self.insiders_bought_in_fall and not self.insiders_bought_in_rise and self.prev_fall_pct > 0:
+            # We buy after the fall ends and rise starts
+            # Target is to see a rise equal to the fall magnitude
+            self.in_position = True
+            self.entry_date = current_date
+            self.entry_price = current_price
+            self.target_price = None  # No fixed target - we track rise events
+            self.buy_type = 'absorption_buy'
+            self.target_reached = False
+            self.peak_since_entry = 0
+            self.absorption_fall_magnitude = abs(self.prev_fall_pct)
+            self.cumulative_rise_since_entry = 0
+            self.position_insider_info = self.insiders_bought_in_fall.copy()  # Store insider info
             
-            if target > current_price:
-                self.in_position = True
-                self.entry_date = current_date
-                self.entry_price = current_price
-                self.target_price = target
-                self.buy_type = 'fall_only'
-                self.target_reached = False
-                self.peak_since_entry = 0
-                
-                return {
-                    'buy_date': current_date,
-                    'entry_price': current_price,
-                    'target_price': target,
-                    'buy_type': 'fall_only',
-                    'num_insiders': len(self.insiders_bought_in_fall),
-                    'fall_pct': self.prev_fall_pct
-                }
+            return {
+                'buy_date': current_date,
+                'entry_price': current_price,
+                'target_price': None,
+                'buy_type': 'absorption_buy',
+                'num_insiders': len(self.insiders_bought_in_fall),
+                'fall_pct': self.prev_fall_pct,
+                'required_rise': self.absorption_fall_magnitude,
+                'insider_info': self.insiders_bought_in_fall
+            }
         
         # Clear insider data after checking - we've evaluated this rise+fall cycle
         # This prevents stale data from affecting future signals
-        # ALWAYS clear after checking (whether we bought or not)
         if self.insiders_bought_in_rise or self.insiders_bought_in_fall:
-            print(f"    🧹 Clearing insider data (rise: {len(self.insiders_bought_in_rise)}, fall: {len(self.insiders_bought_in_fall)}, peak: ${self.shopping_spree_peak_price or 0:.2f})")
+            print(f"    🧹 Clearing insider data (rise: {len(self.insiders_bought_in_rise)}, fall: {len(self.insiders_bought_in_fall)}, prev_fall_pct: {self.prev_fall_pct:.2f}%)")
         self.insiders_bought_in_rise = []
         self.insiders_bought_in_fall = []
         self.shopping_spree_peak_price = None
@@ -531,8 +535,34 @@ class TradingState:
             self.in_position = False
             return ('stop_loss', current_price)
         
+        # SPECIAL HANDLING FOR ABSORPTION_BUY
+        if self.buy_type == 'absorption_buy':
+            # We don't have a fixed target price - we're waiting for cumulative RISE events
+            # to reach the fall magnitude
+            # We only sell AFTER a rise event completes (not mid-rise)
+            
+            # Track if we're currently in a rising phase
+            if self.phase == MarketPhase.RISING:
+                # Don't sell during rise - wait for it to complete
+                return None
+            elif self.phase == MarketPhase.FALLING:
+                # Rise just completed, check if cumulative rise is enough
+                # The cumulative rise is tracked when RISE events complete in update_phase
+                if self.cumulative_rise_since_entry >= self.absorption_fall_magnitude:
+                    self.in_position = False
+                    return ('absorption_target_reached', current_price)
+            
+            # Stagnation check for absorption_buy: 90+ days without reaching target
+            days_held = (current_date - self.entry_date).days
+            if days_held > 90 and current_gain_pct < 5:
+                self.in_position = False
+                return ('absorption_stagnation', current_price)
+            
+            return None
+        
+        # STANDARD SELL LOGIC FOR OTHER BUY TYPES
         # Check if target reached
-        if not self.target_reached and current_price >= self.target_price:
+        if self.target_price and not self.target_reached and current_price >= self.target_price:
             self.target_reached = True
         
         # Track mid-falls before reaching target
@@ -582,12 +612,25 @@ def simulate_live_trading(insider_trades: Dict, price_df: pd.DataFrame) -> List[
         
         # Check for insider purchases today
         if date_str in insider_trades:
-            # Add current stock price to the trade info
             trade_info = insider_trades[date_str].copy()
-            trade_info['stock_price'] = current_price
-            state.record_insider_purchase(date_str, trade_info)
-            insider_name = insider_trades[date_str]['insider_name']
-            print(f"  📢 {date_str}: Insider purchase detected - {insider_name} @ ${current_price:.2f}")
+            
+            # Filter out trades with $0 price or less than $5K value
+            trade_price = trade_info.get('price', 0)
+            trade_value_str = str(trade_info.get('value', '0')).replace('$', '').replace(',', '').replace('+', '')
+            try:
+                trade_value = float(trade_value_str) if trade_value_str else 0
+            except:
+                trade_value = 0
+            
+            # Skip if price is $0 or value is less than $5,000
+            if trade_price > 0 and trade_value >= 5000:
+                # Add current stock price to the trade info
+                trade_info['stock_price'] = current_price
+                state.record_insider_purchase(date_str, trade_info)
+                insider_name = insider_trades[date_str]['insider_name']
+                print(f"  📢 {date_str}: Insider purchase detected - {insider_name} @ ${current_price:.2f} (${trade_value:,.0f})")
+            else:
+                print(f"  ⏭️  {date_str}: Skipping insider trade - price: ${trade_price:.2f}, value: ${trade_value:,.0f} (below threshold)")
         
         # If we're in a position, check for sell signal
         if state.in_position:
@@ -598,13 +641,31 @@ def simulate_live_trading(insider_trades: Dict, price_df: pd.DataFrame) -> List[
                 return_pct = ((exit_price - state.entry_price) / state.entry_price) * 100
                 profit = state.position_size * (return_pct / 100)
                 
+                # Format insider info for display
+                insider_summary = ''
+                insider_purchase_date = None
+                insider_name = None
+                if state.position_insider_info:
+                    # Group by insider name and show date + stock price
+                    insider_list = []
+                    for insider in state.position_insider_info:
+                        name = insider.get('insider_name', 'Unknown')
+                        date = insider.get('date', '')
+                        stock_price = insider.get('stock_price', 0)
+                        insider_list.append(f"{name} on {date} @ ${stock_price:.2f}")
+                    insider_summary = ' | '.join(insider_list)
+                    # For UI: Use the first insider purchase date and name
+                    if state.position_insider_info:
+                        insider_purchase_date = state.position_insider_info[0].get('date', '')
+                        insider_name = state.position_insider_info[0].get('insider_name', 'Unknown')
+                
                 trade = {
                     'ticker': 'GROV',
                     'entry_date': state.entry_date.strftime('%Y-%m-%d'),
                     'entry_price': round(state.entry_price, 2),
                     'exit_date': current_date.strftime('%Y-%m-%d'),
                     'exit_price': round(exit_price, 2),
-                    'target_price': round(state.target_price, 2),
+                    'target_price': round(state.target_price, 2) if state.target_price else 0,
                     'days_held': days_held,
                     'return_pct': round(return_pct, 2),
                     'position_size': state.position_size,
@@ -612,7 +673,10 @@ def simulate_live_trading(insider_trades: Dict, price_df: pd.DataFrame) -> List[
                     'sell_reason': reason,
                     'target_reached': 'yes' if state.target_reached else 'no',
                     'peak_gain': round(state.peak_since_entry, 2),
-                    'buy_type': state.buy_type
+                    'buy_type': state.buy_type,
+                    'insider_trades': insider_summary,
+                    'insider_purchase_date': insider_purchase_date,
+                    'insider_name': insider_name
                 }
                 
                 completed_trades.append(trade)
@@ -629,8 +693,12 @@ def simulate_live_trading(insider_trades: Dict, price_df: pd.DataFrame) -> List[
         else:
             buy_signal = state.check_buy_signal(current_date, current_price)
             if buy_signal:
-                print(f"  🟢 BUY {date_str}: {buy_signal['buy_type'].upper()} @ ${current_price:.2f} "
-                      f"(Target: ${buy_signal['target_price']:.2f}, Insiders: {buy_signal['num_insiders']})")
+                if buy_signal['buy_type'] == 'absorption_buy':
+                    print(f"  🟢 BUY {date_str}: {buy_signal['buy_type'].upper()} @ ${current_price:.2f} "
+                          f"(Required Rise: {buy_signal['required_rise']:.2f}%, Insiders: {buy_signal['num_insiders']})")
+                else:
+                    print(f"  🟢 BUY {date_str}: {buy_signal['buy_type'].upper()} @ ${current_price:.2f} "
+                          f"(Target: ${buy_signal['target_price']:.2f}, Insiders: {buy_signal['num_insiders']})")
     
     # Handle open position at end
     if state.in_position:
@@ -640,13 +708,31 @@ def simulate_live_trading(insider_trades: Dict, price_df: pd.DataFrame) -> List[
         return_pct = ((final_price - state.entry_price) / state.entry_price) * 100
         profit = state.position_size * (return_pct / 100)
         
+        # Format insider info for display
+        insider_summary = ''
+        insider_purchase_date = None
+        insider_name = None
+        if state.position_insider_info:
+            # Group by insider name and show date + stock price
+            insider_list = []
+            for insider in state.position_insider_info:
+                name = insider.get('insider_name', 'Unknown')
+                date = insider.get('date', '')
+                stock_price = insider.get('stock_price', 0)
+                insider_list.append(f"{name} on {date} @ ${stock_price:.2f}")
+            insider_summary = ' | '.join(insider_list)
+            # For UI: Use the first insider purchase date and name
+            if state.position_insider_info:
+                insider_purchase_date = state.position_insider_info[0].get('date', '')
+                insider_name = state.position_insider_info[0].get('insider_name', 'Unknown')
+        
         trade = {
             'ticker': 'GROV',
             'entry_date': state.entry_date.strftime('%Y-%m-%d'),
             'entry_price': round(state.entry_price, 2),
             'exit_date': final_date.strftime('%Y-%m-%d'),
             'exit_price': round(final_price, 2),
-            'target_price': round(state.target_price, 2),
+            'target_price': round(state.target_price, 2) if state.target_price else 0,
             'days_held': days_held,
             'return_pct': round(return_pct, 2),
             'position_size': state.position_size,
@@ -654,7 +740,10 @@ def simulate_live_trading(insider_trades: Dict, price_df: pd.DataFrame) -> List[
             'sell_reason': 'end_of_period',
             'target_reached': 'yes' if state.target_reached else 'no',
             'peak_gain': round(state.peak_since_entry, 2),
-            'buy_type': state.buy_type
+            'buy_type': state.buy_type,
+            'insider_trades': insider_summary,
+            'insider_purchase_date': insider_purchase_date,
+            'insider_name': insider_name
         }
         
         completed_trades.append(trade)
@@ -854,7 +943,7 @@ def main():
     # Breakdown by strategy type
     print("BREAKDOWN BY STRATEGY TYPE:")
     print("-" * 80)
-    for strategy_type in ['shopping_spree', 'absorption', 'fall_only']:
+    for strategy_type in ['shopping_spree', 'absorption', 'absorption_buy', 'fall_only']:
         strategy_trades = [t for t in trades if t['buy_type'] == strategy_type]
         if strategy_trades:
             strategy_wins = [t for t in strategy_trades if t['return_pct'] > 0]
