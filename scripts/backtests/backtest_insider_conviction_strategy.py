@@ -48,14 +48,14 @@ class MarketPhase(Enum):
 
 
 def load_grov_data():
-    """Load GROV stock data and insider trades."""
+    """Load BSFC stock data and insider trades."""
     # Load insider trades
     with open('output CSVs/expanded_insider_trades.json', 'r') as f:
         data = json.load(f)
     
     insider_trades = {}  # date -> list of trade info
     for stock in data.get('data', []):
-        if stock.get('ticker') == 'GROV':
+        if stock.get('ticker') == 'BSFC':
             for trade in stock.get('trades', []):
                 trade_date = trade.get('trade_date', '')
                 if trade_date:
@@ -84,7 +84,7 @@ def load_grov_data():
             break
     
     # Fetch stock price data
-    stock = yf.Ticker("GROV")
+    stock = yf.Ticker("BSFC")
     price_df = stock.history(period="max")
     
     return insider_trades, price_df
@@ -148,6 +148,10 @@ class TradingState:
         self.cumulative_mid_rises_pct = 0  # Sum of all mid-rise percentages in current rise event
         self.mid_rise_start_price = None  # Track start of current mid-rise
         self.in_mid_rise = False  # Track if currently in a mid-rise (consecutive up days)
+        
+        # Event cumulative percentage tracking (for CSV export)
+        self.event_cumulative_pct = 0  # Net cumulative percentage during current event
+        self.event_last_price = None  # Track last price for cumulative calculation
         
     def update_phase(self, current_price: float, prev_price: float, date: datetime):
         """Update market phase using FIRST DIP → RECOVERY → SECOND DIP pattern for fall detection.
@@ -225,7 +229,8 @@ class TradingState:
                     # Record the completed FALL event if we were falling before
                     if self.phase == MarketPhase.FALLING and self.trend_start_date:
                         fall_days = (actual_start_date - self.trend_start_date).days
-                        fall_pct = ((self.trend_low_price - self.trend_start_price) / self.trend_start_price) * 100
+                        # Use cumulative percentage instead of simple price change
+                        fall_pct = self.event_cumulative_pct
                         
                         # SAVE THE FALL PERCENTAGE for buy signal evaluation
                         # But DON'T overwrite if we're already in a position (target is locked in)
@@ -263,9 +268,18 @@ class TradingState:
                     self.first_dip_date = None  # Reset fall detection
                     self.first_dip_price = None
                     self.in_recovery = False
+                    # Reset cumulative percentage tracking for new rise event
+                    self.event_cumulative_pct = 0
+                    self.event_last_price = actual_start_price
                     print(f"📈 RISE STARTED on {actual_start_date.strftime('%Y-%m-%d')} at ${actual_start_price:.2f} (detected on {date.strftime('%Y-%m-%d')}): peak tracking reset to ${current_price:.2f}")
         
         elif self.phase == MarketPhase.RISING:
+            # Track cumulative percentage change during rise
+            if self.event_last_price and self.event_last_price > 0:
+                daily_pct = ((current_price - self.event_last_price) / self.event_last_price) * 100
+                self.event_cumulative_pct += daily_pct
+            self.event_last_price = current_price
+            
             # Update peak if new high
             if current_price > self.trend_peak_price:
                 old_peak = self.trend_peak_price
@@ -327,7 +341,8 @@ class TradingState:
                         
                         # Record the completed RISE event before transitioning
                         rise_days = (actual_rise_end - self.trend_start_date).days
-                        rise_pct = self.prev_rise_pct
+                        # Use cumulative percentage instead of simple price change
+                        rise_pct = self.event_cumulative_pct
                         
                         # Filter insiders who bought during THIS rise only
                         # Make dates tz-naive for comparison
@@ -346,7 +361,8 @@ class TradingState:
                             'days': rise_days,
                             'change_pct': rise_pct,
                             'start_price': self.trend_start_price,
-                            'end_price': self.trend_peak_price,
+                            'end_price': None,
+                            'peak_price': self.trend_peak_price,
                             'insiders': rise_insiders
                         })
                         
@@ -355,6 +371,9 @@ class TradingState:
                         self.trend_low_price = current_price
                         self.trend_low_date = date
                         self.consecutive_up_days = 0
+                        # Reset cumulative percentage tracking for new fall event
+                        self.event_cumulative_pct = 0
+                        self.event_last_price = self.trend_peak_price
                         print(f"📉 FALL STARTED on {self.trend_peak_date.strftime('%Y-%m-%d')} (detected on {date.strftime('%Y-%m-%d')} via dip→recovery→dip)")
                         
                         # Reset fall detection
@@ -391,6 +410,12 @@ class TradingState:
         
         # Track lowest price during fall
         if self.phase == MarketPhase.FALLING:
+            # Track cumulative percentage change during fall
+            if self.event_last_price and self.event_last_price > 0:
+                daily_pct = ((current_price - self.event_last_price) / self.event_last_price) * 100
+                self.event_cumulative_pct += daily_pct
+            self.event_last_price = current_price
+            
             if current_price < self.trend_low_price:
                 self.trend_low_price = current_price
                 self.trend_low_date = date
@@ -687,7 +712,7 @@ def simulate_live_trading(insider_trades: Dict, price_df: pd.DataFrame) -> List[
                 profit = state.position_size * (return_pct / 100)
                 
                 trade = {
-                    'ticker': 'GROV',
+                    'ticker': 'BSFC',
                     'entry_date': state.entry_date.strftime('%Y-%m-%d'),
                     'entry_price': round(state.entry_price, 2),
                     'exit_date': current_date.strftime('%Y-%m-%d'),
@@ -730,7 +755,7 @@ def simulate_live_trading(insider_trades: Dict, price_df: pd.DataFrame) -> List[
         profit = state.position_size * (return_pct / 100)
         
         trade = {
-            'ticker': 'GROV',
+            'ticker': 'BSFC',
             'entry_date': state.entry_date.strftime('%Y-%m-%d'),
             'entry_price': round(state.entry_price, 2),
             'exit_date': final_date.strftime('%Y-%m-%d'),
@@ -762,6 +787,17 @@ def generate_event_files(events: List[Dict], price_df: pd.DataFrame):
     if not events:
         print("⚠️ No events to export")
         return
+    
+    # Look up actual end prices for RISE events (FALL events already have end_price)
+    for event in events:
+        if event['end_price'] is None:
+            try:
+                end_date = event['end_date']
+                end_price = price_df.loc[end_date]['Close']
+                event['end_price'] = end_price
+            except:
+                # Fallback: use peak price if date not found
+                event['end_price'] = event.get('peak_price', event['start_price'])
     
     # Calculate cumulative percentages and ranks
     cumulative_pct = 0
@@ -801,7 +837,7 @@ def generate_event_files(events: List[Dict], price_df: pd.DataFrame):
         })
     
     # Save to CSV
-    csv_file = 'output CSVs/grov_rise_events.csv'
+    csv_file = 'output CSVs/bsfc_rise_events.csv'
     df = pd.DataFrame(export_data)
     df.to_csv(csv_file, index=False)
     print(f"✓ CSV saved to: {csv_file}")
@@ -809,7 +845,7 @@ def generate_event_files(events: List[Dict], price_df: pd.DataFrame):
     # Create Excel with colors
     wb = Workbook()
     ws = wb.active
-    ws.title = "GROV Rise-Fall Events"
+    ws.title = "BSFC Rise-Fall Events"
     
     # Colors
     header_fill = PatternFill(start_color="D3D3D3", end_color="D3D3D3", fill_type="solid")  # Gray
@@ -852,7 +888,7 @@ def generate_event_files(events: List[Dict], price_df: pd.DataFrame):
     ws.column_dimensions['H'].width = 30
     
     # Save Excel
-    excel_file = 'output CSVs/grov_rise_events.xlsx'
+    excel_file = 'output CSVs/bsfc_rise_events.xlsx'
     wb.save(excel_file)
     print(f"✓ Excel saved to: {excel_file}")
 
@@ -1057,14 +1093,14 @@ def generate_volatility_json(events: List[Dict], df: pd.DataFrame):
     
     # Build final JSON structure
     json_output = {
-        'ticker': 'GROV',
+        'ticker': 'BSFC',
         'analysis_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         'total_rise_events': len(rise_events),
         'rise_events': volatility_analysis
     }
     
     # Save to file
-    json_file = 'output CSVs/grov_rise_volatility_analysis.json'
+    json_file = 'output CSVs/bsfc_rise_volatility_analysis.json'
     with open(json_file, 'w') as f:
         json.dump(json_output, f, indent=2)
     
@@ -1078,7 +1114,7 @@ def main():
     print("=" * 80)
     print()
     
-    print("Loading GROV data and insider trades...")
+    print("Loading BSFC data and insider trades...")
     insider_trades, price_df = load_grov_data()
     
     print(f"✓ Loaded {len(insider_trades)} insider trades")
@@ -1183,7 +1219,7 @@ def main():
     
     # Save results in POC format for UI display
     output = {
-        'ticker': 'GROV',
+        'ticker': 'BSFC',
         'strategy': 'Insider Conviction (No Hindsight)',
         'total_trades': total_trades,
         'total_profit': round(total_profit, 2),
@@ -1195,7 +1231,7 @@ def main():
     }
     
     # Save to POC file for UI
-    poc_file = 'output CSVs/grov_insider_conviction_poc.json'
+    poc_file = 'output CSVs/bsfc_insider_conviction_poc.json'
     with open(poc_file, 'w') as f:
         json.dump(output, f, indent=2)
     print(f"✓ Results saved to: {poc_file}")

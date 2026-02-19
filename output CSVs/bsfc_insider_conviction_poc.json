@@ -1,0 +1,60 @@
+{
+  "ticker": "BSFC",
+  "strategy": "Insider Conviction (No Hindsight)",
+  "total_trades": 3,
+  "total_profit": 145.44,
+  "total_invested": 6000,
+  "roi": 2.42,
+  "win_rate": 66.7,
+  "target_rate": 100.0,
+  "trades": [
+    {
+      "ticker": "BSFC",
+      "entry_date": "2021-11-24",
+      "entry_price": 3650.0,
+      "exit_date": "2022-01-26",
+      "exit_price": 3790.0,
+      "target_price": 6879.83,
+      "days_held": 63,
+      "return_pct": 3.84,
+      "position_size": 2000,
+      "profit_loss": 76.71,
+      "sell_reason": "absorption_target_reached",
+      "target_reached": "yes",
+      "peak_gain": 10.96,
+      "buy_type": "absorption_buy"
+    },
+    {
+      "ticker": "BSFC",
+      "entry_date": "2022-03-04",
+      "entry_price": 1770.0,
+      "exit_date": "2022-03-09",
+      "exit_price": 1880.0,
+      "target_price": 2914.27,
+      "days_held": 5,
+      "return_pct": 6.21,
+      "position_size": 2000,
+      "profit_loss": 124.29,
+      "sell_reason": "absorption_target_reached",
+      "target_reached": "yes",
+      "peak_gain": 10.73,
+      "buy_type": "absorption_buy"
+    },
+    {
+      "ticker": "BSFC",
+      "entry_date": "2024-01-04",
+      "entry_price": 7.2,
+      "exit_date": "2024-01-05",
+      "exit_price": 7.0,
+      "target_price": 8.3,
+      "days_held": 1,
+      "return_pct": -2.78,
+      "position_size": 2000,
+      "profit_loss": -55.56,
+      "sell_reason": "absorption_target_reached",
+      "target_reached": "yes",
+      "peak_gain": 0,
+      "buy_type": "absorption_buy"
+    }
+  ]
+}
