@@ -122,6 +122,8 @@ class TradingState:
         
         # Absorption buy specific tracking
         self.rise_start_price = None
+        self.cumulative_mid_rises_pct = 0  # Sum of all mid-rise percentages in current rise event
+        self.mid_rise_start_price = None  # Track start of current mid-rise
         self.in_mid_rise = False
     
     def update_phase(self, current_price: float, prev_price: float, date: datetime):
@@ -374,32 +376,45 @@ class TradingState:
         
         # ABSORPTION BUY has different sell logic
         if self.buy_type == 'absorption_buy':
-            # Calculate cumulative rise from ENTRY PRICE (not rise_start_price)
-            # This ensures we track the actual gain from when WE bought
-            cumulative_rise_pct = ((current_price - self.entry_price) / self.entry_price) * 100
-            
-            # Check if we've reached the target cumulative rise
-            target_gain_pct = abs(self.prev_fall_pct)
-            
-            # DEBUG for BSFC
-            is_bsfc_debug = (current_date.year == 2022 and current_date.month == 1 and current_date.day >= 19)
-            
-            # Mark target as reached if we hit it
-            if not self.target_reached and cumulative_rise_pct >= target_gain_pct:
-                self.target_reached = True
-                if is_bsfc_debug:
-                    print(f"  🎯 {current_date.strftime('%Y-%m-%d')}: Target reached! {cumulative_rise_pct:.2f}% >= {target_gain_pct:.2f}%")
-            
-            # After target reached, sell on first dip (same logic as shopping spree)
-            if self.target_reached:
+            if self.phase == MarketPhase.RISING:
+                # Track MID-RISES within the current rise event
+                # Accumulate all mid-rise percentages and check if cumulative >= fall_pct
                 daily_change_pct = ((current_price - prev_price) / prev_price) * 100
-                if is_bsfc_debug:
-                    print(f"  📊 {current_date.strftime('%Y-%m-%d')}: ${prev_price:.2f} → ${current_price:.2f} ({daily_change_pct:+.2f}%)")
-                # Sell on any down day after target reached
-                if daily_change_pct < -1.0:
+                
+                # DEBUG for BSFC
+                is_bsfc_debug = (current_date.year == 2022 and current_date.month == 1 and current_date.day >= 19)
+                
+                # Start a new mid-rise when going up
+                if daily_change_pct > 0:
+                    if not self.in_mid_rise:
+                        # Starting a new mid-rise
+                        self.in_mid_rise = True
+                        self.mid_rise_start_price = prev_price
+                        if is_bsfc_debug:
+                            print(f"  📈 {current_date.strftime('%Y-%m-%d')}: Mid-rise started at ${prev_price:.2f}")
+                # End mid-rise when going down
+                elif daily_change_pct < -1.0 and self.in_mid_rise:
+                    # Mid-rise ended - calculate and add to cumulative
+                    mid_rise_pct = ((prev_price - self.mid_rise_start_price) / self.mid_rise_start_price) * 100
+                    if mid_rise_pct >= 1.0:  # Only count meaningful mid-rises
+                        self.cumulative_mid_rises_pct += mid_rise_pct
+                        if is_bsfc_debug:
+                            print(f"  📈 {current_date.strftime('%Y-%m-%d')}: Mid-rise ended: +{mid_rise_pct:.2f}%, cumulative: {self.cumulative_mid_rises_pct:.2f}%")
+                    self.in_mid_rise = False
+                    self.mid_rise_start_price = None
+                
+                # Check if cumulative mid-rises reached target
+                target_gain_pct = abs(self.prev_fall_pct)
+                if not self.target_reached and self.cumulative_mid_rises_pct >= target_gain_pct:
+                    self.target_reached = True
+                    if is_bsfc_debug:
+                        print(f"  🎯 {current_date.strftime('%Y-%m-%d')}: Target reached! Cumulative: {self.cumulative_mid_rises_pct:.2f}% >= {target_gain_pct:.2f}%")
+                
+                # After target reached, sell on first dip
+                if self.target_reached and daily_change_pct < -1.0:
                     self.in_position = False
                     if is_bsfc_debug:
-                        print(f"  💰 SELL! Dip detected: {daily_change_pct:.2f}%")
+                        print(f"  💰 {current_date.strftime('%Y-%m-%d')}: SELL! Dip: {daily_change_pct:.2f}%")
                     return ('absorption_target_reached', current_price)
             
             # No stop loss for absorption buy - only sell when target reached
