@@ -1103,15 +1103,37 @@ def main():
             
             # Apply corrections to rise events based on declining mid-rises pattern
             corrected_events = []
-            for event in events:
+            for i, event in enumerate(events):
                 if event['event_type'] == 'RISE':
                     # Analyze this rise event to detect and correct declining mid-rises
                     analysis = analyze_rise_volatility(price_df, event)
                     if analysis:
                         # Update the event with corrected data
-                        event['end_date'] = pd.to_datetime(analysis['rise_end_date'], format='%d/%m/%Y')
+                        new_end_date = pd.to_datetime(analysis['rise_end_date'], format='%d/%m/%Y')
+                        event['end_date'] = new_end_date
                         event['days'] = analysis['rise_days']
                         event['change_pct'] = analysis['rise_percentage']
+                        
+                        # Filter insider trades to only include those on or before the corrected end date
+                        # Any filtered insiders should be moved to the next DOWN event
+                        if 'insiders' in event and event['insiders']:
+                            filtered_insiders = [
+                                insider for insider in event['insiders']
+                                if pd.to_datetime(insider['date']) > new_end_date
+                            ]
+                            event['insiders'] = [
+                                insider for insider in event['insiders']
+                                if pd.to_datetime(insider['date']) <= new_end_date
+                            ]
+                            
+                            # Move filtered insiders to the next DOWN event (if it exists)
+                            if filtered_insiders and i + 1 < len(events):
+                                next_event = events[i + 1]
+                                if next_event['event_type'] == 'DOWN':
+                                    # Add filtered insiders to the next DOWN event
+                                    if 'insiders' not in next_event:
+                                        next_event['insiders'] = []
+                                    next_event['insiders'].extend(filtered_insiders)
                 corrected_events.append(event)
             
             generate_event_files(corrected_events, price_df, single_ticker)

@@ -1,6 +1,6 @@
 {
   "ticker": "BLNE",
-  "analysis_date": "2026-02-19 23:53:11",
+  "analysis_date": "2026-02-20 00:03:42",
   "total_rise_events": 116,
   "rise_events": {
     "35.14": {
@@ -3839,29 +3839,7 @@
         "days_after_peak": 26,
         "days_since_recovery": 23
       },
-      "insiders": [
-        {
-          "date": "2025-03-18",
-          "price": 2.75,
-          "insider_name": "Freedman Joseph David",
-          "value": 22677.0,
-          "stock_price": 2.9000000953674316
-        },
-        {
-          "date": "2025-03-19",
-          "price": 2.76,
-          "insider_name": "Liuzza Nicholas Reyland Jr",
-          "value": 47381.0,
-          "stock_price": 2.430000066757202
-        },
-        {
-          "date": "2025-03-20",
-          "price": 2.62,
-          "insider_name": "Liuzza Nicholas Reyland Jr",
-          "value": 68233.0,
-          "stock_price": 2.4000000953674316
-        }
-      ]
+      "insiders": []
     },
     "15.95": {
       "rise_start_date": "01/04/2025",
