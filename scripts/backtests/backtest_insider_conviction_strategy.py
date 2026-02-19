@@ -580,42 +580,25 @@ class TradingState:
         
         # ABSORPTION BUY has different sell logic
         if self.buy_type == 'absorption_buy':
-            # Calculate cumulative rise from rise start (entry price)
-            # Note: For absorption buy, rise_start_price is set to the actual rise start
-            cumulative_rise_pct = ((current_price - self.rise_start_price) / self.rise_start_price) * 100
-            
-            # Track if we're currently in a mid-rise (price going up today)
-            daily_change_pct = ((current_price - prev_price) / prev_price) * 100
-            
-            was_in_mid_rise = self.in_mid_rise
-            
-            if daily_change_pct > 0:
-                # We're rising - mark as in mid-rise
-                self.in_mid_rise = True
-            else:
-                # We're not rising - no longer in mid-rise
-                self.in_mid_rise = False
+            # Calculate cumulative rise from ENTRY PRICE (not rise_start_price)
+            # This ensures we track the actual gain from when WE bought
+            cumulative_rise_pct = ((current_price - self.entry_price) / self.entry_price) * 100
             
             # Check if we've reached the target cumulative rise
             target_gain_pct = abs(self.prev_fall_pct)
             
-            # Debug output for the March-April and June-Aug periods
-            if current_date.year == 2023 and ((current_date.month >= 3 and current_date.month <= 4) or (current_date.month >= 6 and current_date.month <= 8)):
-                if cumulative_rise_pct >= target_gain_pct - 5:  # Within 5% of target
-                    print(f"  📊 {current_date.strftime('%Y-%m-%d')}: cumulative={cumulative_rise_pct:.2f}% (from ${self.rise_start_price:.2f} to ${current_price:.2f}), target={target_gain_pct:.2f}%, in_mid_rise={self.in_mid_rise}, phase={self.phase.name}")
-            
-            if cumulative_rise_pct >= target_gain_pct:
+            # Mark target as reached if we hit it
+            if not self.target_reached and cumulative_rise_pct >= target_gain_pct:
                 self.target_reached = True
-                
-                # Sell if:
-                # 1. We're not currently in a mid-rise, OR
-                # 2. We just exited a mid-rise (was in mid-rise yesterday, not today)
-                if not self.in_mid_rise or (was_in_mid_rise and not self.in_mid_rise):
+                print(f"  🎯 Absorption target reached: {cumulative_rise_pct:.2f}% >= {target_gain_pct:.2f}%")
+            
+            # After target reached, sell on first dip (same logic as shopping spree)
+            if self.target_reached:
+                daily_change_pct = ((current_price - prev_price) / prev_price) * 100
+                # Sell on any down day after target reached
+                if daily_change_pct < -1.0:
                     self.in_position = False
-                    print(f"  🎯 Absorption target reached: {cumulative_rise_pct:.2f}% >= {target_gain_pct:.2f}% (not in mid-rise)")
                     return ('absorption_target_reached', current_price)
-                else:
-                    print(f"  ⏸️  Target reached ({cumulative_rise_pct:.2f}%) but in mid-rise - waiting...")
             
             # No stop loss for absorption buy - only sell when target reached
             return None
@@ -643,12 +626,6 @@ class TradingState:
             if daily_change_pct < -1.0:
                 self.in_position = False
                 return ('target_reached_first_dip', current_price)
-        
-        # Stagnation check: 60+ days without hitting target
-        days_held = (current_date - self.entry_date).days
-        if days_held > 60 and not self.target_reached and current_gain_pct < 5:
-            self.in_position = False
-            return ('stagnation', current_price)
         
         return None
 

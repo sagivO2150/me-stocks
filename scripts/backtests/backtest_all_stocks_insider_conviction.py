@@ -9,6 +9,13 @@ For detailed analysis (CSV/XLSX/JSON files), use the on-demand script:
 Output: JSON file with top 25 best/worst performers + overall ROI
 
 NOTE: Uses cached yfinance data for speed (10-15 seconds vs hours)
+
+USAGE:
+  # Run on all stocks:
+  .venv/bin/python scripts/backtests/backtest_all_stocks_insider_conviction.py
+  
+  # Run on single stock for testing:
+  .venv/bin/python scripts/backtests/backtest_all_stocks_insider_conviction.py --ticker BSFC
 """
 
 import pandas as pd
@@ -16,6 +23,8 @@ from datetime import datetime, timedelta
 import json
 from typing import List, Dict, Optional, Tuple
 from enum import Enum
+import argparse
+import sys
 
 
 class MarketPhase(Enum):
@@ -365,28 +374,39 @@ class TradingState:
         
         # ABSORPTION BUY has different sell logic
         if self.buy_type == 'absorption_buy':
-            cumulative_rise_pct = ((current_price - self.rise_start_price) / self.rise_start_price) * 100
+            # Calculate cumulative rise from ENTRY PRICE (not rise_start_price)
+            # This ensures we track the actual gain from when WE bought
+            cumulative_rise_pct = ((current_price - self.entry_price) / self.entry_price) * 100
             
-            daily_change_pct = ((current_price - prev_price) / prev_price) * 100
-            was_in_mid_rise = self.in_mid_rise
-            
-            if daily_change_pct > 0:
-                self.in_mid_rise = True
-            else:
-                self.in_mid_rise = False
-            
+            # Check if we've reached the target cumulative rise
             target_gain_pct = abs(self.prev_fall_pct)
             
-            if cumulative_rise_pct >= target_gain_pct:
+            # DEBUG for BSFC
+            is_bsfc_debug = (current_date.year == 2022 and current_date.month == 1 and current_date.day >= 19)
+            
+            # Mark target as reached if we hit it
+            if not self.target_reached and cumulative_rise_pct >= target_gain_pct:
                 self.target_reached = True
-                
-                if not self.in_mid_rise or (was_in_mid_rise and not self.in_mid_rise):
+                if is_bsfc_debug:
+                    print(f"  🎯 {current_date.strftime('%Y-%m-%d')}: Target reached! {cumulative_rise_pct:.2f}% >= {target_gain_pct:.2f}%")
+            
+            # After target reached, sell on first dip (same logic as shopping spree)
+            if self.target_reached:
+                daily_change_pct = ((current_price - prev_price) / prev_price) * 100
+                if is_bsfc_debug:
+                    print(f"  📊 {current_date.strftime('%Y-%m-%d')}: ${prev_price:.2f} → ${current_price:.2f} ({daily_change_pct:+.2f}%)")
+                # Sell on any down day after target reached
+                if daily_change_pct < -1.0:
                     self.in_position = False
+                    if is_bsfc_debug:
+                        print(f"  💰 SELL! Dip detected: {daily_change_pct:.2f}%")
                     return ('absorption_target_reached', current_price)
             
+            # No stop loss for absorption buy - only sell when target reached
             return None
         
         # SHOPPING SPREE sell logic
+        # Emergency stop loss: -15%
         if current_gain_pct <= -15:
             self.in_position = False
             return ('stop_loss', current_price)
@@ -403,12 +423,6 @@ class TradingState:
             if daily_change_pct < -1.0:
                 self.in_position = False
                 return ('target_reached_first_dip', current_price)
-        
-        # Stagnation check
-        days_held = (current_date - self.entry_date).days
-        if days_held > 60 and not self.target_reached and current_gain_pct < 5:
-            self.in_position = False
-            return ('stagnation', current_price)
         
         return None
 
@@ -465,6 +479,14 @@ def process_single_stock(ticker: str, stock_data: Dict, price_cache: Dict) -> Op
         state = TradingState()
         completed_trades = []
         
+        # Debug flag for BSFC
+        debug_bsfc = (ticker == "BSFC")
+        if debug_bsfc:
+            print(f"\n🐛 DEBUG MODE for {ticker}:")
+            print(f"   Price data: {len(price_df)} days")
+            print(f"   Insider trades: {len(insider_trades)} dates")
+            print()
+        
         for i in range(1, len(price_df)):
             current_date = price_df.index[i]
             current_price = price_df['Close'].iloc[i]
@@ -486,6 +508,12 @@ def process_single_stock(ticker: str, stock_data: Dict, price_cache: Dict) -> Op
                     days_held = (current_date - state.entry_date).days
                     return_pct = ((exit_price - state.entry_price) / state.entry_price) * 100
                     profit = state.position_size * (return_pct / 100)
+                    
+                    if debug_bsfc:
+                        print(f"   🚀 SELL: {date_str} @ ${exit_price:.2f}")
+                        print(f"   Return: {return_pct:+.2f}%")
+                        print(f"   Reason: {reason}")
+                        print()
                     
                     trade = {
                         'entry_date': state.entry_date.strftime('%Y-%m-%d'),
@@ -510,9 +538,22 @@ def process_single_stock(ticker: str, stock_data: Dict, price_cache: Dict) -> Op
                     state.shopping_spree_peak_price = None
             else:
                 buy_signal = state.check_buy_signal(current_date, current_price)
+                if buy_signal and debug_bsfc:
+                    print(f"   📊 BUY: {date_str} @ ${current_price:.2f}")
+                    print(f"   Type: {buy_signal['buy_type']}")
+                    print(f"   Target: ${buy_signal['target_price']:.2f}")
+                    print(f"   Fall %: {buy_signal.get('fall_pct', 0):.2f}%")
+                    print()
         
         # Handle open position at end
         if state.in_position:
+            if debug_bsfc:
+                print(f"   ⚠️  Position still open at end!")
+                print(f"   Entry: {state.entry_date.strftime('%Y-%m-%d')} @ ${state.entry_price:.2f}")
+                print(f"   Final: {price_df.index[-1].strftime('%Y-%m-%d')} @ ${price_df['Close'].iloc[-1]:.2f}")
+                print(f"   Target reached: {state.target_reached}")
+                print()
+            
             final_date = price_df.index[-1]
             final_price = price_df['Close'].iloc[-1]
             days_held = (final_date - state.entry_date).days
@@ -585,8 +626,19 @@ def process_single_stock(ticker: str, stock_data: Dict, price_cache: Dict) -> Op
 
 def main():
     """Run the strategy on all stocks and generate summary report."""
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(description='Run Insider Conviction Strategy backtest')
+    parser.add_argument('--ticker', type=str, help='Run backtest for a single ticker (for testing)')
+    args = parser.parse_args()
+    
+    single_ticker = args.ticker.upper() if args.ticker else None
+    
     print("=" * 80)
-    print("INSIDER CONVICTION STRATEGY - ALL STOCKS ANALYSIS")
+    if single_ticker:
+        print(f"🔬 SINGLE STOCK TEST MODE: {single_ticker}")
+        print("Testing changes without affecting other stocks")
+    else:
+        print("INSIDER CONVICTION STRATEGY - ALL STOCKS ANALYSIS")
     print("=" * 80)
     print()
     
@@ -603,7 +655,103 @@ def main():
     print(f"✓ Loaded {len(all_stocks)} stocks from database")
     print()
     
-    # Process each stock
+    # SINGLE TICKER MODE
+    if single_ticker:
+        # Find the ticker in the database
+        stock_data = None
+        for s in all_stocks:
+            if s.get('ticker', '') == single_ticker:
+                stock_data = s
+                break
+        
+        if not stock_data:
+            print(f"❌ Ticker {single_ticker} not found in database")
+            sys.exit(1)
+        
+        if single_ticker not in price_cache:
+            print(f"❌ No price data found for {single_ticker}")
+            sys.exit(1)
+        
+        print(f"🔍 Testing {single_ticker}...")
+        result = process_single_stock(single_ticker, stock_data, price_cache)
+        
+        if not result:
+            print(f"⚠️  {single_ticker}: No trades generated")
+            sys.exit(0)
+        
+        print(f"✅ {single_ticker}: {result['total_trades']} trades, {result['roi']:+.2f}% ROI")
+        
+        # Load existing results file
+        output_file = 'output CSVs/insider_conviction_all_stocks_results.json'
+        try:
+            with open(output_file, 'r') as f:
+                existing_data = json.load(f)
+        except FileNotFoundError:
+            print(f"❌ Results file not found. Run full backtest first.")
+            sys.exit(1)
+        
+        # Find and update this ticker in all_results
+        updated = False
+        for i, stock in enumerate(existing_data['all_results']):
+            if stock['ticker'] == single_ticker:
+                existing_data['all_results'][i] = result
+                updated = True
+                break
+        
+        if not updated:
+            existing_data['all_results'].append(result)
+        
+        # Update top_25_best if this ticker is in there
+        for i, stock in enumerate(existing_data['top_25_best']):
+            if stock['ticker'] == single_ticker:
+                existing_data['top_25_best'][i] = result
+                print(f"📈 Updated in top_25_best (rank {i+1})")
+                break
+        
+        # Update top_25_worst if this ticker is in there
+        for i, stock in enumerate(existing_data['top_25_worst']):
+            if stock['ticker'] == single_ticker:
+                existing_data['top_25_worst'][i] = result
+                print(f"📉 Updated in top_25_worst (rank {i+1})")
+                break
+        
+        # Update timestamp
+        existing_data['analysis_date'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        
+        # Save updated results
+        with open(output_file, 'w') as f:
+            json.dump(existing_data, f, indent=2)
+        
+        print(f"💾 Updated {output_file}")
+        
+        # Also update the top performers cache if ticker is in there
+        cache_file = 'output CSVs/yfinance_cache_top_performers.json'
+        try:
+            with open(cache_file, 'r') as f:
+                top_cache = json.load(f)
+            
+            if single_ticker in top_cache['data']:
+                # Ticker is in top performers cache - already has latest data
+                print(f"✅ {single_ticker} is in top performers cache")
+                print()
+                print("🔄 Restart webapp to see changes:")
+                print("   ./restart_webapp_stocks.sh")
+        except FileNotFoundError:
+            pass
+        
+        print()
+        print(f"📊 {single_ticker} TRADE DETAILS:")
+        for trade in result['trades']:
+            print(f"   Entry: {trade['entry_date']} @ ${trade['entry_price']}")
+            print(f"   Exit:  {trade['exit_date']} @ ${trade['exit_price']}")
+            print(f"   Return: {trade['return_pct']:+.2f}% ({trade['days_held']} days)")
+            print(f"   Reason: {trade['sell_reason']}")
+            print()
+        
+        print("=" * 80)
+        return
+    
+    # FULL RUN MODE - Process each stock
     total_stocks = len(all_stocks)
     print(f"Processing {total_stocks} stocks...")
     results = []

@@ -1,0 +1,1487 @@
+{
+  "ticker": "BSFC",
+  "analysis_date": "2026-02-19 18:58:17",
+  "total_rise_events": 43,
+  "rise_events": {
+    "23.81": {
+      "rise_start_date": "05/05/2020",
+      "rise_end_date": "08/06/2020",
+      "rise_days": 34,
+      "rise_percentage": 23.809523809523807,
+      "mid_rises": {
+        "23.81": {
+          "date": "08/06/2020"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "09/06/2020",
+        "percentage": -11.54,
+        "days_after_peak": 1
+      },
+      "first_recovery": {
+        "date": "10/06/2020",
+        "percentage": 13.04,
+        "days_after_peak": 2
+      },
+      "second_dip": {
+        "date": "25/06/2020",
+        "percentage": -11.54,
+        "days_after_peak": 13,
+        "days_since_recovery": 11
+      },
+      "insiders": []
+    },
+    "15.0": {
+      "rise_start_date": "30/12/2020",
+      "rise_end_date": "03/02/2021",
+      "rise_days": 35,
+      "rise_percentage": 15.0,
+      "mid_rises": {
+        "13.5": {
+          "date": "14/01/2021"
+        },
+        "9.52": {
+          "date": "03/02/2021"
+        }
+      },
+      "mid_falls": {
+        "-7.49": {
+          "date": "20/01/2021"
+        }
+      },
+      "first_dip": {
+        "date": "08/02/2021",
+        "percentage": -56.09,
+        "days_after_peak": 3
+      },
+      "first_recovery": {
+        "date": "10/02/2021",
+        "percentage": 122.77,
+        "days_after_peak": 5
+      },
+      "second_dip": {
+        "date": "23/02/2021",
+        "percentage": -15.56,
+        "days_after_peak": 13,
+        "days_since_recovery": 8
+      },
+      "insiders": []
+    },
+    "122.77": {
+      "rise_start_date": "08/02/2021",
+      "rise_end_date": "17/02/2021",
+      "rise_days": 9,
+      "rise_percentage": 122.77227722772277,
+      "mid_rises": {
+        "122.77": {
+          "date": "17/02/2021"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "23/02/2021",
+        "percentage": -15.56,
+        "days_after_peak": 4
+      },
+      "first_recovery": {
+        "date": "04/03/2021",
+        "percentage": 23.68,
+        "days_after_peak": 11
+      },
+      "second_dip": {
+        "date": "15/03/2021",
+        "percentage": -8.51,
+        "days_after_peak": 18,
+        "days_since_recovery": 7
+      },
+      "insiders": []
+    },
+    "163.11": {
+      "rise_start_date": "01/04/2021",
+      "rise_end_date": "20/04/2021",
+      "rise_days": 19,
+      "rise_percentage": 163.11111111111111,
+      "mid_rises": {
+        "163.11": {
+          "date": "20/04/2021"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "21/04/2021",
+        "percentage": -9.8,
+        "days_after_peak": 1
+      },
+      "first_recovery": {
+        "date": "22/04/2021",
+        "percentage": 9.74,
+        "days_after_peak": 2
+      },
+      "second_dip": {
+        "date": "04/05/2021",
+        "percentage": -12.63,
+        "days_after_peak": 10,
+        "days_since_recovery": 8
+      },
+      "insiders": []
+    },
+    "41.6": {
+      "rise_start_date": "04/05/2021",
+      "rise_end_date": "23/09/2021",
+      "rise_days": 142,
+      "rise_percentage": 41.6015625,
+      "mid_rises": {
+        "18.95": {
+          "date": "24/05/2021"
+        },
+        "5.0": {
+          "date": "28/05/2021"
+        },
+        "5.88": {
+          "date": "24/06/2021"
+        },
+        "15.26": {
+          "date": "19/07/2021"
+        },
+        "88.24": {
+          "date": "23/09/2021"
+        }
+      },
+      "mid_falls": {
+        "-1.48": {
+          "date": "25/05/2021"
+        },
+        "-5.56": {
+          "date": "09/06/2021"
+        },
+        "-53.1": {
+          "date": "21/07/2021"
+        }
+      },
+      "first_dip": {
+        "date": "24/09/2021",
+        "percentage": -1.56,
+        "days_after_peak": 1
+      },
+      "first_recovery": {
+        "date": "27/09/2021",
+        "percentage": 1.59,
+        "days_after_peak": 2
+      },
+      "second_dip": {
+        "date": "04/11/2021",
+        "percentage": -30.31,
+        "days_after_peak": 30,
+        "days_since_recovery": 28
+      },
+      "insiders": [
+        {
+          "date": "2021-05-20",
+          "price": 6.79,
+          "insider_name": "Herian Nubar",
+          "value": 38198.0,
+          "stock_price": 5850.0
+        }
+      ]
+    },
+    "24.92": {
+      "rise_start_date": "08/10/2021",
+      "rise_end_date": "28/10/2021",
+      "rise_days": 20,
+      "rise_percentage": 24.92063492063492,
+      "mid_rises": {
+        "24.29": {
+          "date": "12/10/2021"
+        },
+        "1.69": {
+          "date": "18/10/2021"
+        },
+        "31.17": {
+          "date": "21/10/2021"
+        },
+        "1.08": {
+          "date": "28/10/2021"
+        }
+      },
+      "mid_falls": {
+        "-1.66": {
+          "date": "15/10/2021"
+        },
+        "-23.37": {
+          "date": "19/10/2021"
+        },
+        "-5.72": {
+          "date": "22/10/2021"
+        }
+      },
+      "first_dip": {
+        "date": "01/11/2021",
+        "percentage": -12.25,
+        "days_after_peak": 2
+      },
+      "first_recovery": {
+        "date": "02/11/2021",
+        "percentage": 2.11,
+        "days_after_peak": 3
+      },
+      "second_dip": {
+        "date": "03/12/2021",
+        "percentage": -64.58,
+        "days_after_peak": 25,
+        "days_since_recovery": 22
+      },
+      "insiders": []
+    },
+    "33.94": {
+      "rise_start_date": "22/11/2021",
+      "rise_end_date": "14/12/2021",
+      "rise_days": 22,
+      "rise_percentage": 33.94495412844037,
+      "mid_rises": {
+        "33.94": {
+          "date": "24/11/2021"
+        },
+        "5.88": {
+          "date": "07/12/2021"
+        },
+        "29.17": {
+          "date": "14/12/2021"
+        }
+      },
+      "mid_falls": {
+        "-34.79": {
+          "date": "03/12/2021"
+        },
+        "-4.76": {
+          "date": "08/12/2021"
+        }
+      },
+      "first_dip": {
+        "date": "20/12/2021",
+        "percentage": -33.87,
+        "days_after_peak": 4
+      },
+      "first_recovery": {
+        "date": "21/12/2021",
+        "percentage": 1.95,
+        "days_after_peak": 5
+      },
+      "second_dip": {
+        "date": "29/12/2021",
+        "percentage": -24.4,
+        "days_after_peak": 10,
+        "days_since_recovery": 5
+      },
+      "insiders": []
+    },
+    "131.43": {
+      "rise_start_date": "19/01/2022",
+      "rise_end_date": "25/01/2022",
+      "rise_days": 6,
+      "rise_percentage": 131.42857142857142,
+      "mid_rises": {
+        "131.43": {
+          "date": "25/01/2022"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "02/02/2022",
+        "percentage": -46.91,
+        "days_after_peak": 6
+      },
+      "first_recovery": {
+        "date": "03/02/2022",
+        "percentage": 4.65,
+        "days_after_peak": 7
+      },
+      "second_dip": {
+        "date": "23/02/2022",
+        "percentage": -28.89,
+        "days_after_peak": 20,
+        "days_since_recovery": 13
+      },
+      "insiders": []
+    },
+    "52.98": {
+      "rise_start_date": "02/03/2022",
+      "rise_end_date": "30/03/2022",
+      "rise_days": 27,
+      "rise_percentage": 52.976190476190474,
+      "mid_rises": {
+        "16.67": {
+          "date": "08/03/2022"
+        },
+        "36.7": {
+          "date": "11/03/2022"
+        },
+        "20.83": {
+          "date": "24/03/2022"
+        },
+        "1.95": {
+          "date": "30/03/2022"
+        }
+      },
+      "mid_falls": {
+        "-4.08": {
+          "date": "09/03/2022"
+        },
+        "-25.29": {
+          "date": "15/03/2022"
+        },
+        "-11.64": {
+          "date": "29/03/2022"
+        }
+      },
+      "first_dip": {
+        "date": "31/03/2022",
+        "percentage": -6.7,
+        "days_after_peak": 1
+      },
+      "first_recovery": {
+        "date": "01/04/2022",
+        "percentage": 7.18,
+        "days_after_peak": 2
+      },
+      "second_dip": {
+        "date": "12/05/2022",
+        "percentage": -45.93,
+        "days_after_peak": 30,
+        "days_since_recovery": 28
+      },
+      "insiders": []
+    },
+    "6.67": {
+      "rise_start_date": "18/04/2022",
+      "rise_end_date": "21/04/2022",
+      "rise_days": 3,
+      "rise_percentage": 6.666666666666667,
+      "mid_rises": {
+        "6.67": {
+          "date": "21/04/2022"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "22/04/2022",
+        "percentage": -4.38,
+        "days_after_peak": 1
+      },
+      "first_recovery": {
+        "date": "25/04/2022",
+        "percentage": 1.31,
+        "days_after_peak": 2
+      },
+      "second_dip": {
+        "date": "12/05/2022",
+        "percentage": -27.1,
+        "days_after_peak": 15,
+        "days_since_recovery": 13
+      },
+      "insiders": []
+    },
+    "40.71": {
+      "rise_start_date": "12/05/2022",
+      "rise_end_date": "09/06/2022",
+      "rise_days": 28,
+      "rise_percentage": 40.707964601769916,
+      "mid_rises": {
+        "11.5": {
+          "date": "18/05/2022"
+        },
+        "11.2": {
+          "date": "24/05/2022"
+        },
+        "2.99": {
+          "date": "27/05/2022"
+        },
+        "2.22": {
+          "date": "02/06/2022"
+        },
+        "16.06": {
+          "date": "08/06/2022"
+        }
+      },
+      "mid_falls": {
+        "-3.6": {
+          "date": "25/05/2022"
+        },
+        "-2.17": {
+          "date": "31/05/2022"
+        }
+      },
+      "first_dip": {
+        "date": "17/06/2022",
+        "percentage": -31.01,
+        "days_after_peak": 6
+      },
+      "first_recovery": {
+        "date": "21/06/2022",
+        "percentage": 10.09,
+        "days_after_peak": 7
+      },
+      "second_dip": null,
+      "insiders": []
+    },
+    "37.04": {
+      "rise_start_date": "22/06/2022",
+      "rise_end_date": "24/06/2022",
+      "rise_days": 2,
+      "rise_percentage": 37.03703703703704,
+      "mid_rises": {
+        "37.04": {
+          "date": "24/06/2022"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "01/07/2022",
+        "percentage": -19.59,
+        "days_after_peak": 5
+      },
+      "first_recovery": {
+        "date": "05/07/2022",
+        "percentage": 21.01,
+        "days_after_peak": 6
+      },
+      "second_dip": {
+        "date": "02/08/2022",
+        "percentage": -13.19,
+        "days_after_peak": 26,
+        "days_since_recovery": 20
+      },
+      "insiders": []
+    },
+    "10.4": {
+      "rise_start_date": "02/08/2022",
+      "rise_end_date": "15/08/2022",
+      "rise_days": 13,
+      "rise_percentage": 10.4,
+      "mid_rises": {
+        "4.8": {
+          "date": "08/08/2022"
+        },
+        "10.4": {
+          "date": "15/08/2022"
+        }
+      },
+      "mid_falls": {
+        "-4.58": {
+          "date": "10/08/2022"
+        }
+      },
+      "first_dip": {
+        "date": "19/08/2022",
+        "percentage": -11.59,
+        "days_after_peak": 4
+      },
+      "first_recovery": {
+        "date": "22/08/2022",
+        "percentage": 6.56,
+        "days_after_peak": 5
+      },
+      "second_dip": {
+        "date": "27/09/2022",
+        "percentage": -42.23,
+        "days_after_peak": 30,
+        "days_since_recovery": 25
+      },
+      "insiders": []
+    },
+    "33.25": {
+      "rise_start_date": "21/09/2022",
+      "rise_end_date": "05/10/2022",
+      "rise_days": 14,
+      "rise_percentage": 33.24538258575198,
+      "mid_rises": {
+        "19.13": {
+          "date": "23/09/2022"
+        },
+        "60.32": {
+          "date": "04/10/2022"
+        }
+      },
+      "mid_falls": {
+        "-30.23": {
+          "date": "30/09/2022"
+        }
+      },
+      "first_dip": {
+        "date": "07/10/2022",
+        "percentage": -8.2,
+        "days_after_peak": 2
+      },
+      "first_recovery": {
+        "date": "10/10/2022",
+        "percentage": 6.75,
+        "days_after_peak": 3
+      },
+      "second_dip": {
+        "date": "16/11/2022",
+        "percentage": -18.47,
+        "days_after_peak": 30,
+        "days_since_recovery": 27
+      },
+      "insiders": [
+        {
+          "date": "2022-10-03",
+          "price": 2.3,
+          "insider_name": "Herian Nubar",
+          "value": 16454.0,
+          "stock_price": 832.0
+        }
+      ]
+    },
+    "8.99": {
+      "rise_start_date": "24/10/2022",
+      "rise_end_date": "27/10/2022",
+      "rise_days": 3,
+      "rise_percentage": 8.98876404494382,
+      "mid_rises": {
+        "8.99": {
+          "date": "26/10/2022"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "31/10/2022",
+        "percentage": -5.41,
+        "days_after_peak": 2
+      },
+      "first_recovery": {
+        "date": "01/11/2022",
+        "percentage": 6.59,
+        "days_after_peak": 3
+      },
+      "second_dip": {
+        "date": "09/12/2022",
+        "percentage": -49.48,
+        "days_after_peak": 30,
+        "days_since_recovery": 27
+      },
+      "insiders": [
+        {
+          "date": "2022-10-26",
+          "price": 0.97,
+          "insider_name": "Guzy Jeffrey J",
+          "value": 970.0,
+          "stock_price": 970.0
+        }
+      ]
+    },
+    "8.89": {
+      "rise_start_date": "12/12/2022",
+      "rise_end_date": "15/12/2022",
+      "rise_days": 3,
+      "rise_percentage": 8.88888888888889,
+      "mid_rises": {
+        "8.89": {
+          "date": "15/12/2022"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "20/12/2022",
+        "percentage": -12.24,
+        "days_after_peak": 3
+      },
+      "first_recovery": {
+        "date": "21/12/2022",
+        "percentage": 13.02,
+        "days_after_peak": 4
+      },
+      "second_dip": {
+        "date": "26/01/2023",
+        "percentage": -32.3,
+        "days_after_peak": 27,
+        "days_since_recovery": 23
+      },
+      "insiders": []
+    },
+    "37.14": {
+      "rise_start_date": "29/12/2022",
+      "rise_end_date": "06/01/2023",
+      "rise_days": 8,
+      "rise_percentage": 37.142857142857146,
+      "mid_rises": {
+        "20.57": {
+          "date": "03/01/2023"
+        },
+        "30.79": {
+          "date": "06/01/2023"
+        }
+      },
+      "mid_falls": {
+        "-13.03": {
+          "date": "05/01/2023"
+        }
+      },
+      "first_dip": {
+        "date": "11/01/2023",
+        "percentage": -7.92,
+        "days_after_peak": 3
+      },
+      "first_recovery": {
+        "date": "12/01/2023",
+        "percentage": 6.56,
+        "days_after_peak": 4
+      },
+      "second_dip": {
+        "date": "14/02/2023",
+        "percentage": -63.91,
+        "days_after_peak": 26,
+        "days_since_recovery": 22
+      },
+      "insiders": []
+    },
+    "58.05": {
+      "rise_start_date": "26/01/2023",
+      "rise_end_date": "31/01/2023",
+      "rise_days": 5,
+      "rise_percentage": 58.05471124620061,
+      "mid_rises": {
+        "58.05": {
+          "date": "31/01/2023"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "07/02/2023",
+        "percentage": -32.69,
+        "days_after_peak": 5
+      },
+      "first_recovery": {
+        "date": "08/02/2023",
+        "percentage": 5.71,
+        "days_after_peak": 6
+      },
+      "second_dip": {
+        "date": "15/03/2023",
+        "percentage": -61.08,
+        "days_after_peak": 30,
+        "days_since_recovery": 24
+      },
+      "insiders": []
+    },
+    "12.94": {
+      "rise_start_date": "14/02/2023",
+      "rise_end_date": "16/02/2023",
+      "rise_days": 2,
+      "rise_percentage": 12.941176470588237,
+      "mid_rises": {
+        "12.94": {
+          "date": "16/02/2023"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "24/02/2023",
+        "percentage": -17.19,
+        "days_after_peak": 5
+      },
+      "first_recovery": {
+        "date": "27/02/2023",
+        "percentage": 2.52,
+        "days_after_peak": 6
+      },
+      "second_dip": {
+        "date": "31/03/2023",
+        "percentage": -22.09,
+        "days_after_peak": 30,
+        "days_since_recovery": 24
+      },
+      "insiders": []
+    },
+    "37.25": {
+      "rise_start_date": "28/02/2023",
+      "rise_end_date": "07/03/2023",
+      "rise_days": 7,
+      "rise_percentage": 37.254901960784316,
+      "mid_rises": {
+        "17.65": {
+          "date": "02/03/2023"
+        },
+        "22.81": {
+          "date": "07/03/2023"
+        }
+      },
+      "mid_falls": {
+        "-5.0": {
+          "date": "03/03/2023"
+        }
+      },
+      "first_dip": {
+        "date": "08/03/2023",
+        "percentage": -14.76,
+        "days_after_peak": 1
+      },
+      "first_recovery": {
+        "date": "09/03/2023",
+        "percentage": 1.12,
+        "days_after_peak": 2
+      },
+      "second_dip": {
+        "date": "04/04/2023",
+        "percentage": -30.94,
+        "days_after_peak": 20,
+        "days_since_recovery": 18
+      },
+      "insiders": []
+    },
+    "36.15": {
+      "rise_start_date": "17/03/2023",
+      "rise_end_date": "21/03/2023",
+      "rise_days": 4,
+      "rise_percentage": 36.15384615384615,
+      "mid_rises": {
+        "36.15": {
+          "date": "21/03/2023"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "23/03/2023",
+        "percentage": -11.86,
+        "days_after_peak": 2
+      },
+      "first_recovery": {
+        "date": "24/03/2023",
+        "percentage": 11.54,
+        "days_after_peak": 3
+      },
+      "second_dip": {
+        "date": "25/04/2023",
+        "percentage": -35.06,
+        "days_after_peak": 24,
+        "days_since_recovery": 21
+      },
+      "insiders": []
+    },
+    "16.0": {
+      "rise_start_date": "04/04/2023",
+      "rise_end_date": "13/04/2023",
+      "rise_days": 9,
+      "rise_percentage": 16.0,
+      "mid_rises": {
+        "8.8": {
+          "date": "11/04/2023"
+        },
+        "8.21": {
+          "date": "13/04/2023"
+        }
+      },
+      "mid_falls": {
+        "-1.47": {
+          "date": "12/04/2023"
+        }
+      },
+      "first_dip": {
+        "date": "14/04/2023",
+        "percentage": -6.21,
+        "days_after_peak": 1
+      },
+      "first_recovery": {
+        "date": "17/04/2023",
+        "percentage": 4.41,
+        "days_after_peak": 2
+      },
+      "second_dip": {
+        "date": "25/05/2023",
+        "percentage": -34.51,
+        "days_after_peak": 30,
+        "days_since_recovery": 28
+      },
+      "insiders": []
+    },
+    "11.5": {
+      "rise_start_date": "05/05/2023",
+      "rise_end_date": "17/05/2023",
+      "rise_days": 12,
+      "rise_percentage": 11.504424778761061,
+      "mid_rises": {
+        "11.5": {
+          "date": "09/05/2023"
+        },
+        "12.84": {
+          "date": "17/05/2023"
+        }
+      },
+      "mid_falls": {
+        "-13.49": {
+          "date": "15/05/2023"
+        }
+      },
+      "first_dip": {
+        "date": "26/05/2023",
+        "percentage": -30.08,
+        "days_after_peak": 7
+      },
+      "first_recovery": {
+        "date": "30/05/2023",
+        "percentage": 24.42,
+        "days_after_peak": 8
+      },
+      "second_dip": {
+        "date": "30/06/2023",
+        "percentage": -46.73,
+        "days_after_peak": 30,
+        "days_since_recovery": 22
+      },
+      "insiders": []
+    },
+    "10.09": {
+      "rise_start_date": "05/07/2023",
+      "rise_end_date": "13/07/2023",
+      "rise_days": 8,
+      "rise_percentage": 10.091743119266056,
+      "mid_rises": {
+        "5.5": {
+          "date": "07/07/2023"
+        },
+        "8.18": {
+          "date": "11/07/2023"
+        },
+        "1.69": {
+          "date": "13/07/2023"
+        }
+      },
+      "mid_falls": {
+        "-4.35": {
+          "date": "10/07/2023"
+        }
+      },
+      "first_dip": {
+        "date": "18/07/2023",
+        "percentage": -10.0,
+        "days_after_peak": 3
+      },
+      "first_recovery": {
+        "date": "19/07/2023",
+        "percentage": 4.63,
+        "days_after_peak": 4
+      },
+      "second_dip": {
+        "date": "24/08/2023",
+        "percentage": -36.64,
+        "days_after_peak": 30,
+        "days_since_recovery": 26
+      },
+      "insiders": []
+    },
+    "48.99": {
+      "rise_start_date": "31/07/2023",
+      "rise_end_date": "07/08/2023",
+      "rise_days": 7,
+      "rise_percentage": 48.986886444148425,
+      "mid_rises": {
+        "2.98": {
+          "date": "02/08/2023"
+        },
+        "56.25": {
+          "date": "07/08/2023"
+        }
+      },
+      "mid_falls": {
+        "-7.41": {
+          "date": "03/08/2023"
+        }
+      },
+      "first_dip": {
+        "date": "09/08/2023",
+        "percentage": -28.0,
+        "days_after_peak": 2
+      },
+      "first_recovery": {
+        "date": "10/08/2023",
+        "percentage": 2.0,
+        "days_after_peak": 3
+      },
+      "second_dip": {
+        "date": "19/09/2023",
+        "percentage": -64.49,
+        "days_after_peak": 30,
+        "days_since_recovery": 27
+      },
+      "insiders": []
+    },
+    "18.18": {
+      "rise_start_date": "27/09/2023",
+      "rise_end_date": "29/09/2023",
+      "rise_days": 2,
+      "rise_percentage": 18.181818181818183,
+      "mid_rises": {
+        "18.18": {
+          "date": "29/09/2023"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "04/10/2023",
+        "percentage": -25.38,
+        "days_after_peak": 3
+      },
+      "first_recovery": {
+        "date": "05/10/2023",
+        "percentage": 6.7,
+        "days_after_peak": 4
+      },
+      "second_dip": {
+        "date": "06/11/2023",
+        "percentage": -48.31,
+        "days_after_peak": 26,
+        "days_since_recovery": 22
+      },
+      "insiders": []
+    },
+    "41.27": {
+      "rise_start_date": "31/10/2023",
+      "rise_end_date": "23/11/2023",
+      "rise_days": 23,
+      "rise_percentage": 41.26983093776912,
+      "mid_rises": {
+        "4.76": {
+          "date": "02/11/2023"
+        },
+        "52.34": {
+          "date": "13/11/2023"
+        },
+        "43.59": {
+          "date": "20/11/2023"
+        },
+        "15.58": {
+          "date": "22/11/2023"
+        }
+      },
+      "mid_falls": {
+        "-18.94": {
+          "date": "06/11/2023"
+        },
+        "-28.22": {
+          "date": "16/11/2023"
+        },
+        "-8.33": {
+          "date": "21/11/2023"
+        }
+      },
+      "first_dip": {
+        "date": "30/11/2023",
+        "percentage": -14.12,
+        "days_after_peak": 4
+      },
+      "first_recovery": {
+        "date": "04/12/2023",
+        "percentage": 13.01,
+        "days_after_peak": 6
+      },
+      "second_dip": {
+        "date": "08/01/2024",
+        "percentage": -16.97,
+        "days_after_peak": 29,
+        "days_since_recovery": 23
+      },
+      "insiders": []
+    },
+    "13.7": {
+      "rise_start_date": "30/11/2023",
+      "rise_end_date": "12/12/2023",
+      "rise_days": 12,
+      "rise_percentage": 13.698629779067634,
+      "mid_rises": {
+        "13.01": {
+          "date": "04/12/2023"
+        },
+        "16.08": {
+          "date": "12/12/2023"
+        }
+      },
+      "mid_falls": {
+        "-13.33": {
+          "date": "06/12/2023"
+        }
+      },
+      "first_dip": {
+        "date": "13/12/2023",
+        "percentage": -7.83,
+        "days_after_peak": 1
+      },
+      "first_recovery": {
+        "date": "14/12/2023",
+        "percentage": 3.92,
+        "days_after_peak": 2
+      },
+      "second_dip": {
+        "date": "11/01/2024",
+        "percentage": -14.47,
+        "days_after_peak": 20,
+        "days_since_recovery": 18
+      },
+      "insiders": []
+    },
+    "19.29": {
+      "rise_start_date": "02/01/2024",
+      "rise_end_date": "17/01/2024",
+      "rise_days": 15,
+      "rise_percentage": 19.28571973528181,
+      "mid_rises": {
+        "2.86": {
+          "date": "04/01/2024"
+        },
+        "10.95": {
+          "date": "10/01/2024"
+        },
+        "2.21": {
+          "date": "12/01/2024"
+        },
+        "21.01": {
+          "date": "17/01/2024"
+        }
+      },
+      "mid_falls": {
+        "-4.86": {
+          "date": "08/01/2024"
+        },
+        "-10.53": {
+          "date": "11/01/2024"
+        }
+      },
+      "first_dip": {
+        "date": "18/01/2024",
+        "percentage": -16.17,
+        "days_after_peak": 1
+      },
+      "first_recovery": {
+        "date": "19/01/2024",
+        "percentage": 4.29,
+        "days_after_peak": 2
+      },
+      "second_dip": {
+        "date": "23/02/2024",
+        "percentage": -39.04,
+        "days_after_peak": 26,
+        "days_since_recovery": 24
+      },
+      "insiders": []
+    },
+    "65.17": {
+      "rise_start_date": "23/02/2024",
+      "rise_end_date": "04/03/2024",
+      "rise_days": 10,
+      "rise_percentage": 65.16854426217002,
+      "mid_rises": {
+        "65.17": {
+          "date": "04/03/2024"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "05/03/2024",
+        "percentage": -28.57,
+        "days_after_peak": 1
+      },
+      "first_recovery": {
+        "date": "06/03/2024",
+        "percentage": 10.48,
+        "days_after_peak": 2
+      },
+      "second_dip": {
+        "date": "16/04/2024",
+        "percentage": -40.52,
+        "days_after_peak": 30,
+        "days_since_recovery": 28
+      },
+      "insiders": []
+    },
+    "6.6": {
+      "rise_start_date": "12/03/2024",
+      "rise_end_date": "14/03/2024",
+      "rise_days": 2,
+      "rise_percentage": 6.603771547865541,
+      "mid_rises": {
+        "6.6": {
+          "date": "14/03/2024"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "19/03/2024",
+        "percentage": -15.93,
+        "days_after_peak": 3
+      },
+      "first_recovery": {
+        "date": "20/03/2024",
+        "percentage": 2.11,
+        "days_after_peak": 4
+      },
+      "second_dip": {
+        "date": "26/04/2024",
+        "percentage": -34.02,
+        "days_after_peak": 30,
+        "days_since_recovery": 26
+      },
+      "insiders": []
+    },
+    "4.35": {
+      "rise_start_date": "21/03/2024",
+      "rise_end_date": "25/03/2024",
+      "rise_days": 4,
+      "rise_percentage": 4.347832396711109,
+      "mid_rises": {
+        "4.35": {
+          "date": "25/03/2024"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "27/03/2024",
+        "percentage": -6.25,
+        "days_after_peak": 2
+      },
+      "first_recovery": {
+        "date": "28/03/2024",
+        "percentage": 2.22,
+        "days_after_peak": 3
+      },
+      "second_dip": {
+        "date": "07/05/2024",
+        "percentage": -39.13,
+        "days_after_peak": 30,
+        "days_since_recovery": 27
+      },
+      "insiders": []
+    },
+    "18.52": {
+      "rise_start_date": "05/04/2024",
+      "rise_end_date": "09/04/2024",
+      "rise_days": 4,
+      "rise_percentage": 18.518517646388414,
+      "mid_rises": {
+        "18.52": {
+          "date": "09/04/2024"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "18/04/2024",
+        "percentage": -33.33,
+        "days_after_peak": 7
+      },
+      "first_recovery": {
+        "date": "19/04/2024",
+        "percentage": 18.75,
+        "days_after_peak": 8
+      },
+      "second_dip": {
+        "date": "10/05/2024",
+        "percentage": -30.26,
+        "days_after_peak": 23,
+        "days_since_recovery": 15
+      },
+      "insiders": []
+    },
+    "7.14": {
+      "rise_start_date": "30/04/2024",
+      "rise_end_date": "03/05/2024",
+      "rise_days": 3,
+      "rise_percentage": 7.142858967489158,
+      "mid_rises": {
+        "7.14": {
+          "date": "03/05/2024"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "08/05/2024",
+        "percentage": -11.67,
+        "days_after_peak": 3
+      },
+      "first_recovery": {
+        "date": "09/05/2024",
+        "percentage": 1.89,
+        "days_after_peak": 4
+      },
+      "second_dip": {
+        "date": "04/06/2024",
+        "percentage": -16.67,
+        "days_after_peak": 21,
+        "days_since_recovery": 17
+      },
+      "insiders": []
+    },
+    "160.38": {
+      "rise_start_date": "10/05/2024",
+      "rise_end_date": "27/05/2024",
+      "rise_days": 17,
+      "rise_percentage": 160.37735271895238,
+      "mid_rises": {
+        "160.38": {
+          "date": "16/05/2024"
+        },
+        "21.89": {
+          "date": "24/05/2024"
+        }
+      },
+      "mid_falls": {
+        "-66.23": {
+          "date": "22/05/2024"
+        }
+      },
+      "first_dip": {
+        "date": "29/05/2024",
+        "percentage": -13.04,
+        "days_after_peak": 1
+      },
+      "first_recovery": {
+        "date": "30/05/2024",
+        "percentage": 7.92,
+        "days_after_peak": 2
+      },
+      "second_dip": {
+        "date": "10/07/2024",
+        "percentage": -35.14,
+        "days_after_peak": 29,
+        "days_since_recovery": 27
+      },
+      "insiders": []
+    },
+    "23.33": {
+      "rise_start_date": "04/06/2024",
+      "rise_end_date": "12/06/2024",
+      "rise_days": 8,
+      "rise_percentage": 23.333337571885853,
+      "mid_rises": {
+        "16.0": {
+          "date": "06/06/2024"
+        },
+        "13.27": {
+          "date": "12/06/2024"
+        }
+      },
+      "mid_falls": {
+        "-6.13": {
+          "date": "10/06/2024"
+        }
+      },
+      "first_dip": {
+        "date": "13/06/2024",
+        "percentage": -14.23,
+        "days_after_peak": 1
+      },
+      "first_recovery": {
+        "date": "14/06/2024",
+        "percentage": 2.94,
+        "days_after_peak": 2
+      },
+      "second_dip": {
+        "date": "10/07/2024",
+        "percentage": -31.43,
+        "days_after_peak": 18,
+        "days_since_recovery": 16
+      },
+      "insiders": []
+    },
+    "59.52": {
+      "rise_start_date": "10/07/2024",
+      "rise_end_date": "15/07/2024",
+      "rise_days": 5,
+      "rise_percentage": 59.523818478022314,
+      "mid_rises": {
+        "59.52": {
+          "date": "15/07/2024"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "16/07/2024",
+        "percentage": -13.06,
+        "days_after_peak": 1
+      },
+      "first_recovery": {
+        "date": "17/07/2024",
+        "percentage": 7.73,
+        "days_after_peak": 2
+      },
+      "second_dip": {
+        "date": "15/08/2024",
+        "percentage": -58.57,
+        "days_after_peak": 23,
+        "days_since_recovery": 21
+      },
+      "insiders": []
+    },
+    "27.03": {
+      "rise_start_date": "19/08/2024",
+      "rise_end_date": "21/08/2024",
+      "rise_days": 2,
+      "rise_percentage": 27.027022382886273,
+      "mid_rises": {
+        "27.03": {
+          "date": "21/08/2024"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "22/08/2024",
+        "percentage": -12.77,
+        "days_after_peak": 1
+      },
+      "first_recovery": {
+        "date": "23/08/2024",
+        "percentage": 5.69,
+        "days_after_peak": 2
+      },
+      "second_dip": {
+        "date": "01/10/2024",
+        "percentage": -63.31,
+        "days_after_peak": 28,
+        "days_since_recovery": 26
+      },
+      "insiders": []
+    },
+    "5.46": {
+      "rise_start_date": "10/09/2024",
+      "rise_end_date": "12/09/2024",
+      "rise_days": 2,
+      "rise_percentage": 5.461637977506649,
+      "mid_rises": {
+        "5.46": {
+          "date": "12/09/2024"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "23/09/2024",
+        "percentage": -23.3,
+        "days_after_peak": 7
+      },
+      "first_recovery": {
+        "date": "24/09/2024",
+        "percentage": 2.57,
+        "days_after_peak": 8
+      },
+      "second_dip": {
+        "date": "16/10/2024",
+        "percentage": -27.9,
+        "days_after_peak": 24,
+        "days_since_recovery": 16
+      },
+      "insiders": []
+    },
+    "15.72": {
+      "rise_start_date": "01/10/2024",
+      "rise_end_date": "03/10/2024",
+      "rise_days": 2,
+      "rise_percentage": 15.723268003976642,
+      "mid_rises": {
+        "15.72": {
+          "date": "03/10/2024"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "04/10/2024",
+        "percentage": -2.17,
+        "days_after_peak": 1
+      },
+      "first_recovery": {
+        "date": "07/10/2024",
+        "percentage": 1.11,
+        "days_after_peak": 2
+      },
+      "second_dip": {
+        "date": "06/11/2024",
+        "percentage": -50.18,
+        "days_after_peak": 24,
+        "days_since_recovery": 22
+      },
+      "insiders": []
+    },
+    "14.34": {
+      "rise_start_date": "06/11/2024",
+      "rise_end_date": "11/11/2024",
+      "rise_days": 5,
+      "rise_percentage": 14.338225223588625,
+      "mid_rises": {
+        "14.34": {
+          "date": "08/11/2024"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "13/11/2024",
+        "percentage": -8.39,
+        "days_after_peak": 2
+      },
+      "first_recovery": {
+        "date": "14/11/2024",
+        "percentage": 1.06,
+        "days_after_peak": 3
+      },
+      "second_dip": {
+        "date": "23/12/2024",
+        "percentage": -68.64,
+        "days_after_peak": 29,
+        "days_since_recovery": 26
+      },
+      "insiders": []
+    },
+    "63.0": {
+      "rise_start_date": "22/11/2024",
+      "rise_end_date": "26/11/2024",
+      "rise_days": 4,
+      "rise_percentage": 62.99559818381758,
+      "mid_rises": {
+        "63.0": {
+          "date": "26/11/2024"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "27/11/2024",
+        "percentage": -16.76,
+        "days_after_peak": 1
+      },
+      "first_recovery": {
+        "date": "29/11/2024",
+        "percentage": 3.9,
+        "days_after_peak": 2
+      },
+      "second_dip": {
+        "date": "23/12/2024",
+        "percentage": -71.87,
+        "days_after_peak": 18,
+        "days_since_recovery": 16
+      },
+      "insiders": []
+    },
+    "39.13": {
+      "rise_start_date": "26/12/2024",
+      "rise_end_date": "30/12/2024",
+      "rise_days": 4,
+      "rise_percentage": 39.13042914889946,
+      "mid_rises": {
+        "39.13": {
+          "date": "30/12/2024"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "02/01/2025",
+        "percentage": -25.0,
+        "days_after_peak": 2
+      },
+      "first_recovery": {
+        "date": "06/01/2025",
+        "percentage": 6.67,
+        "days_after_peak": 4
+      },
+      "second_dip": {
+        "date": "28/01/2025",
+        "percentage": -37.5,
+        "days_after_peak": 18,
+        "days_since_recovery": 14
+      },
+      "insiders": []
+    }
+  }
+}

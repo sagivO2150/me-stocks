@@ -23,6 +23,14 @@
 - Use multiprocessing Pool for parallel data fetching
 - Handle yfinance errors gracefully with try/except blocks
 
+### Trading Strategy Rules - CRITICAL
+**NEVER add stop loss or stagnation checks without explicit user confirmation:**
+- NO percentage-based stop losses (e.g., -50%, -75%)
+- NO time-based exits (e.g., 180 days, 60 days)
+- NO stagnation checks (e.g., exit after X days if negative)
+- Only implement sell logic exactly as specified by the user
+- The user will decide when risk management is needed
+
 ### Script Organization
 Follow the organized folder structure in `scripts/`:
 - `core/`: Production scripts used by webapp (fetch_insider_trades.py, etc.)
