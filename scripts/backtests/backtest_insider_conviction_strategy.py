@@ -64,10 +64,14 @@ def load_grov_data():
                         price_str = str(trade.get('price', '0')).replace('$', '').replace(',', '')
                         price = float(price_str) if price_str else 0.0
                         
+                        # Parse value (remove $, +, commas and convert to float)
+                        value_str = str(trade.get('value', '0')).replace('$', '').replace('+', '').replace(',', '')
+                        value = float(value_str) if value_str else 0.0
+                        
                         trade_info = {
                             'price': price,
                             'insider_name': trade.get('insider_name', ''),
-                            'value': trade.get('value', ''),
+                            'value': value,  # Now numeric
                             'title': trade.get('title', '')
                         }
                         
@@ -138,6 +142,10 @@ class TradingState:
         self.max_mid_fall_before_target = 0
         self.target_reached = False
         self.peak_since_entry = 0
+        
+        # Absorption buy specific tracking
+        self.rise_start_price = None  # Track where the rise started for cumulative calculation
+        self.in_mid_rise = False  # Track if currently in a mid-rise (consecutive up days)
         
     def update_phase(self, current_price: float, prev_price: float, date: datetime):
         """Update market phase using FIRST DIP → RECOVERY → SECOND DIP pattern for fall detection.
@@ -216,6 +224,12 @@ class TradingState:
                     if self.phase == MarketPhase.FALLING and self.trend_start_date:
                         fall_days = (actual_start_date - self.trend_start_date).days
                         fall_pct = ((self.trend_low_price - self.trend_start_price) / self.trend_start_price) * 100
+                        
+                        # SAVE THE FALL PERCENTAGE for buy signal evaluation
+                        # But DON'T overwrite if we're already in a position (target is locked in)
+                        if not self.in_position:
+                            self.prev_fall_pct = abs(fall_pct)
+                            self.prev_fall_start_price = self.trend_start_price
                         
                         # Filter insiders who bought during THIS fall only
                         # Make dates tz-naive for comparison
@@ -380,7 +394,8 @@ class TradingState:
                 self.trend_low_date = date
         
         # Calculate current fall percentage
-        if self.phase == MarketPhase.FALLING and self.trend_start_price:
+        # DON'T update prev_fall_pct if we're in a position (target is locked in)
+        if self.phase == MarketPhase.FALLING and self.trend_start_price and not self.in_position:
             self.prev_fall_pct = ((self.trend_start_price - current_price) / self.trend_start_price) * 100
     
     def record_insider_purchase(self, date_str: str, trade_info: Dict):
@@ -460,54 +475,86 @@ class TradingState:
                     'prev_fall_pct': self.prev_fall_pct
                 }
         
-        # SCENARIO 2: Absorption Event (>60% fall)
-        elif self.insiders_bought_in_fall and self.prev_fall_pct >= 60:
-            # Average insider purchase price, rounded down
-            insider_prices = [t['price'] for t in self.insiders_bought_in_fall if t['price'] > 0]
-            if insider_prices:
-                avg_price = sum(insider_prices) / len(insider_prices)
-                target = int(avg_price)  # Round down
-                
-                if target > current_price:
-                    self.in_position = True
-                    self.entry_date = current_date
-                    self.entry_price = current_price
-                    self.target_price = target
-                    self.buy_type = 'absorption'
-                    self.target_reached = False
-                    self.peak_since_entry = 0
-                    
-                    return {
-                        'buy_date': current_date,
-                        'entry_price': current_price,
-                        'target_price': target,
-                        'buy_type': 'absorption',
-                        'num_insiders': len(self.insiders_bought_in_fall),
-                        'fall_pct': self.prev_fall_pct
-                    }
-        
-        # SCENARIO 3: Fall-Only Buy (<60% fall)
-        elif self.insiders_bought_in_fall and self.prev_fall_pct < 60 and self.prev_fall_start_price:
-            # Target is to recover what was lost
-            target = self.prev_fall_start_price
+        # SCENARIO 2: Absorption Buy (insiders buy ONLY during fall, minimum $5K)
+        elif self.insiders_bought_in_fall and not self.insiders_bought_in_rise:
+            # Calculate total insider investment during the fall
+            total_investment = sum(abs(t['value']) for t in self.insiders_bought_in_fall)
             
-            if target > current_price:
+            # Require at least $5,000 invested
+            if total_investment >= 5000:
+                # Target is to recover what was lost (fall magnitude)
+                target_gain_pct = abs(self.prev_fall_pct)
+                
                 self.in_position = True
                 self.entry_date = current_date
                 self.entry_price = current_price
-                self.target_price = target
-                self.buy_type = 'fall_only'
+                self.target_price = current_price * (1 + target_gain_pct / 100)
+                self.buy_type = 'absorption_buy'
                 self.target_reached = False
                 self.peak_since_entry = 0
+                # Use trend_start_price (actual rise start) for cumulative calculation
+                self.rise_start_price = self.trend_start_price if self.trend_start_price else current_price
+                self.in_mid_rise = False  # Track if currently in a mid-rise
                 
                 return {
                     'buy_date': current_date,
                     'entry_price': current_price,
-                    'target_price': target,
-                    'buy_type': 'fall_only',
+                    'target_price': self.target_price,
+                    'buy_type': 'absorption_buy',
                     'num_insiders': len(self.insiders_bought_in_fall),
-                    'fall_pct': self.prev_fall_pct
+                    'fall_pct': self.prev_fall_pct,
+                    'total_investment': total_investment,
+                    'rise_start_price': self.rise_start_price  # Debug
                 }
+        
+        # # SCENARIO 3: Old absorption code (>60% fall) - COMMENTED OUT
+        # elif self.insiders_bought_in_fall and self.prev_fall_pct >= 60:
+        #     # Average insider purchase price, rounded down
+        #     insider_prices = [t['price'] for t in self.insiders_bought_in_fall if t['price'] > 0]
+        #     if insider_prices:
+        #         avg_price = sum(insider_prices) / len(insider_prices)
+        #         target = int(avg_price)  # Round down
+        #         
+        #         if target > current_price:
+        #             self.in_position = True
+        #             self.entry_date = current_date
+        #             self.entry_price = current_price
+        #             self.target_price = target
+        #             self.buy_type = 'absorption'
+        #             self.target_reached = False
+        #             self.peak_since_entry = 0
+        #             
+        #             return {
+        #                 'buy_date': current_date,
+        #                 'entry_price': current_price,
+        #                 'target_price': target,
+        #                 'buy_type': 'absorption',
+        #                 'num_insiders': len(self.insiders_bought_in_fall),
+        #                 'fall_pct': self.prev_fall_pct
+        #             }
+        # 
+        # # SCENARIO 4: Fall-Only Buy (<60% fall) - COMMENTED OUT
+        # elif self.insiders_bought_in_fall and self.prev_fall_pct < 60 and self.prev_fall_start_price:
+        #     # Target is to recover what was lost
+        #     target = self.prev_fall_start_price
+        #     
+        #     if target > current_price:
+        #         self.in_position = True
+        #         self.entry_date = current_date
+        #         self.entry_price = current_price
+        #         self.target_price = target
+        #         self.buy_type = 'fall_only'
+        #         self.target_reached = False
+        #         self.peak_since_entry = 0
+        #         
+        #         return {
+        #             'buy_date': current_date,
+        #             'entry_price': current_price,
+        #             'target_price': target,
+        #             'buy_type': 'fall_only',
+        #             'num_insiders': len(self.insiders_bought_in_fall),
+        #             'fall_pct': self.prev_fall_pct
+        #         }
         
         # Clear insider data after checking - we've evaluated this rise+fall cycle
         # This prevents stale data from affecting future signals
@@ -531,6 +578,49 @@ class TradingState:
         current_gain_pct = ((current_price - self.entry_price) / self.entry_price) * 100
         self.peak_since_entry = max(self.peak_since_entry, current_gain_pct)
         
+        # ABSORPTION BUY has different sell logic
+        if self.buy_type == 'absorption_buy':
+            # Calculate cumulative rise from rise start (entry price)
+            # Note: For absorption buy, rise_start_price is set to the actual rise start
+            cumulative_rise_pct = ((current_price - self.rise_start_price) / self.rise_start_price) * 100
+            
+            # Track if we're currently in a mid-rise (price going up today)
+            daily_change_pct = ((current_price - prev_price) / prev_price) * 100
+            
+            was_in_mid_rise = self.in_mid_rise
+            
+            if daily_change_pct > 0:
+                # We're rising - mark as in mid-rise
+                self.in_mid_rise = True
+            else:
+                # We're not rising - no longer in mid-rise
+                self.in_mid_rise = False
+            
+            # Check if we've reached the target cumulative rise
+            target_gain_pct = abs(self.prev_fall_pct)
+            
+            # Debug output for the June-Aug period
+            if current_date.year == 2023 and current_date.month >= 6 and current_date.month <= 8:
+                if cumulative_rise_pct >= target_gain_pct - 5:  # Within 5% of target
+                    print(f"  📊 {current_date.strftime('%Y-%m-%d')}: cumulative={cumulative_rise_pct:.2f}% (from ${self.rise_start_price:.2f} to ${current_price:.2f}), target={target_gain_pct:.2f}%, in_mid_rise={self.in_mid_rise}")
+            
+            if cumulative_rise_pct >= target_gain_pct:
+                self.target_reached = True
+                
+                # Sell if:
+                # 1. We're not currently in a mid-rise, OR
+                # 2. We just exited a mid-rise (was in mid-rise yesterday, not today)
+                if not self.in_mid_rise or (was_in_mid_rise and not self.in_mid_rise):
+                    self.in_position = False
+                    print(f"  🎯 Absorption target reached: {cumulative_rise_pct:.2f}% >= {target_gain_pct:.2f}% (not in mid-rise)")
+                    return ('absorption_target_reached', current_price)
+                else:
+                    print(f"  ⏸️  Target reached ({cumulative_rise_pct:.2f}%) but in mid-rise - waiting...")
+            
+            # No stop loss for absorption buy - only sell when target reached
+            return None
+        
+        # SHOPPING SPREE sell logic (original)
         # Emergency stop loss: -15%
         if current_gain_pct <= -15:
             self.in_position = False
@@ -637,7 +727,8 @@ def simulate_live_trading(insider_trades: Dict, price_df: pd.DataFrame) -> List[
             buy_signal = state.check_buy_signal(current_date, current_price)
             if buy_signal:
                 print(f"  🟢 BUY {date_str}: {buy_signal['buy_type'].upper()} @ ${current_price:.2f} "
-                      f"(Target: ${buy_signal['target_price']:.2f}, Insiders: {buy_signal['num_insiders']})")
+                      f"(Target: ${buy_signal['target_price']:.2f}, Insiders: {buy_signal['num_insiders']}, "
+                      f"Fall: {buy_signal.get('fall_pct', 0):.2f}%, Rise Start: ${buy_signal.get('rise_start_price', 0):.2f})")
     
     # Handle open position at end
     if state.in_position:

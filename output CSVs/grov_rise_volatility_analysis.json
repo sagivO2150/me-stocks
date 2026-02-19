@@ -1,6 +1,6 @@
 {
   "ticker": "GROV",
-  "analysis_date": "2026-02-19 15:44:26",
+  "analysis_date": "2026-02-19 15:54:59",
   "total_rise_events": 40,
   "rise_events": {
     "2.25": {
@@ -57,7 +57,7 @@
           "date": "2022-06-16",
           "price": 7.08,
           "insider_name": "Virgin Group Acquisition Sponsor II LLC",
-          "value": "+$66715240",
+          "value": 66715240.0,
           "stock_price": 29.799999237060547
         }
       ]
@@ -739,14 +739,14 @@
           "date": "2023-12-14",
           "price": 1.98,
           "insider_name": "Yurcisin Jeffrey Michael",
-          "value": "+$19750",
+          "value": 19750.0,
           "stock_price": 1.909999966621399
         },
         {
           "date": "2023-12-14",
           "price": 1.89,
           "insider_name": "Landesberg Stuart",
-          "value": "+$10226",
+          "value": 10226.0,
           "stock_price": 1.909999966621399
         }
       ]
@@ -828,28 +828,28 @@
           "date": "2024-03-08",
           "price": 2.15,
           "insider_name": "Landesberg Stuart",
-          "value": "+$23220",
+          "value": 23220.0,
           "stock_price": 1.9700000286102295
         },
         {
           "date": "2024-03-08",
           "price": 1.94,
           "insider_name": "Yurcisin Jeffrey Michael",
-          "value": "+$20238",
+          "value": 20238.0,
           "stock_price": 1.9700000286102295
         },
         {
           "date": "2024-03-11",
           "price": 1.93,
           "insider_name": "Replogle John B",
-          "value": "+$49987",
+          "value": 49987.0,
           "stock_price": 1.8700000047683716
         },
         {
           "date": "2024-03-11",
           "price": 1.85,
           "insider_name": "Yurcisin Jeffrey Michael",
-          "value": "+$10001",
+          "value": 10001.0,
           "stock_price": 1.8700000047683716
         }
       ]
@@ -1026,7 +1026,7 @@
           "date": "2024-05-29",
           "price": 1.63,
           "insider_name": "Yurcisin Jeffrey Michael",
-          "value": "+$27951",
+          "value": 27951.0,
           "stock_price": 1.5800000429153442
         }
       ]
@@ -1176,7 +1176,7 @@
           "date": "2024-11-18",
           "price": 1.38,
           "insider_name": "Yurcisin Jeffrey Michael",
-          "value": "+$48230",
+          "value": 48230.0,
           "stock_price": 1.3600000143051147
         }
       ]
@@ -1388,14 +1388,14 @@
           "date": "2025-05-23",
           "price": 1.26,
           "insider_name": "Yurcisin Jeffrey Michael",
-          "value": "+$18827",
+          "value": 18827.0,
           "stock_price": 1.2400000095367432
         },
         {
           "date": "2025-05-27",
           "price": 1.36,
           "insider_name": "Yurcisin Jeffrey Michael",
-          "value": "+$13604",
+          "value": 13604.0,
           "stock_price": 1.4299999475479126
         }
       ]
