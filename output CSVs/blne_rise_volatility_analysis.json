@@ -1,7 +1,7 @@
 {
   "ticker": "BLNE",
-  "analysis_date": "2026-02-20 00:48:34",
-  "total_rise_events": 115,
+  "analysis_date": "2026-02-20 01:13:44",
+  "total_rise_events": 117,
   "rise_events": {
     "35.14": {
       "rise_start_date": "12/01/2017",
@@ -2486,6 +2486,71 @@
         }
       ]
     },
+    "5.13": {
+      "rise_start_date": "28/04/2022",
+      "rise_end_date": "02/05/2022",
+      "rise_days": 4,
+      "rise_percentage": 5.131009449704923,
+      "mid_rises": {
+        "5.13": {
+          "date": "02/05/2022"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "12/05/2022",
+        "percentage": -25.65,
+        "days_after_peak": 8
+      },
+      "first_recovery": {
+        "date": "13/05/2022",
+        "percentage": 4.75,
+        "days_after_peak": 9
+      },
+      "second_dip": {
+        "date": "14/06/2022",
+        "percentage": -20.0,
+        "days_after_peak": 30,
+        "days_since_recovery": 21
+      },
+      "insiders": []
+    },
+    "7.35": {
+      "rise_start_date": "31/05/2022",
+      "rise_end_date": "09/06/2022",
+      "rise_days": 9,
+      "rise_percentage": 7.352941176470589,
+      "mid_rises": {
+        "7.35": {
+          "date": "06/06/2022"
+        },
+        "1.57": {
+          "date": "09/06/2022"
+        }
+      },
+      "mid_falls": {
+        "-4.11": {
+          "date": "08/06/2022"
+        }
+      },
+      "first_dip": {
+        "date": "14/06/2022",
+        "percentage": -15.61,
+        "days_after_peak": 3
+      },
+      "first_recovery": {
+        "date": "15/06/2022",
+        "percentage": 10.33,
+        "days_after_peak": 4
+      },
+      "second_dip": {
+        "date": "13/07/2022",
+        "percentage": -6.65,
+        "days_after_peak": 22,
+        "days_since_recovery": 18
+      },
+      "insiders": []
+    },
     "19.16": {
       "rise_start_date": "21/06/2022",
       "rise_end_date": "24/06/2022",
@@ -2515,45 +2580,39 @@
       },
       "insiders": []
     },
-    "11.65": {
-      "rise_start_date": "13/07/2022",
-      "rise_end_date": "28/07/2022",
-      "rise_days": 15,
-      "rise_percentage": 11.650486815251803,
+    "13.09": {
+      "rise_start_date": "06/07/2022",
+      "rise_end_date": "20/07/2022",
+      "rise_days": 14,
+      "rise_percentage": 13.085619183280114,
       "mid_rises": {
+        "13.09": {
+          "date": "08/07/2022"
+        },
         "5.18": {
           "date": "20/07/2022"
-        },
-        "8.68": {
-          "date": "26/07/2022"
-        },
-        "2.22": {
-          "date": "28/07/2022"
         }
       },
       "mid_falls": {
-        "-2.46": {
-          "date": "25/07/2022"
-        },
-        "-2.03": {
-          "date": "27/07/2022"
+        "-11.71": {
+          "date": "13/07/2022"
         }
       },
       "first_dip": {
-        "date": "03/08/2022",
-        "percentage": -11.59,
-        "days_after_peak": 4
+        "date": "25/07/2022",
+        "percentage": -2.46,
+        "days_after_peak": 3
       },
       "first_recovery": {
-        "date": "05/08/2022",
-        "percentage": 18.03,
-        "days_after_peak": 6
+        "date": "26/07/2022",
+        "percentage": 8.68,
+        "days_after_peak": 4
       },
       "second_dip": {
-        "date": "08/09/2022",
-        "percentage": -47.64,
+        "date": "30/08/2022",
+        "percentage": -31.79,
         "days_after_peak": 29,
-        "days_since_recovery": 23
+        "days_since_recovery": 25
       },
       "insiders": []
     },
@@ -3969,12 +4028,15 @@
         }
       ]
     },
-    "11.36": {
-      "rise_start_date": "22/10/2025",
+    "9.94": {
+      "rise_start_date": "16/10/2025",
       "rise_end_date": "31/10/2025",
-      "rise_days": 9,
-      "rise_percentage": 11.363641289640187,
+      "rise_days": 15,
+      "rise_percentage": 9.935903607976265,
       "mid_rises": {
+        "7.69": {
+          "date": "20/10/2025"
+        },
         "11.36": {
           "date": "27/10/2025"
         },
@@ -3983,6 +4045,9 @@
         }
       },
       "mid_falls": {
+        "-8.33": {
+          "date": "22/10/2025"
+        },
         "-14.87": {
           "date": "29/10/2025"
         }
@@ -4045,15 +4110,7 @@
         "days_after_peak": 15,
         "days_since_recovery": 6
       },
-      "insiders": [
-        {
-          "date": "2025-11-26",
-          "price": 1.85,
-          "insider_name": "Freedman Joseph David",
-          "value": 1850.0,
-          "stock_price": 1.8200000524520874
-        }
-      ]
+      "insiders": []
     },
     "10.53": {
       "rise_start_date": "17/12/2025",

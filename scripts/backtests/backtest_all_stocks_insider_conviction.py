@@ -155,6 +155,10 @@ class TradingState:
             has_insider_support = bool(self.insiders_bought_in_fall or self.insiders_bought_in_rise)
             required_up_days = 3 if has_insider_support else 2
             
+            # DEBUG
+            if hasattr(date, 'year') and date.year == 2025 and date.month == 4 and date.day <= 5:
+                print(f"  [{date.strftime('%Y-%m-%d')}] consecutive_up={self.consecutive_up_days}, required={required_up_days}, fall_insiders={len(self.insiders_bought_in_fall)}, rise_insiders={len(self.insiders_bought_in_rise)}")
+            
             if self.consecutive_up_days >= required_up_days:
                 days_since_last_peak = 999  # Temporarily disable 15-day gap
                 
@@ -257,11 +261,26 @@ class TradingState:
                         
                         rise_start_naive = self.trend_start_date.tz_localize(None) if hasattr(self.trend_start_date, 'tz_localize') else self.trend_start_date
                         rise_end_naive = actual_rise_end.tz_localize(None) if hasattr(actual_rise_end, 'tz_localize') else actual_rise_end
+                        peak_naive = self.trend_peak_date.tz_localize(None) if hasattr(self.trend_peak_date, 'tz_localize') else self.trend_peak_date
                         
+                        # Insiders who bought BEFORE the peak are rise insiders
+                        # Insiders who bought AFTER the peak (during the dip) are fall insiders
                         rise_insiders = [
-                            i for i in self.insiders_bought_in_rise 
-                            if rise_start_naive <= pd.to_datetime(i['date']).tz_localize(None) <= rise_end_naive
+                            i for i in self.insiders_bought_in_rise
+                            if pd.to_datetime(i['date']).tz_localize(None) <= peak_naive
                         ]
+                        
+                        insiders_after_peak = [
+                            i for i in self.insiders_bought_in_rise
+                            if pd.to_datetime(i['date']).tz_localize(None) > peak_naive
+                        ]
+                        
+                        # Move post-peak insiders to fall list (they bought during the dip)
+                        if insiders_after_peak:
+                            if any('2025-03' in i['date'] or '2025-04' in i['date'] for i in insiders_after_peak):
+                                print(f"  [PHASE TRANSITION] Moving {len(insiders_after_peak)} post-peak insiders from rise to fall")
+                                print(f"    Insiders: {[i['date'] for i in insiders_after_peak]}")
+                            self.insiders_bought_in_fall.extend(insiders_after_peak)
                         
                         self.all_events.append({
                             'event_type': 'RISE',
@@ -275,13 +294,8 @@ class TradingState:
                             'insiders': rise_insiders
                         })
                         
-                        # Move ALL remaining insiders from rise list to fall list
-                        # (the "rise" was actually part of a longer fall, so treat all insider buys as fall buys)
-                        remaining_insiders = [
-                            i for i in self.insiders_bought_in_rise 
-                            if i not in rise_insiders
-                        ]
-                        self.insiders_bought_in_fall.extend(remaining_insiders)
+                        # Clear the rise list (all insiders already moved to fall)
+                        self.insiders_bought_in_rise = []
                         
                         self.trend_start_date = self.trend_peak_date  # Fall starts from the peak
                         self.trend_start_price = self.trend_peak_price
@@ -326,6 +340,10 @@ class TradingState:
             'value': trade_info['value'],
             'stock_price': trade_info.get('stock_price', trade_info['price'])
         }
+        
+        # DEBUG
+        if '2025-03' in date_str or '2025-04' in date_str:
+            print(f"  [INSIDER {date_str}] Added to {self.phase.value} list (fall={len(self.insiders_bought_in_fall)}, rise={len(self.insiders_bought_in_rise)})")
         
         if self.phase == MarketPhase.RISING:
             self.insiders_bought_in_rise.append(trade_data)
@@ -893,10 +911,20 @@ def process_single_stock(ticker: str, stock_data: Dict, price_cache: Dict, gener
         
         # Debug flag for BSFC
         debug_bsfc = (ticker == "BSFC")
+        debug_blne_2022 = (ticker == "BLNE")
+        
         if debug_bsfc:
             print(f"\n🐛 DEBUG MODE for {ticker}:")
             print(f"   Price data: {len(price_df)} days")
             print(f"   Insider trades: {len(insider_trades)} dates")
+            print()
+        
+        if debug_blne_2022:
+            print(f"\n🐛 DEBUG MODE for {ticker} - April 2022:")
+            april_2022_trades = [d for d in insider_trades.keys() if '2022-04' in d]
+            print(f"   Insider trade dates in April 2022: {april_2022_trades}")
+            for d in april_2022_trades:
+                print(f"     {d}: {insider_trades[d]}")
             print()
         
         for i in range(1, len(price_df)):
@@ -908,6 +936,9 @@ def process_single_stock(ticker: str, stock_data: Dict, price_cache: Dict, gener
             state.update_phase(current_price, prev_price, current_date)
             
             if date_str in insider_trades:
+                if debug_blne_2022 and '2022-04' in date_str:
+                    print(f"  🔍 Processing {date_str}: {len(insider_trades[date_str])} trades")
+                
                 for trade_info in insider_trades[date_str]:
                     trade_info_with_price = trade_info.copy()
                     trade_info_with_price['stock_price'] = current_price
