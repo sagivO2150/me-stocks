@@ -818,28 +818,66 @@ def analyze_rise_volatility(df: pd.DataFrame, rise_event: Dict) -> Dict:
         'insiders': rise_event.get('insiders', [])
     }
     
-    # Track daily movements during the rise
+    # Track consecutive movements during the rise - group consecutive rises/falls
     if len(rise_df) > 1:
-        for i in range(1, len(rise_df)):
-            prev_price = rise_df['Close'].iloc[i-1]
-            current_price = rise_df['Close'].iloc[i]
-            current_date = rise_df.index[i]
+        i = 0
+        while i < len(rise_df) - 1:
+            # Start tracking a potential movement
+            movement_start_price = rise_df['Close'].iloc[i]
+            movement_start_idx = i
+            current_direction = None  # 'up' or 'down'
             
-            # Calculate daily change percentage
-            daily_change_pct = ((current_price - prev_price) / prev_price) * 100
+            # Keep going in the same direction until it changes
+            j = i + 1
+            while j < len(rise_df):
+                prev_price = rise_df['Close'].iloc[j-1]
+                current_price = rise_df['Close'].iloc[j]
+                
+                # Determine direction of this day
+                if current_price > prev_price:
+                    day_direction = 'up'
+                elif current_price < prev_price:
+                    day_direction = 'down'
+                else:
+                    # No change, continue in same direction
+                    j += 1
+                    continue
+                
+                # First day sets the direction
+                if current_direction is None:
+                    current_direction = day_direction
+                    j += 1
+                    continue
+                
+                # If direction changed, we've completed a movement
+                if day_direction != current_direction:
+                    break
+                    
+                j += 1
             
-            # Record rises ≥1%
-            if daily_change_pct >= 1.0:
-                pct_key = str(round(daily_change_pct, 2))
-                result['mid_rises'][pct_key] = {
-                    'date': current_date.strftime('%d/%m/%Y')
-                }
-            # Record falls ≥1%
-            elif daily_change_pct <= -1.0:
-                pct_key = str(round(daily_change_pct, 2))
-                result['mid_falls'][pct_key] = {
-                    'date': current_date.strftime('%d/%m/%Y')
-                }
+            # Calculate the total movement from start to end
+            if current_direction is not None and j > i + 1:
+                movement_end_price = rise_df['Close'].iloc[j-1]
+                movement_end_date = rise_df.index[j-1]
+                total_change_pct = ((movement_end_price - movement_start_price) / movement_start_price) * 100
+                
+                # Record rises ≥1%
+                if current_direction == 'up' and total_change_pct >= 1.0:
+                    pct_key = str(round(total_change_pct, 2))
+                    result['mid_rises'][pct_key] = {
+                        'date': movement_end_date.strftime('%d/%m/%Y')
+                    }
+                # Record falls ≥1%
+                elif current_direction == 'down' and total_change_pct <= -1.0:
+                    pct_key = str(round(total_change_pct, 2))
+                    result['mid_falls'][pct_key] = {
+                        'date': movement_end_date.strftime('%d/%m/%Y')
+                    }
+                
+                # Move to the end of this movement
+                i = j - 1
+            else:
+                i += 1
     
     # Analyze post-rise behavior: Track first dip -> first recovery -> second dip pattern
     if len(post_rise_df) > 1:
