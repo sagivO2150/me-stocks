@@ -327,13 +327,14 @@ app.get('/api/stock-history/:ticker', (req, res) => {
     return res.json(cached);
   }
   
-  console.log(`Fetching stock history for ${ticker} from local cache, period: ${period}`);
+  console.log(`📈 [STOCK] Fetching ${ticker} history (period: ${period})`);
   
   try {
     // Use smaller cache file with only top performers (28 stocks vs 3,171)
     const cacheFilePath = path.join(__dirname, '../output CSVs/yfinance_cache_top_performers.json');
     
     if (!fs.existsSync(cacheFilePath)) {
+      console.error(`❌ [STOCK] Cache file not found: ${cacheFilePath}`);
       return res.status(404).json({
         success: false,
         error: 'Top performers cache file not found',
@@ -343,15 +344,20 @@ app.get('/api/stock-history/:ticker', (req, res) => {
     
     // File is small (12MB) so we can parse it as JSON
     const cacheData = JSON.parse(fs.readFileSync(cacheFilePath, 'utf-8'));
+    const availableTickers = Object.keys(cacheData.data || {});
     
     if (!cacheData.data || !cacheData.data[ticker]) {
+      console.error(`❌ [STOCK] ${ticker} not in cache. Available: ${availableTickers.length} tickers (${availableTickers.slice(0, 10).join(', ')}...)`);
       return res.status(404).json({
         success: false,
         error: 'Ticker not found in top performers cache',
         ticker,
-        message: `Only top 25 best/worst performers are cached`
+        availableTickers: availableTickers.slice(0, 20),
+        message: `Only ${availableTickers.length} top performers are cached. Run: .venv/bin/python scripts/utils/extract_top_performers_cache.py`
       });
     }
+    
+    console.log(`✅ [STOCK] Found ${ticker} in cache`);
     
     const stockData = cacheData.data[ticker];
     
@@ -1226,11 +1232,13 @@ app.get('/api/backtest-results', (req, res) => {
 
 // Endpoint to get top 25 best and worst performers from backtest
 app.get('/api/best-worst-performers', (req, res) => {
+  console.log('\n📊 [BEST/WORST] Loading best/worst performers...');
   // Load insider conviction results (new strategy)
   const insiderConvictionJSON = path.join(__dirname, '../output CSVs/insider_conviction_all_stocks_results.json');
   
   try {
     if (!fs.existsSync(insiderConvictionJSON)) {
+      console.error('❌ [BEST/WORST] Results file not found:', insiderConvictionJSON);
       return res.json({ 
         success: false, 
         error: 'Insider conviction results not found',
@@ -1246,6 +1254,8 @@ app.get('/api/best-worst-performers', (req, res) => {
     // Extract top 25 best and worst performers (these have trades array included)
     const bestPerformers = jsonData.top_25_best || [];
     const worstPerformers = jsonData.top_25_worst || [];
+    
+    console.log(`✅ [BEST/WORST] Loaded ${bestPerformers.length} best, ${worstPerformers.length} worst performers`);
     
     // Get tickers
     const bestTickers = bestPerformers.map(p => p.ticker);
@@ -1278,6 +1288,10 @@ app.get('/api/best-worst-performers', (req, res) => {
     [...bestPerformers, ...worstPerformers].forEach(stock => {
       stockDataMap[stock.ticker] = stock;
     });
+    
+    console.log(`✅ [BEST/WORST] Extracted ${bestTrades.length} best trades, ${worstTrades.length} worst trades`);
+    console.log(`✅ [BEST/WORST] Best tickers: ${bestTickers.slice(0, 5).join(', ')}...`);
+    console.log(`✅ [BEST/WORST] Worst tickers: ${worstTickers.slice(0, 5).join(', ')}...\n`);
     
     res.json({ 
       success: true, 

@@ -1108,9 +1108,9 @@ def main():
     price_cache = load_cache_data()
     print()
     
-    # Load insider trades database
+    # Load insider trades database (filtered to exclude garbage stocks)
     print("Loading insider trades database...")
-    with open('output CSVs/expanded_insider_trades.json', 'r') as f:
+    with open('output CSVs/expanded_insider_trades_filtered.json', 'r') as f:
         data = json.load(f)
     
     all_stocks = data.get('data', [])

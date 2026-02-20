@@ -1,0 +1,498 @@
+{
+  "ticker": "AVNI",
+  "analysis_date": "2026-02-20 02:07:32",
+  "total_rise_events": 15,
+  "rise_events": {
+    "61.07": {
+      "rise_start_date": "02/06/2005",
+      "rise_end_date": "17/10/2005",
+      "rise_days": 137,
+      "rise_percentage": 61.07382447240289,
+      "mid_rises": {
+        "40.27": {
+          "date": "21/06/2005"
+        },
+        "12.94": {
+          "date": "01/08/2005"
+        },
+        "6.79": {
+          "date": "06/09/2005"
+        },
+        "2.22": {
+          "date": "26/09/2005"
+        },
+        "16.59": {
+          "date": "17/10/2005"
+        }
+      },
+      "mid_falls": {
+        "-4.26": {
+          "date": "01/07/2005"
+        },
+        "-4.17": {
+          "date": "20/09/2005"
+        },
+        "-12.8": {
+          "date": "04/10/2005"
+        }
+      },
+      "first_dip": {
+        "date": "17/11/2005",
+        "percentage": -7.95,
+        "days_after_peak": 23
+      },
+      "first_recovery": null,
+      "second_dip": null,
+      "insiders": []
+    },
+    "6.9": {
+      "rise_start_date": "02/02/2006",
+      "rise_end_date": "16/03/2006",
+      "rise_days": 42,
+      "rise_percentage": 6.899172327797612,
+      "mid_rises": {
+        "5.99": {
+          "date": "10/02/2006"
+        },
+        "4.63": {
+          "date": "08/03/2006"
+        },
+        "3.17": {
+          "date": "16/03/2006"
+        }
+      },
+      "mid_falls": {
+        "-4.63": {
+          "date": "28/02/2006"
+        },
+        "-2.03": {
+          "date": "09/03/2006"
+        }
+      },
+      "first_dip": {
+        "date": "30/03/2006",
+        "percentage": -17.26,
+        "days_after_peak": 10
+      },
+      "first_recovery": {
+        "date": "12/04/2006",
+        "percentage": 2.86,
+        "days_after_peak": 19
+      },
+      "second_dip": {
+        "date": "28/04/2006",
+        "percentage": -5.56,
+        "days_after_peak": 30,
+        "days_since_recovery": 11
+      },
+      "insiders": []
+    },
+    "49.5": {
+      "rise_start_date": "02/08/2006",
+      "rise_end_date": "07/08/2006",
+      "rise_days": 5,
+      "rise_percentage": 49.5000092983268,
+      "mid_rises": {
+        "49.5": {
+          "date": "07/08/2006"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "22/08/2006",
+        "percentage": -33.11,
+        "days_after_peak": 11
+      },
+      "first_recovery": {
+        "date": "08/09/2006",
+        "percentage": 30.0,
+        "days_after_peak": 23
+      },
+      "second_dip": {
+        "date": "19/09/2006",
+        "percentage": -32.69,
+        "days_after_peak": 30,
+        "days_since_recovery": 7
+      },
+      "insiders": []
+    },
+    "30.0": {
+      "rise_start_date": "31/08/2006",
+      "rise_end_date": "27/09/2006",
+      "rise_days": 27,
+      "rise_percentage": 30.00000536441931,
+      "mid_rises": {
+        "30.0": {
+          "date": "13/09/2006"
+        },
+        "42.86": {
+          "date": "27/09/2006"
+        }
+      },
+      "mid_falls": {
+        "-32.69": {
+          "date": "21/09/2006"
+        }
+      },
+      "first_dip": {
+        "date": "13/10/2006",
+        "percentage": -40.0,
+        "days_after_peak": 12
+      },
+      "first_recovery": null,
+      "second_dip": null,
+      "insiders": []
+    },
+    "150.0": {
+      "rise_start_date": "22/11/2006",
+      "rise_end_date": "20/12/2006",
+      "rise_days": 28,
+      "rise_percentage": 150.0000357627954,
+      "mid_rises": {
+        "150.0": {
+          "date": "04/12/2006"
+        },
+        "5.26": {
+          "date": "20/12/2006"
+        }
+      },
+      "mid_falls": {
+        "-24.0": {
+          "date": "15/12/2006"
+        }
+      },
+      "first_dip": {
+        "date": "11/01/2007",
+        "percentage": -15.0,
+        "days_after_peak": 13
+      },
+      "first_recovery": {
+        "date": "16/01/2007",
+        "percentage": 2.94,
+        "days_after_peak": 15
+      },
+      "second_dip": {
+        "date": "22/01/2007",
+        "percentage": -28.57,
+        "days_after_peak": 19,
+        "days_since_recovery": 4
+      },
+      "insiders": []
+    },
+    "25.0": {
+      "rise_start_date": "12/02/2007",
+      "rise_end_date": "15/02/2007",
+      "rise_days": 3,
+      "rise_percentage": 24.999980277871643,
+      "mid_rises": {
+        "25.0": {
+          "date": "15/02/2007"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "02/03/2007",
+        "percentage": -32.35,
+        "days_after_peak": 10
+      },
+      "first_recovery": {
+        "date": "09/03/2007",
+        "percentage": 9.13,
+        "days_after_peak": 15
+      },
+      "second_dip": {
+        "date": "27/03/2007",
+        "percentage": -40.24,
+        "days_after_peak": 27,
+        "days_since_recovery": 12
+      },
+      "insiders": []
+    },
+    "100.0": {
+      "rise_start_date": "05/04/2007",
+      "rise_end_date": "16/04/2007",
+      "rise_days": 11,
+      "rise_percentage": 100.0,
+      "mid_rises": {
+        "100.0": {
+          "date": "16/04/2007"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "25/04/2007",
+        "percentage": -56.67,
+        "days_after_peak": 7
+      },
+      "first_recovery": {
+        "date": "10/05/2007",
+        "percentage": 38.46,
+        "days_after_peak": 18
+      },
+      "second_dip": {
+        "date": "14/05/2007",
+        "percentage": -16.67,
+        "days_after_peak": 20,
+        "days_since_recovery": 2
+      },
+      "insiders": []
+    },
+    "650.01": {
+      "rise_start_date": "09/05/2008",
+      "rise_end_date": "22/05/2008",
+      "rise_days": 13,
+      "rise_percentage": 650.007504672399,
+      "mid_rises": {
+        "650.01": {
+          "date": "22/05/2008"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "16/06/2008",
+        "percentage": -86.67,
+        "days_after_peak": 16
+      },
+      "first_recovery": null,
+      "second_dip": null,
+      "insiders": []
+    },
+    "2400.0": {
+      "rise_start_date": "24/12/2009",
+      "rise_end_date": "04/01/2010",
+      "rise_days": 11,
+      "rise_percentage": 2399.999918509279,
+      "mid_rises": {
+        "1816.66": {
+          "date": "30/12/2009"
+        },
+        "114.29": {
+          "date": "04/01/2010"
+        }
+      },
+      "mid_falls": {
+        "-39.13": {
+          "date": "31/12/2009"
+        }
+      },
+      "first_dip": {
+        "date": "06/01/2010",
+        "percentage": -33.33,
+        "days_after_peak": 2
+      },
+      "first_recovery": {
+        "date": "11/01/2010",
+        "percentage": 45.0,
+        "days_after_peak": 5
+      },
+      "second_dip": {
+        "date": "25/01/2010",
+        "percentage": -65.52,
+        "days_after_peak": 14,
+        "days_since_recovery": 9
+      },
+      "insiders": []
+    },
+    "50.0": {
+      "rise_start_date": "26/07/2018",
+      "rise_end_date": "30/07/2018",
+      "rise_days": 4,
+      "rise_percentage": 50.00015646235574,
+      "mid_rises": {
+        "50.0": {
+          "date": "30/07/2018"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "08/08/2018",
+        "percentage": -32.67,
+        "days_after_peak": 7
+      },
+      "first_recovery": {
+        "date": "17/08/2018",
+        "percentage": 48.52,
+        "days_after_peak": 14
+      },
+      "second_dip": {
+        "date": "11/09/2018",
+        "percentage": -16.67,
+        "days_after_peak": 30,
+        "days_since_recovery": 16
+      },
+      "insiders": []
+    },
+    "76.4": {
+      "rise_start_date": "23/07/2021",
+      "rise_end_date": "03/08/2021",
+      "rise_days": 11,
+      "rise_percentage": 76.39684836953506,
+      "mid_rises": {
+        "38.71": {
+          "date": "28/07/2021"
+        },
+        "76.4": {
+          "date": "03/08/2021"
+        }
+      },
+      "mid_falls": {
+        "-27.91": {
+          "date": "30/07/2021"
+        }
+      },
+      "first_dip": {
+        "date": "04/08/2021",
+        "percentage": -37.37,
+        "days_after_peak": 1
+      },
+      "first_recovery": {
+        "date": "05/08/2021",
+        "percentage": 41.92,
+        "days_after_peak": 2
+      },
+      "second_dip": {
+        "date": "20/08/2021",
+        "percentage": -48.97,
+        "days_after_peak": 13,
+        "days_since_recovery": 11
+      },
+      "insiders": []
+    },
+    "33.33": {
+      "rise_start_date": "22/06/2022",
+      "rise_end_date": "15/07/2022",
+      "rise_days": 23,
+      "rise_percentage": 33.33285436743986,
+      "mid_rises": {
+        "33.33": {
+          "date": "30/06/2022"
+        },
+        "37.81": {
+          "date": "15/07/2022"
+        }
+      },
+      "mid_falls": {
+        "-28.21": {
+          "date": "07/07/2022"
+        }
+      },
+      "first_dip": {
+        "date": "01/08/2022",
+        "percentage": -45.49,
+        "days_after_peak": 11
+      },
+      "first_recovery": {
+        "date": "15/08/2022",
+        "percentage": 80.8,
+        "days_after_peak": 21
+      },
+      "second_dip": {
+        "date": "17/08/2022",
+        "percentage": -44.58,
+        "days_after_peak": 23,
+        "days_since_recovery": 2
+      },
+      "insiders": []
+    },
+    "190.87": {
+      "rise_start_date": "25/10/2022",
+      "rise_end_date": "17/11/2022",
+      "rise_days": 23,
+      "rise_percentage": 190.87448942153432,
+      "mid_rises": {
+        "172.73": {
+          "date": "31/10/2022"
+        },
+        "7.14": {
+          "date": "08/11/2022"
+        },
+        "33.32": {
+          "date": "17/11/2022"
+        }
+      },
+      "mid_falls": {
+        "-6.67": {
+          "date": "03/11/2022"
+        },
+        "-19.99": {
+          "date": "10/11/2022"
+        }
+      },
+      "first_dip": {
+        "date": "18/11/2022",
+        "percentage": -11.25,
+        "days_after_peak": 1
+      },
+      "first_recovery": {
+        "date": "21/11/2022",
+        "percentage": 12.67,
+        "days_after_peak": 2
+      },
+      "second_dip": {
+        "date": "14/12/2022",
+        "percentage": -12.49,
+        "days_after_peak": 18,
+        "days_since_recovery": 16
+      },
+      "insiders": []
+    },
+    "367.86": {
+      "rise_start_date": "03/12/2024",
+      "rise_end_date": "25/12/2024",
+      "rise_days": 22,
+      "rise_percentage": 367.85712042937485,
+      "mid_rises": {
+        "367.86": {
+          "date": "24/12/2024"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "14/01/2025",
+        "percentage": -44.77,
+        "days_after_peak": 11
+      },
+      "first_recovery": {
+        "date": "16/01/2025",
+        "percentage": 37.93,
+        "days_after_peak": 13
+      },
+      "second_dip": {
+        "date": "27/01/2025",
+        "percentage": -37.45,
+        "days_after_peak": 19,
+        "days_since_recovery": 6
+      },
+      "insiders": []
+    },
+    "99.97": {
+      "rise_start_date": "19/03/2025",
+      "rise_end_date": "24/03/2025",
+      "rise_days": 5,
+      "rise_percentage": 99.9666611366804,
+      "mid_rises": {
+        "99.97": {
+          "date": "24/03/2025"
+        }
+      },
+      "mid_falls": {},
+      "first_dip": {
+        "date": "27/03/2025",
+        "percentage": -21.41,
+        "days_after_peak": 3
+      },
+      "first_recovery": {
+        "date": "28/03/2025",
+        "percentage": 6.06,
+        "days_after_peak": 4
+      },
+      "second_dip": {
+        "date": "16/04/2025",
+        "percentage": -42.96,
+        "days_after_peak": 17,
+        "days_since_recovery": 13
+      },
+      "insiders": []
+    }
+  }
+}
