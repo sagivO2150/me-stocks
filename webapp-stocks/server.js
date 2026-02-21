@@ -1,5 +1,5 @@
 import express from 'express';
-import { spawn } from 'child_process';
+import { spawn, execSync } from 'child_process';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -330,36 +330,56 @@ app.get('/api/stock-history/:ticker', (req, res) => {
   console.log(`📈 [STOCK] Fetching ${ticker} history (period: ${period})`);
   
   try {
-    // Use smaller cache file with only top performers (28 stocks vs 3,171)
-    const cacheFilePath = path.join(__dirname, '../output CSVs/yfinance_cache_top_performers.json');
+    // Try smaller cache file first (top performers only)
+    const topPerformersCachePath = path.join(__dirname, '../output CSVs/yfinance_cache_top_performers.json');
+    const fullCachePath = path.join(__dirname, '../output CSVs/yfinance_cache_full.json');
     
-    if (!fs.existsSync(cacheFilePath)) {
-      console.error(`❌ [STOCK] Cache file not found: ${cacheFilePath}`);
-      return res.status(404).json({
-        success: false,
-        error: 'Top performers cache file not found',
-        message: 'Please run: .venv/bin/python scripts/utils/extract_top_performers_cache.py'
-      });
+    let stockData = null;
+    
+    // Try top performers cache first (small file, safe to read fully)
+    if (fs.existsSync(topPerformersCachePath)) {
+      const topCache = JSON.parse(fs.readFileSync(topPerformersCachePath, 'utf-8'));
+      if (topCache.data && topCache.data[ticker]) {
+        console.log(`✅ [STOCK] Found ${ticker} in top performers cache`);
+        stockData = topCache.data[ticker];
+      }
     }
     
-    // File is small (12MB) so we can parse it as JSON
-    const cacheData = JSON.parse(fs.readFileSync(cacheFilePath, 'utf-8'));
-    const availableTickers = Object.keys(cacheData.data || {});
+    // Fall back to full cache if not found
+    // NOTE: Full cache is ~1GB, too large to read as string
+    // Use Python helper to extract single ticker instead
+    if (!stockData && fs.existsSync(fullCachePath)) {
+      console.log(`🔍 [STOCK] ${ticker} not in top performers cache, extracting from full cache...`);
+      
+      try {
+        // Use Python to extract just this ticker from the large JSON file
+        const pythonCmd = `.venv/bin/python -c "import json; f=open('output CSVs/yfinance_cache_full.json'); data=json.load(f); print(json.dumps(data['data'].get('${ticker}', None)))"`;
+        const result = execSync(pythonCmd, { 
+          cwd: path.join(__dirname, '..'),
+          encoding: 'utf-8',
+          maxBuffer: 50 * 1024 * 1024 // 50MB buffer for single ticker
+        });
+        
+        const tickerData = JSON.parse(result);
+        if (tickerData && tickerData !== null) {
+          console.log(`✅ [STOCK] Extracted ${ticker} from full cache`);
+          stockData = tickerData;
+        }
+      } catch (pythonError) {
+        console.error(`❌ [STOCK] Failed to extract ${ticker} from full cache:`, pythonError.message);
+      }
+    }
     
-    if (!cacheData.data || !cacheData.data[ticker]) {
-      console.error(`❌ [STOCK] ${ticker} not in cache. Available: ${availableTickers.length} tickers (${availableTickers.slice(0, 10).join(', ')}...)`);
+    // If still not found, return error
+    if (!stockData) {
+      console.error(`❌ [STOCK] ${ticker} not found in any cache`);
       return res.status(404).json({
         success: false,
-        error: 'Ticker not found in top performers cache',
+        error: 'Ticker not found in cache',
         ticker,
-        availableTickers: availableTickers.slice(0, 20),
-        message: `Only ${availableTickers.length} top performers are cached. Run: .venv/bin/python scripts/utils/extract_top_performers_cache.py`
+        message: `Ticker ${ticker} not found in cache files`
       });
     }
-    
-    console.log(`✅ [STOCK] Found ${ticker} in cache`);
-    
-    const stockData = cacheData.data[ticker];
     
     // Convert to expected format
     const historyData = stockData.dates.map((date, idx) => ({
@@ -1233,15 +1253,23 @@ app.get('/api/backtest-results', (req, res) => {
 // Endpoint to get top 25 best and worst performers from backtest
 app.get('/api/best-worst-performers', (req, res) => {
   console.log('\n📊 [BEST/WORST] Loading best/worst performers...');
-  // Load insider conviction results (new strategy)
-  const insiderConvictionJSON = path.join(__dirname, '../output CSVs/insider_conviction_all_stocks_results.json');
+  
+  // Support both original and ATR strategies
+  const strategy = req.query.strategy || 'atr';  // Default to ATR strategy
+  const resultsFile = strategy === 'atr' 
+    ? 'atr_strategy_results.json'
+    : 'insider_conviction_all_stocks_results.json';
+  
+  const resultsPath = path.join(__dirname, '../output CSVs', resultsFile);
+  
+  console.log(`📊 [BEST/WORST] Using strategy: ${strategy} (${resultsFile})`);
   
   try {
-    if (!fs.existsSync(insiderConvictionJSON)) {
-      console.error('❌ [BEST/WORST] Results file not found:', insiderConvictionJSON);
+    if (!fs.existsSync(resultsPath)) {
+      console.error('❌ [BEST/WORST] Results file not found:', resultsPath);
       return res.json({ 
         success: false, 
-        error: 'Insider conviction results not found',
+        error: `${strategy} results not found`,
         bestPerformers: [],
         worstPerformers: [],
         bestTrades: [],
@@ -1249,7 +1277,7 @@ app.get('/api/best-worst-performers', (req, res) => {
       });
     }
     
-    const jsonData = JSON.parse(fs.readFileSync(insiderConvictionJSON, 'utf-8'));
+    const jsonData = JSON.parse(fs.readFileSync(resultsPath, 'utf-8'));
     
     // Extract top 25 best and worst performers (these have trades array included)
     const bestPerformers = jsonData.top_25_best || [];
