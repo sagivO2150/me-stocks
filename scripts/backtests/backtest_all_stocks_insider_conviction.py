@@ -378,6 +378,10 @@ class TradingState:
             if self.consecutive_up_days < 3:
                 return None
         
+        # Calculate total insider investment (for tracking only)
+        total_investment = sum(abs(t['value']) for t in self.insiders_bought_in_fall)
+        num_insiders = len(set(t['insider_name'] for t in self.insiders_bought_in_fall))
+        
         # SCENARIO 1: Shopping Spree
         if self.insiders_bought_in_rise and self.insiders_bought_in_fall and self.shopping_spree_peak_price:
             target = self.shopping_spree_peak_price
@@ -410,8 +414,8 @@ class TradingState:
         
         # SCENARIO 2: Absorption Buy
         elif self.insiders_bought_in_fall and not self.insiders_bought_in_rise:
-            total_investment = sum(abs(t['value']) for t in self.insiders_bought_in_fall)
             
+            # Already calculated above
             if total_investment >= 5000:
                 target_gain_pct = abs(self.prev_fall_pct)
                 
@@ -455,6 +459,25 @@ class TradingState:
         # Calculate current performance
         current_gain_pct = ((current_price - self.entry_price) / self.entry_price) * 100
         self.peak_since_entry = max(self.peak_since_entry, current_gain_pct)
+        days_held = (current_date - self.entry_date).days
+        
+        # ===== AGGRESSIVE EARLY EXITS (Kill losers fast, let winners run) =====
+        # Winners exit naturally in 6-92 days. These guardrails only catch zombies.
+        
+        # 30-day stop: Exit if down >20% (clear loser)
+        if days_held >= 30 and current_gain_pct <= -20:
+            self.in_position = False
+            return ('early_stop_loss', current_price)
+        
+        # 60-day exit: If gain < +5%, it's going nowhere
+        if days_held >= 60 and current_gain_pct < 5:
+            self.in_position = False
+            return ('60day_underperformer', current_price)
+        
+        # 90-day exit: If gain < +10%, it's a zombie
+        if days_held >= 90 and current_gain_pct < 10:
+            self.in_position = False
+            return ('90day_zombie', current_price)
         
         # ABSORPTION BUY has different sell logic
         if self.buy_type == 'absorption_buy':
@@ -504,7 +527,6 @@ class TradingState:
                         print(f"  💰 {current_date.strftime('%Y-%m-%d')}: SELL! Dip: {daily_change_pct:.2f}%")
                     return ('absorption_target_reached', current_price)
             
-            # No stop loss for absorption buy - only sell when target reached
             return None
         
         # SHOPPING SPREE sell logic
@@ -1114,6 +1136,12 @@ def main():
         data = json.load(f)
     
     all_stocks = data.get('data', [])
+    
+    # TESTING MODE: Limit to 500 stocks for faster iteration
+    if not single_ticker:
+        all_stocks = all_stocks[:500]
+        print(f"⚡ FAST TEST MODE: Processing first 500 stocks only")
+    
     print(f"✓ Loaded {len(all_stocks)} stocks from database")
     print()
     
