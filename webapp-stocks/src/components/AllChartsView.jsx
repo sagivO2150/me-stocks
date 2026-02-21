@@ -82,33 +82,6 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
   
   // Filter backtest trades for this ticker
   const backtestTrades = allBacktestTrades ? allBacktestTrades.filter(trade => trade.ticker === ticker) : null;
-  
-  // DEBUG: Log trade filtering (once per ticker)
-  useEffect(() => {
-    console.log(`🟢 [StockChart] ${ticker}: Filtering trades from allBacktestTrades (${allBacktestTrades?.length || 0} total)`);
-    console.log(`🟢 [StockChart] ${ticker}: Found ${backtestTrades?.length || 0} trades for this ticker`);
-    if (backtestTrades?.length > 0) {
-      console.log(`🟢 [StockChart] ${ticker}: Sample trade:`, backtestTrades[0]);
-    }
-  }, [ticker, allBacktestTrades]);
-  
-  // DEBUG: GROV-specific debugging
-  useEffect(() => {
-    if (ticker === 'GROV' && allBacktestTrades) {
-      console.log('🔍 GROV DEBUG:');
-      console.log('  Total trades in allBacktestTrades:', allBacktestTrades.length);
-      const grovTrades = allBacktestTrades.filter(t => t.ticker === 'GROV');
-      console.log('  GROV trades found:', grovTrades.length);
-      grovTrades.forEach((trade, idx) => {
-        console.log(`  Trade ${idx + 1}:`, {
-          entry_date: trade.entry_date,
-          entry_price: trade.entry_price,
-          exit_date: trade.exit_date,
-          return_pct: trade.return_pct
-        });
-      });
-    }
-  }, [allBacktestTrades, ticker]);
 
   useEffect(() => {
     if (focusDate) {
@@ -141,35 +114,53 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
     setError(null);
     
     try {
-      const response = await fetch(`http://localhost:3001/api/stock-history/${ticker}?period=${selectedPeriod}`);
+      const url = `http://localhost:3001/api/stock-history/${ticker}?period=${selectedPeriod}`;
+      const response = await fetch(url);
       const data = await response.json();
       
       if (data.success) {
         setStockHistory(data);
       } else {
-        setError(data.error || 'Failed to fetch stock data');
+        const errorMsg = data.error || 'Failed to fetch stock data';
+        setError(errorMsg);
       }
     } catch (err) {
-      setError('Failed to connect to server: ' + err.message);
+      const errorMsg = 'Failed to connect to server: ' + err.message;
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }
   };
 
   const fetchInsiderTrades = async () => {
+    console.log(`� INSIDER [${ticker}] Starting fetch...`);
     setInsiderLoading(true);
     
     try {
-      const response = await fetch(`http://localhost:3001/api/insider-trades/${ticker}`);
+      const url = `http://localhost:3001/api/insider-trades/${ticker}`;
+      const response = await fetch(url);
       const data = await response.json();
+      
+      console.log(`📊 INSIDER [${ticker}] Response received:`, {
+        success: data.success,
+        purchases: data.purchases?.length || 0,
+        sales: data.sales?.length || 0
+      });
       
       if (data.success) {
         setInsiderTrades(data);
+        console.log(`📊 INSIDER [${ticker}] ✅ Loaded ${data.purchases?.length || 0} purchases, ${data.sales?.length || 0} sales`);
+        if (data.purchases?.length > 0) {
+          console.log(`📊 INSIDER [${ticker}] Sample purchase:`, data.purchases[0]);
+        }
+      } else {
+        console.error(`📊 INSIDER [${ticker}] ❌ API returned success=false`);
       }
     } catch (err) {
-      console.error('Failed to fetch insider trades:', err);
+      console.error(`📊 INSIDER [${ticker}] ❌ Fetch error:`, err);
     } finally {
       setInsiderLoading(false);
+      console.log(`📊 INSIDER [${ticker}] Fetch complete`);
     }
   };
 
@@ -305,47 +296,72 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
     };
     
     if (insiderTrades) {
+      // Get available chart dates for filtering
+      const chartDates = new Set(data.map(point => point.date.split('T')[0].split(' ')[0]));
+      
+      console.log(`📊 INSIDER [${ticker}] Chart dates sample:`, Array.from(chartDates).slice(0, 5));
+      
       insiderTrades.purchases?.forEach(trade => {
-        const originalDateKey = trade.date.split('T')[0].split(' ')[0];
-        const dateKey = findNearestTradingDay(originalDateKey);
+        const dateKey = trade.date.split('T')[0].split(' ')[0];
         
-        if (!dateKey) return; // Skip if no nearby trading day found
+        console.log(`📊 INSIDER [${ticker}] Checking trade date ${dateKey}, in chartDates: ${chartDates.has(dateKey)}`);
+        
+        // Only include trades that fall within the chart's date range
+        if (!chartDates.has(dateKey)) return;
         
         if (!insiderPurchasesByDate[dateKey]) {
           insiderPurchasesByDate[dateKey] = { trades: [], totalValue: 0, count: 0 };
         }
+        // Parse value - could be number (196720) or string ('+$107,700')
+        const valueNum = typeof trade.value === 'number' 
+          ? trade.value 
+          : parseFloat(trade.value.replace(/[^0-9.-]/g, '')) || 0;
+        
         insiderPurchasesByDate[dateKey].trades.push({
           insider: trade.insider_name,
           title: trade.title,
           role: classifyInsiderRole(trade.title),
           shares: trade.shares,
           value: trade.value,
-          originalDate: originalDateKey  // Always include the filing date
+          originalDate: dateKey
         });
-        insiderPurchasesByDate[dateKey].totalValue += trade.value;
+        insiderPurchasesByDate[dateKey].totalValue += valueNum;
         insiderPurchasesByDate[dateKey].count += 1;
       });
       
       insiderTrades.sales?.forEach(trade => {
-        const originalDateKey = trade.date.split('T')[0].split(' ')[0];
-        const dateKey = findNearestTradingDay(originalDateKey);
+        const dateKey = trade.date.split('T')[0].split(' ')[0];
         
-        if (!dateKey) return; // Skip if no nearby trading day found
+        // Only include trades that fall within the chart's date range
+        if (!chartDates.has(dateKey)) return;
         
         if (!insiderSalesByDate[dateKey]) {
           insiderSalesByDate[dateKey] = { trades: [], totalValue: 0, count: 0 };
         }
+        // Parse value - could be number (250000) or string ('-$250,000')
+        const valueNum = typeof trade.value === 'number'
+          ? trade.value
+          : parseFloat(trade.value.replace(/[^0-9.-]/g, '')) || 0;
+        
         insiderSalesByDate[dateKey].trades.push({
           insider: trade.insider_name,
           title: trade.title,
           role: classifyInsiderRole(trade.title),
           shares: trade.shares,
           value: trade.value,
-          originalDate: originalDateKey  // Always include the filing date
+          originalDate: dateKey
         });
-        insiderSalesByDate[dateKey].totalValue += trade.value;
+        insiderSalesByDate[dateKey].totalValue += valueNum;
         insiderSalesByDate[dateKey].count += 1;
       });
+      
+      console.log(`📊 INSIDER [${ticker}] After processing:`);
+      console.log(`   - Purchase dates mapped: ${Object.keys(insiderPurchasesByDate).length}`);
+      console.log(`   - Sale dates mapped: ${Object.keys(insiderSalesByDate).length}`);
+      if (Object.keys(insiderPurchasesByDate).length > 0) {
+        const firstDate = Object.keys(insiderPurchasesByDate)[0];
+        console.log(`   - Sample purchase date: ${firstDate}, count: ${insiderPurchasesByDate[firstDate].count}`);
+      }
     }
     
     // Create maps for backtest buy/sell signals by date
@@ -393,12 +409,28 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
       }
     }
     
+    console.log(`📊 INSIDER [${ticker}] Before merging into chartData:`);
+    console.log(`   - Chart data points: ${data.length}`);
+    console.log(`   - Insider purchase dates: ${Object.keys(insiderPurchasesByDate).length}`);
+    console.log(`   - Insider sale dates: ${Object.keys(insiderSalesByDate).length}`);
+    if (data.length > 0) {
+      console.log(`   - Chart date range: ${data[0].date} to ${data[data.length - 1].date}`);
+    }
+    if (Object.keys(insiderPurchasesByDate).length > 0) {
+      console.log(`   - Insider purchase dates:`, Object.keys(insiderPurchasesByDate).slice(0, 3));
+    }
+    
     // Merge into chart data
-    return data.map(point => {
+    const mergedData = data.map(point => {
       const dateKey = point.date.split('T')[0].split(' ')[0];
       
       const purchaseData = insiderPurchasesByDate[dateKey];
       const saleData = insiderSalesByDate[dateKey];
+      
+      if (purchaseData) {
+        console.log(`📊 INSIDER [${ticker}] Found purchase at ${dateKey}:`, purchaseData);
+      }
+      
       const backtestBuys = backtestBuysByDate[dateKey] || [];
       const backtestSells = backtestSellsByDate[dateKey] || [];
       
@@ -442,6 +474,16 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
         ...tradeLineData
       };
     });
+    
+    const pointsWithPurchases = mergedData.filter(p => p.purchases && p.purchases > 0).length;
+    console.log(`📊 INSIDER [${ticker}] After merging:`);
+    console.log(`   - Points with purchases: ${pointsWithPurchases}/${mergedData.length}`);
+    if (pointsWithPurchases > 0) {
+      const sample = mergedData.find(p => p.purchases && p.purchases > 0);
+      console.log(`   - Sample point with purchase:`, { date: sample.date, purchases: sample.purchases, tradesCount: sample.purchaseTrades.length });
+    }
+    
+    return mergedData;
   };
 
   const CustomTooltip = ({ active, payload }) => {
@@ -601,11 +643,11 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
         <div className="mb-4 flex gap-4 text-sm">
           <div className="flex items-center gap-2">
             <span className="text-emerald-400">🟢 Purchases:</span>
-            <span className="text-white font-semibold">{insiderTrades.total_purchases || 0}</span>
+            <span className="text-white font-semibold">{insiderTrades.purchases?.length || 0}</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="text-red-400">🔴 Sales:</span>
-            <span className="text-white font-semibold">{insiderTrades.total_sales || 0}</span>
+            <span className="text-white font-semibold">{insiderTrades.sales?.length || 0}</span>
           </div>
         </div>
       )}
@@ -652,19 +694,35 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
 
       {/* Chart */}
       <div className="bg-slate-900 rounded-lg p-3">
-        {loading ? (
-          <div className="h-64 flex items-center justify-center text-slate-400">
-            Loading chart data...
-          </div>
-        ) : error ? (
-          <div className="h-64 flex items-center justify-center text-red-400">
-            Error: {error}
-          </div>
-        ) : chartData.length === 0 ? (
-          <div className="h-64 flex items-center justify-center text-slate-400">
-            No data available
-          </div>
-        ) : (
+        {(() => {
+          console.log(`🟡 [Chart ${ticker}] Render check: loading=${loading}, error=${error}, chartData.length=${chartData.length}`);
+          
+          if (loading) {
+            console.log(`🟡 [Chart ${ticker}] 🔄 Displaying "Loading chart data..." message`);
+            return (
+              <div className="h-64 flex items-center justify-center text-slate-400">
+                Loading chart data...
+              </div>
+            );
+          }
+          
+          if (error) {
+            return (
+              <div className="h-64 flex items-center justify-center text-red-400">
+                Error: {error}
+              </div>
+            );
+          }
+          
+          if (chartData.length === 0) {
+            return (
+              <div className="h-64 flex items-center justify-center text-slate-400">
+                No data available
+              </div>
+            );
+          }
+          
+          return (
           <ResponsiveContainer width="100%" height={300}>
             <ComposedChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
               <defs>
@@ -834,7 +892,18 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
                 </>
               )}
               
-              {insiderTrades && insiderTrades.total_purchases > 0 && (
+              {(() => {
+                console.log(`📊 INSIDER [${ticker}] Scatter condition check:`, {
+                  hasInsiderTrades: !!insiderTrades,
+                  purchasesType: typeof insiderTrades?.purchases,
+                  purchasesLength: insiderTrades?.purchases?.length,
+                  purchasesValue: Array.isArray(insiderTrades?.purchases) ? 'ARRAY' : insiderTrades?.purchases,
+                  condition: insiderTrades && insiderTrades.purchases?.length > 0
+                });
+                return null;
+              })()}
+              
+              {insiderTrades && insiderTrades.purchases?.length > 0 && (
                 <Scatter
                   yAxisId="insider"
                   dataKey="purchases"
@@ -842,6 +911,15 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
                   isAnimationActive={false}
                   shape={(props) => {
                     const { cx, cy, payload, yAxis } = props;
+                    
+                    console.log(`📊 INSIDER [${ticker}] Scatter shape called:`, {
+                      cx, cy,
+                      hasPayload: !!payload,
+                      hasPurchases: payload?.purchases !== undefined && payload?.purchases !== null,
+                      purchaseValue: payload?.purchases,
+                      date: payload?.date
+                    });
+                    
                     if (!payload || !payload.purchases || payload.purchases <= 0) return null;
                     
                     // Get the chart bottom from yAxis range
@@ -876,7 +954,8 @@ const SingleStockChart = ({ ticker, allBacktestTrades }) => {
               )}
             </ComposedChart>
           </ResponsiveContainer>
-        )}
+          );
+        })()}
       </div>
     </div>
   );

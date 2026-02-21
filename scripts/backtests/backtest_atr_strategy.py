@@ -135,6 +135,52 @@ def get_average_mid_fall_for_rise_group(volatility_data: Dict, target_rise_pct: 
     return sum(matching_falls) / len(matching_falls)
 
 
+def detect_conviction_level(insiders_list: List[Dict]) -> Tuple[str, float]:
+    """
+    Detect conviction level based on insider characteristics.
+    
+    Returns:
+        Tuple of (signal_type, multiplier)
+        - OMEGA: CFO/CEO individual buy >$25k (4.0×)
+        - CONVICTION: Sequence/pattern + Moderate ITI (3.0×)
+        - SPRINT: Low conviction or quick opportunity (1.2×)
+    """
+    if not insiders_list:
+        return ('SPRINT', 1.2)
+    
+    # Calculate total investment
+    total_investment = sum(abs(insider.get('value', 0)) for insider in insiders_list)
+    
+    # Check for executive titles (CFO, CEO)
+    executive_titles = ['cfo', 'chief financial', 'ceo', 'chief executive']
+    
+    # Check if any executive made a significant individual purchase
+    max_executive_investment = 0
+    for insider in insiders_list:
+        title = insider.get('title', '').lower()
+        value = abs(insider.get('value', 0))
+        
+        # DEBUG
+        is_exec = any(exec_title in title for exec_title in executive_titles)
+        if is_exec and value > 20000:
+            print(f"    [CONVICTION DEBUG] {insider.get('insider_name', 'Unknown')}: {title} - ${value:,.0f}")
+        
+        if is_exec:
+            max_executive_investment = max(max_executive_investment, value)
+    
+    # OMEGA Signal: CFO/CEO individual buy >$25k (shows personal conviction)
+    if max_executive_investment >= 25000:
+        return ('OMEGA', 4.0)
+    
+    # CONVICTION Signal: Multiple insiders OR moderate total ITI ($20k+)
+    elif len(insiders_list) >= 2 or total_investment >= 20000:
+        return ('CONVICTION', 3.0)
+    
+    # SPRINT: Low conviction - take quick profits
+    else:
+        return ('SPRINT', 1.2)
+
+
 def get_omega_multiplier(volatility_data: Dict) -> float:
     """
     Calculate Omega multiplier based on deepest mid-falls in top 25% of rises.
@@ -236,6 +282,7 @@ class TradingState:
         self.in_mid_rise = False
         self.mid_rise_start_price = None
         self.omega_multiplier = None
+        self.conviction_multiplier = None  # Conviction-based Phase B multiplier
         
         # Event tracking
         self.all_events = []
@@ -431,6 +478,7 @@ class TradingState:
             'price': trade_info['price'],
             'insider_name': trade_info['insider_name'],
             'value': trade_info['value'],
+            'title': trade_info.get('title', ''),  # CRITICAL: Need title for conviction detection
             'stock_price': trade_info.get('stock_price', trade_info['price'])
         }
         
@@ -464,6 +512,11 @@ class TradingState:
             target = self.shopping_spree_peak_price
             
             if target > current_price:
+                all_insider_purchases = self.insiders_bought_in_rise + self.insiders_bought_in_fall
+                
+                # CONVICTION GATE: Detect conviction level
+                signal_type, conviction_mult = detect_conviction_level(all_insider_purchases)
+                
                 self.in_position = True
                 self.entry_date = current_date
                 self.entry_price = current_price
@@ -478,8 +531,7 @@ class TradingState:
                 self.mid_rises_since_entry = []
                 self.mid_falls_since_entry = []
                 self.last_price = current_price
-                
-                all_insider_purchases = self.insiders_bought_in_rise + self.insiders_bought_in_fall
+                self.conviction_multiplier = conviction_mult  # Store for Phase B
                 
                 self.insiders_bought_in_rise = []
                 self.insiders_bought_in_fall = []
@@ -493,13 +545,18 @@ class TradingState:
                     'num_insiders': len(all_insider_purchases),
                     'prev_fall_pct': self.prev_fall_pct,
                     'atr_at_entry': atr,
-                    'initial_floor': self.current_floor
+                    'initial_floor': self.current_floor,
+                    'conviction_level': signal_type,
+                    'conviction_multiplier': conviction_mult
                 }
         
         # SCENARIO 2: Absorption Buy
         elif self.insiders_bought_in_fall and not self.insiders_bought_in_rise:
             if total_investment >= 5000:
                 target_gain_pct = abs(self.prev_fall_pct)
+                
+                # CONVICTION GATE: Detect conviction level
+                signal_type, conviction_mult = detect_conviction_level(self.insiders_bought_in_fall)
                 
                 self.in_position = True
                 self.entry_date = current_date
@@ -515,6 +572,7 @@ class TradingState:
                 self.mid_rises_since_entry = []
                 self.mid_falls_since_entry = []
                 self.last_price = current_price
+                self.conviction_multiplier = conviction_mult  # Store for Phase B
                 
                 self.insiders_bought_in_rise = []
                 self.insiders_bought_in_fall = []
@@ -529,7 +587,9 @@ class TradingState:
                     'fall_pct': self.prev_fall_pct,
                     'total_investment': total_investment,
                     'atr_at_entry': atr,
-                    'initial_floor': self.current_floor
+                    'initial_floor': self.current_floor,
+                    'conviction_level': signal_type,
+                    'conviction_multiplier': conviction_mult
                 }
         
         return None
@@ -539,7 +599,9 @@ class TradingState:
         if not self.in_position:
             return
         
-        days_held = (current_date - self.entry_date).days
+        # Count TRADING DAYS only (exclude weekends/holidays)
+        import numpy as np
+        days_held = np.busday_count(self.entry_date.date(), current_date.date())
         
         # Update peak
         if current_price > self.peak_price_since_entry:
@@ -578,7 +640,7 @@ class TradingState:
             new_floor = self.peak_price_since_entry - (1.5 * self.atr_at_entry)
             self.current_floor = max(self.current_floor, new_floor)
         
-        # PHASE B: After first mid-rise - Pattern matching
+        # PHASE B: After first mid-rise - Pattern matching with CONVICTION MULTIPLIER
         elif len(self.mid_rises_since_entry) >= 1 and self.cumulative_rise_pct < 30:
             self.current_phase = 'B'
             
@@ -589,9 +651,16 @@ class TradingState:
                 margin_pct=20.0
             )
             
-            # Set floor at 1.2 × average historical mid-fall
-            buffer_pct = 1.2 * avg_historical_fall
+            # Use CONVICTION MULTIPLIER (4.0× for OMEGA, 3.0× for CONVICTION, 1.2× for SPRINT)
+            multiplier = self.conviction_multiplier if self.conviction_multiplier else 1.2
+            buffer_pct = multiplier * avg_historical_fall
             new_floor = self.peak_price_since_entry * (1 - buffer_pct / 100)
+            
+            # DEBUG: Show Phase B floor calculation for critical trades
+            if hasattr(current_date, 'year') and current_date.year == 2025 and current_date.month in [11, 12]:
+                if self.ticker == 'BLNE' and days_held >= 5:
+                    print(f"  [Phase B {current_date.strftime('%Y-%m-%d')}] Peak=${self.peak_price_since_entry:.2f}, Hist Fall={avg_historical_fall:.1f}%, Mult={multiplier:.1f}×, Buffer={buffer_pct:.1f}%, Floor=${new_floor:.2f}")
+            
             self.current_floor = max(self.current_floor, new_floor)
         
         # PHASE C: Cumulative rise > 30% - Omega Phase (Chandelier Exit)
@@ -620,7 +689,10 @@ class TradingState:
         # Calculate current performance
         current_gain_pct = ((current_price - self.entry_price) / self.entry_price) * 100
         self.peak_since_entry = max(self.peak_since_entry, current_gain_pct)
-        days_held = (current_date - self.entry_date).days
+        
+        # Count TRADING DAYS only (exclude weekends/holidays)
+        import numpy as np
+        days_held = np.busday_count(self.entry_date.date(), current_date.date())
         
         # AGGRESSIVE EARLY EXITS (Kill losers fast)
         if days_held >= 30 and current_gain_pct <= -20:
@@ -780,6 +852,7 @@ def process_single_stock(ticker: str, stock_data: Dict, price_cache: Dict,
                         print(f"   Target: ${buy_signal['target_price']:.2f}")
                         print(f"   ATR: ${buy_signal['atr_at_entry']:.2f}")
                         print(f"   Initial Floor: ${buy_signal['initial_floor']:.2f}")
+                        print(f"   🔥 Conviction: {buy_signal.get('conviction_level', 'UNKNOWN')} ({buy_signal.get('conviction_multiplier', 0):.1f}×)")
                         print()
         
         # Handle open position at end
@@ -884,13 +957,17 @@ def main():
     """Run the ATR-based strategy."""
     parser = argparse.ArgumentParser(description='Run ATR-Based Insider Conviction Strategy')
     parser.add_argument('--ticker', type=str, help='Run backtest for a single ticker')
+    parser.add_argument('--limit', type=int, help='Limit number of stocks to test (for testing)')
     args = parser.parse_args()
     
     single_ticker = args.ticker.upper() if args.ticker else None
+    stock_limit = args.limit if args.limit else None
     
     print("=" * 80)
     if single_ticker:
         print(f"🔬 ATR STRATEGY - SINGLE STOCK TEST: {single_ticker}")
+    elif stock_limit:
+        print(f"ATR-BASED INSIDER CONVICTION STRATEGY - LIMITED TO {stock_limit} STOCKS")
     else:
         print("ATR-BASED INSIDER CONVICTION STRATEGY - ALL STOCKS")
     print("=" * 80)
@@ -963,47 +1040,28 @@ def main():
         
         # Save to ATR-specific results file
         output_file = 'output CSVs/atr_strategy_results.json'
-        try:
-            with open(output_file, 'r') as f:
-                existing_data = json.load(f)
-        except (FileNotFoundError, json.JSONDecodeError):
-            print(f"ℹ️  Creating new ATR strategy results file")
-            existing_data = {
-                'analysis_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                'strategy': 'ATR-Based Insider Conviction',
-                'overall_stats': {},
-                'top_25_best': [],
-                'top_25_worst': [],
-                'all_results': []
-            }
         
-        # Update or add this ticker
-        updated = False
-        for i, stock in enumerate(existing_data['all_results']):
-            if stock['ticker'] == single_ticker:
-                existing_data['all_results'][i] = result
-                updated = True
-                break
+        # SINGLE TICKER MODE: Replace ALL previous data with just this ticker
+        # This is the only stock being tested, so it should be the only one in the results
+        print(f"🧹 Single-ticker mode: Replacing all previous data with {single_ticker} results")
         
-        if not updated:
-            existing_data['all_results'].append(result)
-        
-        # Update strategy name
-        existing_data['strategy'] = 'ATR-Based Insider Conviction'
-        existing_data['analysis_date'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        
-        # Update top lists if ticker is in there
-        for i, stock in enumerate(existing_data.get('top_25_best', [])):
-            if stock['ticker'] == single_ticker:
-                existing_data['top_25_best'][i] = result
-                print(f"📈 Updated in top_25_best")
-                break
-        
-        for i, stock in enumerate(existing_data.get('top_25_worst', [])):
-            if stock['ticker'] == single_ticker:
-                existing_data['top_25_worst'][i] = result
-                print(f"📉 Updated in top_25_worst")
-                break
+        existing_data = {
+            'analysis_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'strategy': 'ATR-Based Insider Conviction',
+            'overall_stats': {
+                'stocks_analyzed': 1,
+                'total_trades': result['total_trades'],
+                'winning_trades': result['winning_trades'],
+                'overall_win_rate': result['win_rate'],
+                'total_profit': result['total_profit'],
+                'total_invested': result['total_invested'],
+                'overall_roi': result['roi']
+            },
+            # In single-ticker mode, this ticker is both best and worst (it's the only one)
+            'top_25_best': [result] if result['roi'] >= 0 else [],
+            'top_25_worst': [result] if result['roi'] < 0 else [],
+            'all_results': [result]
+        }
         
         # Save updated results
         with open(output_file, 'w') as f:
@@ -1028,22 +1086,23 @@ def main():
         return
     
     # FULL RUN MODE
-    print(f"Processing {len(all_stocks)} stocks...")
+    stocks_to_process = all_stocks[:stock_limit] if stock_limit else all_stocks
+    print(f"Processing {len(stocks_to_process)} stocks...")
     results = []
     
-    for i, stock_data in enumerate(all_stocks):
+    for i, stock_data in enumerate(stocks_to_process):
         ticker = stock_data.get('ticker', '')
         if not ticker:
             continue
         
-        print(f"{i}/{len(all_stocks)}", flush=True)
+        print(f"{i}/{len(stocks_to_process)}", flush=True)
         
         result = process_single_stock(ticker, stock_data, price_cache)
         
         if result:
             results.append(result)
     
-    print(f"\n✓ Completed processing {len(all_stocks)} stocks")
+    print(f"\n✓ Completed processing {len(stocks_to_process)} stocks")
     print(f"✓ Found {len(results)} stocks with trades")
     print()
     print("=" * 80)

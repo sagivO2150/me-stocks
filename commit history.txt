@@ -1,3 +1,369 @@
+17c307251acded1e4c0814bd9e04f3f54401af69
+New ATR-based sell logic and backtesting script added
+Implemented a new sell order logic based on ATR and updated relevant components. Added a backtesting script and troubleshooting guide for the ATR strategy.
+
+Key changes:
+- Introduced `backtest_atr_strategy.py` script for testing ATR-based strategies.
+- Updated `server.js` to integrate ATR-based sell logic.
+- Added `atr_strategy_results.json` for storing ATR strategy outputs.
+- Modified `insider_conviction_all_stocks_results.json` to include ATR-based analysis.
+- Created `TROUBLESHOOTING_WEBAPP_STOCK_DATA.md` for debugging web app data issues.
+- Updated PID files for `node-server` and `vite`.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+16597db67623fe53107356aeb9340125993a56cd
+New test approach: expanded analysis and signal tracking
+Introduced a new testing methodology focusing on detailed signal tracking and performance analysis across multiple stocks. Updated existing insider conviction results and added new scripts and outputs for comprehensive evaluation.
+
+- Updated insider conviction results JSON with refined data and metrics.
+- Added scripts for analyzing entry/exit signals, performance patterns, and absorption exits.
+- Generated new outputs for rise events and volatility analysis across selected stocks.
+- Created a report comparing best and worst performers.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+d7767cdaa0db6caf5075e3921beed13dc21d84d1
+Removed pink sheet and low volume stocks from testing
+Updated testing datasets and scripts to exclude pink sheet and low volume stocks for improved accuracy and reliability.
+
+- Modified `backtest_all_stocks_insider_conviction.py` to filter out pink sheet and low volume stocks.
+- Updated output files: `blne_rise_events.xlsx`, `blne_rise_volatility_analysis.json`, `insider_conviction_all_stocks_results.json`, and `yfinance_cache_top_performers.json`.
+- Added new scripts: `filter_garbage_stocks.py` and `relax_volume_filter.py` for stock filtering.
+- Introduced new output files: `avni_rise_events.xlsx`, `avni_rise_volatility_analysis.json`, and `expanded_insider_trades_filtered.json`.
+- Adjusted server PID files for updated processes.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+5125465e82836cc04ee2ec18509ee37e6f6b1cea
+Test confirmed working for single stock, data updated
+Updated output files and backtest script to reflect new results for single stock analysis. Adjustments made to data and logic for improved accuracy.
+
+- Updated `blne_rise_events.xlsx` with latest rise event data
+- Modified `blne_rise_volatility_analysis.json` to include insider details
+- Adjusted `insider_conviction_all_stocks_results.json` with updated trade stats
+- Deleted temporary file `~$blne_rise_events.xlsx`
+- Refined `backtest_all_stocks_insider_conviction.py` for single stock testing
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+1dfc2ed380d99d25ec406054480b6145de341bbb
+Improve code structure; fix buy and sell order logic
+Refactored code for better readability and updated buy/sell order handling logic. Adjusted output data files to reflect new calculations.
+
+- Enhanced `backtest_all_stocks_insider_conviction.py` for improved logic clarity.
+- Updated `blne_rise_volatility_analysis.json` with new rise event data.
+- Adjusted `blne_rise_events.xlsx` to include updated analysis results.
+- Refined insider conviction results in `insider_conviction_all_stocks_results.json`.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+44fa61542423ce1333dc610fd373e3462c6510ff
+Remove 2-day rise event after fall with insider buying
+Updated the data and logic to reflect changes in rise event detection.
+
+- Modified `blne_rise_events.xlsx` to remove the 2-day rise event with insider buying.
+- Adjusted `blne_rise_volatility_analysis.json` to reflect updated rise event counts and details.
+- Updated `insider_conviction_all_stocks_results.json` with revised analysis results.
+- Added new files `sezl_rise_events.xlsx` and `sezl_rise_volatility_analysis.json` for SEZL stock analysis.
+- Refined `backtest_all_stocks_insider_conviction.py` to align with updated rise event logic.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+dae3c367bb7793bc2dde163aab6e339027965435
+Fix insider events display issue in CSV output
+Resolved a problem where insider events were not correctly displayed in the CSV output. Adjustments were made to ensure accurate representation of data.
+
+- Updated `blne_rise_events.xlsx` with corrected data.
+- Modified `blne_rise_volatility_analysis.json` to handle empty insider events.
+- Adjusted `insider_conviction_all_stocks_results.json` with updated analysis date.
+- Refined logic in `backtest_all_stocks_insider_conviction.py` to correct rise event handling.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+fbf1654c03179865a977f166180e8a9227645032
+Align CSV and JSON data for consistency
+Updated the CSV and JSON files to ensure alignment in data structure and content. Adjusted dates and values to match across both formats, improving data accuracy and consistency.
+
+- Modified `blne_rise_events.xlsx` to reflect updated rise and fall data.
+- Adjusted `blne_rise_volatility_analysis.json` with corrected dates and values for rise events, dips, and recoveries.
+- Removed redundant entries in JSON for mid rises and mid falls.
+- Updated `backtest_all_stocks_insider_conviction.py` script to handle aligned data formats effectively.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+7616c582b1be78e0c21d98a9a6e06258e8500d43
+Improve detection logic for beginning of a rise
+Refined the logic to accurately detect the start of a rise event, ensuring better alignment with peak-to-fall transitions and updated related outputs.
+
+- Updated `trend_start_date` logic in backtest script to use `trend_peak_date`
+- Modified `blne_rise_events.xlsx` with updated rise event data
+- Adjusted `blne_rise_volatility_analysis.json` with new analysis timestamp and rise event details
+- Updated `insider_conviction_all_stocks_results.json` with new analysis timestamp
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+9fd6df70e2bbf6a9f5048bbf1266e2df8e4d43fe
+Refine rise event logic to handle 3 consecutive dips effectively
+Updated the logic for handling rise events with 3 consecutive dips, ensuring accurate identification and shifting of rise events to fall when necessary.
+
+- Modified `generate_stock_detailed_analysis.py` to implement the new approach for 3 consecutive dips.
+- Adjusted backtest scripts to incorporate the updated rise event logic.
+- Updated `blne_rise_volatility_analysis.json` with corrected rise event data.
+- Refined data in multiple output files, including `grov_rise_events.xlsx` and `insider_conviction_all_stocks_results.json`.
+- Removed outdated temporary file `~$bsfc_rise_events.xlsx`.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+574c07efe2c2e6274861dea5a4a8270f335dada2
+The singular stock code works in updated insider strategy
+Updated insider conviction strategy to focus on single stock analysis. Adjusted output files and data structure to reflect changes.
+
+- Modified `backtest_insider_conviction_strategy.py` for single stock analysis
+- Updated `insider_conviction_all_stocks_results.json` with new metrics for singular stock
+- Added new output files for rise events and volatility analysis for multiple stocks
+- Improved JSON structure to support singular stock results
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+a5f1e1e9598132a9d2371e6ea5586e5055ec2c12
+Fix calculation approach for mid rises and mid falls
+Updated the calculation logic for mid rises and mid falls to ensure accuracy in rise percentage and event data. Adjusted related output files and scripts accordingly.
+
+- Corrected mid rise and mid fall percentage calculations in JSON files
+- Updated `bsfc_rise_volatility_analysis.json` with revised rise event data
+- Modified `backtest_insider_conviction_strategy.py` to align with new calculation logic
+- Added `bsfc_insider_conviction_poc.json` for insider conviction analysis
+- Updated XLSX files for BSFC and GROV rise events with recalculated data
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+a1d4a05b84e05e952791f1159e60de7ced6f639d
+Thank god the singular test worked for BSFC
+Updated insider conviction results for BSFC with new data. Adjusted backtest scripts to reflect changes in trade outcomes and metrics.
+
+- Modified `insider_conviction_all_stocks_results.json` with updated BSFC trade data
+- Increased BSFC total trades from 1 to 3, with improved win rate and ROI
+- Adjusted backtest scripts to incorporate new trade logic and metrics
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+b07e3004ca6746d2bb0227c803bb1266aa783798
+Enable big test execution for single stock analysis
+Enhanced scripts and outputs to support focused testing on individual stocks. Adjusted insider conviction strategy data and added new outputs for rise events and volatility analysis.
+
+- Updated `.github/copilot-instructions.md` with critical trading strategy rules.
+- Modified insider conviction strategy scripts for single stock testing.
+- Adjusted GROV insider conviction POC data for improved accuracy.
+- Added new outputs for BSFC rise events and volatility analysis.
+- Removed outdated GROV rise events temporary file.
+- Updated PID files for node-server and Vite processes.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+add4adcf127f31cec38287b793b5962723409449
+Run insider conviction strategy on all stocks
+Enhanced the insider conviction strategy to analyze all stocks, updating relevant scripts, data files, and adding new documentation. This update provides comprehensive insights across multiple stocks.
+
+- Added new scripts for detailed stock analysis and backtesting across all stocks
+- Updated existing scripts to support multi-stock analysis
+- Generated new output files for all stocks, including JSON and Excel formats
+- Updated existing data files with expanded data sets
+- Added documentation for the multi-stock workflow
+- Minor updates to web application components for better data integration
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+3a7dc288bec35bb1b43bcc18369cc139220ed33b
+Enhance buy/sell orders; refine insider conviction data
+Updated the buy and sell order logic to improve clarity and accuracy, while refining insider conviction strategy data and related outputs.
+
+- Expanded trade details in `grov_insider_conviction_poc.json` with additional entries and metrics.
+- Adjusted ROI and profit calculations to reflect new trade data.
+- Updated `grov_rise_events.xlsx` with revised rise event details.
+- Corrected data formatting in `grov_rise_volatility_analysis.json` for consistency.
+- Minor adjustments to `backtest_insider_conviction_strategy.py` to align with updated logic.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+2063f1a3fe311a8158a12ab1881139724c79a09d
+Improve JSON structure for better readability and accuracy
+Enhanced the JSON structure for Grov rise volatility analysis to improve clarity and accuracy of the data. Updated related files and scripts accordingly.
+
+- Updated `grov_rise_volatility_analysis.json` with more precise mid-rise and mid-fall data
+- Adjusted date and percentage values for better accuracy in JSON
+- Modified `backtest_insider_conviction_strategy.py` to align with updated JSON structure
+- Refined `grov_rise_events.xlsx` to reflect changes in JSON data
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+23f48e98602048c6bb4cf204ad959a4c8155657b
+Add JSON generation for mid rises and falls in script output
+Updated the script and related files to include JSON generation for mid rises and falls. Adjusted data structures and output formats to align with the new functionality.
+
+- Modified `backtest_insider_conviction_strategy.py` to generate JSON for mid rises and falls
+- Updated `grov_insider_conviction_poc.json` with revised trade data and structure
+- Adjusted `grov_rise_events.xlsx` and `grov_rise_volatility_analysis.json` for consistency
+- Updated `AllChartsView.jsx` to support new JSON data visualization
+- Refined data handling and output logic in the script for better accuracy and performance
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+dfee4279d7c4ab5e5bad9dabb9081275d3fc4980
+Update absorption event logic; refine buy order tracking
+Enhanced the absorption event handling and buy order tracking in the insider conviction strategy. Updated related output files and UI components to reflect the changes.
+
+- Updated `grov_insider_conviction_poc.json` with new trade data and metrics
+- Modified `grov_rise_events.xlsx` to include updated event details
+- Refined logic in `backtest_insider_conviction_strategy.py` for absorption events
+- Adjusted `AllChartsView.jsx` to display updated data
+- Added temporary file `~$grov_rise_events.xlsx` for intermediate processing
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+e1adf850a520398075a2fa990ffdfdd33319565b
+Refine insider strategy; improve XLSX output formatting
+Enhanced insider conviction strategy logic and updated XLSX output for Grov rise events, ensuring better readability and accuracy.
+
+Key changes:
+- Adjusted rise detection logic to account for hot stock scenarios.
+- Added plateau detection for minimal price movements.
+- Improved XLSX formatting for Grov rise events.
+- Removed temporary XLSX file from output directory.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+e4cb69c71aa0a0aefe0c98d22cbd7e44d157e01b
+Improve backtest logic; refine CSV output formatting
+Enhanced the insider conviction strategy backtest script and updated the accompanying CSV file for better clarity and data representation.
+
+- Added price history tracking for rise start detection in backtest logic.
+- Implemented event tracking for improved CSV/Excel output.
+- Updated grov_rise_events.xlsx with refined data formatting.
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
+a362bf5a6e5898f187320ada019e67025e762ba1
+Refine rise/fall logic; add insider conviction strategy
+Improved the rise and fall event logic for Grov analysis, though further refinements are needed for perfection. Added a new insider conviction strategy backtest and JSON output for enhanced analysis.
+
+- Updated `server.js` and components (`AllChartsView.jsx`, `GrovPocView.jsx`) to reflect improved logic
+- Added `backtest_insider_conviction_strategy.py` for testing insider conviction-based strategies
+- Generated `grov_insider_conviction_poc.json` for detailed strategy insights
+- Updated PID files for node-server and vite logs
+
+============================================================
+  FEATURE LABELS
+============================================================
+
+# POC_tests
+
+---COMMIT_SEPARATOR---
 3f7ccbf11c6aa072c304a047a3f04cc8dff9fb3f
 Improve JSON structure for Grov rise events analysis
 Refactored the JSON output for Grov rise events to enhance readability and maintain consistency. Updated related files and components to align with the new structure.

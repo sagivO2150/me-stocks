@@ -34,6 +34,47 @@ class MarketPhase(Enum):
     UNKNOWN = "unknown"
 
 
+def calculate_proximity_score(current_price: float, price_history: pd.Series, lookback_days: int = 252) -> float:
+    """
+    Calculate proximity to 52-week high (0.0 to 1.0).
+    1.0 = at 52-week high, 0.0 = at 52-week low
+    """
+    if len(price_history) < 2:
+        return 0.5
+    
+    recent_prices = price_history[-lookback_days:]
+    high_52w = recent_prices.max()
+    low_52w = recent_prices.min()
+    
+    if high_52w == low_52w:
+        return 0.5
+    
+    proximity = (current_price - low_52w) / (high_52w - low_52w)
+    return max(0.0, min(1.0, proximity))
+
+
+def calculate_atr(price_df: pd.DataFrame, period: int = 14) -> float:
+    """
+    Calculate Average True Range for volatility measurement.
+    Returns the most recent ATR value.
+    """
+    if len(price_df) < period + 1:
+        return 0.0
+    
+    high = price_df['High']
+    low = price_df['Low']
+    close = price_df['Close']
+    
+    tr1 = high - low
+    tr2 = abs(high - close.shift(1))
+    tr3 = abs(low - close.shift(1))
+    
+    tr = pd.concat([tr1, tr2, tr3], axis=1).max(axis=1)
+    atr = tr.rolling(window=period).mean()
+    
+    return atr.iloc[-1] if not pd.isna(atr.iloc[-1]) else 0.0
+
+
 def load_cache_data():
     """Load cached yfinance data from JSON file"""
     cache_file = 'output CSVs/yfinance_cache_full.json'
@@ -73,7 +114,10 @@ class MarketPhase(Enum):
 class TradingState:
     """Track the current state of our live trading simulation."""
     
-    def __init__(self):
+    def __init__(self, price_df: Optional[pd.DataFrame] = None):
+        # Price data for proximity/ATR calculations
+        self.price_df = price_df
+        
         # Market observation
         self.phase = MarketPhase.UNKNOWN
         self.last_peak_date = None
@@ -342,6 +386,7 @@ class TradingState:
             'price': trade_info['price'],
             'insider_name': trade_info['insider_name'],
             'value': trade_info['value'],
+            'title': trade_info.get('title', ''),  # Need for conviction analysis
             'stock_price': trade_info.get('stock_price', trade_info['price'])
         }
         
@@ -381,6 +426,64 @@ class TradingState:
         # Calculate total insider investment (for tracking only)
         total_investment = sum(abs(t['value']) for t in self.insiders_bought_in_fall)
         num_insiders = len(set(t['insider_name'] for t in self.insiders_bought_in_fall))
+        
+        # ===== ANTI-CHASING GUARDRAILS =====
+        # Find the average price where insiders bought
+        insider_prices = [abs(t['price']) for t in self.insiders_bought_in_fall if t.get('price', 0) > 0]
+        if not insider_prices:
+            return None  # No valid insider prices
+        
+        avg_insider_price = sum(insider_prices) / len(insider_prices)
+        
+        # Calculate proximity score (distance from 52-week high)
+        proximity_score = 0.5  # Default
+        if self.price_df is not None and len(self.price_df) > 0:
+            try:
+                # Get price history up to current date
+                historical_data = self.price_df[self.price_df.index <= current_date]
+                if len(historical_data) > 0:
+                    proximity_score = calculate_proximity_score(
+                        current_price,
+                        historical_data['Close'],
+                        lookback_days=252
+                    )
+            except:
+                proximity_score = 0.5
+        
+        # GUARDRAIL 1: 15% Buy Zone Rule (Anti-Chasing)
+        MAX_CHASE_PERCENT = 1.15
+        chase_ratio = current_price / avg_insider_price
+        
+        if chase_ratio > MAX_CHASE_PERCENT and proximity_score < 0.98:
+            # Price is >15% above where insiders bought AND not at 52-week high
+            # This is a "Chasing Tax" scenario - WAIT for retracement
+            return None
+        
+        # GUARDRAIL 2: Vol-Squelch Filter (Avoid Crazy Spikes)
+        if self.price_df is not None and len(self.price_df) > 60:
+            try:
+                historical_data = self.price_df[self.price_df.index <= current_date]
+                if len(historical_data) > 60:
+                    # Calculate current 14-day ATR
+                    current_atr = calculate_atr(historical_data.tail(30), period=14)
+                    
+                    # Calculate historical average ATR (60-day lookback)
+                    historical_atr_values = []
+                    for i in range(14, min(60, len(historical_data) - 14)):
+                        window = historical_data.iloc[i:i+30]
+                        atr_val = calculate_atr(window, period=14)
+                        if atr_val > 0:
+                            historical_atr_values.append(atr_val)
+                    
+                    if historical_atr_values:
+                        avg_historical_atr = sum(historical_atr_values) / len(historical_atr_values)
+                        
+                        # If current ATR is >2× historical average, it's a "Crazy Spike"
+                        if current_atr > 2.0 * avg_historical_atr and proximity_score < 0.98:
+                            # Too volatile - wait for it to settle
+                            return None
+            except:
+                pass  # If ATR calculation fails, proceed with entry
         
         # SCENARIO 1: Shopping Spree
         if self.insiders_bought_in_rise and self.insiders_bought_in_fall and self.shopping_spree_peak_price:
@@ -940,7 +1043,7 @@ def process_single_stock(ticker: str, stock_data: Dict, price_cache: Dict, gener
             return None
         
         # Run simulation
-        state = TradingState()
+        state = TradingState(price_df)
         completed_trades = []
         
         # Debug flag for BSFC
@@ -1221,48 +1324,33 @@ def main():
         result.pop('events', None)
         result.pop('price_df', None)
         
-        # Load existing results file
+        # SINGLE-TICKER MODE: Create a separate results file with ONLY this ticker
+        # This prevents the UI from loading 25+ stocks when you're testing one
         output_file = 'output CSVs/insider_conviction_all_stocks_results.json'
-        try:
-            with open(output_file, 'r') as f:
-                existing_data = json.load(f)
-        except FileNotFoundError:
-            print(f"❌ Results file not found. Run full backtest first.")
-            sys.exit(1)
         
-        # Find and update this ticker in all_results
-        updated = False
-        for i, stock in enumerate(existing_data['all_results']):
-            if stock['ticker'] == single_ticker:
-                existing_data['all_results'][i] = result
-                updated = True
-                break
+        single_ticker_output = {
+            'analysis_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'strategy': f'Insider Conviction (Single Stock: {single_ticker})',
+            'overall_stats': {
+                'stocks_analyzed': 1,
+                'total_trades': result['total_trades'],
+                'winning_trades': result['winning_trades'],
+                'overall_win_rate': result['win_rate'],
+                'total_profit': result['total_profit'],
+                'total_invested': result['total_invested'],
+                'overall_roi': result['roi']
+            },
+            'top_25_best': [result],  # Only this ticker
+            'top_25_worst': [],
+            'all_results': [result]  # Only this ticker
+        }
         
-        if not updated:
-            existing_data['all_results'].append(result)
-        
-        # Update top_25_best if this ticker is in there
-        for i, stock in enumerate(existing_data['top_25_best']):
-            if stock['ticker'] == single_ticker:
-                existing_data['top_25_best'][i] = result
-                print(f"📈 Updated in top_25_best (rank {i+1})")
-                break
-        
-        # Update top_25_worst if this ticker is in there
-        for i, stock in enumerate(existing_data['top_25_worst']):
-            if stock['ticker'] == single_ticker:
-                existing_data['top_25_worst'][i] = result
-                print(f"📉 Updated in top_25_worst (rank {i+1})")
-                break
-        
-        # Update timestamp
-        existing_data['analysis_date'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        
-        # Save updated results
+        # Save single-ticker results (this is what the UI will load)
         with open(output_file, 'w') as f:
-            json.dump(existing_data, f, indent=2)
+            json.dump(single_ticker_output, f, indent=2)
         
-        print(f"💾 Updated {output_file}")
+        print(f"💾 Saved single-ticker results to {output_file}")
+        print(f"✅ UI will show ONLY {single_ticker} (not 25 stocks)")
         
         # Also update the top performers cache if ticker is in there
         cache_file = 'output CSVs/yfinance_cache_top_performers.json'

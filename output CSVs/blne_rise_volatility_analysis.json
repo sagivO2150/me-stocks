@@ -1,6 +1,6 @@
 {
   "ticker": "BLNE",
-  "analysis_date": "2026-02-20 02:21:51",
+  "analysis_date": "2026-02-21 04:46:23",
   "total_rise_events": 117,
   "rise_events": {
     "35.14": {
@@ -2482,6 +2482,7 @@
           "price": 0.98,
           "insider_name": "Gwin Geoffrey C",
           "value": 196720.0,
+          "title": "CEO, CFO, Dir",
           "stock_price": 195.39999389648438
         }
       ]
@@ -3743,6 +3744,7 @@
           "price": 0.82,
           "insider_name": "Liuzza Nicholas Reyland Jr",
           "value": 36749.0,
+          "title": "CEO of subsidiary",
           "stock_price": 7.880000114440918
         }
       ]
@@ -4024,19 +4026,17 @@
           "price": 4.22,
           "insider_name": "Freedman Joseph David",
           "value": 42193.0,
+          "title": "Dir",
           "stock_price": 4.349999904632568
         }
       ]
     },
-    "9.94": {
-      "rise_start_date": "16/10/2025",
+    "11.36": {
+      "rise_start_date": "22/10/2025",
       "rise_end_date": "31/10/2025",
-      "rise_days": 15,
-      "rise_percentage": 9.935903607976265,
+      "rise_days": 9,
+      "rise_percentage": 11.363641289640187,
       "mid_rises": {
-        "7.69": {
-          "date": "20/10/2025"
-        },
         "11.36": {
           "date": "27/10/2025"
         },
@@ -4045,9 +4045,6 @@
         }
       },
       "mid_falls": {
-        "-8.33": {
-          "date": "22/10/2025"
-        },
         "-14.87": {
           "date": "29/10/2025"
         }
@@ -4116,6 +4113,7 @@
           "price": 1.85,
           "insider_name": "Freedman Joseph David",
           "value": 1850.0,
+          "title": "Dir",
           "stock_price": 1.8200000524520874
         }
       ]

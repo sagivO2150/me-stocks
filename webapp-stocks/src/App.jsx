@@ -85,7 +85,7 @@ function App() {
         limit: '50'
       });
       
-      console.log('Loading political trades with filters:', filters);
+      console.log('🟣 [POLITICAL] Loading political trades with filters:', filters);
       
       if (filters.minAmount && filters.minAmount > 0) params.append('min_amount', filters.minAmount);
       if (filters.tradeType && filters.tradeType !== 'all') params.append('trade_type', filters.tradeType);
@@ -93,9 +93,14 @@ function App() {
       if (filters.chamber && filters.chamber !== 'all') params.append('chamber', filters.chamber);
       if (filters.days && filters.days > 0) params.append('days', filters.days);
       
-      const response = await fetch(`http://localhost:3001/api/political-trades?${params}`);
+      const url = `http://localhost:3001/api/political-trades?${params}`;
+      console.log('🟣 [POLITICAL] Fetching:', url);
+      
+      const response = await fetch(url);
+      console.log('🟣 [POLITICAL] Response status:', response.status, response.ok);
+      
       if (!response.ok) {
-        console.log('Political trades data not available yet');
+        console.log('🟣 [POLITICAL] Data not available yet');
         setPoliticalLoading(false);
         return;
       }
@@ -122,14 +127,20 @@ function App() {
     setMonthlyLoading(true);
     
     try {
-      const response = await fetch('http://localhost:3001/api/top-monthly-trades');
+      const url = 'http://localhost:3001/api/top-monthly-trades';
+      console.log('🟢 [MONTHLY] Fetching:', url);
+      
+      const response = await fetch(url);
+      console.log('🟢 [MONTHLY] Response status:', response.status, response.ok);
+      
       const data = await response.json();
+      console.log('🟢 [MONTHLY] Data received:', data.success, data.data?.length || 0, 'trades');
       
       if (data.success && data.data) {
         setTopMonthlyTrades(data.data);
       }
     } catch (err) {
-      console.error('Error loading top monthly trades:', err.message);
+      console.error('🔴 [MONTHLY] Error loading top monthly trades:', err.message, err);
     } finally {
       setMonthlyLoading(false);
     }
@@ -139,8 +150,14 @@ function App() {
     setLiveLoading(true);
     
     try {
-      const response = await fetch('http://localhost:3001/api/live-purchases');
+      const url = 'http://localhost:3001/api/live-purchases';
+      console.log('🟡 [LIVE] Fetching:', url);
+      
+      const response = await fetch(url);
+      console.log('🟡 [LIVE] Response status:', response.status, response.ok);
+      
       const data = await response.json();
+      console.log('🟡 [LIVE] Data received:', data.success, data.companies?.length || 0, 'companies');
       
       if (data.success && data.companies) {
         setLivePurchases(data.companies);
@@ -148,7 +165,7 @@ function App() {
         setLivePurchases([]);
       }
     } catch (err) {
-      console.error('Error loading live purchases:', err.message);
+      console.error('🔴 [LIVE] Error loading live purchases:', err.message, err);
       setLivePurchases([]);
     } finally {
       setLiveLoading(false);
@@ -158,7 +175,10 @@ function App() {
   const loadBestWorstPerformers = async () => {
     try {
       const cacheBuster = new Date().getTime();
-      const url = `http://localhost:3001/api/best-worst-performers?_=${cacheBuster}`;
+      // Use ATR strategy for backtest results
+      const url = `http://localhost:3001/api/best-worst-performers?strategy=atr&_=${cacheBuster}`;
+      
+      console.log('🔵 [BEST/WORST] Fetching:', url);
       
       const response = await fetch(url, {
         cache: 'no-store',
@@ -168,7 +188,10 @@ function App() {
         }
       });
       
+      console.log('🔵 [BEST/WORST] Response status:', response.status, response.ok);
+      
       const data = await response.json();
+      console.log('🔵 [BEST/WORST] Data success:', data.success);
       
       if (data.success) {
         console.log('🔵 [BEST/WORST] API Response received');
@@ -298,14 +321,29 @@ function App() {
   };
 
   useEffect(() => {
+    console.log('🔷 [App] Component mounted, loading initial data...');
     loadCSV();
     loadPoliticalTrades();
     loadTopMonthlyTrades();
     loadLivePurchases();
     loadBestWorstPerformers();
   }, []);
+  
+  useEffect(() => {
+    console.log('🔷 [App] viewMode changed to:', viewMode);
+  }, [viewMode]);
+  
+  useEffect(() => {
+    console.log('🔷 [App] Data state updated:', {
+      bestPerformers: bestPerformers.length,
+      worstPerformers: worstPerformers.length,
+      bestTrades: bestTrades.length,
+      worstTrades: worstTrades.length
+    });
+  }, [bestPerformers, worstPerformers, bestTrades, worstTrades]);
 
   if (loading) {
+    console.log('🔷 [App] Rendering loading spinner...');
     return (
       <div className="min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
         <div className="text-white text-2xl">Loading insider trades...</div>
