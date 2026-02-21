@@ -95,58 +95,91 @@ def load_historical_volatility(ticker: str) -> Optional[Dict]:
 
 
 def get_average_mid_fall_for_rise_group(volatility_data: Dict, target_rise_pct: float, 
-                                        margin_pct: float = 20.0) -> float:
+                                        margin_pct: float = 20.0, 
+                                        is_insider_trade: bool = False,
+                                        tier_multiplier: float = 1.2) -> Tuple[float, bool]:
     """
     Find rises within margin_pct of target_rise_pct and calculate average mid-fall.
+    SIGNAL-SENSITIVE: Prioritizes insider-backed historical rises for insider trades.
     
     Args:
         volatility_data: Historical volatility analysis
         target_rise_pct: The rise percentage to match
         margin_pct: Percentage margin for matching (default 20%)
+        is_insider_trade: If True, prioritize insider-backed historical rises
+        tier_multiplier: Multiplier to apply if using general history for insider trade
     
     Returns:
-        Average absolute mid-fall percentage
+        Tuple of (average_mid_fall_pct, used_insider_history)
     """
     if not volatility_data:
-        return 5.0  # Default fallback
+        return 5.0, False  # Default fallback
     
     rise_events = volatility_data.get('rise_events', {})
     
     lower_bound = target_rise_pct * (1 - margin_pct / 100)
     upper_bound = target_rise_pct * (1 + margin_pct / 100)
     
-    matching_falls = []
+    # Separate insider-backed and general rises
+    insider_falls = []
+    general_falls = []
     
     for rise_pct_key, event_data in rise_events.items():
         rise_pct = event_data.get('rise_percentage', 0)
         
         if lower_bound <= rise_pct <= upper_bound:
             mid_falls = event_data.get('mid_falls', {})
+            has_insiders = len(event_data.get('insiders', [])) > 0
+            
             for fall_pct_key in mid_falls.keys():
                 try:
                     fall_pct = abs(float(fall_pct_key))
-                    matching_falls.append(fall_pct)
+                    if has_insiders:
+                        insider_falls.append(fall_pct)
+                    else:
+                        general_falls.append(fall_pct)
                 except:
                     continue
     
-    if not matching_falls:
-        return 5.0  # Default fallback
-    
-    return sum(matching_falls) / len(matching_falls)
+    # Signal-Sensitive Phase B Logic
+    if is_insider_trade and insider_falls:
+        # Priority: Use actual insider-backed historical rises
+        avg_fall = sum(insider_falls) / len(insider_falls)
+        return avg_fall, True  # Used insider history
+    elif is_insider_trade and general_falls:
+        # Fallback: Inflate general history with tier multiplier
+        avg_fall = (sum(general_falls) / len(general_falls)) * tier_multiplier
+        return avg_fall, False  # Used inflated general history
+    elif general_falls:
+        # Non-insider trade: use general history
+        avg_fall = sum(general_falls) / len(general_falls)
+        return avg_fall, False
+    else:
+        return 5.0, False  # Default fallback
 
 
-def detect_conviction_level(insiders_list: List[Dict]) -> Tuple[str, float]:
+def detect_conviction_level(insiders_list: List[Dict]) -> Dict:
     """
     Detect conviction level based on insider characteristics.
     
     Returns:
-        Tuple of (signal_type, multiplier)
-        - OMEGA: CFO/CEO individual buy >$25k (4.0×)
-        - CONVICTION: Sequence/pattern + Moderate ITI (3.0×)
-        - SPRINT: Low conviction or quick opportunity (1.2×)
+        Dict with:
+        - tier: 'OMEGA', 'CONVICTION', or 'SPRINT'
+        - phase_a_atr_mult: ATR multiplier for Phase A (shock absorber)
+        - phase_b_mult: Multiplier for Phase B floor calculation
+        - confirmation_days: Days to wait for uptrend confirmation
+        - chase_cap: Max % above insider price allowed
+        - signal_validity_days: Trading days before signal expires
     """
     if not insiders_list:
-        return ('SPRINT', 1.2)
+        return {
+            'tier': 'SPRINT',
+            'phase_a_atr_mult': 1.5,
+            'phase_b_mult': 1.2,
+            'confirmation_days': 3,
+            'chase_cap': 0.10,
+            'signal_validity_days': 10
+        }
     
     # Calculate total investment
     total_investment = sum(abs(insider.get('value', 0)) for insider in insiders_list)
@@ -168,17 +201,61 @@ def detect_conviction_level(insiders_list: List[Dict]) -> Tuple[str, float]:
         if is_exec:
             max_executive_investment = max(max_executive_investment, value)
     
-    # OMEGA Signal: CFO/CEO individual buy >$25k (shows personal conviction)
+    # TIER 1: OMEGA - CFO/CEO individual buy >$25k
     if max_executive_investment >= 25000:
-        return ('OMEGA', 4.0)
+        return {
+            'tier': 'OMEGA',
+            'phase_a_atr_mult': 3.0,  # Wide shock absorber
+            'phase_b_mult': 4.0,      # Expect structural volatility
+            'confirmation_days': 0,    # Flash entry - buy next open
+            'chase_cap': 0.25,         # Allow 25% chase
+            'signal_validity_days': 10 # Signal expires after 10 trading days
+        }
     
-    # CONVICTION Signal: Multiple insiders OR moderate total ITI ($20k+)
-    elif len(insiders_list) >= 2 or total_investment >= 20000:
-        return ('CONVICTION', 3.0)
+    # TIER 2: CONVICTION - Multiple insiders OR moderate ITI ($10k+)
+    elif len(insiders_list) >= 2 or total_investment >= 10000:
+        return {
+            'tier': 'CONVICTION',
+            'phase_a_atr_mult': 2.0,
+            'phase_b_mult': 2.5,
+            'confirmation_days': 1,    # Fast entry - 1-day confirm
+            'chase_cap': 0.15,
+            'signal_validity_days': 15 # Longer validity for group conviction
+        }
     
-    # SPRINT: Low conviction - take quick profits
+    # TIER 3: SPRINT - Low conviction, quick opportunities
     else:
-        return ('SPRINT', 1.2)
+        return {
+            'tier': 'SPRINT',
+            'phase_a_atr_mult': 1.5,
+            'phase_b_mult': 1.2,
+            'confirmation_days': 3,    # Safe entry - 3-day confirm
+            'chase_cap': 0.10,
+            'signal_validity_days': 20 # More patient for low conviction
+        }
+
+
+def check_entry_gate(current_price: float, insider_avg_price: float, chase_cap: float) -> Tuple[bool, str]:
+    """
+    Check if current price is within acceptable chase range of insider purchase price.
+    
+    Args:
+        current_price: Current stock price
+        insider_avg_price: Average price insiders paid
+        chase_cap: Maximum allowed chase percentage (e.g., 0.25 for 25%)
+    
+    Returns:
+        Tuple of (is_valid, message)
+    """
+    if insider_avg_price <= 0:
+        return True, "No insider price reference"
+    
+    chase_pct = (current_price - insider_avg_price) / insider_avg_price
+    
+    if chase_pct > chase_cap:
+        return False, f"❌ Chase Cap Exceeded: {chase_pct:.1%} (max {chase_cap:.0%})"
+    
+    return True, f"✓ Chase OK: {chase_pct:+.1%}"
 
 
 def get_omega_multiplier(volatility_data: Dict) -> float:
@@ -282,7 +359,11 @@ class TradingState:
         self.in_mid_rise = False
         self.mid_rise_start_price = None
         self.omega_multiplier = None
-        self.conviction_multiplier = None  # Conviction-based Phase B multiplier
+        self.conviction_tier = None  # Full tier info dict
+        
+        # Insider purchase tracking for chase cap and signal expiry
+        self.insider_purchase_prices = []
+        self.most_recent_insider_date = None  # Track most recent insider purchase date
         
         # Event tracking
         self.all_events = []
@@ -482,6 +563,17 @@ class TradingState:
             'stock_price': trade_info.get('stock_price', trade_info['price'])
         }
         
+        # Track insider purchase price for chase cap
+        stock_price = trade_data['stock_price']
+        if stock_price > 0:
+            self.insider_purchase_prices.append(stock_price)
+        
+        # Track most recent insider date for signal expiry
+        from pandas import to_datetime
+        insider_date = to_datetime(date_str)
+        if self.most_recent_insider_date is None or insider_date > self.most_recent_insider_date:
+            self.most_recent_insider_date = insider_date
+        
         if self.phase == MarketPhase.FALLING:
             self.insiders_bought_in_fall.append(trade_data)
         elif self.phase == MarketPhase.RISING:
@@ -491,7 +583,7 @@ class TradingState:
             self.shopping_spree_peak_price = trade_data['stock_price']
     
     def check_buy_signal(self, current_date: datetime, current_price: float, atr: float) -> Optional[Dict]:
-        """Check if we should buy based on current state."""
+        """Check if we should buy based on current state with tiered conviction logic."""
         if self.in_position:
             return None
         
@@ -501,8 +593,44 @@ class TradingState:
         if not self.insiders_bought_in_fall:
             return None
         
+        # Detect conviction tier for all insider purchases
+        all_insider_purchases = self.insiders_bought_in_fall + self.insiders_bought_in_rise
+        tier_info = detect_conviction_level(all_insider_purchases)
+        
+        # SIGNAL EXPIRY CHECK: Reject stale signals
+        if self.most_recent_insider_date is not None:
+            import numpy as np
+            # Calculate TRADING DAYS between most recent insider buy and now
+            days_since_signal = np.busday_count(
+                self.most_recent_insider_date.date(),
+                current_date.date()
+            )
+            
+            signal_validity = tier_info['signal_validity_days']
+            
+            if days_since_signal > signal_validity:
+                # Signal is stale - log rejection and return
+                print(f"    ⏰ Signal Expired: {days_since_signal} trading days old (max {signal_validity} for {tier_info['tier']})")
+                print(f"    Last insider buy: {self.most_recent_insider_date.strftime('%Y-%m-%d')}, Current: {current_date.strftime('%Y-%m-%d')}")
+                return None
+        
+        # Dynamic confirmation days based on tier
+        required_days = tier_info['confirmation_days']
         if self.insiders_bought_in_rise and self.insiders_bought_in_fall:
-            if self.consecutive_up_days < 3:
+            # Shopping spree needs at least the tier's confirmation
+            required_days = max(required_days, tier_info['confirmation_days'])
+        
+        if self.consecutive_up_days < required_days:
+            return None
+        
+        # CHASE CAP GATE: Calculate average insider purchase price
+        if self.insider_purchase_prices:
+            avg_insider_price = sum(self.insider_purchase_prices) / len(self.insider_purchase_prices)
+            is_valid, gate_msg = check_entry_gate(current_price, avg_insider_price, tier_info['chase_cap'])
+            
+            if not is_valid:
+                # Log the rejection (visible in debug mode)
+                print(f"    {gate_msg} | Insider avg: ${avg_insider_price:.2f}, Current: ${current_price:.2f}")
                 return None
         
         total_investment = sum(abs(t['value']) for t in self.insiders_bought_in_fall)
@@ -514,8 +642,7 @@ class TradingState:
             if target > current_price:
                 all_insider_purchases = self.insiders_bought_in_rise + self.insiders_bought_in_fall
                 
-                # CONVICTION GATE: Detect conviction level
-                signal_type, conviction_mult = detect_conviction_level(all_insider_purchases)
+                # Already have tier_info from earlier
                 
                 self.in_position = True
                 self.entry_date = current_date
@@ -526,16 +653,19 @@ class TradingState:
                 self.peak_price_since_entry = current_price
                 self.atr_at_entry = atr
                 self.current_phase = 'A'
-                self.current_floor = current_price - (1.5 * atr)  # Phase A: 1.5 × ATR
+                # SHOCK ABSORBER: Use tier-specific ATR multiplier
+                self.current_floor = current_price - (tier_info['phase_a_atr_mult'] * atr)
                 self.cumulative_rise_pct = 0
                 self.mid_rises_since_entry = []
                 self.mid_falls_since_entry = []
                 self.last_price = current_price
-                self.conviction_multiplier = conviction_mult  # Store for Phase B
+                self.conviction_tier = tier_info  # Store full tier info
                 
                 self.insiders_bought_in_rise = []
                 self.insiders_bought_in_fall = []
                 self.shopping_spree_peak_price = None
+                self.insider_purchase_prices = []  # Reset for next trade
+                self.most_recent_insider_date = None  # Reset signal date
                 
                 return {
                     'buy_date': current_date,
@@ -546,8 +676,9 @@ class TradingState:
                     'prev_fall_pct': self.prev_fall_pct,
                     'atr_at_entry': atr,
                     'initial_floor': self.current_floor,
-                    'conviction_level': signal_type,
-                    'conviction_multiplier': conviction_mult
+                    'conviction_level': tier_info['tier'],
+                    'phase_a_mult': tier_info['phase_a_atr_mult'],
+                    'phase_b_mult': tier_info['phase_b_mult']
                 }
         
         # SCENARIO 2: Absorption Buy
@@ -555,8 +686,7 @@ class TradingState:
             if total_investment >= 5000:
                 target_gain_pct = abs(self.prev_fall_pct)
                 
-                # CONVICTION GATE: Detect conviction level
-                signal_type, conviction_mult = detect_conviction_level(self.insiders_bought_in_fall)
+                # Already have tier_info from earlier
                 
                 self.in_position = True
                 self.entry_date = current_date
@@ -567,16 +697,19 @@ class TradingState:
                 self.peak_price_since_entry = current_price
                 self.atr_at_entry = atr
                 self.current_phase = 'A'
-                self.current_floor = current_price - (1.5 * atr)  # Phase A: 1.5 × ATR
+                # SHOCK ABSORBER: Use tier-specific ATR multiplier
+                self.current_floor = current_price - (tier_info['phase_a_atr_mult'] * atr)
                 self.cumulative_rise_pct = 0
                 self.mid_rises_since_entry = []
                 self.mid_falls_since_entry = []
                 self.last_price = current_price
-                self.conviction_multiplier = conviction_mult  # Store for Phase B
+                self.conviction_tier = tier_info  # Store full tier info
                 
                 self.insiders_bought_in_rise = []
                 self.insiders_bought_in_fall = []
                 self.shopping_spree_peak_price = None
+                self.insider_purchase_prices = []  # Reset for next trade
+                self.most_recent_insider_date = None  # Reset signal date
                 
                 return {
                     'buy_date': current_date,
@@ -588,8 +721,9 @@ class TradingState:
                     'total_investment': total_investment,
                     'atr_at_entry': atr,
                     'initial_floor': self.current_floor,
-                    'conviction_level': signal_type,
-                    'conviction_multiplier': conviction_mult
+                    'conviction_level': tier_info['tier'],
+                    'phase_a_mult': tier_info['phase_a_atr_mult'],
+                    'phase_b_mult': tier_info['phase_b_mult']
                 }
         
         return None
@@ -633,33 +767,43 @@ class TradingState:
         
         self.last_price = current_price
         
-        # PHASE A: Days 1-5 - Blind protection with 1.5 × ATR
+        # PHASE A: Days 1-5 - Shock Absorber with tier-specific ATR multiplier
         if days_held <= 5:
             self.current_phase = 'A'
-            # Ratchet floor up as price rises
-            new_floor = self.peak_price_since_entry - (1.5 * self.atr_at_entry)
+            # Use tier-specific shock absorber
+            phase_a_mult = self.conviction_tier['phase_a_atr_mult'] if self.conviction_tier else 1.5
+            new_floor = self.peak_price_since_entry - (phase_a_mult * self.atr_at_entry)
             self.current_floor = max(self.current_floor, new_floor)
         
-        # PHASE B: After first mid-rise - Pattern matching with CONVICTION MULTIPLIER
+        # PHASE B: After first mid-rise - Signal-Sensitive Pattern Matching
         elif len(self.mid_rises_since_entry) >= 1 and self.cumulative_rise_pct < 30:
             self.current_phase = 'B'
             
-            # Calculate average historical mid-fall for similar rises
-            avg_historical_fall = get_average_mid_fall_for_rise_group(
+            # Get tier info
+            is_insider_trade = self.conviction_tier is not None
+            tier_mult = self.conviction_tier['phase_b_mult'] if self.conviction_tier else 1.2
+            
+            # SIGNAL-SENSITIVE: Prioritize insider-backed historical rises
+            avg_historical_fall, used_insider_history = get_average_mid_fall_for_rise_group(
                 self.volatility_data,
                 self.cumulative_rise_pct,
-                margin_pct=20.0
+                margin_pct=20.0,
+                is_insider_trade=is_insider_trade,
+                tier_multiplier=tier_mult
             )
             
-            # Use CONVICTION MULTIPLIER (4.0× for OMEGA, 3.0× for CONVICTION, 1.2× for SPRINT)
-            multiplier = self.conviction_multiplier if self.conviction_multiplier else 1.2
+            # If we used insider history, apply standard buffer (1.2x)
+            # If we used inflated general history, it's already multiplied
+            multiplier = 1.2 if used_insider_history else 1.0
             buffer_pct = multiplier * avg_historical_fall
             new_floor = self.peak_price_since_entry * (1 - buffer_pct / 100)
             
             # DEBUG: Show Phase B floor calculation for critical trades
             if hasattr(current_date, 'year') and current_date.year == 2025 and current_date.month in [11, 12]:
                 if self.ticker == 'BLNE' and days_held >= 5:
-                    print(f"  [Phase B {current_date.strftime('%Y-%m-%d')}] Peak=${self.peak_price_since_entry:.2f}, Hist Fall={avg_historical_fall:.1f}%, Mult={multiplier:.1f}×, Buffer={buffer_pct:.1f}%, Floor=${new_floor:.2f}")
+                    history_type = "Insider" if used_insider_history else "General"
+                    tier_name = self.conviction_tier['tier'] if self.conviction_tier else "N/A"
+                    print(f"  [Phase B {current_date.strftime('%Y-%m-%d')}] Peak=${self.peak_price_since_entry:.2f}, {history_type} Fall={avg_historical_fall:.1f}%, Mult={multiplier:.1f}×, Buffer={buffer_pct:.1f}%, Floor=${new_floor:.2f} | Tier:{tier_name}")
             
             self.current_floor = max(self.current_floor, new_floor)
         
@@ -852,7 +996,7 @@ def process_single_stock(ticker: str, stock_data: Dict, price_cache: Dict,
                         print(f"   Target: ${buy_signal['target_price']:.2f}")
                         print(f"   ATR: ${buy_signal['atr_at_entry']:.2f}")
                         print(f"   Initial Floor: ${buy_signal['initial_floor']:.2f}")
-                        print(f"   🔥 Conviction: {buy_signal.get('conviction_level', 'UNKNOWN')} ({buy_signal.get('conviction_multiplier', 0):.1f}×)")
+                        print(f"   🔥 Conviction: {buy_signal.get('conviction_level', 'UNKNOWN')} | Phase A: {buy_signal.get('phase_a_mult', 0):.1f}× ATR | Phase B: {buy_signal.get('phase_b_mult', 0):.1f}×")
                         print()
         
         # Handle open position at end
